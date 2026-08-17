@@ -1,0 +1,1335 @@
+{
+  "admins": [
+    {
+      "id": "admin-balaji-root",
+      "email": "vicks@balaji.com",
+      "passwordHash": "2ce8d1bd8ff1120fe08bf66271d0a332:1e9b81847c17a4f8860c3110331064aff177183ad8e67793e5dece4ed16f01aebeb1db7774a2d5c99fa3b8998b1463fe7c996f2989d0b9db752a70a76a0d0a5b",
+      "name": "Vikas Sir (Principal Architect)",
+      "role": "super_admin",
+      "mustChangePassword": false,
+      "createdAt": "2026-08-17T16:23:54.088Z",
+      "updatedAt": "2026-08-17T16:38:44.563Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-stone",
+      "name": "Natural Stone & Marble",
+      "slug": "natural-stone-marble",
+      "description": "Quarried Italian marbles, honed travertines, and architectural granites with bespoke cut-to-size options.",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 1,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.256Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-wood",
+      "name": "Hardwood & Architectural Veneers",
+      "slug": "hardwood-veneers",
+      "description": "Sustainably harvested smoked oaks, European walnuts, and natural fluted timber panels.",
+      "imageUrl": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 2,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-panels",
+      "name": "Wall Panels & Acoustic Surfaces",
+      "slug": "wall-panels-acoustic",
+      "description": "Linear slatted wall systems, architectural micro-cement claddings, and acoustic linen textures.",
+      "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 3,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-porcelain",
+      "name": "Large Format Porcelain Slabs",
+      "slug": "porcelain-slabs",
+      "description": "Monolithic sintered stone slabs for luxury countertops, bookmatched feature walls, and seamless floors.",
+      "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 4,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-lighting",
+      "name": "Architectural Lighting",
+      "slug": "architectural-lighting",
+      "description": "Sculptural unlacquered brass pendants, minimal linear sconces, and recessed gallery luminescence.",
+      "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 5,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-hardware",
+      "name": "Bespoke Hardware & Pulls",
+      "slug": "bespoke-hardware",
+      "description": "Solid forged bronze handles, knurled cabinet pulls, and precision-engineered architectural pivots.",
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 6,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-furniture",
+      "name": "Atelier Furniture & Objects",
+      "slug": "atelier-furniture",
+      "description": "Limited edition travertine monoliths, solid oak dining tables, and tailored bouclé seating.",
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 7,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-travertine-slab",
+      "name": "Romano Classico Vein-Cut Travertine",
+      "slug": "romano-classico-travertine",
+      "sku": "MAT-STN-001",
+      "brand": "Balaji Atelier Quarry Series",
+      "categoryId": "cat-stone",
+      "categoryName": "Natural Stone & Marble",
+      "categorySlug": "natural-stone-marble",
+      "subcategory": "Honed Travertine",
+      "description": "Authentic Italian vein-cut travertine quarried in Tivoli. Honed to a velvety matte tactile finish with natural open pores lightly filled for lasting resilience in high-end living spaces and bath suites.",
+      "price": 850,
+      "salePrice": 780,
+      "unit": "sq ft",
+      "moq": 100,
+      "stock": 2320,
+      "purchaseMode": "BOTH",
+      "leadTime": "5-7 business days",
+      "dimensions": "2400mm x 1200mm slab / custom tile sizes",
+      "thickness": "20mm",
+      "material": "Natural Travertine",
+      "finish": "Honed Matte",
+      "color": "Warm Ivory / Biscuit",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "variants": [
+        {
+          "id": "var-trav-20mm",
+          "productId": "prod-travertine-slab",
+          "sku": "MAT-STN-001-20",
+          "name": "20mm Slab - Honed",
+          "finish": "Honed",
+          "thickness": "20mm",
+          "priceModifier": 0,
+          "stock": 1800
+        },
+        {
+          "id": "var-trav-30mm",
+          "productId": "prod-travertine-slab",
+          "sku": "MAT-STN-001-30",
+          "name": "30mm Slab - Polished Matte",
+          "finish": "Polished Matte",
+          "thickness": "30mm",
+          "priceModifier": 190,
+          "stock": 600
+        }
+      ],
+      "isFeatured": true,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Stone",
+        "Travertine",
+        "Flooring",
+        "Wall Cladding",
+        "Luxury Bath"
+      ],
+      "specifications": {
+        "Origin": "Tivoli, Italy",
+        "Compressive Strength": "112 MPa",
+        "Water Absorption": "< 0.8%",
+        "Application": "Indoor flooring, feature walls, bathroom surrounds",
+        "Edge Detail": "Straight rectified / custom bullnose on request"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:38:44.573Z"
+    },
+    {
+      "id": "prod-smoked-oak-flooring",
+      "name": "Smoked European White Oak Wide Plank",
+      "slug": "smoked-european-oak-flooring",
+      "sku": "MAT-WOD-002",
+      "brand": "Balaji Atelier Timber Studio",
+      "categoryId": "cat-wood",
+      "categoryName": "Hardwood & Architectural Veneers",
+      "categorySlug": "hardwood-veneers",
+      "subcategory": "Engineered Hardwood",
+      "description": "Slow-smoked French white oak planks with a triple-brushed wire texture and invisible natural UV polyurethane oil finish. Engineered with a multi-layer birch ply core for dimensional stability in humid climates.",
+      "price": 620,
+      "unit": "sq ft",
+      "moq": 150,
+      "stock": 3500,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "3-5 business days",
+      "dimensions": "2200mm L x 220mm W",
+      "thickness": "15mm (4mm top wear layer)",
+      "material": "European White Oak & Baltic Birch",
+      "finish": "Natural Ultra-Matte Oil",
+      "color": "Muted Earth Brown",
+      "images": [
+        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "variants": [
+        {
+          "id": "var-oak-smoked",
+          "productId": "prod-smoked-oak-flooring",
+          "sku": "MAT-WOD-002-SMK",
+          "name": "Smoked Natural",
+          "color": "Warm Umber",
+          "finish": "Wire Brushed",
+          "priceModifier": 0,
+          "stock": 2200
+        },
+        {
+          "id": "var-oak-raw",
+          "productId": "prod-smoked-oak-flooring",
+          "sku": "MAT-WOD-002-RAW",
+          "name": "Raw Nordic Sand",
+          "color": "Light Biscuit",
+          "finish": "Smooth Matte",
+          "priceModifier": 40,
+          "stock": 1300
+        }
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Wood",
+        "Flooring",
+        "Oak",
+        "Wide Plank",
+        "Living Room"
+      ],
+      "specifications": {
+        "Grade": "Select Architectural ABC",
+        "Core": "11-ply Cross-Grain Baltic Birch",
+        "Bevel": "Micro-bevel on 4 sides",
+        "Installation": "Tongue & Groove / Glue-down or Floating",
+        "Underfloor Heating Compatible": "Yes, up to 27°C"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-fluted-acoustic-panel",
+      "name": "Acoustic Fluted Walnut Wall Panel",
+      "slug": "acoustic-fluted-walnut-panel",
+      "sku": "MAT-PNL-003",
+      "brand": "Balaji Atelier Spatial Accents",
+      "categoryId": "cat-panels",
+      "categoryName": "Wall Panels & Acoustic Surfaces",
+      "categorySlug": "wall-panels-acoustic",
+      "subcategory": "Acoustic Cladding",
+      "description": "Precision-milled American walnut slats affixed to a recycled high-density acoustic PET felt backing. Elevates room acoustics while introducing warm architectural rhythm to master bedrooms and private cinema suites.",
+      "price": 14500,
+      "salePrice": 13200,
+      "unit": "sheet",
+      "moq": 2,
+      "stock": 85,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "3-4 business days",
+      "dimensions": "2400mm H x 600mm W x 22mm D",
+      "thickness": "22mm",
+      "material": "Natural American Walnut & Recycled Felt",
+      "finish": "Silky Natural Wax Oil",
+      "color": "Deep Espresso Walnut",
+      "images": [
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Acoustic",
+        "Wall Panels",
+        "Walnut",
+        "Fluted",
+        "Bedrooms"
+      ],
+      "specifications": {
+        "NRC Rating": "0.85 Sound Absorption",
+        "Fire Rating": "Class B-s1, d0 (Flame Retardant)",
+        "Mounting": "Concealed screw or polyurethane construction adhesive",
+        "Slat Spacing": "13mm width with 14mm felt reveals"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-calacatta-porcelain",
+      "name": "Calacatta Vagli Sintered Porcelain Slab",
+      "slug": "calacatta-vagli-porcelain-slab",
+      "sku": "MAT-POR-004",
+      "brand": "Balaji Atelier Surface Lab",
+      "categoryId": "cat-porcelain",
+      "categoryName": "Large Format Porcelain Slabs",
+      "categorySlug": "porcelain-slabs",
+      "subcategory": "Continuous Bookmatched Slabs",
+      "description": "Continuous vein-matched sintered ceramic slab with deep golden and slate veins on an ultra-clean warm white background. 100% stain, heat, and scratch proof for demanding culinary islands and master vanities.",
+      "price": 1100,
+      "unit": "sq ft",
+      "moq": 50,
+      "stock": 1200,
+      "purchaseMode": "BOTH",
+      "leadTime": "7-10 business days",
+      "dimensions": "3200mm x 1600mm",
+      "thickness": "12mm / 20mm",
+      "material": "Sintered Ceramic Porcelain",
+      "finish": "Silk Touch Satin",
+      "color": "Pure White with Gold & Charcoal Veining",
+      "images": [
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Kitchen Countertop",
+        "Porcelain Slab",
+        "Bookmatched",
+        "Island Counter"
+      ],
+      "specifications": {
+        "Porosity": "0.01% (Zero Porosity)",
+        "Thermal Shock": "Resistant to direct pans up to 400°C",
+        "UV Stability": "Fade proof for indoor and outdoor loggias"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-monolith-coffee-table",
+      "name": "Brutalist Travertine Monolith Coffee Table",
+      "slug": "brutalist-travertine-coffee-table",
+      "sku": "FUR-TBL-005",
+      "brand": "Balaji Atelier Collection",
+      "categoryId": "cat-furniture",
+      "categoryName": "Atelier Furniture & Objects",
+      "categorySlug": "atelier-furniture",
+      "subcategory": "Sculptural Tables",
+      "description": "Sculpted from a single block of Tuscan Romano travertine. Defined by raw chiseled edges contrasting with a silky hand-honed flat surface. Each table is an individual architectural sculpture numbered by the studio.",
+      "price": 185000,
+      "unit": "piece",
+      "moq": 1,
+      "stock": 4,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "Made to order (2-3 weeks)",
+      "dimensions": "1400mm L x 800mm W x 360mm H",
+      "thickness": "120mm solid block perimeter",
+      "material": "Solid Honed Travertine Stone",
+      "finish": "Natural Matte Wax Sealed",
+      "color": "Ivory Travertine",
+      "images": [
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Furniture",
+        "Coffee Table",
+        "Travertine",
+        "Sculptural",
+        "Living Room"
+      ],
+      "specifications": {
+        "Weight": "115 kg",
+        "Craftsmanship": "Hand-chiseled perimeter with CNC planar accuracy",
+        "Care": "Wipe with damp cloth and pH neutral stone cleanser"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-linear-bronze-pendant",
+      "name": "Kanso Linear Brushed Bronze Chandelier",
+      "slug": "kanso-linear-bronze-chandelier",
+      "sku": "LGT-PEN-006",
+      "brand": "Balaji Atelier Luminescence",
+      "categoryId": "cat-lighting",
+      "categoryName": "Architectural Lighting",
+      "categorySlug": "architectural-lighting",
+      "subcategory": "Suspension Lighting",
+      "description": "A monolithic 1.8-meter solid extruded bronze fixture housing warm 2700K museum-grade CRI 97+ LED arrays diffused through frosted Japanese alabaster glass. Dimmable via DALI and TRIAC protocols.",
+      "price": 88000,
+      "unit": "set",
+      "moq": 1,
+      "stock": 12,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "5-7 business days",
+      "dimensions": "1800mm L x 60mm W x 80mm H (Suspension up to 2500mm)",
+      "material": "Solid Extruded Bronze & Cast Alabaster",
+      "finish": "Hand-Rubbed Aged Bronze",
+      "color": "Antique Bronze",
+      "images": [
+        "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Lighting",
+        "Bronze",
+        "Dining Table Chandelier",
+        "Minimalist"
+      ],
+      "specifications": {
+        "Luminous Flux": "4,200 Lumens",
+        "Color Temperature": "2700K Warm Architectural Glow",
+        "Color Rendering Index": "CRI 98",
+        "Voltage": "220-240V AC 50/60Hz"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-knurled-bronze-hardware",
+      "name": "Bespoke Knurled Bronze Door Lever & Escutcheon Set",
+      "slug": "bespoke-knurled-bronze-door-lever",
+      "sku": "HRD-LVR-007",
+      "brand": "Balaji Atelier Hardware Works",
+      "categoryId": "cat-hardware",
+      "categoryName": "Bespoke Hardware & Pulls",
+      "categorySlug": "bespoke-hardware",
+      "subcategory": "Architectural Door Hardware",
+      "description": "Machined from solid naval brass billets and finished with a dark antique bronze patina that deepens with use. Features a precision cross-hatch diamond knurled barrel for a reassuring tactile grip on heavy entrance doors.",
+      "price": 9500,
+      "salePrice": 8600,
+      "unit": "set",
+      "moq": 2,
+      "stock": 65,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "2-3 business days",
+      "dimensions": "150mm Lever x 52mm Rose",
+      "material": "Solid Forged Naval Brass",
+      "finish": "Unlacquered Living Bronze Patina",
+      "color": "Dark Antique Bronze",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Door Hardware",
+        "Bronze Handles",
+        "Knurled Brass",
+        "Luxury Entrance"
+      ],
+      "specifications": {
+        "Mechanism": "Heavy duty sprung return rose with ball-bearing hub",
+        "Spindle": "8mm solid steel standard",
+        "Door Thickness Fit": "38mm to 55mm solid timber doors"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "prod-custom-millwork-veneer",
+      "name": "Smoked Santos Rosewood Architectural Veneer",
+      "slug": "smoked-santos-rosewood-veneer",
+      "sku": "MAT-VNR-008",
+      "brand": "Balaji Atelier Timber Studio",
+      "categoryId": "cat-wood",
+      "categoryName": "Hardwood & Architectural Veneers",
+      "categorySlug": "hardwood-veneers",
+      "subcategory": "Natural Wood Veneer",
+      "description": "Sequenced architectural flitch veneer with rich espresso cathedrals and bronze undertones. Backed with non-woven fleece for seamless pressing onto curved cabinetry and bespoke wardrobes.",
+      "price": 320,
+      "unit": "sq ft",
+      "moq": 200,
+      "stock": 4200,
+      "purchaseMode": "REQUEST_QUOTE",
+      "leadTime": "7-10 business days",
+      "dimensions": "3050mm L x 1250mm W",
+      "thickness": "0.6mm",
+      "material": "Natural Santos Rosewood",
+      "finish": "Raw Unfinished (Ready for matte polyurethane or hardwax)",
+      "color": "Rich Espresso & Bronze Striations",
+      "images": [
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": false,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Veneer",
+        "Rosewood",
+        "Wardrobes",
+        "Wall Paneling",
+        "Joinery"
+      ],
+      "specifications": {
+        "Cut": "Crown Cut & Quarter Cut Bookmatched",
+        "Moisture Content": "8-12%",
+        "Sustainably Certified": "FSC 100% Controlled Harvest"
+      },
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-sanctuary-alibaug",
+      "title": "The Sanctuary at Alibaug",
+      "slug": "the-sanctuary-at-alibaug",
+      "location": "Awas Coast, Alibaug",
+      "year": "2025",
+      "projectType": "Architecture & Villa",
+      "area": "8,200 sq ft",
+      "shortDescription": "A monolithic coastal retreat grounded in honed Tivoli travertine, smoked French oak, and frameless pocketing glass walls connecting lush banyan groves.",
+      "description": "Designed as a timeless multi-generational weekend villa, The Sanctuary is configured around a central reflecting pool framed by board-formed concrete and warm Italian travertine. Every interior element was custom designed and fabricated by Balaji Atelier, ensuring unbroken harmony between raw architectural mass and delicate tactile finishes.",
+      "heroImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Our approach balanced heavy thermal mass walls with delicate bronze joinery and natural woven linens, allowing sea breezes to filter through while maintaining deep shade and thermal comfort.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-travertine-slab",
+          "materialName": "Romano Classico Vein-Cut Travertine",
+          "category": "Natural Stone",
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-smoked-oak-flooring",
+          "materialName": "Smoked European White Oak Wide Plank",
+          "category": "Timber",
+          "imageUrl": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-linear-bronze-pendant",
+          "materialName": "Kanso Linear Brushed Bronze Chandelier",
+          "category": "Lighting",
+          "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 1,
+      "tags": [
+        "Villa",
+        "Coastal",
+        "Travertine",
+        "Minimalist Luxury",
+        "Turnkey Execution"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "proj-pavilion-worli",
+      "title": "Pavilion of Light",
+      "slug": "pavilion-of-light-worli",
+      "location": "Worli Seaface, Mumbai",
+      "year": "2024",
+      "projectType": "Penthouse & Estate",
+      "area": "5,400 sq ft",
+      "shortDescription": "An expansive sea-facing sky penthouse wrapped in acoustic fluted walnut paneling, Calacatta Vagli porcelain, and custom patinated bronze millwork.",
+      "description": "Perched high above the Arabian Sea, this sky residence explores how sunlight behaves across contrasting textures. The public salon flows seamlessly from honed stone floors to floor-to-ceiling smoked walnut millwork housing a curated collection of modern sculpture.",
+      "heroImage": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "We eradicated unnecessary visual clutter, replacing drywall partitions with sliding fluted acoustic timber screens that allow the living space to transform dynamically from open gallery to private entertaining salon.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-fluted-acoustic-panel",
+          "materialName": "Acoustic Fluted Walnut Wall Panel",
+          "category": "Acoustic Cladding",
+          "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-calacatta-porcelain",
+          "materialName": "Calacatta Vagli Sintered Porcelain Slab",
+          "category": "Sintered Stone",
+          "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=400&q=80"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 2,
+      "tags": [
+        "Penthouse",
+        "Mumbai",
+        "Walnut",
+        "Sea View",
+        "Interior Design"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "proj-maison-brutaliste",
+      "title": "Maison Brutaliste",
+      "slug": "maison-brutaliste-delhi",
+      "location": "Chhatarpur Farms, New Delhi",
+      "year": "2025",
+      "projectType": "Residential Interiors",
+      "area": "11,000 sq ft",
+      "shortDescription": "A bold sculptural private residence contrasting raw architectural board-formed concrete with refined brushed bronze and lush interior courtyard gardens.",
+      "description": "Conceived as an inward-looking sanctuary shielded from urban noise, Maison Brutaliste features soaring 6-meter ceilings and rhythmic colonnades that capture changing light across the seasons.",
+      "heroImage": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "The project demonstrates our philosophy of material honesty—every concrete pour, timber grain, and bronze joint is left exposed to celebrate true construction craftsmanship.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-travertine-slab",
+          "materialName": "Romano Classico Vein-Cut Travertine",
+          "category": "Stone"
+        },
+        {
+          "materialId": "prod-knurled-bronze-hardware",
+          "materialName": "Bespoke Knurled Bronze Door Lever",
+          "category": "Hardware"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 3,
+      "tags": [
+        "Brutalist",
+        "Private Residence",
+        "Delhi",
+        "Concrete & Bronze"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "proj-monolith-studio",
+      "title": "The Monolith Design Headquarters",
+      "slug": "the-monolith-design-headquarters",
+      "location": "Indiranagar, Bengaluru",
+      "year": "2024",
+      "projectType": "Commercial & Studio",
+      "area": "4,200 sq ft",
+      "shortDescription": "A serene creative studio for an international fashion house featuring modular walnut workstations and monolithic stone meeting pods.",
+      "description": "Balaji Atelier was commissioned to rethink modern creative workspace architecture. We crafted quiet acoustic alcoves and an open library of tactile material specimens to inspire daily design exploration.",
+      "heroImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Focus on high acoustic performance and calm ambient illumination to support deep creative focus.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-fluted-acoustic-panel",
+          "materialName": "Acoustic Fluted Walnut Wall Panel",
+          "category": "Acoustics"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": false,
+      "sortOrder": 4,
+      "tags": [
+        "Studio",
+        "Workplace",
+        "Bengaluru",
+        "Commercial"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "proj-aura-hyderabad",
+      "title": "Aura Residence",
+      "slug": "aura-residence-hyderabad",
+      "location": "Jubilee Hills, Hyderabad",
+      "year": "2025",
+      "projectType": "Residential Interiors",
+      "area": "6,800 sq ft",
+      "shortDescription": "An understated private residence balancing traditional Deccan courtyard typologies with razor-sharp modern detailing.",
+      "description": "Every room in Aura Residence is composed around intimate landscaped lightwells. Custom unlacquered bronze partitions and vein-matched marble floors foster a feeling of continuous calm.",
+      "heroImage": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Integration of passive ventilation, natural daylight, and enduring local granite masonry.",
+      "materialsUsed": [],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 5,
+      "tags": [
+        "Courtyard House",
+        "Hyderabad",
+        "Luxury Interior"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "proj-kyoto-tea-dine",
+      "title": "Kyoto Tea & Dine Atelier",
+      "slug": "kyoto-tea-dine-atelier",
+      "location": "Pali Hill, Bandra West, Mumbai",
+      "year": "2024",
+      "projectType": "Hospitality & Luxury Dining",
+      "area": "3,900 sq ft",
+      "shortDescription": "An intimate omakase and artisanal tea lounge celebrated for its charred Shou Sugi Ban cedar walls and monolithic travertine bar.",
+      "description": "Designed as a multisensory journey, guests transition through a tranquil rock garden into an ambient dining room anchored by an 8-meter solid stone counter illuminated by custom linear bronze fixtures.",
+      "heroImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Minimalist Japanese wabi-sabi principles interpreted through contemporary Indian stone craftsmanship.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-linear-bronze-pendant",
+          "materialName": "Kanso Linear Brushed Bronze Chandelier",
+          "category": "Lighting"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": false,
+      "sortOrder": 6,
+      "tags": [
+        "Hospitality",
+        "Restaurant",
+        "Bandra",
+        "Dining"
+      ],
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "srv-interior-architecture",
+      "title": "Interior Architecture & Space Planning",
+      "slug": "interior-architecture-space-planning",
+      "shortDesc": "Comprehensive spatial reconfiguration, structural alignment, and architectural interior detailing for luxury residences and estates.",
+      "fullDesc": "We re-engineer spatial flows from first principles, taking into account natural daylight vectors, sightlines, acoustics, and structural integration. Our drawings cover full architectural CAD & BIM sets, reflected ceiling plans, MEP coordination, and micro-detailed millwork joinery.",
+      "iconName": "Compass",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Concept spatial diagrams & 3D volumetric studies",
+        "Full architectural interior blueprint packages",
+        "Reflected ceiling & architectural lighting plans",
+        "Custom door, window, and wall assembly details",
+        "Statutory & structural consultant coordination"
+      ],
+      "sortOrder": 1,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-turnkey-execution",
+      "title": "Turnkey Luxury Execution",
+      "slug": "turnkey-luxury-execution",
+      "shortDesc": "End-to-end master project management, artisan craftsmanship, and on-site engineering from bare shell to final handover.",
+      "fullDesc": "Our dedicated site engineering and project management division oversees every phase of construction. We ensure absolute adherence to millimeter tolerances, material integrity, and promised delivery timelines.",
+      "iconName": "ShieldCheck",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Dedicated on-site architectural project manager",
+        "Daily photographic progress tracking & Gantt charts",
+        "Master artisan supervision (masonry, carpentry, stone finishing)",
+        "Rigorous multi-stage QA and snag resolution",
+        "Comprehensive maintenance manuals & warranty portfolio"
+      ],
+      "sortOrder": 2,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-material-consultation",
+      "title": "Material Curation & Sourcing Advisory",
+      "slug": "material-curation-sourcing",
+      "shortDesc": "Global stone quarry selection, certified timber procurement, and bespoke surface formulation tailored to project climate.",
+      "fullDesc": "Leveraging our direct relationships with European quarries and master timber mills, we curate bespoke material palettes that age gracefully. We conduct rigorous laboratory testing for water absorption, hardness, and thermal behavior.",
+      "iconName": "Layers",
+      "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Physical tactile sample trays & curated finish moodboards",
+        "Direct quarry inspection and slab block selection",
+        "Full technical specification sheets & maintenance protocols",
+        "Contractor procurement schedules and MOQ optimization"
+      ],
+      "sortOrder": 3,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-custom-furniture",
+      "title": "Bespoke Furniture & Custom Millwork",
+      "slug": "bespoke-furniture-custom-millwork",
+      "shortDesc": "Limited edition furniture, sculptural stone monoliths, and precision-engineered architectural cabinetry handcrafted in our studio.",
+      "fullDesc": "Every piece is drafted specifically for its designated space, utilizing select hardwoods, hand-poured bronze castings, and monolithic natural stones.",
+      "iconName": "Armchair",
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "1:1 scale ergonomic prototypes and timber mockups",
+        "Hand-selected natural flitch veneer matching",
+        "Integrated soft-close concealed hardware engineering",
+        "Numbered certificate of atelier authenticity"
+      ],
+      "sortOrder": 4,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-1786984724573-glnn8",
+      "orderNumber": "BAL-724573-452",
+      "customerName": "Aarav Mehta",
+      "customerEmail": "aarav.mehta@studio.com",
+      "customerPhone": "+91 98201 12345",
+      "shippingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "billingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "oi-1786984724573-0ioje",
+          "orderId": "ord-1786984724573-glnn8",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "productSku": "MAT-STN-001",
+          "unit": "sq ft",
+          "unitPrice": 780,
+          "quantity": 20,
+          "subtotal": 15600,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Warm Ivory / Biscuit",
+          "selectedFinish": "Honed Matte"
+        }
+      ],
+      "subtotal": 15600,
+      "tax": 2808,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 19908,
+      "orderStatus": "Processing",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Credit Card",
+      "notes": "Ground floor crane delivery",
+      "createdAt": "2026-08-17T16:38:44.573Z",
+      "updatedAt": "2026-08-17T16:38:44.574Z"
+    },
+    {
+      "id": "ord-1786984681531-7o0k4",
+      "orderNumber": "BAL-681531-570",
+      "customerName": "Aarav Mehta",
+      "customerEmail": "aarav.mehta@studio.com",
+      "customerPhone": "+91 98201 12345",
+      "shippingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "billingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "oi-1786984681531-wqks8",
+          "orderId": "ord-1786984681531-7o0k4",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "productSku": "MAT-STN-001",
+          "unit": "sq ft",
+          "unitPrice": 780,
+          "quantity": 20,
+          "subtotal": 15600,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Warm Ivory / Biscuit",
+          "selectedFinish": "Honed Matte"
+        }
+      ],
+      "subtotal": 15600,
+      "tax": 2808,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 19908,
+      "orderStatus": "Processing",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Credit Card",
+      "notes": "Ground floor crane delivery",
+      "createdAt": "2026-08-17T16:38:01.531Z",
+      "updatedAt": "2026-08-17T16:38:01.532Z"
+    },
+    {
+      "id": "ord-1786984657099-ufqu3",
+      "orderNumber": "BAL-657099-574",
+      "customerName": "Aarav Mehta",
+      "customerEmail": "aarav.mehta@studio.com",
+      "customerPhone": "+91 98201 12345",
+      "shippingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "billingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "oi-1786984657099-9psgu",
+          "orderId": "ord-1786984657099-ufqu3",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "productSku": "MAT-STN-001",
+          "unit": "sq ft",
+          "unitPrice": 780,
+          "quantity": 20,
+          "subtotal": 15600,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Warm Ivory / Biscuit",
+          "selectedFinish": "Honed Matte"
+        }
+      ],
+      "subtotal": 15600,
+      "tax": 2808,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 19908,
+      "orderStatus": "Processing",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Credit Card",
+      "notes": "Ground floor crane delivery",
+      "createdAt": "2026-08-17T16:37:37.099Z",
+      "updatedAt": "2026-08-17T16:37:37.100Z"
+    },
+    {
+      "id": "ord-1786983899967-25odp",
+      "orderNumber": "BAL-899967-440",
+      "customerName": "Aarav Mehta",
+      "customerEmail": "aarav.mehta@studio.com",
+      "customerPhone": "+91 98201 12345",
+      "shippingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "billingAddress": {
+        "fullName": "Aarav Mehta",
+        "phone": "+91 98201 12345",
+        "addressLine1": "Villa 14, Palm Avenue, Worli",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400018",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "oi-1786983899967-jnd5j",
+          "orderId": "ord-1786983899967-25odp",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "productSku": "MAT-STN-001",
+          "unit": "sq ft",
+          "unitPrice": 780,
+          "quantity": 20,
+          "subtotal": 15600,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Warm Ivory / Biscuit",
+          "selectedFinish": "Honed Matte"
+        }
+      ],
+      "subtotal": 15600,
+      "tax": 2808,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 19908,
+      "orderStatus": "Processing",
+      "paymentStatus": "Paid",
+      "paymentMethod": "Credit Card",
+      "notes": "Ground floor crane delivery",
+      "createdAt": "2026-08-17T16:24:59.967Z",
+      "updatedAt": "2026-08-17T16:24:59.968Z"
+    }
+  ],
+  "quotes": [
+    {
+      "id": "qt-1786984724575-vnkn",
+      "quoteNumber": "QT-2026-24575",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984724575-tfmy",
+          "quoteId": "qt-1786984724575-vnkn",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:38:44.575Z",
+      "updatedAt": "2026-08-17T16:38:44.575Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786984681533-hgeo",
+      "quoteNumber": "QT-2026-81533",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984681533-yga2",
+          "quoteId": "qt-1786984681533-hgeo",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:38:01.533Z",
+      "updatedAt": "2026-08-17T16:38:01.534Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786984657101-va26",
+      "quoteNumber": "QT-2026-57101",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984657101-bzzx",
+          "quoteId": "qt-1786984657101-va26",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:37:37.101Z",
+      "updatedAt": "2026-08-17T16:37:37.102Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786983899968-72ks",
+      "quoteNumber": "QT-2026-99968",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786983899968-24q9",
+          "quoteId": "qt-1786983899968-72ks",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:24:59.968Z",
+      "updatedAt": "2026-08-17T16:24:59.969Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    }
+  ],
+  "enquiries": [
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984724576-d32w",
+      "status": "New",
+      "createdAt": "2026-08-17T16:38:44.576Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984681535-87zz",
+      "status": "New",
+      "createdAt": "2026-08-17T16:38:01.535Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984657103-937g",
+      "status": "New",
+      "createdAt": "2026-08-17T16:37:37.103Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786983899970-uvnw",
+      "status": "New",
+      "createdAt": "2026-08-17T16:24:59.970Z"
+    }
+  ],
+  "siteSettings": {
+    "brandName": "Balaji Atelier",
+    "tagline": "Crafted spaces and considered materials for timeless living.",
+    "logoUrl": "",
+    "contactEmail": "atelier@balaji-interior.com",
+    "contactPhone": "+91 (022) 8490-2100",
+    "studioAddress": "Studio 04, The Design Quarter, Senapati Bapat Marg, Lower Parel",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "pincode": "400013",
+    "currency": "INR",
+    "currencySymbol": "₹",
+    "taxRatePercent": 18,
+    "standardShippingFee": 1500,
+    "freeShippingThreshold": 50000,
+    "socialInstagram": "https://instagram.com/balajiatelier",
+    "socialPinterest": "https://pinterest.com/balajiatelier",
+    "socialLinkedin": "https://linkedin.com/company/balaji-atelier",
+    "announcementBanner": {
+      "enabled": true,
+      "text": "Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions",
+      "linkUrl": "/quote"
+    }
+  },
+  "pushSubscriptions": [],
+  "auditLogs": [
+    {
+      "id": "log-1786984724573",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984724573-glnn8",
+      "details": {
+        "orderNumber": "BAL-724573-452",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:38:44.573Z"
+    },
+    {
+      "id": "log-1786984724563",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:38:44.563Z"
+    },
+    {
+      "id": "log-1786984681531",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984681531-7o0k4",
+      "details": {
+        "orderNumber": "BAL-681531-570",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:38:01.531Z"
+    },
+    {
+      "id": "log-1786984681519",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:38:01.519Z"
+    },
+    {
+      "id": "log-1786984667361",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:37:47.361Z"
+    },
+    {
+      "id": "log-1786984657099",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984657099-ufqu3",
+      "details": {
+        "orderNumber": "BAL-657099-574",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:37:37.099Z"
+    },
+    {
+      "id": "log-1786984657086",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:37:37.086Z"
+    },
+    {
+      "id": "log-1786983899967",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786983899967-25odp",
+      "details": {
+        "orderNumber": "BAL-899967-440",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:24:59.967Z"
+    },
+    {
+      "id": "log-1786983899957",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:24:59.957Z"
+    },
+    {
+      "id": "log-init",
+      "adminId": "system",
+      "adminEmail": "system@balaji.com",
+      "action": "DATABASE_INITIALIZED",
+      "entity": "System",
+      "details": {
+        "message": "Balaji Atelier Production Database successfully initialized with editorial seed."
+      },
+      "createdAt": "2026-08-17T16:23:54.088Z"
+    }
+  ]
+}

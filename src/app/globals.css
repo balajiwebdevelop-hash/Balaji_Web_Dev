@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+  --font-jakarta: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+  --color-canvas: #F6F2EA;
+  --color-surface: #FCFAF6;
+  --color-espresso: #211914;
+  --color-timber: #5A4335;
+  --color-bronze: #8C6A45;
+  --color-champagne: #C5A880;
+  --color-charcoal: #171513;
+  --color-warmgray: #746D65;
+  --border-subtle: rgba(90, 67, 53, 0.14);
+}
+
+html {
+  background-color: var(--color-canvas);
+  color: var(--color-charcoal);
+  font-family: var(--font-jakarta);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-canvas);
+}
+
+::selection {
+  background-color: #8C6A45;
+  color: #FCFAF6;
+}
+
+/* Editorial Typography */
+.font-serif {
+  font-family: var(--font-cormorant);
+}
+
+.font-sans {
+  font-family: var(--font-jakarta);
+}
+
+.tracking-editorial {
+  letter-spacing: 0.15em;
+}
+
+.tracking-widest-plus {
+  letter-spacing: 0.25em;
+}
+
+/* Subtle Architectural Border System */
+.border-atelier {
+  border-color: var(--border-subtle);
+}
+
+.border-atelier-dark {
+  border-color: rgba(246, 242, 234, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F6F2EA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C5A880;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8C6A45;
+}
+
+/* Restrained animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Masked Image Scale Effect */
+.image-reveal-mask {
+  overflow: hidden;
+  position: relative;
+}
+
+.image-reveal-mask img {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+
+.image-reveal-mask:hover img {
+  transform: scale(1.035);
+}
+
+/* Custom luxury button styles */
+.btn-luxury-dark {
+  background-color: #211914;
+  color: #FCFAF6;
+  border: 1px solid #211914;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-luxury-dark:hover {
+  background-color: #5A4335;
+  border-color: #5A4335;
+  color: #FFFFFF;
+}
+
+.btn-luxury-bronze {
+  background-color: #8C6A45;
+  color: #FCFAF6;
+  border: 1px solid #8C6A45;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-luxury-bronze:hover {
+  background-color: #6F5334;
+  border-color: #6F5334;
+}
+
+.btn-luxury-outline {
+  background-color: transparent;
+  color: #211914;
+  border: 1px solid rgba(90, 67, 53, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-luxury-outline:hover {
+  background-color: #211914;
+  border-color: #211914;
+  color: #FCFAF6;
+}

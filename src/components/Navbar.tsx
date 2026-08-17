@@ -186,9 +186,10 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="mt-auto pt-6 border-t border-atelier text-xs text-warmgray space-y-2">
-            <p className="font-medium text-espresso">Studio 04, The Design Quarter, Mumbai</p>
-            <p>Tel: +91 (022) 8490-2100</p>
+          <div className="mt-auto pt-6 border-t border-atelier text-xs text-warmgray space-y-1.5">
+            <p className="font-medium text-espresso">Door No. 306, DN TOWER, Floor 03, Beltola Tiniali</p>
+            <p>Guwahati, Assam 781040</p>
+            <p>Tel: +91 70029 48484</p>
             <p>Email: atelier@balaji-interior.com</p>
           </div>
         </div>

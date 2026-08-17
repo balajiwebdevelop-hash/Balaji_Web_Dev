@@ -127,15 +127,23 @@ export function Footer() {
 
           {/* Studio Contact */}
           <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-xs uppercase tracking-widest text-champagne font-medium">STUDIO INQUIRIES</h4>
+            <div className="space-y-1">
+              <h4 className="text-xs uppercase tracking-widest text-champagne font-medium">STUDIO & PRACTICE</h4>
+              <div className="flex items-center gap-1.5 text-[11px] text-champagne">
+                <span>★ 5.0</span>
+                <span className="text-surface/60">(22 Google Reviews)</span>
+                <span className="text-surface/40">•</span>
+                <span className="text-surface/60">Interior Architect Office</span>
+              </div>
+            </div>
             <div className="text-xs text-surface/70 font-light space-y-1.5 leading-relaxed">
-              <p className="text-surface font-medium">The Design Quarter, Studio 04</p>
-              <p>Senapati Bapat Marg, Lower Parel</p>
-              <p>Mumbai, Maharashtra 400013</p>
+              <p className="text-surface font-medium">Door No. 306, DN TOWER, Floor No. 03</p>
+              <p>Beltola Tiniali</p>
+              <p>Guwahati, Assam 781040</p>
             </div>
             <div className="text-xs text-surface/70 font-light space-y-1 pt-1">
               <p>Inquiries: <span className="text-surface">atelier@balaji-interior.com</span></p>
-              <p>Direct: <span className="text-surface">+91 (022) 8490-2100</span></p>
+              <p>Direct: <a href="tel:+917002948484" className="text-surface hover:text-champagne transition-colors">+91 70029 48484</a></p>
             </div>
             <div className="pt-2">
               <Link

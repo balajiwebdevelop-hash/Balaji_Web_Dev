@@ -2,16 +2,16 @@ import { hashPassword } from './auth';
 import { Category, Product, Project, Service, SiteSettings } from '@/types';
 
 export const initialSiteSettings: SiteSettings = {
-  brandName: 'Balaji Atelier',
-  tagline: 'Crafted spaces and considered materials for timeless living.',
+  brandName: 'Balaji Architect & Interior',
+  tagline: 'Crafted spaces, luxury architecture, and considered materials for timeless living.',
   logoUrl: '',
   contactEmail: 'atelier@balaji-interior.com',
-  contactPhone: '+91 (022) 8490-2100',
-  studioAddress: 'Studio 04, The Design Quarter, Senapati Bapat Marg, Lower Parel',
-  city: 'Mumbai',
-  state: 'Maharashtra',
+  contactPhone: '+91 70029 48484',
+  studioAddress: 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali',
+  city: 'Guwahati',
+  state: 'Assam',
   country: 'India',
-  pincode: '400013',
+  pincode: '781040',
   currency: 'INR',
   currencySymbol: '₹',
   taxRatePercent: 18,

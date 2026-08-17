@@ -175,46 +175,65 @@ export default function ContactPage() {
         {/* Right: Studio Location & Logistics */}
         <div className="lg:col-span-5 space-y-8">
           <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-            <h3 className="font-serif text-2xl text-espresso border-b border-atelier pb-4">
-              Studio & Material Gallery
-            </h3>
+            <div className="border-b border-atelier pb-4 space-y-1">
+              <h3 className="font-serif text-2xl text-espresso">
+                Balaji Architect & Interior
+              </h3>
+              <div className="flex items-center gap-2 text-xs text-bronze">
+                <span className="font-medium">★ 5.0 Rating</span>
+                <span className="text-warmgray">(22 Google Reviews)</span>
+                <span className="text-warmgray/40">•</span>
+                <span className="text-warmgray">Interior Architect Office</span>
+              </div>
+            </div>
 
             <div className="space-y-5 text-xs text-warmgray">
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-bronze mt-0.5 flex-shrink-0" />
                 <div className="space-y-0.5">
-                  <span className="font-medium text-espresso block">Principal Gallery</span>
-                  <p>Studio 04, The Design Quarter, Senapati Bapat Marg</p>
-                  <p>Lower Parel, Mumbai, Maharashtra 400013</p>
+                  <span className="font-medium text-espresso block">Studio & Office Address</span>
+                  <p>Door No. 306, DN TOWER, Floor No. 03</p>
+                  <p>Beltola Tiniali, Guwahati, Assam 781040</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-bronze mt-0.5 flex-shrink-0" />
                 <div className="space-y-0.5">
-                  <span className="font-medium text-espresso block">Direct Line</span>
-                  <p>+91 (022) 8490-2100</p>
-                  <p>+91 98200 44551 (WhatsApp Business)</p>
+                  <span className="font-medium text-espresso block">Direct Line & WhatsApp</span>
+                  <p><a href="tel:+917002948484" className="text-espresso hover:text-bronze font-medium">+91 70029 48484</a></p>
+                  <p><a href="https://wa.me/917002948484" target="_blank" rel="noreferrer" className="text-warmgray hover:text-espresso">+91 70029 48484 (WhatsApp)</a></p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-bronze mt-0.5 flex-shrink-0" />
                 <div className="space-y-0.5">
-                  <span className="font-medium text-espresso block">Electronic Correspondence</span>
+                  <span className="font-medium text-espresso block">Electronic Inquiries</span>
                   <p>atelier@balaji-interior.com</p>
-                  <p>materials@balaji-interior.com</p>
+                  <p>projects@balaji-interior.com</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Clock className="w-4 h-4 text-bronze mt-0.5 flex-shrink-0" />
                 <div className="space-y-0.5">
-                  <span className="font-medium text-espresso block">Gallery Hours</span>
+                  <span className="font-medium text-espresso block">Studio Consultations</span>
                   <p>Monday – Saturday: 10:00 AM – 7:30 PM</p>
-                  <p>Sunday: By Private Prior Appointment Only</p>
+                  <p>Sunday: By Prior Appointment</p>
                 </div>
               </div>
+            </div>
+
+            <div className="pt-2 border-t border-atelier">
+              <a
+                href="https://maps.google.com/?q=DN+TOWER+Beltola+Tiniali+Guwahati+Assam+781040"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-2.5 bg-canvas border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <MapPin className="w-3.5 h-3.5 text-bronze" /> View on Google Maps
+              </a>
             </div>
           </div>
         </div>

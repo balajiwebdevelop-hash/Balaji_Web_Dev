@@ -1,4 +1,4 @@
-// Balaji Atelier Service Worker - Realtime Order & Quote Notifications
+// Balaji Architect & Interiors Service Worker - Realtime Order & Quote Notifications
 self.addEventListener('push', function (event) {
   if (event.data) {
     const data = event.data.json();
@@ -12,7 +12,7 @@ self.addEventListener('push', function (event) {
       vibrate: [200, 100, 200],
     };
 
-    event.waitUntil(self.registration.showNotification(data.title || 'Balaji Atelier Admin', options));
+    event.waitUntil(self.registration.showNotification(data.title || 'Balaji Architect & Interiors Admin', options));
   }
 });
 

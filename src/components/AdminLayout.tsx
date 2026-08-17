@@ -120,8 +120,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         {/* Brand Header */}
         <div className="p-6 border-b border-atelier-dark space-y-1">
           <Link href="/admin" className="block">
-            <span className="font-serif text-xl tracking-widest text-surface block font-light">
-              BALAJI ATELIER
+            <span className="font-serif text-base tracking-widest text-surface block font-light leading-snug">
+              BALAJI ARCHITECT & INTERIORS
             </span>
             <span className="text-[9px] uppercase tracking-widest text-champagne font-medium">
               Studio Management Portal

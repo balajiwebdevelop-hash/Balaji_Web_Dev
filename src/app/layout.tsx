@@ -9,25 +9,25 @@ import { CartDrawer } from '@/components/CartDrawer';
 import { PageTransition } from '@/components/PageTransition';
 
 export const metadata: Metadata = {
-  title: 'Balaji Atelier — Luxury Interior Architecture & Curated Materials',
+  title: 'Balaji Architect & Interiors — Luxury Architecture, Interior Design & Materials',
   description:
-    'Crafted spaces and considered materials for timeless living. Balaji Atelier unites high-end residential architecture, turnkey interior design, and a curated marketplace of natural stones, hardwood veneers, and acoustic surfaces.',
+    'Crafted spaces and considered materials for timeless living. Balaji Architect & Interiors unites high-end residential architecture, turnkey interior design, and a curated marketplace of natural stones, hardwood veneers, and acoustic surfaces.',
   keywords: [
-    'Luxury Interior Design Mumbai',
+    'Balaji Architect & Interiors',
+    'Luxury Interior Design Guwahati',
     'Architectural Materials India',
     'Vein-Cut Travertine',
     'Smoked Oak Flooring',
     'Acoustic Walnut Wall Panels',
     'Turnkey Luxury Architecture',
-    'Balaji Atelier',
   ],
-  authors: [{ name: 'Balaji Atelier' }],
+  authors: [{ name: 'Balaji Architect & Interiors' }],
   openGraph: {
-    title: 'Balaji Atelier — Architecture & Considered Materials',
+    title: 'Balaji Architect & Interiors — Architecture & Considered Materials',
     description: 'Crafted spaces and considered materials for timeless living.',
     url: 'https://balaji-atelier.com',
-    siteName: 'Balaji Atelier',
-    locale: 'en_US',
+    siteName: 'Balaji Architect & Interiors',
+    locale: 'en_IN',
     type: 'website',
   },
 };

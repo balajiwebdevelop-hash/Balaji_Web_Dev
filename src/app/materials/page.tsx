@@ -6,8 +6,8 @@ import { getCategories, getProducts } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 
 export const metadata = {
-  title: 'Materials Marketplace & Surfaces — Balaji Atelier',
-  description: 'Curated direct-from-source architectural stones, natural travertines, smoked oaks, acoustic panels, and large format porcelain slabs.',
+  title: 'Materials Marketplace & Surfaces — Balaji Architect & Interiors',
+  description: 'Procure authentic Italian travertines, fluted acoustic walnut, Calacatta porcelain slabs, and architectural hardware.',
 };
 
 export const revalidate = 60;

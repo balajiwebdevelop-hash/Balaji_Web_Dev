@@ -6,8 +6,8 @@ import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
 export const metadata = {
-  title: 'About The Studio — Balaji Atelier',
-  description: 'Learn about Balaji Atelier, our architectural philosophy, craftsmanship pedigree, and material sourcing excellence.',
+  title: 'About The Studio — Balaji Architect & Interiors',
+  description: 'Learn about Balaji Architect & Interiors, our architectural philosophy, craftsmanship pedigree, and material sourcing excellence.',
 };
 
 export default function AboutPage() {
@@ -37,7 +37,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
           <Reveal>
             <span className="text-xs uppercase tracking-widest-plus text-champagne font-medium">
-              About Balaji Atelier
+              About Balaji Architect & Interiors
             </span>
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl text-surface font-light leading-tight mt-2 max-w-4xl">
               Architecture rooted in material honesty and spatial calm.
@@ -45,7 +45,7 @@ export default function AboutPage() {
           </Reveal>
           <Reveal delay={150}>
             <p className="max-w-2xl text-base sm:text-lg text-surface/80 font-light leading-relaxed">
-              Established in Mumbai, Balaji Atelier unites high-end residential architecture, turnkey interior design, and an exclusive supply network of raw and refined architectural materials.
+              Headquartered in Guwahati, Balaji Architect & Interiors unites high-end residential architecture, turnkey interior design, and an exclusive supply network of raw and refined architectural materials.
             </p>
           </Reveal>
         </div>
@@ -63,7 +63,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={100}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Balaji Atelier began with a focused obsession: master woodworking and stone joinery. Over more than a decade of executing bespoke penthouses, private coastal villas, and landmark commercial spaces, our practice evolved into a holistic architectural studio.
+                Balaji Architect & Interiors began with a focused obsession: master woodworking and stone joinery. Over more than a decade of executing bespoke penthouses, private villas, and landmark commercial spaces, our practice evolved into a holistic architectural studio.
               </p>
             </Reveal>
             <Reveal delay={200}>
@@ -143,7 +143,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={100}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Rather than relying on intermediaries, Balaji Atelier imports blocks directly from certified quarries in Tuscany, Verona, and Drama, slicing and finishing them to custom architectural dimensions in our advanced surface facility.
+                Rather than relying on intermediaries, Balaji Architect & Interiors imports blocks directly from certified quarries in Tuscany, Verona, and Drama, slicing and finishing them to custom architectural dimensions in our advanced surface facility.
               </p>
             </Reveal>
             <Reveal delay={200}>

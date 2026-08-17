@@ -82,7 +82,7 @@ export default function AdminLoginPage() {
           <span className="text-[10px] uppercase tracking-widest-plus text-bronze font-medium">
             Studio Administration
           </span>
-          <h1 className="font-serif text-3xl text-espresso font-light">Balaji Atelier</h1>
+          <h1 className="font-serif text-2xl sm:text-3xl text-espresso font-light">Balaji Architect & Interiors</h1>
           <p className="text-xs text-warmgray font-light">
             Authorized Architect & Studio Management Access
           </p>
@@ -156,7 +156,7 @@ export default function AdminLoginPage() {
               </div>
               <h2 className="font-serif text-2xl text-espresso">Establish Permanent Password</h2>
               <p className="text-xs text-warmgray leading-relaxed">
-                As a security policy for Balaji Atelier, the initial bootstrap credential must now be replaced with your permanent custom password.
+                As a security policy for Balaji Architect & Interiors, the initial bootstrap credential must now be replaced with your permanent custom password.
               </p>
             </div>
 

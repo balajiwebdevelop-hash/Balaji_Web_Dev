@@ -24,7 +24,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
-            alt="Balaji Atelier Architectural Living Space"
+            alt="Balaji Architect & Interiors Architectural Living Space"
             fill
             priority
             className="object-cover object-center opacity-40 scale-105 transition-transform duration-1000 ease-out"
@@ -89,7 +89,7 @@ export default async function HomePage() {
 
             <Reveal delay={150}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Atelier crafts environments that elevate the human experience.
+                Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.
               </p>
             </Reveal>
 
@@ -341,7 +341,7 @@ export default async function HomePage() {
             &ldquo;Materials must not imitate one another. Travertine must express its volcanic geology; oak must celebrate its slow growth rings; bronze must accept the patina of living touch.&rdquo;
           </blockquote>
           <p className="text-xs uppercase tracking-widest text-warmgray font-medium mt-4">
-            — Vikas Sir, Principal Architect, Balaji Atelier
+            — Vikas Sir, Principal Architect, Balaji Architect & Interiors
           </p>
         </Reveal>
       </section>

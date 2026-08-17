@@ -7,8 +7,8 @@ import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
 export const metadata = {
-  title: 'Architectural & Interior Services — Balaji Atelier',
-  description: 'Explore full-service interior architecture, space planning, turnkey luxury construction, and bespoke millwork execution.',
+  title: 'Architectural & Interior Services — Balaji Architect & Interiors',
+  description: 'Explore our turnkey interior design, residential architecture, bespoke millwork, and material advisory capabilities.',
 };
 
 export default async function ServicesPage() {
@@ -21,15 +21,15 @@ export default async function ServicesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
           <Reveal>
             <span className="text-xs uppercase tracking-widest-plus text-champagne font-medium">
-              Architectural Practice
+              Practice Offerings
             </span>
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl text-surface font-light leading-tight mt-2 max-w-4xl">
-              End-to-end architectural rigor and spatial craftsmanship.
+              Turnkey architectural execution & spatial design.
             </h1>
           </Reveal>
           <Reveal delay={150}>
             <p className="max-w-2xl text-base sm:text-lg text-surface/80 font-light leading-relaxed">
-              From bare-shell spatial reconfiguration to master artisan supervision, Balaji Atelier delivers uncompromising turnkey execution for residences, penthouses, and hospitality venues.
+              From bare-shell spatial reconfiguration to master artisan supervision, Balaji Architect & Interiors delivers uncompromising turnkey execution for residences, penthouses, and commercial venues.
             </p>
           </Reveal>
         </div>

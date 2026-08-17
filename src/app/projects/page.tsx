@@ -7,8 +7,8 @@ import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
 export const metadata = {
-  title: 'Architectural Portfolio & Case Studies — Balaji Atelier',
-  description: 'Explore signature residential villas, sky penthouses, and bespoke commercial spaces crafted by Balaji Atelier.',
+  title: 'Architectural Portfolio & Case Studies — Balaji Architect & Interiors',
+  description: 'Explore signature residential villas, sky penthouses, and bespoke commercial spaces crafted by Balaji Architect & Interiors.',
 };
 
 export const revalidate = 60;

@@ -11,9 +11,9 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const project = await getProjectBySlug(params.slug);
-  if (!project) return { title: 'Project Not Found — Balaji Atelier' };
+  if (!project) return { title: 'Project Not Found — Balaji Architect & Interiors' };
   return {
-    title: `${project.title} — Architectural Case Study | Balaji Atelier`,
+    title: `${project.title} — Architectural Case Study | Balaji Architect & Interiors`,
     description: project.shortDescription,
   };
 }

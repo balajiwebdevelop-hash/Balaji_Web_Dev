@@ -6,8 +6,8 @@ import { getProducts } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 
 export const metadata = {
-  title: 'Atelier Shop — Curated Lighting, Objects & Furnishings | Balaji Atelier',
-  description: 'Shop ready-to-order architectural lighting, solid bronze hardware sets, and limited edition travertine monoliths.',
+  title: 'Studio Shop — Curated Lighting, Objects & Furnishings | Balaji Architect & Interiors',
+  description: 'Limited-edition architectural objects, travertine monolithic tables, cast bronze hardware, and studio design pieces.',
 };
 
 export const revalidate = 60;

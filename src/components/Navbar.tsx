@@ -52,11 +52,11 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Studio Brand */}
           <Link href="/" className="flex flex-col group">
-            <span className="font-serif text-xl sm:text-2xl tracking-widest text-espresso font-normal group-hover:text-bronze transition-colors">
-              BALAJI ATELIER
+            <span className="font-serif text-lg sm:text-xl md:text-2xl tracking-widest text-espresso font-normal group-hover:text-bronze transition-colors">
+              BALAJI ARCHITECT & INTERIORS
             </span>
             <span className="text-[9px] uppercase tracking-widest-plus text-warmgray font-medium -mt-0.5">
-              Architecture & Materials
+              Architecture • Interiors • Materials
             </span>
           </Link>
 

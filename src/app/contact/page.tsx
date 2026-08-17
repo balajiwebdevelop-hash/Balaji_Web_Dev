@@ -50,10 +50,10 @@ export default function ContactPage() {
       <div className="space-y-3 border-b border-atelier pb-6 max-w-3xl">
         <span className="text-xs uppercase tracking-widest text-bronze font-medium">Studio Engagement</span>
         <h1 className="font-serif text-4xl sm:text-5xl text-espresso font-light">
-          Contact Balaji Atelier
+          Contact Balaji Architect & Interiors
         </h1>
         <p className="text-sm text-warmgray font-light leading-relaxed">
-          Schedule a private material viewing at our Mumbai design gallery or discuss turnkey architectural commissions with our principal team.
+          Schedule a consultation at our Guwahati studio office or discuss turnkey luxury architecture & interior design commissions.
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export default function ContactPage() {
               </div>
               <h3 className="font-serif text-2xl text-espresso">Inquiry Received</h3>
               <p className="text-xs sm:text-sm text-warmgray font-light max-w-sm mx-auto">
-                Thank you for contacting Balaji Atelier. Our studio concierge will contact you within 24 hours.
+                Thank you for contacting Balaji Architect & Interiors. Our studio team will contact you within 24 hours.
               </p>
               <button
                 onClick={() => setSent(false)}

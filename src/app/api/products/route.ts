@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       name: body.name,
       slug,
       sku: body.sku,
-      brand: body.brand || 'Balaji Atelier',
+      brand: body.brand || 'Balaji Architect & Interiors',
       categoryId: body.categoryId,
       subcategory: body.subcategory || '',
       description: body.description || '',

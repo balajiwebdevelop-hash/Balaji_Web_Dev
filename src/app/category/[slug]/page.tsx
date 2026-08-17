@@ -10,10 +10,10 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const cat = await getCategoryBySlug(params.slug);
-  if (!cat) return { title: 'Category Not Found — Balaji Atelier' };
+  if (!cat) return { title: 'Category Not Found — Balaji Architect & Interiors' };
   return {
-    title: `${cat.name} — Architectural Materials | Balaji Atelier`,
-    description: cat.description || `Browse luxury ${cat.name} curated by Balaji Atelier.`,
+    title: `${cat.name} — Architectural Materials | Balaji Architect & Interiors`,
+    description: cat.description || `Browse luxury ${cat.name} curated by Balaji Architect & Interiors.`,
   };
 }
 

@@ -34,7 +34,7 @@ export default function AdminProductsPage() {
   // Form Fields
   const [name, setName] = useState('');
   const [sku, setSku] = useState('');
-  const [brand, setBrand] = useState('Balaji Atelier');
+  const [brand, setBrand] = useState('Balaji Architect & Interiors');
   const [categoryId, setCategoryId] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [description, setDescription] = useState('');
@@ -83,7 +83,7 @@ export default function AdminProductsPage() {
     setEditingProduct(null);
     setName('');
     setSku(`MAT-${Math.floor(100 + Math.random() * 900)}`);
-    setBrand('Balaji Atelier');
+    setBrand('Balaji Architect & Interiors');
     setCategoryId(categories[0]?.id || '');
     setSubcategory('');
     setDescription('');

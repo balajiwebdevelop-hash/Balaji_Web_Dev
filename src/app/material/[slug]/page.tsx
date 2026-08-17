@@ -9,10 +9,10 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = await getProductBySlug(params.slug);
-  if (!product) return { title: 'Material Not Found — Balaji Atelier' };
+  if (!product) return { title: 'Material Not Found — Balaji Architect & Interiors' };
   return {
-    title: `${product.name} — ${product.categoryName} | Balaji Atelier`,
-    description: product.description,
+    title: `${product.name} — ${product.categoryName} | Balaji Architect & Interiors`,
+    description: product.description.substring(0, 160),
   };
 }
 

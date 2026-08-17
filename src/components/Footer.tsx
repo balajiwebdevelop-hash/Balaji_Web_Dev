@@ -20,13 +20,13 @@ export function Footer() {
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
             <h3 className="font-serif text-2xl tracking-widest text-surface font-light">
-              BALAJI ATELIER
+              BALAJI ARCHITECT & INTERIORS
             </h3>
             <p className="text-xs uppercase tracking-widest text-champagne font-medium">
               Architecture • Interior Design • Materials
             </p>
             <p className="text-sm text-surface/70 font-light leading-relaxed max-w-sm pt-2">
-              Crafted spaces and considered materials for timeless living. We bridge the disciplines of architecture, master craftsmanship, and global material curation.
+              Crafted spaces, bespoke architectural commissions, and considered materials for timeless living. We bridge the disciplines of luxury architecture, master interior craftsmanship, and global material curation.
             </p>
             <div className="pt-4 flex items-center space-x-6 text-xs uppercase tracking-widest text-surface/60">
               <a
@@ -158,7 +158,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-surface/40 font-light gap-4">
-          <p>© {new Date().getFullYear()} Balaji Atelier. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Balaji Architect & Interiors. All rights reserved.</p>
           <div className="flex items-center space-x-6">
             <Link href="/about" className="hover:text-surface/70 transition-colors">
               Privacy Policy

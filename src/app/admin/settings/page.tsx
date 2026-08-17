@@ -71,7 +71,7 @@ export default function AdminSettingsPage() {
     try {
       // Create a test client notification or trigger via sw
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('Balaji Atelier Live Dispatch', {
+        new Notification('Balaji Architect & Interiors Live Dispatch', {
           body: 'Realtime order push notification verified.',
           icon: '/favicon.ico',
         });

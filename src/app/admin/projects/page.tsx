@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Plus, Edit2, Trash2, Check, X, Building2, Eye, EyeOff } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
 import { Project, ProjectType } from '@/types';
 
 export default function AdminProjectsPage() {
@@ -363,42 +364,26 @@ export default function AdminProjectsPage() {
                 />
               </div>
 
-              {/* Gallery Images */}
-              <div className="space-y-2 border-t border-atelier pt-3">
-                <label className="uppercase tracking-wider text-warmgray font-medium block">
-                  Gallery Plates
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="url"
-                    placeholder="https://images.unsplash.com/..."
-                    value={galleryInput}
-                    onChange={(e) => setGalleryInput(e.target.value)}
-                    className="flex-1 p-2 bg-canvas border border-atelier text-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={addGalleryImage}
-                    className="px-4 py-2 bg-espresso text-surface text-xs"
-                  >
-                    Add Plate
-                  </button>
-                </div>
+              {/* Hero Image Uploader */}
+              <div className="border-t border-atelier pt-3">
+                <ImageUploader
+                  bucket="projects"
+                  images={heroImage ? [heroImage] : []}
+                  onChange={(imgs) => setHeroImage(imgs[0] || '')}
+                  multiple={false}
+                  label="Architectural Hero Photo (Upload from Device) *"
+                />
+              </div>
 
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {gallery.map((img, idx) => (
-                    <div key={idx} className="relative w-16 h-12 bg-canvas border border-atelier flex-shrink-0">
-                      <Image src={img} alt="Gallery plate" fill className="object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => removeGalleryImage(idx)}
-                        className="absolute -top-1 -right-1 bg-red-700 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
+              {/* Gallery Plates Uploader */}
+              <div className="border-t border-atelier pt-3">
+                <ImageUploader
+                  bucket="projects"
+                  images={gallery}
+                  onChange={setGallery}
+                  multiple={true}
+                  label="Project Gallery Plates (Upload Multiple from Device)"
+                />
               </div>
 
               <div className="flex items-center gap-6 border-t border-atelier pt-4">

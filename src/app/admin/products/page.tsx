@@ -16,6 +16,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
 import { Product, Category, UnitType, PurchaseMode } from '@/types';
 
 export default function AdminProductsPage() {
@@ -538,42 +539,15 @@ export default function AdminProductsPage() {
                 />
               </div>
 
-              {/* Images Manager */}
-              <div className="space-y-3 text-xs border-t border-atelier pt-4">
-                <label className="uppercase tracking-wider text-warmgray font-medium block">
-                  Material Image URLs
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="url"
-                    placeholder="https://images.unsplash.com/..."
-                    value={imageUrlInput}
-                    onChange={(e) => setImageUrlInput(e.target.value)}
-                    className="flex-1 p-2.5 bg-canvas border border-atelier text-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={addImageUrl}
-                    className="px-4 py-2.5 bg-espresso text-surface text-xs uppercase tracking-wider"
-                  >
-                    Add Image
-                  </button>
-                </div>
-
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                  {images.map((img, idx) => (
-                    <div key={idx} className="relative w-16 h-16 bg-canvas border border-atelier flex-shrink-0">
-                      <Image src={img} alt="Product view" fill className="object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(idx)}
-                        className="absolute -top-1 -right-1 bg-red-700 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
+              {/* Device Image Uploader */}
+              <div className="border-t border-atelier pt-4">
+                <ImageUploader
+                  bucket="products"
+                  images={images}
+                  onChange={setImages}
+                  multiple={true}
+                  label="Material High-Res Photos (Upload from Device)"
+                />
               </div>
 
               <div className="flex items-center gap-6 border-t border-atelier pt-4 text-xs">

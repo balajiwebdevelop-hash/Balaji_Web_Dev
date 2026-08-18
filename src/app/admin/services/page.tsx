@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Plus, Edit2, Trash2, Check, X, Compass, Eye, EyeOff } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
 import { Service } from '@/types';
 
 export default function AdminServicesPage() {
@@ -247,13 +248,13 @@ export default function AdminServicesPage() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Cover Image URL</label>
-                <input
-                  type="url"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+              <div className="border-t border-atelier pt-3">
+                <ImageUploader
+                  bucket="services"
+                  images={imageUrl ? [imageUrl] : []}
+                  onChange={(imgs) => setImageUrl(imgs[0] || '')}
+                  multiple={false}
+                  label="Service Cover Photo (Upload from Device)"
                 />
               </div>
 

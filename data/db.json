@@ -3,12 +3,12 @@
     {
       "id": "admin-balaji-root",
       "email": "vicks@balaji.com",
-      "passwordHash": "9f7e6307e35fa63270d5ba2528c79695:32a3c20be0b94cb5142e7c78975253bd71e1301b717411ae1a226cb3578611b8478f0f1cdef1bed9c5e74a7d3cbd4445c6c0ccec72950df053ec04bc2df41269",
+      "passwordHash": "3903a96046ec99bc94100f812cfee1b2:e72fa457ba6ab3be8353defbdf61b4c243714f27acb2cbc20fd2232dc36e184bd6564345d66103f433154a166821c36b5e0a0b162aeddf378182678a830c7f5b",
       "name": "Vikas Sir (Principal Architect)",
       "role": "super_admin",
       "mustChangePassword": false,
       "createdAt": "2026-08-17T16:23:54.088Z",
-      "updatedAt": "2026-08-17T17:06:09.335Z"
+      "updatedAt": "2026-08-18T14:26:57.433Z"
     }
   ],
   "categories": [

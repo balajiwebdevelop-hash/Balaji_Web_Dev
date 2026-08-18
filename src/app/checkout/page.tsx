@@ -36,9 +36,9 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState({
     addressLine1: '',
     addressLine2: '',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    pincode: '400013',
+    city: 'Guwahati',
+    state: 'Assam',
+    pincode: '781040',
     country: 'India',
   });
 

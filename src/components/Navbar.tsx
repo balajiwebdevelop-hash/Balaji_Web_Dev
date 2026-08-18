@@ -145,8 +145,8 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="flex flex-col"
             >
-              <span className="font-serif text-xl tracking-widest text-espresso">BALAJI ATELIER</span>
-              <span className="text-[8px] uppercase tracking-widest text-warmgray">Architecture & Materials</span>
+              <span className="font-serif text-lg tracking-widest text-espresso">BALAJI ARCHITECT & INTERIORS</span>
+              <span className="text-[8px] uppercase tracking-widest text-warmgray">Architecture • Interiors • Materials</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -156,30 +156,49 @@ export function Navbar() {
             </button>
           </div>
 
-          <div className="flex flex-col py-8 space-y-6">
+          <div className="flex flex-col py-6 space-y-5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="font-serif text-2xl text-espresso hover:text-bronze transition-colors flex items-center justify-between"
+                className="font-serif text-xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-1 border-b border-atelier/30"
               >
                 <span>{link.label}</span>
-                <span className="text-xs text-warmgray font-sans tracking-widest">→</span>
+                <span className="text-xs text-bronze font-sans tracking-widest">→</span>
               </Link>
             ))}
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-serif text-2xl text-espresso hover:text-bronze transition-colors flex items-center justify-between"
+              className="font-serif text-xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-1 border-b border-atelier/30"
             >
-              <span>CONTACT</span>
-              <span className="text-xs text-warmgray font-sans tracking-widest">→</span>
+              <span>CONTACT & STUDIO</span>
+              <span className="text-xs text-bronze font-sans tracking-widest">→</span>
             </Link>
+
+            {/* Quick Action Contact Row on Mobile Drawer */}
+            <div className="grid grid-cols-2 gap-3 pt-3">
+              <a
+                href="https://wa.me/917002948484?text=Hello%20Balaji%20Architect%20%26%20Interiors%2C%20I%20would%20like%20to%20consult%20on%20a%20project."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-green-700 text-white rounded text-center text-xs uppercase tracking-wider font-medium"
+              >
+                WhatsApp Us
+              </a>
+              <a
+                href="tel:+917002948484"
+                className="p-3 bg-espresso text-surface rounded text-center text-xs uppercase tracking-wider font-medium"
+              >
+                Call Studio
+              </a>
+            </div>
+
             <Link
               href="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-serif text-xl text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4 border-t border-atelier"
+              className="font-serif text-base text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4"
             >
               <Shield className="w-4 h-4" />
               <span>Studio Admin Portal</span>
@@ -189,8 +208,8 @@ export function Navbar() {
           <div className="mt-auto pt-6 border-t border-atelier text-xs text-warmgray space-y-1.5">
             <p className="font-medium text-espresso">Door No. 306, DN TOWER, Floor 03, Beltola Tiniali</p>
             <p>Guwahati, Assam 781040</p>
-            <p>Tel: +91 70029 48484</p>
-            <p>Email: atelier@balaji-interior.com</p>
+            <p className="text-bronze font-medium">★ 5.0 Rating • 22 Google Reviews</p>
+            <p>Direct: +91 70029 48484</p>
           </div>
         </div>
       )}

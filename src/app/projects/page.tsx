@@ -79,7 +79,7 @@ export default async function ProjectsPage({
         </div>
 
         {/* Portfolio Magazine Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
           {filteredProjects.map((project, idx) => (
             <Reveal key={project.id} delay={idx * 100}>
               <Link href={`/projects/${project.slug}`} className="group block space-y-4">

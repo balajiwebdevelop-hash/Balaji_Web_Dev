@@ -318,25 +318,25 @@ export function ProductDetailClient({
 
       {/* Related Materials */}
       {relatedProducts.length > 0 && (
-        <section className="space-y-8 pt-12 border-t border-atelier">
+        <section className="space-y-6 pt-8 sm:pt-12 border-t border-atelier">
           <div className="space-y-1">
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Complementary Finishes</span>
             <h2 className="font-serif text-2xl sm:text-3xl text-espresso font-light">Related Architectural Materials</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {relatedProducts.slice(0, 4).map((rel) => (
               <Link
                 key={rel.id}
                 href={`/material/${rel.slug}`}
-                className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-colors space-y-2"
+                className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-colors space-y-1.5 sm:space-y-2"
               >
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
                   {rel.images[0] && (
                     <Image src={rel.images[0]} alt={rel.name} fill className="object-cover group-hover:scale-103 transition-transform duration-500" />
                   )}
                 </div>
-                <h4 className="font-serif text-sm text-espresso group-hover:text-bronze transition-colors font-medium truncate">
+                <h4 className="font-serif text-xs sm:text-sm text-espresso group-hover:text-bronze transition-colors font-medium truncate">
                   {rel.name}
                 </h4>
                 <div className="text-xs text-timber font-medium">
@@ -347,6 +347,46 @@ export function ProductDetailClient({
           </div>
         </section>
       )}
+
+      {/* Mobile Sticky Bottom Floating Action Bar */}
+      <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-surface/98 backdrop-blur-md border-t border-atelier p-3 shadow-2xl flex items-center justify-between gap-3 safe-area-bottom">
+        <div className="flex flex-col">
+          <span className="text-[10px] text-warmgray uppercase tracking-wider">Total Est.</span>
+          <span className="font-serif text-base text-timber font-medium leading-tight">
+            ₹{(currentPrice * quantity).toLocaleString('en-IN')}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 flex-1 justify-end">
+          <a
+            href={`https://wa.me/917002948484?text=Hi%20Balaji%20Architect%20%26%20Interiors%2C%20I%20am%20interested%20in%20${encodeURIComponent(
+              product.name
+            )}%20(SKU%3A%20${product.sku})`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 bg-green-700 text-white rounded text-xs font-medium flex items-center justify-center"
+            title="Chat on WhatsApp"
+          >
+            WhatsApp
+          </a>
+
+          {(product.purchaseMode === 'BUY_NOW' || product.purchaseMode === 'BOTH') ? (
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 py-3 px-4 btn-luxury-dark text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-1.5"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" /> Add to Bag
+            </button>
+          ) : (
+            <Link
+              href={`/quote?product=${product.id}&qty=${quantity}`}
+              className="flex-1 py-3 px-4 btn-luxury-outline text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5" /> Get Quote
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

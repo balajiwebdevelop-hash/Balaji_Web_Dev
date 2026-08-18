@@ -56,7 +56,7 @@ export default async function HomePage() {
           </Reveal>
 
           <Reveal delay={550}>
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
               <Link
                 href="/projects"
                 className="w-full sm:w-auto px-8 py-4 bg-surface text-espresso hover:bg-champagne hover:text-espresso font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2"
@@ -71,6 +71,21 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
+        </div>
+
+        {/* Mobile & Desktop Trust Banner */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-espresso-dark/90 backdrop-blur-md border-t border-espresso-light py-3 px-4">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-around gap-y-2 text-[10px] sm:text-xs uppercase tracking-wider text-surface/90">
+            <span className="flex items-center gap-1.5 font-medium text-champagne">
+              ★ 5.0 (22 Google Reviews)
+            </span>
+            <span className="hidden sm:inline text-surface/30">•</span>
+            <span className="font-light">Guwahati Studio Office</span>
+            <span className="hidden sm:inline text-surface/30">•</span>
+            <span className="font-light">Turnkey Architecture</span>
+            <span className="hidden sm:inline text-surface/30">•</span>
+            <span className="font-light">Pan-India Material Logistics</span>
+          </div>
         </div>
       </section>
 
@@ -238,12 +253,12 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {featuredProducts.slice(0, 4).map((product, idx) => (
             <Reveal key={product.id} delay={idx * 100}>
               <Link
                 href={`/material/${product.slug}`}
-                className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-colors space-y-3"
+                className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-colors space-y-2 sm:space-y-3"
               >
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
                   {product.images[0] && (
@@ -255,25 +270,24 @@ export default async function HomePage() {
                     />
                   )}
                   {product.salePrice && product.salePrice > 0 && (
-                    <span className="absolute top-2 left-2 bg-espresso text-surface text-[10px] px-2 py-0.5 uppercase tracking-wider font-semibold">
+                    <span className="absolute top-1.5 left-1.5 bg-espresso text-surface text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-semibold">
                       Featured
                     </span>
                   )}
                 </div>
 
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] text-warmgray">
-                    <span>{product.subcategory || product.categoryName}</span>
-                    <span className="font-medium text-bronze">{product.purchaseMode === 'REQUEST_QUOTE' ? 'Quote Required' : 'Available'}</span>
+                <div className="space-y-0.5 sm:space-y-1">
+                  <div className="flex justify-between text-[9px] sm:text-[11px] text-warmgray">
+                    <span className="line-clamp-1">{product.subcategory || product.categoryName}</span>
                   </div>
-                  <h4 className="font-serif text-base text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
+                  <h4 className="font-serif text-xs sm:text-base text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
                     {product.name}
                   </h4>
-                  <div className="flex items-baseline gap-2 pt-1">
-                    <span className="text-sm font-medium text-timber">
+                  <div className="flex items-baseline gap-1 sm:gap-2 pt-0.5">
+                    <span className="text-xs sm:text-sm font-medium text-timber">
                       ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
                     </span>
-                    <span className="text-xs text-warmgray font-light">/ {product.unit}</span>
+                    <span className="text-[10px] sm:text-xs text-warmgray font-light">/ {product.unit}</span>
                   </div>
                 </div>
               </Link>

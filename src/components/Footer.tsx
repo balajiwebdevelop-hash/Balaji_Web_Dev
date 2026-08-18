@@ -145,13 +145,22 @@ export function Footer() {
               <p>Inquiries: <span className="text-surface">atelier@balaji-interior.com</span></p>
               <p>Direct: <a href="tel:+917002948484" className="text-surface hover:text-champagne transition-colors">+91 70029 48484</a></p>
             </div>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col sm:flex-row gap-2">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-champagne hover:text-surface transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 p-2.5 sm:p-0 text-xs uppercase tracking-widest text-champagne hover:text-surface bg-surface/10 sm:bg-transparent rounded sm:rounded-none transition-colors"
               >
-                Schedule Studio Consultation <ArrowUpRight className="w-3.5 h-3.5" />
+                Schedule Consultation <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
+
+              <a
+                href="https://wa.me/917002948484?text=Hello%20Balaji%20Architect%20%26%20Interiors%2C%20I%20would%20like%20to%20connect."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sm:hidden inline-flex items-center justify-center gap-1.5 p-2.5 text-xs uppercase tracking-widest text-white bg-green-700 rounded transition-colors"
+              >
+                Chat on WhatsApp
+              </a>
             </div>
           </div>
         </div>

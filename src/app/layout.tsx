@@ -6,6 +6,7 @@ import { AdminAuthProvider } from '@/context/AdminAuthContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { PageTransition } from '@/components/PageTransition';
 
 export const metadata: Metadata = {
@@ -44,10 +45,11 @@ export default function RootLayout({
           <CartProvider>
             <WishlistProvider>
               <Navbar />
-              <main className="flex-1">
+              <main className="flex-1 pb-16 md:pb-0">
                 <PageTransition>{children}</PageTransition>
               </main>
               <CartDrawer />
+              <MobileBottomNav />
               <Footer />
             </WishlistProvider>
           </CartProvider>

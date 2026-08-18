@@ -87,7 +87,7 @@ export default function AboutPage() {
             <Reveal delay={200}>
               <ImageReveal
                 src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80"
-                alt="Balaji Atelier Architectural Master Suite"
+                alt="Balaji Architect & Interiors Architectural Master Suite"
                 aspectRatio="aspect-[4/3]"
                 className="shadow-lg"
               />
@@ -97,16 +97,16 @@ export default function AboutPage() {
       </section>
 
       {/* 4 Guiding Principles */}
-      <section className="bg-surface py-24 border-y border-atelier">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
+      <section className="bg-surface py-16 sm:py-24 border-y border-atelier">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+          <div className="text-center max-w-2xl mx-auto space-y-2 sm:space-y-3">
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Core Tenets</span>
             <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light">
               Principles of our Architectural Practice
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {principles.map((item, idx) => (
               <Reveal key={item.title} delay={idx * 100}>
                 <div className="bg-canvas p-8 border border-atelier h-full space-y-4">

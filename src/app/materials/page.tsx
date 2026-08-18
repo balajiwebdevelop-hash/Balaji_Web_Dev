@@ -116,12 +116,12 @@ export default async function MaterialsPage({
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
               {filtered.map((product, idx) => (
                 <Reveal key={product.id} delay={idx * 50}>
                   <Link
                     href={`/material/${product.slug}`}
-                    className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-all duration-300 space-y-3"
+                    className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-all duration-300 space-y-2 sm:space-y-3"
                   >
                     <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
                       {product.images[0] && (
@@ -129,47 +129,42 @@ export default async function MaterialsPage({
                           src={product.images[0]}
                           alt={product.name}
                           fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                           className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
                         />
                       )}
                       {product.purchaseMode === 'REQUEST_QUOTE' && (
-                        <span className="absolute top-2 left-2 bg-espresso/90 backdrop-blur-xs text-surface text-[9px] px-2 py-0.5 uppercase tracking-wider font-medium">
-                          Quote Required
+                        <span className="absolute top-1.5 left-1.5 bg-espresso/90 backdrop-blur-xs text-surface text-[8px] sm:text-[9px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-medium">
+                          Quote
                         </span>
                       )}
                       {product.stock <= 0 && (
-                        <span className="absolute top-2 right-2 bg-warmgray/90 backdrop-blur-xs text-surface text-[9px] px-2 py-0.5 uppercase tracking-wider font-medium">
-                          Made to Order
+                        <span className="absolute top-1.5 right-1.5 bg-warmgray/90 backdrop-blur-xs text-surface text-[8px] sm:text-[9px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-medium">
+                          Custom
                         </span>
                       )}
                     </div>
 
-                    <div className="space-y-1.5 pt-1">
-                      <div className="flex justify-between text-[11px] text-warmgray">
-                        <span className="uppercase tracking-wider font-medium text-bronze">
+                    <div className="space-y-1 sm:space-y-1.5 pt-0.5 sm:pt-1">
+                      <div className="flex justify-between text-[9px] sm:text-[11px] text-warmgray">
+                        <span className="uppercase tracking-wider font-medium text-bronze line-clamp-1">
                           {product.categoryName || 'Material'}
                         </span>
-                        <span>MOQ: {product.moq} {product.unit}</span>
                       </div>
 
-                      <h3 className="font-serif text-lg text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
+                      <h3 className="font-serif text-xs sm:text-lg text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
                         {product.name}
                       </h3>
 
-                      <p className="text-xs text-warmgray font-light line-clamp-2">
-                        {product.description}
-                      </p>
-
-                      <div className="flex items-baseline justify-between pt-2 border-t border-atelier/60">
+                      <div className="flex items-baseline justify-between pt-1 sm:pt-2 border-t border-atelier/60">
                         <div>
-                          <span className="text-sm font-medium text-timber">
+                          <span className="text-xs sm:text-sm font-medium text-timber">
                             ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
                           </span>
-                          <span className="text-xs text-warmgray font-light"> / {product.unit}</span>
+                          <span className="text-[10px] sm:text-xs text-warmgray font-light"> / {product.unit}</span>
                         </div>
-                        <span className="text-[10px] uppercase tracking-widest text-espresso group-hover:translate-x-0.5 transition-transform flex items-center gap-1 font-medium">
-                          View Details <ArrowRight className="w-3 h-3" />
+                        <span className="hidden sm:flex text-[10px] uppercase tracking-widest text-espresso group-hover:translate-x-0.5 transition-transform items-center gap-1 font-medium">
+                          Details <ArrowRight className="w-3 h-3" />
                         </span>
                       </div>
                     </div>

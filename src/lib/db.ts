@@ -419,9 +419,25 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+    const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+    // 1. Enforce SKU uniqueness
+    if (data.sku) {
+      const { data: existingSku } = await supabase.from('products').select('id, name').eq('sku', data.sku).maybeSingle();
+      if (existingSku) {
+        throw new Error(`A product with SKU "${data.sku}" already exists (${existingSku.name}).`);
+      }
+    }
+
+    // 2. Enforce Slug uniqueness
+    const { data: existingSlug } = await supabase.from('products').select('id, name').eq('slug', slug).maybeSingle();
+    if (existingSlug) {
+      throw new Error(`A product with slug "${slug}" already exists (${existingSlug.name}).`);
+    }
+
     const row = {
       name: data.name,
-      slug: data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      slug,
       sku: data.sku,
       brand: data.brand || 'Balaji Architect & Interiors',
       category_id: data.categoryId || null,
@@ -624,11 +640,18 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>): Promise<Category> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+    const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+    const { data: existingCat } = await supabase.from('categories').select('id, name').eq('slug', slug).maybeSingle();
+    if (existingCat) {
+      throw new Error(`A category with slug "${slug}" already exists (${existingCat.name}).`);
+    }
+
     const { data: inserted, error } = await supabase
       .from('categories')
       .insert({
         name: data.name,
-        slug: data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        slug,
         description: data.description || '',
         image_url: data.imageUrl || '',
         sort_order: data.sortOrder || 0,

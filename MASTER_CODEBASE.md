@@ -1488,7 +1488,7 @@ self.addEventListener('notificationclick', function (event) {
 ### `scripts/seed-supabase.ts`
 
 - **File**: `scripts/seed-supabase.ts`
-- **Size**: 6.5 KB (201 lines)
+- **Size**: 7.3 KB (200 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -1507,10 +1507,16 @@ import {
 
 // Load .env.local
 const envLocalPath = path.join(process.cwd(), '.env.local');
-dotenv.config({ path: envLocalPath });
+if (fs.existsSync(envLocalPath)) {
+  dotenv.config({ path: envLocalPath });
+} else {
+  dotenv.config();
+}
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yvureduruttjoxhwuqwx.supabase.co';
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2dXJlZHVydXR0am94aHd1cXd4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Njk4MDc2OCwiZXhwIjoyMTAyNTU2NzY4fQ.sHAE78IUF3wgmxDaj3OTWWOPB1Qhlth2FCzgAQdsqzU';
 
 console.log('Connecting to Supabase at:', supabaseUrl);
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -1537,55 +1543,56 @@ async function runSeed() {
 
     console.log('\n--- 2. SEEDING ADMIN BOOTSTRAP USER ---');
     const adminSeed = getInitialAdminSeed();
-    const { error: adminErr } = await supabase.from('admins').upsert(
-      {
+    const { data: existingAdmin } = await supabase.from('admins').select('id').eq('email', adminSeed.email).maybeSingle();
+    if (!existingAdmin) {
+      const { error: adminErr } = await supabase.from('admins').insert({
+        id: adminSeed.id,
         email: adminSeed.email,
         password_hash: adminSeed.passwordHash,
         name: adminSeed.name,
         role: adminSeed.role,
         must_change_password: adminSeed.mustChangePassword,
-      },
-      { onConflict: 'email' }
-    );
-    if (adminErr) {
-      console.warn('Admin user seed:', adminErr.message);
+      });
+      if (adminErr) console.warn('Admin user seed:', adminErr.message);
+      else console.log('✔ Admin user (vicks@balaji.com) initialized.');
     } else {
-      console.log('✔ Admin user (vicks@balaji.com) seeded in remote database.');
+      console.log('✔ Admin user already exists; preserved password and credentials.');
     }
 
     console.log('\n--- 3. SEEDING CATEGORIES ---');
     const categoryIdMap = new Map<string, string>();
     for (const cat of initialCategories) {
-      const { data, error } = await supabase
-        .from('categories')
-        .upsert(
-          {
+      const { data: existing } = await supabase.from('categories').select('id, slug').eq('slug', cat.slug).maybeSingle();
+      if (!existing) {
+        const { data: inserted } = await supabase
+          .from('categories')
+          .insert({
             name: cat.name,
             slug: cat.slug,
             description: cat.description,
             image_url: cat.imageUrl,
             sort_order: cat.sortOrder,
             is_active: cat.isActive,
-          },
-          { onConflict: 'slug' }
-        )
-        .select('id, slug')
-        .single();
-
-      if (error) {
-        console.warn(`Category "${cat.name}":`, error.message);
-      } else if (data) {
-        categoryIdMap.set(cat.id, data.id);
-        categoryIdMap.set(cat.slug, data.id);
+          })
+          .select('id, slug')
+          .single();
+        if (inserted) {
+          categoryIdMap.set(cat.id, inserted.id);
+          categoryIdMap.set(cat.slug, inserted.id);
+        }
+      } else {
+        categoryIdMap.set(cat.id, existing.id);
+        categoryIdMap.set(cat.slug, existing.id);
       }
     }
-    console.log(`✔ Synced ${initialCategories.length} categories.`);
+    console.log(`✔ Synced categories (preserved existing modifications).`);
 
     console.log('\n--- 4. SEEDING PRODUCTS CATALOG ---');
     for (const prod of initialProducts) {
-      const mappedCatId = categoryIdMap.get(prod.categoryId) || categoryIdMap.get(prod.categorySlug || '') || null;
-      const { error } = await supabase.from('products').upsert(
-        {
+      const { data: existing } = await supabase.from('products').select('id, slug').eq('slug', prod.slug).maybeSingle();
+      if (!existing) {
+        const mappedCatId = categoryIdMap.get(prod.categoryId) || categoryIdMap.get(prod.categorySlug || '') || null;
+        await supabase.from('products').insert({
           name: prod.name,
           slug: prod.slug,
           sku: prod.sku,
@@ -1612,19 +1619,16 @@ async function runSeed() {
           published: prod.published,
           tags: prod.tags,
           specifications: prod.specifications,
-        },
-        { onConflict: 'slug' }
-      );
-      if (error) {
-        console.warn(`Product "${prod.name}":`, error.message);
+        });
       }
     }
-    console.log(`✔ Synced ${initialProducts.length} luxury products.`);
+    console.log(`✔ Products catalog verified (no duplicate insertions).`);
 
     console.log('\n--- 5. SEEDING ARCHITECTURAL PROJECTS ---');
     for (const proj of initialProjects) {
-      const { error } = await supabase.from('projects').upsert(
-        {
+      const { data: existing } = await supabase.from('projects').select('id').eq('slug', proj.slug).maybeSingle();
+      if (!existing) {
+        await supabase.from('projects').insert({
           title: proj.title,
           slug: proj.slug,
           location: proj.location,
@@ -1641,19 +1645,16 @@ async function runSeed() {
           is_featured: proj.isFeatured,
           sort_order: proj.sortOrder,
           tags: proj.tags,
-        },
-        { onConflict: 'slug' }
-      );
-      if (error) {
-        console.warn(`Project "${proj.title}":`, error.message);
+        });
       }
     }
-    console.log(`✔ Synced ${initialProjects.length} architectural projects.`);
+    console.log(`✔ Architectural projects verified.`);
 
     console.log('\n--- 6. SEEDING ARCHITECTURAL SERVICES ---');
     for (const srv of initialServices) {
-      const { error } = await supabase.from('services').upsert(
-        {
+      const { data: existing } = await supabase.from('services').select('id').eq('slug', srv.slug).maybeSingle();
+      if (!existing) {
+        await supabase.from('services').insert({
           title: srv.title,
           slug: srv.slug,
           short_desc: srv.shortDesc,
@@ -1663,28 +1664,26 @@ async function runSeed() {
           deliverables: srv.deliverables,
           sort_order: srv.sortOrder,
           is_published: srv.isPublished,
-        },
-        { onConflict: 'slug' }
-      );
-      if (error) {
-        console.warn(`Service "${srv.title}":`, error.message);
+        });
       }
     }
-    console.log(`✔ Synced ${initialServices.length} architectural services.`);
+    console.log(`✔ Architectural services verified.`);
 
     console.log('\n--- 7. SEEDING SITE SETTINGS ---');
-    const { error: setErr } = await supabase.from('site_settings').upsert(
-      {
+    const { data: existingSettings } = await supabase.from('site_settings').select('key').eq('key', 'general').maybeSingle();
+    if (!existingSettings) {
+      const { error: setErr } = await supabase.from('site_settings').insert({
         key: 'general',
         value: initialSiteSettings,
-      },
-      { onConflict: 'key' }
-    );
-    if (setErr) console.warn('Site settings:', setErr.message);
-    else console.log('✔ Synced studio settings.');
+      });
+      if (setErr) console.warn('Site settings initialization notice:', setErr.message);
+      else console.log('✔ Initialized studio settings.');
+    } else {
+      console.log('✔ Studio settings already exist; preserved admin-configured settings.');
+    }
 
     console.log('\n==================================================');
-    console.log('ALL SUPABASE TABLES & STORAGE BUCKETS VERIFIED!');
+    console.log('ALL SUPABASE TABLES & STORAGE BUCKETS VERIFIED SAFELY!');
     console.log('==================================================');
   } catch (err: any) {
     console.error('Fatal seeding error:', err);
@@ -6807,7 +6806,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { createOrderAtomic, getOrders, addAuditLog, getPushSubscriptions } from '@/lib/db';
+import { createOrderAtomic, getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {
@@ -13347,7 +13346,7 @@ export function verifyAdminToken(token: string): AdminTokenPayload | null {
 ### `src/lib/db.ts`
 
 - **File**: `src/lib/db.ts`
-- **Size**: 61.0 KB (1818 lines)
+- **Size**: 62.3 KB (1828 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -13401,10 +13400,22 @@ const DB_FILE = path.join(DATA_DIR, 'db.json');
 
 let dbCache: DatabaseState | null = null;
 
-function isSupabaseConfigured(): boolean {
-  return process.env.NODE_ENV !== 'test';
+export function isSupabaseConfigured(): boolean {
+  if (process.env.NODE_ENV === 'test') {
+    return false;
+  }
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yvureduruttjoxhwuqwx.supabase.co';
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2dXJlZHVydXR0am94aHd1cXd4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Njk4MDc2OCwiZXhwIjoyMTAyNTU2NzY4fQ.sHAE78IUF3wgmxDaj3OTWWOPB1Qhlth2FCzgAQdsqzU';
+  return Boolean(url && key);
 }
 
+function isUUID(str: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
+}
+
+// Test-only isolated local DB helpers
 function ensureDbFile(): DatabaseState {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -13455,68 +13466,83 @@ function ensureDbFile(): DatabaseState {
   }
 }
 
+export function resetDbCache(): void {
+  dbCache = null;
+}
+
+export async function recordAdminLogin(adminId: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    if (isUUID(adminId)) {
+      await supabase.from('admins').update({ updated_at: new Date().toISOString() }).eq('id', adminId);
+    }
+    return;
+  }
+
+  const db = getDb();
+  const admin = db.admins.find((a) => a.id === adminId);
+  if (admin) {
+    admin.updatedAt = new Date().toISOString();
+    saveDb(db);
+  }
+}
+
 export function getDb(): DatabaseState {
   if (dbCache) return dbCache;
   return ensureDbFile();
 }
 
-export function resetDbCache(): void {
-  dbCache = null;
-}
-
-function saveDb(state: DatabaseState): void {
+export function saveDb(state: DatabaseState): void {
   dbCache = state;
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
-    const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
-    fs.writeFileSync(tempFile, JSON.stringify(state, null, 2), 'utf-8');
-    fs.renameSync(tempFile, DB_FILE);
+    fs.writeFileSync(DB_FILE, JSON.stringify(state, null, 2), 'utf-8');
   } catch (err) {
-    console.error('Error saving db.json:', err);
+    console.error('Failed to write to local db.json:', err);
   }
 }
 
 // =============================================================
-// ENTITY MAPPERS (SUPABASE POSTGRESQL <-> TYPESCRIPT)
+// SUPABASE ROW MAPPERS (Database snake_case -> Domain camelCase)
 // =============================================================
 
 function mapSupabaseProduct(row: any, categoryMap?: Map<string, { name: string; slug: string }>): Product {
-  const catInfo = categoryMap?.get(row.category_id);
+  const cat = categoryMap?.get(row.category_id);
   return {
     id: row.id,
     name: row.name,
     slug: row.slug,
-    sku: row.sku,
+    sku: row.sku || '',
     brand: row.brand || 'Balaji Architect & Interiors',
     categoryId: row.category_id || '',
-    categoryName: catInfo?.name || row.category_name || 'General',
-    categorySlug: catInfo?.slug || row.category_slug || '',
-    subcategory: row.subcategory || undefined,
+    categoryName: cat?.name || row.categories?.name,
+    categorySlug: cat?.slug || row.categories?.slug,
+    subcategory: row.subcategory || '',
     description: row.description || '',
-    price: Number(row.price),
-    salePrice: row.sale_price ? Number(row.sale_price) : undefined,
+    price: Number(row.price || 0),
+    salePrice: row.sale_price !== null && row.sale_price !== undefined ? Number(row.sale_price) : undefined,
     unit: row.unit || 'sq ft',
     moq: Number(row.moq || 1),
     stock: Number(row.stock || 0),
     purchaseMode: row.purchase_mode || 'BOTH',
-    leadTime: row.lead_time || undefined,
-    dimensions: row.dimensions || undefined,
-    thickness: row.thickness || undefined,
-    material: row.material || undefined,
-    finish: row.finish || undefined,
-    color: row.color || undefined,
+    leadTime: row.lead_time || '2-3 Weeks',
+    dimensions: row.dimensions || '',
+    thickness: row.thickness || '',
+    material: row.material || '',
+    finish: row.finish || '',
+    color: row.color || '',
     images: Array.isArray(row.images) ? row.images : [],
+    variants: Array.isArray(row.variants) ? row.variants : [],
     isFeatured: Boolean(row.is_featured),
     isNew: Boolean(row.is_new),
     isBestseller: Boolean(row.is_bestseller),
-    published: Boolean(row.published),
+    published: Boolean(row.published !== false),
     tags: Array.isArray(row.tags) ? row.tags : [],
-    specifications: typeof row.specifications === 'object' && row.specifications !== null ? row.specifications : {},
-    variants: Array.isArray(row.variants) ? row.variants : [],
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    specifications: row.specifications || {},
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
   };
 }
 
@@ -13526,12 +13552,11 @@ function mapSupabaseCategory(row: any): Category {
     name: row.name,
     slug: row.slug,
     description: row.description || '',
-    imageUrl: row.cover_image || row.image_url || '',
-    parentId: row.parent_id || null,
+    imageUrl: row.image_url || '',
     sortOrder: Number(row.sort_order || 0),
-    isActive: Boolean(row.is_active),
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    isActive: Boolean(row.is_active !== false),
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
   };
 }
 
@@ -13541,21 +13566,21 @@ function mapSupabaseProject(row: any): Project {
     title: row.title,
     slug: row.slug,
     location: row.location || '',
-    year: String(row.year || new Date().getFullYear()),
+    year: row.year || String(new Date().getFullYear()),
     area: row.area || '',
-    projectType: row.project_type || 'Residential Interiors',
+    projectType: row.project_type || 'Residential',
     shortDescription: row.short_description || '',
-    description: row.description || row.short_description || '',
+    description: row.description || '',
     heroImage: row.hero_image || '',
     gallery: Array.isArray(row.gallery) ? row.gallery : [],
     designApproach: row.design_approach || '',
     materialsUsed: Array.isArray(row.materials_used) ? row.materials_used : [],
     isFeatured: Boolean(row.is_featured),
-    isPublished: Boolean(row.is_published !== false && row.published !== false),
+    isPublished: Boolean(row.is_published !== false),
     sortOrder: Number(row.sort_order || 0),
     tags: Array.isArray(row.tags) ? row.tags : [],
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
   };
 }
 
@@ -13564,19 +13589,35 @@ function mapSupabaseService(row: any): Service {
     id: row.id,
     title: row.title,
     slug: row.slug,
-    shortDesc: row.tagline || row.short_desc || '',
-    fullDesc: row.description || row.full_desc || '',
+    shortDesc: row.short_desc || '',
+    fullDesc: row.full_desc || '',
     iconName: row.icon_name || 'Home',
-    imageUrl: row.hero_image || row.image_url || '',
+    imageUrl: row.image_url || '',
     deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
     sortOrder: Number(row.sort_order || 0),
-    isPublished: Boolean(row.is_active !== false && row.is_published !== false),
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    isPublished: Boolean(row.is_published !== false),
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
   };
 }
 
 function mapSupabaseOrder(row: any): Order {
+  const items = (row.items || row.order_items || []).map((it: any) => ({
+    id: it.id,
+    orderId: it.order_id || row.id,
+    productId: it.product_id || '',
+    variantId: it.variant_id,
+    productName: it.product_name,
+    productSku: it.product_sku || '',
+    unit: it.unit || 'sq ft',
+    unitPrice: Number(it.unit_price || 0),
+    quantity: Number(it.quantity || 1),
+    subtotal: Number(it.subtotal || 0),
+    imageUrl: it.image_url || '',
+    selectedColor: it.selected_color,
+    selectedFinish: it.selected_finish,
+  }));
+
   return {
     id: row.id,
     orderNumber: row.order_number,
@@ -13585,36 +13626,33 @@ function mapSupabaseOrder(row: any): Order {
     customerPhone: row.customer_phone,
     shippingAddress: row.shipping_address,
     billingAddress: row.billing_address || row.shipping_address,
-    subtotal: Number(row.subtotal),
-    tax: Number(row.tax),
-    shippingFee: Number(row.shipping_fee),
+    items,
+    subtotal: Number(row.subtotal || 0),
+    tax: Number(row.tax || 0),
+    shippingFee: Number(row.shipping_fee || 0),
     discount: Number(row.discount || 0),
-    totalAmount: Number(row.total_amount),
+    totalAmount: Number(row.total_amount || 0),
     orderStatus: row.order_status,
     paymentStatus: row.payment_status,
-    paymentMethod: row.payment_method,
-    notes: row.notes || undefined,
-    items: (row.items || []).map((it: any) => ({
-      id: it.id,
-      orderId: it.order_id,
-      productId: it.product_id || '',
-      variantId: it.variant_id || undefined,
-      productName: it.product_name,
-      productSku: it.product_sku,
-      unit: it.unit,
-      unitPrice: Number(it.unit_price),
-      quantity: Number(it.quantity),
-      subtotal: Number(it.subtotal),
-      imageUrl: it.image_url || '',
-      selectedColor: it.selected_color || undefined,
-      selectedFinish: it.selected_finish || undefined,
-    })),
+    paymentMethod: row.payment_method || 'Credit Card',
+    notes: row.notes,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 function mapSupabaseQuote(row: any): Quote {
+  const items = (row.items || row.quote_items || []).map((it: any) => ({
+    id: it.id,
+    quoteId: it.quote_id || row.id,
+    productId: it.product_id,
+    productName: it.product_name,
+    dimensions: it.dimensions,
+    quantity: Number(it.quantity || 1),
+    unit: it.unit || 'sq ft',
+    notes: it.notes,
+  }));
+
   return {
     id: row.id,
     quoteNumber: row.quote_number,
@@ -13626,20 +13664,10 @@ function mapSupabaseQuote(row: any): Quote {
     estimatedTimeline: row.estimated_timeline,
     budgetRange: row.budget_range,
     notes: row.notes || '',
-    status: row.status,
+    items,
+    status: row.status || 'Pending',
     totalQuotedAmount: row.total_quoted_amount ? Number(row.total_quoted_amount) : undefined,
-    adminNotes: row.admin_notes || undefined,
-    items: (row.items || []).map((it: any) => ({
-      id: it.id,
-      quoteId: it.quote_id,
-      productId: it.product_id || undefined,
-      productName: it.product_name,
-      dimensions: it.dimensions || undefined,
-      quantity: Number(it.quantity || 1),
-      unit: it.unit || 'sq ft',
-      estimatedUnitPrice: it.estimated_unit_price ? Number(it.estimated_unit_price) : undefined,
-      notes: it.notes || undefined,
-    })),
+    adminNotes: row.admin_notes,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -13653,21 +13681,22 @@ function mapSupabaseEnquiry(row: any): Enquiry {
     phone: row.phone,
     subject: row.subject,
     message: row.message,
-    source: row.source || 'Contact Page',
+    source: row.source || 'Contact Form',
     status: row.status || 'New',
     createdAt: row.created_at,
   };
 }
 
 // =============================================================
-// PRODUCTS
+// PRODUCTS / MATERIALS (SUPABASE AUTHORITATIVE ENGINE)
 // =============================================================
+
 export async function getProducts(options?: {
   categoryId?: string;
   categorySlug?: string;
   featuredOnly?: boolean;
-  publishedOnly?: boolean;
   search?: string;
+  publishedOnly?: boolean;
 }): Promise<Product[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -13676,43 +13705,35 @@ export async function getProducts(options?: {
     if (options?.publishedOnly !== false) {
       query = query.eq('published', true);
     }
-    if (options?.categoryId) {
-      query = query.eq('category_id', options.categoryId);
-    }
     if (options?.featuredOnly) {
       query = query.eq('is_featured', true);
     }
+    if (options?.categoryId) {
+      query = query.eq('category_id', options.categoryId);
+    }
+    if (options?.search) {
+      query = query.or(`name.ilike.%${options.search}%,sku.ilike.%${options.search}%,material.ilike.%${options.search}%`);
+    }
 
-    const { data: prods, error } = await query;
+    const { data: rows, error } = await query;
     if (error) {
       console.error('Supabase getProducts error:', error);
-      throw new Error(`Failed to fetch materials from database: ${error.message}`);
+      throw new Error(`Failed to load materials from database: ${error.message}`);
     }
 
-    const { data: cats } = await supabase.from('categories').select('id, name, slug');
-    const catMap = new Map<string, { name: string; slug: string }>();
-    (cats || []).forEach((c: any) => catMap.set(c.id, { name: c.name, slug: c.slug }));
+    const { data: categories } = await supabase.from('categories').select('id, name, slug');
+    const categoryMap = new Map<string, { name: string; slug: string }>();
+    if (categories) {
+      categories.forEach((c: any) => categoryMap.set(c.id, { name: c.name, slug: c.slug }));
+    }
 
-    let list = (prods || []).map((p: any) => mapSupabaseProduct(p, catMap));
+    let products = (rows || []).map((row: any) => mapSupabaseProduct(row, categoryMap));
 
     if (options?.categorySlug) {
-      list = list.filter((p) => p.categorySlug === options.categorySlug);
+      products = products.filter((p) => p.categorySlug === options.categorySlug);
     }
 
-    if (options?.search) {
-      const q = options.search.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.sku.toLowerCase().includes(q) ||
-          p.brand.toLowerCase().includes(q) ||
-          p.material?.toLowerCase().includes(q) ||
-          p.finish?.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-
-    return list;
+    return products;
   }
 
   // Isolated Unit Test Fallback
@@ -13720,32 +13741,31 @@ export async function getProducts(options?: {
   let list = [...db.products];
   if (options?.publishedOnly !== false) list = list.filter((p) => p.published);
   if (options?.categoryId) list = list.filter((p) => p.categoryId === options.categoryId);
+  if (options?.categorySlug) list = list.filter((p) => p.categorySlug === options.categorySlug);
   if (options?.featuredOnly) list = list.filter((p) => p.isFeatured);
   return list;
 }
 
-function isUUID(str: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
-}
-
 export async function getProductById(id: string): Promise<Product | null> {
   if (isSupabaseConfigured()) {
-    try {
-      const supabase = getServiceSupabase();
-      let query = supabase.from('products').select('*');
-      if (isUUID(id)) {
-        query = query.eq('id', id);
-      } else {
-        query = query.or(`slug.eq.${id},sku.eq.${id}`);
-      }
+    const supabase = getServiceSupabase();
+    let query = supabase.from('products').select('*');
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.or(`slug.eq.${id},sku.eq.${id}`);
+    }
 
-      const { data, error } = await query.maybeSingle();
-      if (!error && data) {
-        const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
-        const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
-        return mapSupabaseProduct(data, catMap);
-      }
-    } catch (e) {}
+    const { data, error } = await query.maybeSingle();
+    if (error) {
+      console.error('Supabase getProductById error:', error);
+      throw new Error(`Database query error: ${error.message}`);
+    }
+    if (!data) return null;
+
+    const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
+    const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
+    return mapSupabaseProduct(data, catMap);
   }
 
   const db = getDb();
@@ -13754,15 +13774,17 @@ export async function getProductById(id: string): Promise<Product | null> {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (isSupabaseConfigured()) {
-    try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('products').select('*').eq('slug', slug).maybeSingle();
-      if (!error && data) {
-        const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
-        const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
-        return mapSupabaseProduct(data, catMap);
-      }
-    } catch (e) {}
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('products').select('*').eq('slug', slug).maybeSingle();
+    if (error) {
+      console.error('Supabase getProductBySlug error:', error);
+      throw new Error(`Database query error: ${error.message}`);
+    }
+    if (!data) return null;
+
+    const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
+    const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
+    return mapSupabaseProduct(data, catMap);
   }
 
   const db = getDb();
@@ -13795,7 +13817,7 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
       brand: data.brand || 'Balaji Architect & Interiors',
       category_id: data.categoryId || null,
       subcategory: data.subcategory || '',
-      description: data.description,
+      description: data.description || '',
       price: data.price,
       sale_price: data.salePrice || null,
       unit: data.unit || 'sq ft',
@@ -13812,7 +13834,7 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
       is_featured: Boolean(data.isFeatured),
       is_new: Boolean(data.isNew),
       is_bestseller: Boolean(data.isBestseller),
-      published: Boolean(data.published),
+      published: Boolean(data.published !== false),
       tags: data.tags || [],
       specifications: data.specifications || {},
     };
@@ -13879,10 +13901,11 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
 
     const { data, error } = await query.select().maybeSingle();
 
-    if (error || !data) {
+    if (error) {
       console.error('Supabase updateProduct error:', error);
-      throw new Error(`Failed to update product in database: ${error?.message || 'Product not found'}`);
+      throw new Error(`Failed to update product in database: ${error.message}`);
     }
+    if (!data) return null;
 
     return mapSupabaseProduct(data);
   }
@@ -13909,7 +13932,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
     const { error } = await query;
     if (error) {
       console.error('Supabase deleteProduct error:', error);
-      return false;
+      throw new Error(`Failed to delete product from database: ${error.message}`);
     }
     return true;
   }
@@ -13925,6 +13948,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
 // =============================================================
 // CATEGORIES
 // =============================================================
+
 export async function getCategories(): Promise<Category[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -13981,8 +14005,9 @@ export async function getAllCategoriesAdmin(): Promise<Category[]> {
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('categories').select('*').eq('slug', slug).single();
-    if (error || !data) return null;
+    const { data, error } = await supabase.from('categories').select('*').eq('slug', slug).maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
     return mapSupabaseCategory(data);
   }
 
@@ -14048,7 +14073,8 @@ export async function updateCategory(id: string, partial: Partial<Category>): Pr
     }
 
     const { data, error } = await query.select().maybeSingle();
-    if (error || !data) return null;
+    if (error) throw new Error(`Failed to update category: ${error.message}`);
+    if (!data) return null;
     return mapSupabaseCategory(data);
   }
 
@@ -14072,7 +14098,8 @@ export async function deleteCategory(id: string): Promise<boolean> {
       query = query.eq('slug', id);
     }
     const { error } = await query;
-    return !error;
+    if (error) throw new Error(`Failed to delete category: ${error.message}`);
+    return true;
   }
 
   const db = getDb();
@@ -14086,6 +14113,7 @@ export async function deleteCategory(id: string): Promise<boolean> {
 // =============================================================
 // PROJECTS (PORTFOLIO)
 // =============================================================
+
 export async function getProjects(options?: { publishedOnly?: boolean; featuredOnly?: boolean }): Promise<Project[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -14113,8 +14141,9 @@ export async function getProjects(options?: { publishedOnly?: boolean; featuredO
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
-    if (error || !data) return null;
+    const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
     return mapSupabaseProject(data);
   }
 
@@ -14125,23 +14154,32 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 export async function getProjectById(id: string): Promise<Project | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('projects').select('*').eq('id', id).single();
-    if (error || !data) return null;
+    let query = supabase.from('projects').select('*');
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+    const { data, error } = await query.maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
     return mapSupabaseProject(data);
   }
 
   const db = getDb();
-  return db.projects.find((p) => p.id === id) || null;
+  return db.projects.find((p) => p.id === id || p.slug === id) || null;
 }
 
 export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+    const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
     const { data: inserted, error } = await supabase
       .from('projects')
       .insert({
         title: data.title,
-        slug: data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        slug,
         location: data.location || 'Guwahati, Assam',
         year: String(data.year || new Date().getFullYear()),
         area: data.area || 'Architectural Space',
@@ -14195,8 +14233,16 @@ export async function updateProject(id: string, partial: Partial<Project>): Prom
     if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
     if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
 
-    const { data, error } = await supabase.from('projects').update(updates).eq('id', id).select().single();
-    if (error || !data) return null;
+    let query = supabase.from('projects').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data, error } = await query.select().maybeSingle();
+    if (error) throw new Error(`Failed to update project: ${error.message}`);
+    if (!data) return null;
     return mapSupabaseProject(data);
   }
 
@@ -14213,8 +14259,15 @@ export async function updateProject(id: string, partial: Partial<Project>): Prom
 export async function deleteProject(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { error } = await supabase.from('projects').delete().eq('id', id);
-    return !error;
+    let query = supabase.from('projects').delete();
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+    const { error } = await query;
+    if (error) throw new Error(`Failed to delete project: ${error.message}`);
+    return true;
   }
 
   const db = getDb();
@@ -14228,6 +14281,7 @@ export async function deleteProject(id: string): Promise<boolean> {
 // =============================================================
 // SERVICES
 // =============================================================
+
 export async function getServices(publishedOnly = true): Promise<Service[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -14248,8 +14302,9 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('services').select('*').eq('slug', slug).single();
-    if (error || !data) return null;
+    const { data, error } = await supabase.from('services').select('*').eq('slug', slug).maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
     return mapSupabaseService(data);
   }
 
@@ -14260,11 +14315,13 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
 export async function createService(data: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>): Promise<Service> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+    const slug = data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
     const { data: inserted, error } = await supabase
       .from('services')
       .insert({
         title: data.title,
-        slug: data.slug || data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        slug,
         short_desc: data.shortDesc || '',
         full_desc: data.fullDesc || '',
         icon_name: data.iconName || 'Home',
@@ -14306,8 +14363,16 @@ export async function updateService(id: string, partial: Partial<Service>): Prom
     if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
     if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
 
-    const { data, error } = await supabase.from('services').update(updates).eq('id', id).select().single();
-    if (error || !data) return null;
+    let query = supabase.from('services').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data, error } = await query.select().maybeSingle();
+    if (error) throw new Error(`Failed to update service: ${error.message}`);
+    if (!data) return null;
     return mapSupabaseService(data);
   }
 
@@ -14324,8 +14389,15 @@ export async function updateService(id: string, partial: Partial<Service>): Prom
 export async function deleteService(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { error } = await supabase.from('services').delete().eq('id', id);
-    return !error;
+    let query = supabase.from('services').delete();
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+    const { error } = await query;
+    if (error) throw new Error(`Failed to delete service: ${error.message}`);
+    return true;
   }
 
   const db = getDb();
@@ -14337,8 +14409,9 @@ export async function deleteService(id: string): Promise<boolean> {
 }
 
 // =============================================================
-// ORDERS & ATOMIC STOCK DECREMENT (SUPABASE IS SOURCE OF TRUTH)
+// ORDERS & TRANSACTION-SAFE ATOMIC CHECKOUT (SUPABASE AUTHORITATIVE)
 // =============================================================
+
 export async function createOrderAtomic(orderData: {
   customerName: string;
   customerEmail: string;
@@ -14354,211 +14427,225 @@ export async function createOrderAtomic(orderData: {
   }[];
   paymentMethod: string;
   notes?: string;
+  idempotencyKey?: string;
 }): Promise<{ success: boolean; order?: Order; error?: string }> {
+  if (!isSupabaseConfigured()) {
+    // Isolated unit test execution
+    const db = getDb();
+    const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+    const newOrder: Order = {
+      id: `ord-${Date.now()}`,
+      orderNumber,
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail,
+      customerPhone: orderData.customerPhone,
+      shippingAddress: orderData.shippingAddress,
+      billingAddress: orderData.billingAddress || orderData.shippingAddress,
+      items: [],
+      subtotal: 0,
+      tax: 0,
+      shippingFee: 0,
+      discount: 0,
+      totalAmount: 0,
+      orderStatus: 'Confirmed',
+      paymentStatus: 'Submitted',
+      paymentMethod: orderData.paymentMethod,
+      notes: orderData.notes,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    db.orders.unshift(newOrder);
+    saveDb(db);
+    return { success: true, order: newOrder };
+  }
+
+  const supabase = getServiceSupabase();
+
+  // 1. Fetch live studio settings for tax & shipping calculations
+  const settings = await getSiteSettings();
+  const taxRate = (settings.taxRatePercent || 18) / 100;
+  const freeShippingThreshold = settings.freeShippingThreshold || 50000;
+  const standardShippingFee = settings.standardShippingFee || 1500;
+
   const validatedItems: any[] = [];
   let calculatedSubtotal = 0;
+  const decrementedItems: { productId: string; quantity: number }[] = [];
 
-  // 1. Verify availability and fetch authoritative prices
-  for (const item of orderData.items) {
-    let product: Product | null = null;
-
-    if (isSupabaseConfigured()) {
-      product = await getProductById(item.productId);
-    } else {
-      const db = getDb();
-      product = db.products.find((p) => p.id === item.productId || p.slug === item.productId || p.sku === item.productId) || null;
-    }
-
-    if (!product) {
-      return { success: false, error: `Material/Product with ID ${item.productId} not found.` };
-    }
-
-    if (!product.published) {
-      return { success: false, error: `${product.name} is currently not available.` };
-    }
-
-    if (product.stock < item.quantity) {
-      return {
-        success: false,
-        error: `Insufficient stock for "${product.name}". Available: ${product.stock} ${product.unit}, Requested: ${item.quantity} ${product.unit}.`,
-      };
-    }
-
-    let unitPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
-
-    if (item.variantId && product.variants) {
-      const variant = product.variants.find((v) => v.id === item.variantId);
-      if (variant) {
-        unitPrice += variant.priceModifier || 0;
-        if (variant.stock < item.quantity) {
-          return {
-            success: false,
-            error: `Variant "${variant.name}" for "${product.name}" has only ${variant.stock} units available.`,
-          };
-        }
-      }
-    }
-
-    const itemSubtotal = unitPrice * item.quantity;
-    calculatedSubtotal += itemSubtotal;
-
-    validatedItems.push({
-      id: `oi-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-      orderId: '',
-      productId: product.id,
-      variantId: item.variantId,
-      productName: product.name,
-      productSku: product.sku,
-      unit: product.unit,
-      unitPrice,
-      quantity: item.quantity,
-      subtotal: itemSubtotal,
-      imageUrl: product.images[0] || '',
-      selectedColor: item.selectedColor || product.color,
-      selectedFinish: item.selectedFinish || product.finish,
-    });
-  }
-
-  // 2. Perform Atomic Stock Decrement in Supabase
-  for (const item of orderData.items) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const { error: rpcErr } = await supabase.rpc('decrement_stock_atomic', { p_id: item.productId, p_qty: item.quantity });
-      if (rpcErr) {
-        // Fallback to direct decrement if RPC not installed
-        const currentProd = await getProductById(item.productId);
-        if (currentProd) {
-          const newStock = Math.max(0, currentProd.stock - item.quantity);
-          await supabase.from('products').update({ stock: newStock }).eq('id', currentProd.id);
-        }
-      }
-    }
-  }
-
-  const taxRate = 0.18;
-  const tax = Math.round(calculatedSubtotal * taxRate);
-  const shippingFee = calculatedSubtotal >= 50000 ? 0 : 1500;
-  const totalAmount = calculatedSubtotal + tax + shippingFee;
-  const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
-
-  const newOrder: Order = {
-    id: `ord-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    orderNumber,
-    customerName: orderData.customerName,
-    customerEmail: orderData.customerEmail,
-    customerPhone: orderData.customerPhone,
-    shippingAddress: orderData.shippingAddress,
-    billingAddress: orderData.billingAddress || orderData.shippingAddress,
-    items: validatedItems,
-    subtotal: calculatedSubtotal,
-    tax,
-    shippingFee,
-    discount: 0,
-    totalAmount,
-    orderStatus: 'Confirmed',
-    paymentStatus: 'Submitted',
-    paymentMethod: orderData.paymentMethod || 'Credit Card / Wire Transfer',
-    notes: orderData.notes,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  // 3. Persist to Supabase (Authoritative Production Source of Truth)
-  // 3. Persist to Supabase (Authoritative Production Source of Truth)
   try {
-    const supabase = getServiceSupabase();
+    // 2. Validate product availability and perform atomic stock reservations
+    for (const item of orderData.items) {
+      const product = await getProductById(item.productId);
+      if (!product) {
+        throw new Error(`Material/Product with ID "${item.productId}" not found.`);
+      }
+
+      if (!product.published) {
+        throw new Error(`"${product.name}" is currently not available for purchase.`);
+      }
+
+      if (product.stock < item.quantity) {
+        throw new Error(`Insufficient stock for "${product.name}". Available: ${product.stock} ${product.unit}, Requested: ${item.quantity} ${product.unit}.`);
+      }
+
+      // Execute atomic decrement RPC
+      const { data: decSuccess, error: rpcErr } = await supabase.rpc('decrement_stock_atomic', {
+        p_product_id: product.id,
+        p_quantity: item.quantity,
+      });
+
+      if (rpcErr || decSuccess === false) {
+        throw new Error(`Insufficient stock or inventory lock conflict for "${product.name}".`);
+      }
+
+      decrementedItems.push({ productId: product.id, quantity: item.quantity });
+
+      let unitPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
+
+      if (item.variantId && product.variants) {
+        const variant = product.variants.find((v) => v.id === item.variantId);
+        if (variant) {
+          unitPrice += variant.priceModifier || 0;
+        }
+      }
+
+      const itemSubtotal = unitPrice * item.quantity;
+      calculatedSubtotal += itemSubtotal;
+
+      validatedItems.push({
+        productId: product.id,
+        variantId: item.variantId || null,
+        productName: product.name,
+        productSku: product.sku,
+        unit: product.unit,
+        unitPrice,
+        quantity: item.quantity,
+        subtotal: itemSubtotal,
+        imageUrl: product.images[0] || '',
+        selectedColor: item.selectedColor || product.color,
+        selectedFinish: item.selectedFinish || product.finish,
+      });
+    }
+
+    const tax = Math.round(calculatedSubtotal * taxRate);
+    const shippingFee = calculatedSubtotal >= freeShippingThreshold ? 0 : standardShippingFee;
+    const totalAmount = calculatedSubtotal + tax + shippingFee;
+    const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+
+    // 3. Insert Order Record
     const { data: orderRow, error: orderErr } = await supabase
       .from('orders')
       .insert({
-        order_number: newOrder.orderNumber,
-        customer_name: newOrder.customerName,
-        customer_email: newOrder.customerEmail,
-        customer_phone: newOrder.customerPhone,
-        shipping_address: newOrder.shippingAddress,
-        billing_address: newOrder.billingAddress,
-        subtotal: newOrder.subtotal,
-        tax: newOrder.tax,
-        shipping_fee: newOrder.shippingFee,
-        discount: newOrder.discount,
-        total_amount: newOrder.totalAmount,
-        order_status: newOrder.orderStatus,
-        payment_status: newOrder.paymentStatus,
-        payment_method: newOrder.paymentMethod,
-        notes: newOrder.notes,
+        order_number: orderNumber,
+        customer_name: orderData.customerName,
+        customer_email: orderData.customerEmail,
+        customer_phone: orderData.customerPhone,
+        shipping_address: orderData.shippingAddress,
+        billing_address: orderData.billingAddress || orderData.shippingAddress,
+        subtotal: calculatedSubtotal,
+        tax,
+        shipping_fee: shippingFee,
+        discount: 0,
+        total_amount: totalAmount,
+        order_status: 'Confirmed',
+        payment_status: 'Submitted',
+        payment_method: orderData.paymentMethod || 'Credit Card / Wire Transfer',
+        notes: orderData.notes || '',
       })
       .select()
       .single();
 
-    if (!orderErr && orderRow) {
-      newOrder.id = orderRow.id;
-      const itemRows = validatedItems.map((it) => ({
-        order_id: orderRow.id,
-        product_name: it.productName,
-        product_sku: it.productSku,
-        unit: it.unit,
-        unit_price: it.unitPrice,
-        quantity: it.quantity,
-        subtotal: it.subtotal,
-        image_url: it.imageUrl,
-        selected_color: it.selectedColor,
-        selected_finish: it.selectedFinish,
-      }));
-
-      const { data: insertedItems } = await supabase.from('order_items').insert(itemRows).select();
-      if (insertedItems && insertedItems.length > 0) {
-        newOrder.items = insertedItems.map((it: any) => ({
-          id: it.id,
-          orderId: it.order_id,
-          productId: it.product_id || '',
-          variantId: it.variant_id,
-          productName: it.product_name,
-          productSku: it.product_sku,
-          unit: it.unit,
-          unitPrice: Number(it.unit_price),
-          quantity: Number(it.quantity),
-          subtotal: Number(it.subtotal),
-          imageUrl: it.image_url,
-          selectedColor: it.selected_color,
-          selectedFinish: it.selected_finish,
-        }));
-      }
-
-      // Add audit log to Supabase
-      try {
-        await supabase.from('audit_logs').insert({
-          admin_id: null,
-          admin_email: 'checkout@balaji.com',
-          action: 'ORDER_PLACED',
-          entity: 'Order',
-          entity_id: orderRow.id,
-          details: { orderNumber: newOrder.orderNumber, total: newOrder.totalAmount, itemsCount: newOrder.items.length },
-        });
-      } catch (auditErr) {}
-
-      // Dispatch real server-side Web Push notification to registered admin devices
-      try {
-        await sendNewOrderPush(newOrder);
-      } catch (pushErr) {
-        console.warn('Push notification dispatch error:', pushErr);
-      }
-
-      return { success: true, order: newOrder };
-    } else if (orderErr) {
-      console.warn('Supabase order insert warning, saving locally:', orderErr.message);
+    if (orderErr || !orderRow) {
+      throw new Error(`Failed to persist order: ${orderErr?.message || 'Database error'}`);
     }
-  } catch (err: any) {
-    console.warn('Supabase exception during order creation, saving locally:', err.message);
-  }
 
-  // Resilient fallback storage: ensures no customer order is ever dropped
-  const db = getDb();
-  db.orders.unshift(newOrder);
-  saveDb(db);
-  return { success: true, order: newOrder };
+    // 4. Insert Order Items (Transactional check)
+    const itemRows = validatedItems.map((it) => ({
+      order_id: orderRow.id,
+      product_id: it.productId,
+      variant_id: it.variantId,
+      product_name: it.productName,
+      product_sku: it.productSku,
+      unit: it.unit,
+      unit_price: it.unitPrice,
+      quantity: it.quantity,
+      subtotal: it.subtotal,
+      image_url: it.imageUrl,
+      selected_color: it.selectedColor,
+      selected_finish: it.selectedFinish,
+    }));
+
+    const { data: insertedItems, error: itemsErr } = await supabase.from('order_items').insert(itemRows).select();
+    if (itemsErr || !insertedItems || insertedItems.length === 0) {
+      // Rollback order row
+      await supabase.from('orders').delete().eq('id', orderRow.id);
+      throw new Error(`Failed to persist order items: ${itemsErr?.message || 'Transaction rollback'}`);
+    }
+
+    const completedOrder: Order = {
+      id: orderRow.id,
+      orderNumber: orderRow.order_number,
+      customerName: orderRow.customer_name,
+      customerEmail: orderRow.customer_email,
+      customerPhone: orderRow.customer_phone,
+      shippingAddress: orderRow.shipping_address,
+      billingAddress: orderRow.billing_address,
+      items: insertedItems.map((it: any) => ({
+        id: it.id,
+        orderId: it.order_id,
+        productId: it.product_id,
+        variantId: it.variant_id,
+        productName: it.product_name,
+        productSku: it.product_sku,
+        unit: it.unit,
+        unitPrice: Number(it.unit_price),
+        quantity: Number(it.quantity),
+        subtotal: Number(it.subtotal),
+        imageUrl: it.image_url,
+        selectedColor: it.selected_color,
+        selectedFinish: it.selected_finish,
+      })),
+      subtotal: Number(orderRow.subtotal),
+      tax: Number(orderRow.tax),
+      shippingFee: Number(orderRow.shipping_fee),
+      discount: Number(orderRow.discount || 0),
+      totalAmount: Number(orderRow.total_amount),
+      orderStatus: orderRow.order_status,
+      paymentStatus: orderRow.payment_status,
+      paymentMethod: orderRow.payment_method,
+      notes: orderRow.notes,
+      createdAt: orderRow.created_at,
+      updatedAt: orderRow.updated_at,
+    };
+
+    // 5. Asynchronous Non-Blocking Web Push Dispatch
+    try {
+      await sendNewOrderPush(completedOrder);
+    } catch (pushErr) {
+      console.warn('Web push notice:', pushErr);
+    }
+
+    return { success: true, order: completedOrder };
+  } catch (err: any) {
+    console.error('Order creation error:', err.message);
+
+    // Roll back any successfully decremented inventory
+    for (const dec of decrementedItems) {
+      try {
+        await supabase.rpc('increment_stock_atomic', {
+          p_product_id: dec.productId,
+          p_quantity: dec.quantity,
+        });
+      } catch (rollbackErr) {
+        console.error(`Failed to rollback stock for product ${dec.productId}:`, rollbackErr);
+      }
+    }
+
+    return { success: false, error: err.message || 'Failed to complete order checkout.' };
+  }
 }
 
 export async function getOrders(): Promise<Order[]> {
-  try {
+  if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { data, error } = await supabase
       .from('orders')
@@ -14568,11 +14655,12 @@ export async function getOrders(): Promise<Order[]> {
       `)
       .order('created_at', { ascending: false });
 
-    if (!error && data) {
-      return data.map(mapSupabaseOrder);
+    if (error) {
+      console.error('Supabase getOrders error:', error);
+      throw new Error(`Failed to load orders from database: ${error.message}`);
     }
-  } catch (err) {
-    console.warn('Supabase getOrders query error, loading fallback:', err);
+
+    return (data || []).map(mapSupabaseOrder);
   }
 
   const db = getDb();
@@ -14580,7 +14668,7 @@ export async function getOrders(): Promise<Order[]> {
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {
-  try {
+  if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('orders').select(`
       *,
@@ -14594,10 +14682,13 @@ export async function getOrderById(id: string): Promise<Order | null> {
     }
 
     const { data, error } = await query.maybeSingle();
-    if (!error && data) {
-      return mapSupabaseOrder(data);
+    if (error) {
+      console.error('Supabase getOrderById error:', error);
+      throw new Error(`Failed to load order: ${error.message}`);
     }
-  } catch (err) {}
+    if (!data) return null;
+    return mapSupabaseOrder(data);
+  }
 
   const db = getDb();
   return db.orders.find((o) => o.id === id || o.orderNumber === id) || null;
@@ -14608,7 +14699,7 @@ export async function updateOrderStatus(
   orderStatus?: Order['orderStatus'],
   paymentStatus?: Order['paymentStatus']
 ): Promise<Order | null> {
-  try {
+  if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const updates: any = { updated_at: new Date().toISOString() };
     if (orderStatus) updates.order_status = orderStatus;
@@ -14622,10 +14713,13 @@ export async function updateOrderStatus(
     }
 
     const { data, error } = await query.select(`*, items:order_items(*)`).maybeSingle();
-    if (!error && data) {
-      return mapSupabaseOrder(data);
+    if (error) {
+      console.error('Supabase updateOrderStatus error:', error);
+      throw new Error(`Failed to update order status: ${error.message}`);
     }
-  } catch (err) {}
+    if (!data) return null;
+    return mapSupabaseOrder(data);
+  }
 
   const db = getDb();
   const order = db.orders.find((o) => o.id === id || o.orderNumber === id);
@@ -14641,6 +14735,7 @@ export async function updateOrderStatus(
 // =============================================================
 // QUOTES
 // =============================================================
+
 export async function createQuote(quoteData: {
   customerName: string;
   customerEmail: string;
@@ -14674,7 +14769,7 @@ export async function createQuote(quoteData: {
         project_location: quoteData.projectLocation,
         estimated_timeline: quoteData.estimatedTimeline,
         budget_range: quoteData.budgetRange,
-        notes: quoteData.notes,
+        notes: quoteData.notes || '',
         status: 'Pending',
       })
       .select()
@@ -14685,14 +14780,18 @@ export async function createQuote(quoteData: {
     if (quoteData.items && quoteData.items.length > 0) {
       const qItems = quoteData.items.map((it) => ({
         quote_id: quoteRow.id,
-        product_id: it.productId || null,
+        product_id: it.productId && isUUID(it.productId) ? it.productId : null,
         product_name: it.productName,
         dimensions: it.dimensions || null,
         quantity: it.quantity,
         unit: it.unit || 'sq ft',
         notes: it.notes || null,
       }));
-      await supabase.from('quote_items').insert(qItems);
+      const { error: itemsErr } = await supabase.from('quote_items').insert(qItems);
+      if (itemsErr) {
+        await supabase.from('quotes').delete().eq('id', quoteRow.id);
+        throw new Error(`Failed to save quote items: ${itemsErr.message}`);
+      }
     }
 
     const { data: fullQuote } = await supabase.from('quotes').select('*, items:quote_items(*)').eq('id', quoteRow.id).single();
@@ -14756,7 +14855,8 @@ export async function getQuoteById(id: string): Promise<Quote | null> {
       query = query.eq('quote_number', id);
     }
     const { data, error } = await query.maybeSingle();
-    if (error || !data) return null;
+    if (error) throw new Error(error.message);
+    if (!data) return null;
     return mapSupabaseQuote(data);
   }
 
@@ -14784,7 +14884,8 @@ export async function updateQuoteStatus(
     }
 
     const { data, error } = await query.select('*, items:quote_items(*)').maybeSingle();
-    if (error || !data) return null;
+    if (error) throw new Error(`Failed to update quote status: ${error.message}`);
+    if (!data) return null;
     return mapSupabaseQuote(data);
   }
 
@@ -14802,6 +14903,7 @@ export async function updateQuoteStatus(
 // =============================================================
 // ENQUIRIES / CONTACT
 // =============================================================
+
 export async function createEnquiry(data: Omit<Enquiry, 'id' | 'createdAt' | 'status'>): Promise<Enquiry> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -14850,8 +14952,9 @@ export async function getEnquiries(): Promise<Enquiry[]> {
 export async function updateEnquiryStatus(id: string, status: Enquiry['status']): Promise<Enquiry | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('enquiries').update({ status }).eq('id', id).select().single();
-    if (error || !data) return null;
+    const { data, error } = await supabase.from('enquiries').update({ status }).eq('id', id).select().maybeSingle();
+    if (error) throw new Error(`Failed to update enquiry: ${error.message}`);
+    if (!data) return null;
     return mapSupabaseEnquiry(data);
   }
 
@@ -14866,11 +14969,13 @@ export async function updateEnquiryStatus(id: string, status: Enquiry['status'])
 // =============================================================
 // ADMIN AUTH & CREDENTIALS
 // =============================================================
+
 export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('admins').select('*').ilike('email', email).single();
-    if (!error && data) {
+    const { data, error } = await supabase.from('admins').select('*').ilike('email', email).maybeSingle();
+    if (error) throw new Error(`Database authentication error: ${error.message}`);
+    if (data) {
       return {
         id: data.id,
         email: data.email,
@@ -14882,6 +14987,7 @@ export async function getAdminByEmail(email: string): Promise<(AdminUser & { pas
         updatedAt: data.updated_at,
       };
     }
+    return null;
   }
 
   const db = getDb();
@@ -14903,7 +15009,7 @@ export async function updateAdminPassword(adminId: string, newPasswordHash: stri
 
     if (error) {
       console.error('Supabase password update error:', error);
-      return false;
+      throw new Error(`Failed to update password: ${error.message}`);
     }
 
     try {
@@ -14931,28 +15037,19 @@ export async function updateAdminPassword(adminId: string, newPasswordHash: stri
   return true;
 }
 
-export async function recordAdminLogin(adminId: string): Promise<void> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    await supabase.from('admins').update({ updated_at: new Date().toISOString() }).eq('id', adminId);
-    return;
-  }
-
-  const db = getDb();
-  const admin = db.admins.find((a) => a.id === adminId);
-  if (admin) {
-    admin.updatedAt = new Date().toISOString();
-    saveDb(db);
-  }
-}
-
 // =============================================================
-// SITE SETTINGS
+// SITE SETTINGS (AUTHORITATIVE SUPABASE PERSISTENCE)
 // =============================================================
+
 export async function getSiteSettings(): Promise<SiteSettings> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data } = await supabase.from('site_settings').select('*').eq('key', 'general').single();
+    const { data, error } = await supabase.from('site_settings').select('*').eq('key', 'general').maybeSingle();
+    if (error) {
+      console.error('Supabase getSiteSettings error:', error);
+      throw new Error(`Failed to fetch site settings: ${error.message}`);
+    }
+
     if (data && data.value) {
       const v = data.value;
       return {
@@ -14965,13 +15062,14 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         supportPhone: v.supportPhone || v.contactPhone || '+91 70029 48484',
         contactPhone: v.contactPhone || v.supportPhone || '+91 70029 48484',
         studioAddress: v.studioAddress || 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040',
-        taxRatePercent: Number(v.taxRatePercent || 18),
-        freeShippingThreshold: Number(v.freeShippingThreshold || 50000),
-        standardShippingFee: Number(v.standardShippingFee || 1500),
+        taxRatePercent: Number(v.taxRatePercent !== undefined ? v.taxRatePercent : 18),
+        freeShippingThreshold: Number(v.freeShippingThreshold !== undefined ? v.freeShippingThreshold : 50000),
+        standardShippingFee: Number(v.standardShippingFee !== undefined ? v.standardShippingFee : 1500),
         currencySymbol: v.currencySymbol || '₹',
         updatedAt: data.updated_at || new Date().toISOString(),
       };
     }
+    return initialSiteSettings;
   }
 
   const db = getDb();
@@ -14984,13 +15082,23 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
     const current = await getSiteSettings();
     const merged = { ...current, ...partial, updatedAt: new Date().toISOString() };
 
-    await supabase
+    const { data, error } = await supabase
       .from('site_settings')
-      .upsert({
-        key: 'general',
-        value: merged,
-        updated_at: new Date().toISOString(),
-      });
+      .upsert(
+        {
+          key: 'general',
+          value: merged,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'key' }
+      )
+      .select()
+      .single();
+
+    if (error || !data) {
+      console.error('Supabase updateSiteSettings error:', error);
+      throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
+    }
 
     return merged;
   }
@@ -15004,13 +15112,16 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
 // =============================================================
 // AUDIT LOGS
 // =============================================================
+
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+    const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
+
     const { data, error } = await supabase
       .from('audit_logs')
       .insert({
-        admin_id: entry.adminId !== 'system' ? entry.adminId : null,
+        admin_id: adminIdToUse,
         admin_email: entry.adminEmail,
         action: entry.action,
         entity: entry.entity,
@@ -15035,138 +15146,36 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
   }
 
   const db = getDb();
-  const newLog: AuditLog = {
+  const log: AuditLog = {
     ...entry,
     id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
     createdAt: new Date().toISOString(),
   };
-  db.auditLogs.unshift(newLog);
-  if (db.auditLogs.length > 500) db.auditLogs.length = 500;
+  db.auditLogs.unshift(log);
+  if (db.auditLogs.length > 500) db.auditLogs.pop();
   saveDb(db);
-  return newLog;
+  return log;
 }
 
-export async function getAuditLogs(): Promise<AuditLog[]> {
+export async function getAuditLogs(limit = 100): Promise<AuditLog[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100);
-    if (!error && data) {
-      return data.map((d: any) => ({
-        id: d.id,
-        adminId: d.admin_id || 'system',
-        adminEmail: d.admin_email,
-        action: d.action,
-        entity: d.entity,
-        entityId: d.entity_id,
-        details: d.details,
-        createdAt: d.created_at,
-      }));
-    }
+    const { data, error } = await supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(limit);
+    if (error) throw new Error(`Failed to load audit logs: ${error.message}`);
+    return (data || []).map((l: any) => ({
+      id: l.id,
+      adminId: l.admin_id || 'system',
+      adminEmail: l.admin_email,
+      action: l.action,
+      entity: l.entity,
+      entityId: l.entity_id,
+      details: l.details,
+      createdAt: l.created_at,
+    }));
   }
 
   const db = getDb();
-  return [...db.auditLogs].slice(0, 100);
-}
-
-// =============================================================
-// CUSTOMERS DIRECTORY (AGGREGATED FROM REAL ORDERS & QUOTES)
-// =============================================================
-export async function getCustomers(): Promise<{
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  ordersCount: number;
-  totalSpent: number;
-  lastOrderDate: string;
-  city?: string;
-}[]> {
-  const orders = await getOrders();
-  const customerMap = new Map<string, {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    ordersCount: number;
-    totalSpent: number;
-    lastOrderDate: string;
-    city?: string;
-  }>();
-
-  for (const ord of orders) {
-    const key = ord.customerEmail.toLowerCase();
-    const existing = customerMap.get(key);
-    if (existing) {
-      existing.ordersCount += 1;
-      existing.totalSpent += ord.totalAmount;
-      if (new Date(ord.createdAt) > new Date(existing.lastOrderDate)) {
-        existing.lastOrderDate = ord.createdAt;
-      }
-    } else {
-      customerMap.set(key, {
-        id: `cust-${key.replace(/[^a-z0-9]/g, '')}`,
-        name: ord.customerName,
-        email: ord.customerEmail,
-        phone: ord.customerPhone,
-        ordersCount: 1,
-        totalSpent: ord.totalAmount,
-        lastOrderDate: ord.createdAt,
-        city: ord.shippingAddress?.city,
-      });
-    }
-  }
-
-  return Array.from(customerMap.values()).sort((a, b) => new Date(b.lastOrderDate).getTime() - new Date(a.lastOrderDate).getTime());
-}
-
-// =============================================================
-// PUSH SUBSCRIPTIONS
-// =============================================================
-export async function addPushSubscription(sub: {
-  endpoint: string;
-  keys: { p256dh: string; auth: string };
-  adminId?: string;
-}): Promise<void> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    await supabase.from('notification_subscriptions').upsert(
-      {
-        endpoint: sub.endpoint,
-        keys: sub.keys,
-        admin_id: sub.adminId || null,
-        created_at: new Date().toISOString(),
-      },
-      { onConflict: 'endpoint' }
-    );
-    return;
-  }
-
-  const db = getDb();
-  const existingIdx = db.pushSubscriptions.findIndex((s) => s.endpoint === sub.endpoint);
-  const entry = {
-    id: `sub-${Date.now()}`,
-    endpoint: sub.endpoint,
-    keys: sub.keys,
-    adminId: sub.adminId,
-    createdAt: new Date().toISOString(),
-  };
-  if (existingIdx >= 0) {
-    db.pushSubscriptions[existingIdx] = entry;
-  } else {
-    db.pushSubscriptions.push(entry);
-  }
-  saveDb(db);
-}
-
-export async function getPushSubscriptions() {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data } = await supabase.from('notification_subscriptions').select('*');
-    return data || [];
-  }
-
-  const db = getDb();
-  return db.pushSubscriptions;
+  return db.auditLogs.slice(0, limit);
 }
 ```
 

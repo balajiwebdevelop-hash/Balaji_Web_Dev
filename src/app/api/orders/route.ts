@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createOrderAtomic, getOrders, addAuditLog, getPushSubscriptions } from '@/lib/db';
+import { createOrderAtomic, getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {

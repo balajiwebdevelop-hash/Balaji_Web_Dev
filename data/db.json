@@ -813,6 +813,106 @@
   ],
   "orders": [
     {
+      "id": "22ed6b59-72f1-4c51-a631-1c5adb048c17",
+      "orderNumber": "BAL-756132-541",
+      "customerName": "Rahul Verma",
+      "customerEmail": "rahul.verma@example.com",
+      "customerPhone": "+91 98200 12345",
+      "shippingAddress": {
+        "addressLine1": "Villa 14, Royal Palms Estate",
+        "addressLine2": "GS Road",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005",
+        "country": "India"
+      },
+      "billingAddress": {
+        "addressLine1": "Villa 14, Royal Palms Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "3936f354-53ac-4c68-a1a8-6219d36ef34c",
+          "orderId": "22ed6b59-72f1-4c51-a631-1c5adb048c17",
+          "productId": "",
+          "variantId": null,
+          "productName": "Acoustic Fluted Walnut Wall Panel",
+          "productSku": "MAT-PNL-003",
+          "unit": "sheet",
+          "unitPrice": 13200,
+          "quantity": 2,
+          "subtotal": 26400,
+          "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Deep Espresso Walnut",
+          "selectedFinish": "Silky Natural Wax Oil"
+        }
+      ],
+      "subtotal": 26400,
+      "tax": 4752,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 32652,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Wire Transfer / RTGS",
+      "notes": "Please coordinate white-glove pallet delivery.",
+      "createdAt": "2026-08-19T15:19:16.132Z",
+      "updatedAt": "2026-08-19T15:19:16.132Z"
+    },
+    {
+      "id": "071304c5-d535-4aa0-9363-8dd603b49998",
+      "orderNumber": "BAL-721036-937",
+      "customerName": "Rahul Verma",
+      "customerEmail": "rahul.verma@example.com",
+      "customerPhone": "+91 98200 12345",
+      "shippingAddress": {
+        "addressLine1": "Villa 14, Royal Palms Estate",
+        "addressLine2": "GS Road",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005",
+        "country": "India"
+      },
+      "billingAddress": {
+        "addressLine1": "Villa 14, Royal Palms Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "b7c9bd6d-beca-44e9-9612-e08faef062d5",
+          "orderId": "071304c5-d535-4aa0-9363-8dd603b49998",
+          "productId": "",
+          "variantId": null,
+          "productName": "Acoustic Fluted Walnut Wall Panel",
+          "productSku": "MAT-PNL-003",
+          "unit": "sheet",
+          "unitPrice": 13200,
+          "quantity": 2,
+          "subtotal": 26400,
+          "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+          "selectedColor": "Deep Espresso Walnut",
+          "selectedFinish": "Silky Natural Wax Oil"
+        }
+      ],
+      "subtotal": 26400,
+      "tax": 4752,
+      "shippingFee": 1500,
+      "discount": 0,
+      "totalAmount": 32652,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Wire Transfer / RTGS",
+      "notes": "Please coordinate white-glove pallet delivery.",
+      "createdAt": "2026-08-19T15:18:41.036Z",
+      "updatedAt": "2026-08-19T15:18:41.036Z"
+    },
+    {
       "id": "ord-1786986369346-43ydx",
       "orderNumber": "BAL-369346-717",
       "customerName": "Aarav Mehta",
@@ -1294,6 +1394,34 @@
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "id": "log-1787152756799",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "22ed6b59-72f1-4c51-a631-1c5adb048c17",
+      "details": {
+        "orderNumber": "BAL-756132-541",
+        "total": 32652,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-19T15:19:16.799Z"
+    },
+    {
+      "id": "log-1787152721500",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "071304c5-d535-4aa0-9363-8dd603b49998",
+      "details": {
+        "orderNumber": "BAL-721036-937",
+        "total": 32652,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-19T15:18:41.500Z"
+    },
     {
       "id": "log-1786986369346",
       "adminId": "system",

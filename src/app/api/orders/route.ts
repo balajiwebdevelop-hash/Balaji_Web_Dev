@@ -4,14 +4,24 @@ import { verifyAdminToken } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
     }
 
     const orders = await getOrders();
-    return NextResponse.json({ success: true, orders });
+    return NextResponse.json(
+      { success: true, orders },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

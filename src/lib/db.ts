@@ -20,6 +20,7 @@ import {
   initialServices,
   initialSiteSettings,
 } from './seedData';
+import { getServiceSupabase } from './supabase';
 
 export interface DatabaseState {
   admins: AdminUser[];
@@ -445,6 +446,45 @@ export async function deleteService(id: string): Promise<boolean> {
   return true;
 }
 
+// Helper to map Supabase order with joined items
+function mapSupabaseOrder(row: any): Order {
+  return {
+    id: row.id,
+    orderNumber: row.order_number,
+    customerName: row.customer_name,
+    customerEmail: row.customer_email,
+    customerPhone: row.customer_phone,
+    shippingAddress: row.shipping_address,
+    billingAddress: row.billing_address || row.shipping_address,
+    subtotal: Number(row.subtotal),
+    tax: Number(row.tax),
+    shippingFee: Number(row.shipping_fee),
+    discount: Number(row.discount || 0),
+    totalAmount: Number(row.total_amount),
+    orderStatus: row.order_status,
+    paymentStatus: row.payment_status,
+    paymentMethod: row.payment_method,
+    notes: row.notes || undefined,
+    items: (row.items || []).map((it: any) => ({
+      id: it.id,
+      orderId: it.order_id,
+      productId: it.product_id || '',
+      variantId: it.variant_id || undefined,
+      productName: it.product_name,
+      productSku: it.product_sku,
+      unit: it.unit,
+      unitPrice: Number(it.unit_price),
+      quantity: Number(it.quantity),
+      subtotal: Number(it.subtotal),
+      imageUrl: it.image_url || '',
+      selectedColor: it.selected_color || undefined,
+      selectedFinish: it.selected_finish || undefined,
+    })),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
 // -------------------------------------------------------------
 // ORDERS & ATOMIC STOCK DECREMENT
 // -------------------------------------------------------------
@@ -470,7 +510,53 @@ export async function createOrderAtomic(orderData: {
 
   // 1. Verify availability and fetch authoritative prices
   for (const item of orderData.items) {
-    const product = db.products.find((p) => p.id === item.productId);
+    let product = db.products.find((p) => p.id === item.productId || p.slug === item.productId);
+
+    if (!product && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const supabase = getServiceSupabase();
+        const { data: sbProd } = await supabase
+          .from('products')
+          .select('*')
+          .or(`id.eq.${item.productId},slug.eq.${item.productId}`)
+          .single();
+
+        if (sbProd) {
+          product = {
+            id: sbProd.id,
+            name: sbProd.name,
+            slug: sbProd.slug,
+            sku: sbProd.sku,
+            brand: sbProd.brand,
+            categoryId: sbProd.category_id,
+            subcategory: sbProd.subcategory,
+            description: sbProd.description,
+            price: Number(sbProd.price),
+            salePrice: sbProd.sale_price ? Number(sbProd.sale_price) : undefined,
+            unit: sbProd.unit,
+            moq: Number(sbProd.moq),
+            stock: Number(sbProd.stock),
+            purchaseMode: sbProd.purchase_mode,
+            leadTime: sbProd.lead_time,
+            dimensions: sbProd.dimensions,
+            thickness: sbProd.thickness,
+            material: sbProd.material,
+            finish: sbProd.finish,
+            color: sbProd.color,
+            images: sbProd.images || [],
+            isFeatured: sbProd.is_featured,
+            isNew: sbProd.is_new,
+            isBestseller: sbProd.is_bestseller,
+            published: sbProd.published,
+            tags: sbProd.tags || [],
+            specifications: sbProd.specifications || {},
+            createdAt: sbProd.created_at,
+            updatedAt: sbProd.updated_at,
+          };
+        }
+      } catch (err) {}
+    }
+
     if (!product) {
       return { success: false, error: `Material/Product with ID ${item.productId} not found.` };
     }
@@ -521,9 +607,9 @@ export async function createOrderAtomic(orderData: {
     });
   }
 
-  // 2. Perform Atomic Stock Decrement
+  // 2. Perform Atomic Stock Decrement locally & in Supabase
   for (const item of orderData.items) {
-    const p = db.products.find((prod) => prod.id === item.productId);
+    const p = db.products.find((prod) => prod.id === item.productId || prod.slug === item.productId);
     if (p) {
       p.stock -= item.quantity;
       if (item.variantId && p.variants) {
@@ -531,6 +617,18 @@ export async function createOrderAtomic(orderData: {
         if (v) v.stock -= item.quantity;
       }
       p.updatedAt = new Date().toISOString();
+    }
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const supabase = getServiceSupabase();
+        // Atomic stock decrement in Supabase
+        const targetId = p ? p.id : item.productId;
+        const { error: rpcErr } = await supabase.rpc('decrement_stock_atomic', { p_id: targetId, p_qty: item.quantity });
+        if (rpcErr && p) {
+          await supabase.from('products').update({ stock: p.stock }).or(`id.eq.${p.id},slug.eq.${p.slug}`);
+        }
+      } catch (err) {}
     }
   }
 
@@ -566,9 +664,89 @@ export async function createOrderAtomic(orderData: {
 
   validatedItems.forEach((it) => (it.orderId = newOrder.id));
 
-  db.orders.unshift(newOrder);
+  // 3. Persist to Supabase if configured
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data: orderRow, error: orderErr } = await supabase
+        .from('orders')
+        .insert({
+          order_number: newOrder.orderNumber,
+          customer_name: newOrder.customerName,
+          customer_email: newOrder.customerEmail,
+          customer_phone: newOrder.customerPhone,
+          shipping_address: newOrder.shippingAddress,
+          billing_address: newOrder.billingAddress,
+          subtotal: newOrder.subtotal,
+          tax: newOrder.tax,
+          shipping_fee: newOrder.shippingFee,
+          discount: newOrder.discount,
+          total_amount: newOrder.totalAmount,
+          order_status: newOrder.orderStatus,
+          payment_status: newOrder.paymentStatus,
+          payment_method: newOrder.paymentMethod,
+          notes: newOrder.notes,
+        })
+        .select()
+        .single();
 
-  // Add audit log
+      if (!orderErr && orderRow) {
+        newOrder.id = orderRow.id;
+        const itemRows = validatedItems.map((it) => ({
+          order_id: orderRow.id,
+          product_name: it.productName,
+          product_sku: it.productSku,
+          unit: it.unit,
+          unit_price: it.unitPrice,
+          quantity: it.quantity,
+          subtotal: it.subtotal,
+          image_url: it.imageUrl,
+          selected_color: it.selectedColor,
+          selected_finish: it.selectedFinish,
+        }));
+
+        const { data: insertedItems } = await supabase.from('order_items').insert(itemRows).select();
+        if (insertedItems && insertedItems.length > 0) {
+          newOrder.items = insertedItems.map((it: any) => ({
+            id: it.id,
+            orderId: it.order_id,
+            productId: it.product_id || '',
+            variantId: it.variant_id,
+            productName: it.product_name,
+            productSku: it.product_sku,
+            unit: it.unit,
+            unitPrice: Number(it.unit_price),
+            quantity: Number(it.quantity),
+            subtotal: Number(it.subtotal),
+            imageUrl: it.image_url,
+            selectedColor: it.selected_color,
+            selectedFinish: it.selected_finish,
+          }));
+        }
+
+        // Add audit log to Supabase
+        try {
+          await supabase
+            .from('audit_logs')
+            .insert({
+              admin_id: 'system',
+              admin_email: 'checkout@balaji.com',
+              action: 'ORDER_PLACED',
+              entity: 'Order',
+              entity_id: orderRow.id,
+              details: { orderNumber: newOrder.orderNumber, total: newOrder.totalAmount, itemsCount: newOrder.items.length },
+            });
+        } catch (auditErr) {}
+      } else if (orderErr) {
+        console.warn('Supabase order insert warning:', orderErr.message);
+      }
+    } catch (sbErr: any) {
+      console.warn('Supabase order creation exception, continuing with local persistence:', sbErr.message);
+    }
+  }
+
+  // 4. Save to local database
+  db.orders.unshift(newOrder);
   db.auditLogs.unshift({
     id: `log-${Date.now()}`,
     adminId: 'system',
@@ -585,11 +763,50 @@ export async function createOrderAtomic(orderData: {
 }
 
 export async function getOrders(): Promise<Order[]> {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          items:order_items(*)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        return data.map(mapSupabaseOrder);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase getOrders warning, falling back to local store:', sbErr);
+    }
+  }
+
   const db = getDb();
   return [...db.orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          items:order_items(*)
+        `)
+        .or(`id.eq.${id},order_number.eq.${id}`)
+        .single();
+
+      if (!error && data) {
+        return mapSupabaseOrder(data);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase getOrderById warning, falling back to local store:', sbErr);
+    }
+  }
+
   const db = getDb();
   return db.orders.find((o) => o.id === id || o.orderNumber === id) || null;
 }
@@ -600,15 +817,37 @@ export async function updateOrderStatus(
   paymentStatus?: Order['paymentStatus']
 ): Promise<Order | null> {
   const db = getDb();
-  const order = db.orders.find((o) => o.id === id);
-  if (!order) return null;
+  const order = db.orders.find((o) => o.id === id || o.orderNumber === id);
+  if (order) {
+    if (orderStatus) order.orderStatus = orderStatus;
+    if (paymentStatus) order.paymentStatus = paymentStatus;
+    order.updatedAt = new Date().toISOString();
+    saveDb(db);
+  }
 
-  if (orderStatus) order.orderStatus = orderStatus;
-  if (paymentStatus) order.paymentStatus = paymentStatus;
-  order.updatedAt = new Date().toISOString();
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const supabase = getServiceSupabase();
+      const updates: any = { updated_at: new Date().toISOString() };
+      if (orderStatus) updates.order_status = orderStatus;
+      if (paymentStatus) updates.payment_status = paymentStatus;
 
-  saveDb(db);
-  return order;
+      const { data, error } = await supabase
+        .from('orders')
+        .update(updates)
+        .or(`id.eq.${id},order_number.eq.${id}`)
+        .select(`*, items:order_items(*)`)
+        .single();
+
+      if (!error && data) {
+        return mapSupabaseOrder(data);
+      }
+    } catch (sbErr) {
+      console.warn('Supabase updateOrderStatus warning:', sbErr);
+    }
+  }
+
+  return order || null;
 }
 
 // -------------------------------------------------------------

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 function AdminOrdersContent() {
   const searchParams = useSearchParams();
@@ -28,10 +29,13 @@ function AdminOrdersContent() {
   const [statusFilter, setStatusFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [isLiveConnected, setIsLiveConnected] = useState(false);
 
   const loadOrders = async () => {
     try {
-      const res = await fetch('/api/orders');
+      const res = await fetch('/api/orders', {
+        headers: { 'Cache-Control': 'no-cache' },
+      });
       if (res.ok) {
         const d = await res.json();
         const ords: Order[] = d.orders || [];
@@ -43,7 +47,7 @@ function AdminOrdersContent() {
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error('Error loading orders:', e);
     } finally {
       setLoading(false);
     }
@@ -51,8 +55,40 @@ function AdminOrdersContent() {
 
   useEffect(() => {
     loadOrders();
+
+    // 1. Setup Supabase Realtime Channel
+    const channel = supabase
+      .channel('admin-orders-realtime-stream')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'orders' },
+        (payload) => {
+          // Immediately reload orders on any new order insertion or status update
+          loadOrders();
+
+          // If browser notifications are permitted, display order alert
+          if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
+            const newRecord = payload.new as any;
+            new Notification('New Order Placed — Balaji Architect & Interiors', {
+              body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
+              icon: '/favicon.ico',
+            });
+          }
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setIsLiveConnected(true);
+        }
+      });
+
+    // 2. Periodic sync fallback (every 8 seconds)
     const interval = setInterval(loadOrders, 8000);
-    return () => clearInterval(interval);
+
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleUpdateStatus = async (orderId: string, orderStatus: OrderStatus, paymentStatus?: PaymentStatus) => {

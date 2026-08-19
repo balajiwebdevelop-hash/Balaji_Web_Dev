@@ -24,6 +24,20 @@ import {
 } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+const DEFAULT_VAPID_PUBLIC_KEY =
+  'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -37,31 +51,69 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   }, [admin, loading, pathname, router]);
 
+  // Register service worker and synchronize existing push subscription
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'Notification' in window) {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window) {
       setPushStatus(Notification.permission);
+
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(async (reg) => {
+          if (Notification.permission === 'granted') {
+            try {
+              const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+              const convertedKey = urlBase64ToUint8Array(vapidKey);
+              let sub = await reg.pushManager.getSubscription();
+              if (!sub) {
+                sub = await reg.pushManager.subscribe({
+                  userVisibleOnly: true,
+                  applicationServerKey: convertedKey,
+                });
+              }
+              if (sub) {
+                await fetch('/api/notifications/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ subscription: sub }),
+                });
+              }
+            } catch (err) {
+              console.warn('Auto push subscription sync notice:', err);
+            }
+          }
+        })
+        .catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
     }
-  }, []);
+  }, [admin]);
 
   const requestPushPermission = async () => {
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      const permission = await Notification.requestPermission();
-      setPushStatus(permission);
-      if (permission === 'granted' && 'serviceWorker' in navigator) {
-        try {
+    if (typeof window !== 'undefined' && 'Notification' in window && 'serviceWorker' in navigator) {
+      try {
+        const permission = await Notification.requestPermission();
+        setPushStatus(permission);
+        if (permission === 'granted') {
           const reg = await navigator.serviceWorker.ready;
-          const sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSPOEgWAfV84Vc07L05Yn65K5V7n7S9nL4iM',
-          });
-          await fetch('/api/notifications/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ subscription: sub }),
-          });
-        } catch (e) {
-          console.error('Failed to subscribe to push notifications', e);
+          const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+          const convertedKey = urlBase64ToUint8Array(vapidKey);
+          let sub = await reg.pushManager.getSubscription();
+          if (!sub) {
+            sub = await reg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: convertedKey,
+            });
+          }
+          if (sub) {
+            await fetch('/api/notifications/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ subscription: sub }),
+            });
+          }
         }
+      } catch (e) {
+        console.error('Failed to subscribe to push notifications', e);
       }
     }
   };

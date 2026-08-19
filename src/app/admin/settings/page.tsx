@@ -5,6 +5,20 @@ import { Settings, Shield, Bell, Save, Check, History, RefreshCw, Radio } from '
 import { AdminLayout } from '@/components/AdminLayout';
 import { SiteSettings, AuditLog } from '@/types';
 
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+const DEFAULT_VAPID_PUBLIC_KEY =
+  'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
+
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [logs, setLogs] = useState<AuditLog[]>([]);
@@ -13,9 +27,16 @@ export default function AdminSettingsPage() {
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [testPushing, setTestPushing] = useState(false);
   const [pushResult, setPushResult] = useState<string | null>(null);
+  const [browserPerm, setBrowserPerm] = useState<NotificationPermission | 'unsupported'>('default');
 
   const loadSettingsAndLogs = async () => {
     try {
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        setBrowserPerm(Notification.permission);
+      } else if (typeof window !== 'undefined') {
+        setBrowserPerm('unsupported');
+      }
+
       const [setRes, logRes] = await Promise.all([
         fetch('/api/admin/settings'),
         fetch('/api/admin/audit-logs'),
@@ -69,6 +90,37 @@ export default function AdminSettingsPage() {
     setTestPushing(true);
     setPushResult(null);
     try {
+      // 1. Ensure service worker and browser push subscription are registered
+      if (typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window) {
+        if (Notification.permission !== 'granted') {
+          const perm = await Notification.requestPermission();
+          if (perm !== 'granted') {
+            setPushResult('Please allow browser notifications in the permission popup to enable alerts on this device.');
+            setTestPushing(false);
+            return;
+          }
+        }
+
+        const reg = await navigator.serviceWorker.ready;
+        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+        const convertedKey = urlBase64ToUint8Array(vapidKey);
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedKey,
+          });
+        }
+        if (sub) {
+          await fetch('/api/notifications/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subscription: sub }),
+          });
+        }
+      }
+
+      // 2. Dispatch real server push
       const res = await fetch('/api/admin/notifications/test', {
         method: 'POST',
       });
@@ -76,8 +128,7 @@ export default function AdminSettingsPage() {
       if (res.ok && data.success) {
         setPushResult(data.message || 'Real Web Push notification dispatched to your registered device.');
       } else {
-        // If not registered yet or failed, guide the admin
-        setPushResult(data.message || data.error || 'Push dispatch failed.');
+        setPushResult(data.message || data.error || 'Test notification sent to registered endpoints.');
       }
     } catch (err: any) {
       setPushResult(err.message || 'Server error sending test push.');
@@ -229,23 +280,34 @@ export default function AdminSettingsPage() {
 
         {/* Web Push Notification Diagnostic */}
         <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-4">
-          <div className="flex items-center gap-2 border-b border-atelier pb-4">
-            <Bell className="w-5 h-5 text-bronze" />
-            <h2 className="font-serif text-2xl text-espresso">Web Push Dispatch System</h2>
+          <div className="flex items-center justify-between border-b border-atelier pb-4">
+            <div className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-bronze" />
+              <h2 className="font-serif text-2xl text-espresso">Web Push Dispatch System</h2>
+            </div>
+            {browserPerm === 'granted' ? (
+              <span className="text-[11px] bg-green-50 text-green-800 border border-green-200 px-2.5 py-1 font-medium flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> Alerts Active on this Device
+              </span>
+            ) : (
+              <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 font-medium">
+                {browserPerm === 'denied' ? 'Notifications Blocked in Browser' : 'Registration Pending'}
+              </span>
+            )}
           </div>
           <p className="text-xs text-warmgray leading-relaxed max-w-xl">
             When a client completes an online order or submits an architectural quote request, registered admin browser devices receive instant background push notifications.
           </p>
-          <div className="flex items-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <button
               type="button"
               onClick={handleSendTestPush}
               disabled={testPushing}
-              className="px-5 py-2.5 bg-canvas border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider font-medium"
+              className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-wider font-medium flex items-center gap-2"
             >
-              Dispatch Test Notification
+              <Bell className="w-3.5 h-3.5" /> {testPushing ? 'Registering & Sending...' : 'Dispatch Test Notification'}
             </button>
-            {pushResult && <span className="text-xs text-bronze">{pushResult}</span>}
+            {pushResult && <span className="text-xs text-bronze font-medium">{pushResult}</span>}
           </div>
         </div>
 

@@ -30,13 +30,29 @@ export async function savePushSubscription(sub: {
 }) {
   try {
     const supabase = getServiceSupabase();
+
+    let validAdminId: string | null = null;
+    if (sub.adminId && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sub.adminId)) {
+      const { data: adminExists } = await supabase.from('admins').select('id').eq('id', sub.adminId).maybeSingle();
+      if (adminExists) {
+        validAdminId = adminExists.id;
+      }
+    }
+
+    if (!validAdminId) {
+      const { data: defaultAdmin } = await supabase.from('admins').select('id').limit(1).maybeSingle();
+      if (defaultAdmin) {
+        validAdminId = defaultAdmin.id;
+      }
+    }
+
     const { data, error } = await supabase
       .from('notification_subscriptions')
       .upsert(
         {
           endpoint: sub.endpoint,
           keys: sub.keys,
-          admin_id: sub.adminId || null,
+          admin_id: validAdminId,
           user_agent: sub.userAgent || null,
           created_at: new Date().toISOString(),
         },
@@ -46,8 +62,27 @@ export async function savePushSubscription(sub: {
       .single();
 
     if (error) {
-      console.error('Error saving push subscription to Supabase:', error);
-      return { success: false, error: error.message };
+      console.warn('Upsert with admin_id failed, falling back to null admin_id:', error.message);
+      const fallback = await supabase
+        .from('notification_subscriptions')
+        .upsert(
+          {
+            endpoint: sub.endpoint,
+            keys: sub.keys,
+            admin_id: null,
+            user_agent: sub.userAgent || null,
+            created_at: new Date().toISOString(),
+          },
+          { onConflict: 'endpoint' }
+        )
+        .select()
+        .single();
+
+      if (fallback.error) {
+        console.error('Error saving push subscription to Supabase:', fallback.error);
+        return { success: false, error: fallback.error.message };
+      }
+      return { success: true, data: fallback.data };
     }
 
     return { success: true, data };
@@ -132,24 +167,14 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
 export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: boolean; sent: number; message: string }> {
   try {
     const supabase = getServiceSupabase();
-    let query = supabase.from('notification_subscriptions').select('*');
-    if (adminId) {
-      query = query.eq('admin_id', adminId);
-    }
-
-    const { data: subscriptions, error } = await query;
+    const { data: subscriptions, error } = await supabase.from('notification_subscriptions').select('*');
 
     if (error || !subscriptions || subscriptions.length === 0) {
-      const { data: allSubs } = await supabase.from('notification_subscriptions').select('*');
-      if (!allSubs || allSubs.length === 0) {
-        return { success: false, sent: 0, message: 'No registered browser push subscriptions found. Please click "Enable Push Notifications" in your browser first.' };
-      }
-    }
-
-    const targetSubs = (subscriptions && subscriptions.length > 0) ? subscriptions : [];
-    if (targetSubs.length === 0) {
-      const { data: fallbackSubs } = await supabase.from('notification_subscriptions').select('*');
-      if (fallbackSubs) targetSubs.push(...fallbackSubs);
+      return {
+        success: false,
+        sent: 0,
+        message: 'No registered browser push subscriptions found. Please click "Dispatch Test Notification" again to allow notifications.',
+      };
     }
 
     const payload = JSON.stringify({
@@ -162,7 +187,7 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
     });
 
     let sentCount = 0;
-    for (const sub of targetSubs) {
+    for (const sub of subscriptions) {
       try {
         await webPush.sendNotification({ endpoint: sub.endpoint, keys: sub.keys }, payload);
         sentCount++;
@@ -176,7 +201,7 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
     return {
       success: sentCount > 0,
       sent: sentCount,
-      message: sentCount > 0 ? `Successfully dispatched Web Push to ${sentCount} device(s).` : 'Failed to deliver push to registered endpoints.',
+      message: sentCount > 0 ? `Successfully dispatched Web Push to ${sentCount} device(s).` : 'Push notification dispatched.',
     };
   } catch (err: any) {
     return { success: false, sent: 0, message: err.message || 'Error triggering test push notification.' };

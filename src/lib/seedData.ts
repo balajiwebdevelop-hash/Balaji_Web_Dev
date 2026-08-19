@@ -762,7 +762,7 @@ export const initialServices: Service[] = [
  */
 export function getInitialAdminSeed() {
   return {
-    id: 'admin-balaji-root',
+    id: '2bd20632-00dd-4f48-84b4-6e526543c8d8',
     email: 'vicks@balaji.com',
     passwordHash: hashPassword('v****@********'),
     name: 'Vikas Sir (Principal Architect)',

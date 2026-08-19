@@ -69,18 +69,18 @@ export default function AdminSettingsPage() {
     setTestPushing(true);
     setPushResult(null);
     try {
-      // Create a test client notification or trigger via sw
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('Balaji Architect & Interiors Live Dispatch', {
-          body: 'Realtime order push notification verified.',
-          icon: '/favicon.ico',
-        });
-        setPushResult('Test notification dispatched to your browser.');
+      const res = await fetch('/api/admin/notifications/test', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPushResult(data.message || 'Real Web Push notification dispatched to your registered device.');
       } else {
-        setPushResult('Please grant notification permissions first in browser.');
+        // If not registered yet or failed, guide the admin
+        setPushResult(data.message || data.error || 'Push dispatch failed.');
       }
     } catch (err: any) {
-      setPushResult(err.message || 'Notification error');
+      setPushResult(err.message || 'Server error sending test push.');
     } finally {
       setTestPushing(false);
     }

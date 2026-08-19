@@ -4,6 +4,9 @@ import path from 'path';
 import { verifyAdminToken } from '@/lib/auth';
 import { getServiceSupabase } from '@/lib/supabase';
 
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Authenticate admin
@@ -28,41 +31,55 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'No image file provided' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
     const rawExtension = path.extname(file.name) || '.jpg';
     const extension = rawExtension.toLowerCase();
+
+    if (!ALLOWED_EXTENSIONS.has(extension)) {
+      return NextResponse.json(
+        { success: false, error: `Unsupported file type (${extension}). Allowed: JPG, PNG, WebP, GIF, AVIF, SVG.` },
+        { status: 400 }
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (buffer.length > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json(
+        { success: false, error: 'File exceeds maximum upload size of 10MB.' },
+        { status: 400 }
+      );
+    }
+
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
 
     // 3. Primary: Try Supabase Cloud Storage
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      try {
-        const supabase = getServiceSupabase();
+    try {
+      const supabase = getServiceSupabase();
 
-        // Ensure bucket exists
-        await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
+      // Ensure bucket exists
+      await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
 
-        const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true,
-        });
+      const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
+        contentType: file.type || 'image/jpeg',
+        upsert: true,
+      });
 
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
-          if (publicUrlData && publicUrlData.publicUrl) {
-            return NextResponse.json({
-              success: true,
-              url: publicUrlData.publicUrl,
-              filename,
-              storage: 'supabase',
-            });
-          }
-        } else if (error) {
-          console.warn('Supabase upload notice:', error.message);
+      if (!error && data) {
+        const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
+        if (publicUrlData && publicUrlData.publicUrl) {
+          return NextResponse.json({
+            success: true,
+            url: publicUrlData.publicUrl,
+            filename,
+            storage: 'supabase',
+          });
         }
-      } catch (sbErr: any) {
-        console.warn('Supabase storage exception, using local fallback:', sbErr.message);
+      } else if (error) {
+        console.warn('Supabase upload storage notice:', error.message);
       }
+    } catch (sbErr: any) {
+      console.warn('Supabase storage exception, saving to local static storage:', sbErr.message);
     }
 
     // 4. Fallback: Local Server Storage (/public/uploads)

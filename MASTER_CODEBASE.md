@@ -6132,7 +6132,7 @@ export async function PATCH(req: NextRequest) {
 ### `src/app/api/admin/upload/route.ts`
 
 - **File**: `src/app/api/admin/upload/route.ts`
-- **Size**: 3.1 KB (89 lines)
+- **Size**: 3.5 KB (106 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -6141,6 +6141,9 @@ import fs from 'fs';
 import path from 'path';
 import { verifyAdminToken } from '@/lib/auth';
 import { getServiceSupabase } from '@/lib/supabase';
+
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
 export async function POST(req: NextRequest) {
   try {
@@ -6166,41 +6169,55 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'No image file provided' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
     const rawExtension = path.extname(file.name) || '.jpg';
     const extension = rawExtension.toLowerCase();
+
+    if (!ALLOWED_EXTENSIONS.has(extension)) {
+      return NextResponse.json(
+        { success: false, error: `Unsupported file type (${extension}). Allowed: JPG, PNG, WebP, GIF, AVIF, SVG.` },
+        { status: 400 }
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (buffer.length > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json(
+        { success: false, error: 'File exceeds maximum upload size of 10MB.' },
+        { status: 400 }
+      );
+    }
+
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
 
     // 3. Primary: Try Supabase Cloud Storage
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      try {
-        const supabase = getServiceSupabase();
+    try {
+      const supabase = getServiceSupabase();
 
-        // Ensure bucket exists
-        await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
+      // Ensure bucket exists
+      await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
 
-        const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true,
-        });
+      const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
+        contentType: file.type || 'image/jpeg',
+        upsert: true,
+      });
 
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
-          if (publicUrlData && publicUrlData.publicUrl) {
-            return NextResponse.json({
-              success: true,
-              url: publicUrlData.publicUrl,
-              filename,
-              storage: 'supabase',
-            });
-          }
-        } else if (error) {
-          console.warn('Supabase upload notice:', error.message);
+      if (!error && data) {
+        const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
+        if (publicUrlData && publicUrlData.publicUrl) {
+          return NextResponse.json({
+            success: true,
+            url: publicUrlData.publicUrl,
+            filename,
+            storage: 'supabase',
+          });
         }
-      } catch (sbErr: any) {
-        console.warn('Supabase storage exception, using local fallback:', sbErr.message);
+      } else if (error) {
+        console.warn('Supabase upload storage notice:', error.message);
       }
+    } catch (sbErr: any) {
+      console.warn('Supabase storage exception, saving to local static storage:', sbErr.message);
     }
 
     // 4. Fallback: Local Server Storage (/public/uploads)
@@ -13330,7 +13347,7 @@ export function verifyAdminToken(token: string): AdminTokenPayload | null {
 ### `src/lib/db.ts`
 
 - **File**: `src/lib/db.ts`
-- **Size**: 59.4 KB (1761 lines)
+- **Size**: 60.1 KB (1795 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -13837,16 +13854,18 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
     if (partialData.tags !== undefined) updates.tags = partialData.tags;
     if (partialData.specifications !== undefined) updates.specifications = partialData.specifications;
 
-    const { data, error } = await supabase
-      .from('products')
-      .update(updates)
-      .or(`id.eq.${id},slug.eq.${id}`)
-      .select()
-      .single();
+    let query = supabase.from('products').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data, error } = await query.select().maybeSingle();
 
     if (error || !data) {
       console.error('Supabase updateProduct error:', error);
-      throw new Error(`Failed to update product in database: ${error?.message}`);
+      throw new Error(`Failed to update product in database: ${error?.message || 'Product not found'}`);
     }
 
     return mapSupabaseProduct(data);
@@ -13865,7 +13884,13 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
 export async function deleteProduct(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { error } = await supabase.from('products').delete().or(`id.eq.${id},slug.eq.${id}`);
+    let query = supabase.from('products').delete();
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+    const { error } = await query;
     if (error) {
       console.error('Supabase deleteProduct error:', error);
       return false;
@@ -13958,7 +13983,7 @@ export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | '
         name: data.name,
         slug: data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         description: data.description || '',
-        cover_image: data.imageUrl || '',
+        image_url: data.imageUrl || '',
         sort_order: data.sortOrder || 0,
         is_active: data.isActive !== false,
       })
@@ -13988,17 +14013,24 @@ export async function updateCategory(id: string, partial: Partial<Category>): Pr
     if (partial.name !== undefined) updates.name = partial.name;
     if (partial.slug !== undefined) updates.slug = partial.slug;
     if (partial.description !== undefined) updates.description = partial.description;
-    if (partial.imageUrl !== undefined) updates.cover_image = partial.imageUrl;
+    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
     if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
     if (partial.isActive !== undefined) updates.is_active = partial.isActive;
 
-    const { data, error } = await supabase.from('categories').update(updates).eq('id', id).select().single();
+    let query = supabase.from('categories').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data, error } = await query.select().maybeSingle();
     if (error || !data) return null;
     return mapSupabaseCategory(data);
   }
 
   const db = getDb();
-  const idx = db.categories.findIndex((c) => c.id === id);
+  const idx = db.categories.findIndex((c) => c.id === id || c.slug === id);
   if (idx === -1) return null;
   const existing = db.categories[idx];
   const updated: Category = { ...existing, ...partial, id: existing.id, updatedAt: new Date().toISOString() };
@@ -14010,12 +14042,18 @@ export async function updateCategory(id: string, partial: Partial<Category>): Pr
 export async function deleteCategory(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { error } = await supabase.from('categories').delete().eq('id', id);
+    let query = supabase.from('categories').delete();
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+    const { error } = await query;
     return !error;
   }
 
   const db = getDb();
-  const idx = db.categories.findIndex((c) => c.id === id);
+  const idx = db.categories.findIndex((c) => c.id === id || c.slug === id);
   if (idx === -1) return false;
   db.categories.splice(idx, 1);
   saveDb(db);
@@ -14688,7 +14726,13 @@ export async function getQuotes(): Promise<Quote[]> {
 export async function getQuoteById(id: string): Promise<Quote | null> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('quotes').select('*, items:quote_items(*)').or(`id.eq.${id},quote_number.eq.${id}`).single();
+    let query = supabase.from('quotes').select('*, items:quote_items(*)');
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('quote_number', id);
+    }
+    const { data, error } = await query.maybeSingle();
     if (error || !data) return null;
     return mapSupabaseQuote(data);
   }
@@ -14709,13 +14753,20 @@ export async function updateQuoteStatus(
     if (totalQuotedAmount !== undefined) updates.total_quoted_amount = totalQuotedAmount;
     if (adminNotes !== undefined) updates.admin_notes = adminNotes;
 
-    const { data, error } = await supabase.from('quotes').update(updates).eq('id', id).select('*, items:quote_items(*)').single();
+    let query = supabase.from('quotes').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('quote_number', id);
+    }
+
+    const { data, error } = await query.select('*, items:quote_items(*)').maybeSingle();
     if (error || !data) return null;
     return mapSupabaseQuote(data);
   }
 
   const db = getDb();
-  const quote = db.quotes.find((q) => q.id === id);
+  const quote = db.quotes.find((q) => q.id === id || q.quoteNumber === id);
   if (!quote) return null;
   quote.status = status;
   if (totalQuotedAmount !== undefined) quote.totalQuotedAmount = totalQuotedAmount;

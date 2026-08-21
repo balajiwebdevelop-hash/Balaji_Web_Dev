@@ -13,6 +13,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
+  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +24,17 @@ export function Navbar() {
       }
     };
     window.addEventListener('scroll', handleScroll);
+
+    // Fetch live studio announcement banner
+    fetch('/api/admin/settings')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.settings?.announcementBanner) {
+          setAnnouncement(data.settings.announcementBanner);
+        }
+      })
+      .catch(() => {});
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -42,6 +54,16 @@ export function Navbar() {
 
   return (
     <>
+      {announcement?.enabled && announcement?.text && (
+        <div className="bg-espresso text-surface/90 text-[11px] py-1.5 px-4 text-center tracking-wider border-b border-espresso-light flex items-center justify-center gap-2 font-light">
+          <span>{announcement.text}</span>
+          {announcement.linkUrl && (
+            <Link href={announcement.linkUrl} className="underline hover:text-champagne font-medium transition-colors ml-1">
+              Explore &rarr;
+            </Link>
+          )}
+        </div>
+      )}
       <header
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled

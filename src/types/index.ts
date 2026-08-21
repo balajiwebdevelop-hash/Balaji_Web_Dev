@@ -277,9 +277,14 @@ export interface AdminUser {
 export interface SiteSettings {
   brandName: string;
   tagline: string;
+  architectName?: string;
+  establishedYear?: string;
+  googleRating?: string;
   logoUrl?: string;
   contactEmail: string;
   contactPhone: string;
+  whatsappNumber?: string;
+  businessHours?: string;
   studioAddress: string;
   city: string;
   state: string;
@@ -290,9 +295,12 @@ export interface SiteSettings {
   taxRatePercent: number;
   standardShippingFee: number;
   freeShippingThreshold: number;
+  gstinNumber?: string;
+  minOrderValue?: number;
   socialInstagram: string;
   socialPinterest: string;
   socialLinkedin: string;
+  socialFacebook?: string;
   announcementBanner?: {
     enabled: boolean;
     text: string;

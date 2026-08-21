@@ -2,12 +2,17 @@ import { hashPassword } from './auth';
 import { Category, Product, Project, Service, SiteSettings } from '@/types';
 
 export const initialSiteSettings: SiteSettings = {
-  brandName: 'Balaji Architect & Interior',
+  brandName: 'Balaji Architect & Interiors',
   tagline: 'Crafted spaces, luxury architecture, and considered materials for timeless living.',
+  architectName: 'Vikas Sir (Principal Architect)',
+  establishedYear: '2014',
+  googleRating: '★ 5.0 (22 Google Reviews)',
   logoUrl: '',
   contactEmail: 'atelier@balaji-interior.com',
   contactPhone: '+91 70029 48484',
-  studioAddress: 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali',
+  whatsappNumber: '+91 70029 48484',
+  businessHours: 'Mon - Sat: 10:00 AM - 7:00 PM (IST)',
+  studioAddress: 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040',
   city: 'Guwahati',
   state: 'Assam',
   country: 'India',
@@ -17,9 +22,12 @@ export const initialSiteSettings: SiteSettings = {
   taxRatePercent: 18,
   standardShippingFee: 1500,
   freeShippingThreshold: 50000,
+  gstinNumber: '18AAECB4848F1ZX',
+  minOrderValue: 0,
   socialInstagram: 'https://instagram.com/balajiatelier',
   socialPinterest: 'https://pinterest.com/balajiatelier',
   socialLinkedin: 'https://linkedin.com/company/balaji-atelier',
+  socialFacebook: 'https://facebook.com/balajiarchitects',
   announcementBanner: {
     enabled: true,
     text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',

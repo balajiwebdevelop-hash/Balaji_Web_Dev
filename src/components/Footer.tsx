@@ -5,13 +5,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 
-export function Footer() {
+import { SiteSettings } from '@/types';
+
+export function Footer({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const pathname = usePathname();
 
   // Do not render public footer on admin pages
   if (pathname.startsWith('/admin')) {
     return null;
   }
+
+  const brandName = initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS';
+  const brandSubtitle = initialSettings?.brandSubtitle || 'Architecture • Interior Design • Materials';
 
   return (
     <footer className="bg-espresso text-surface border-t border-espresso-light mt-auto">
@@ -20,10 +25,10 @@ export function Footer() {
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
             <h3 className="font-serif text-2xl tracking-widest text-surface font-light">
-              BALAJI ARCHITECT & INTERIORS
+              {brandName}
             </h3>
             <p className="text-xs uppercase tracking-widest text-champagne font-medium">
-              Architecture • Interior Design • Materials
+              {brandSubtitle}
             </p>
             <p className="text-sm text-surface/70 font-light leading-relaxed max-w-sm pt-2">
               Crafted spaces, bespoke architectural commissions, and considered materials for timeless living. We bridge the disciplines of luxury architecture, master interior craftsmanship, and global material curation.

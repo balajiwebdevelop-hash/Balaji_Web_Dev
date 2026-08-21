@@ -7,21 +7,41 @@ import { Search, Heart, ShoppingBag, Menu, X, Shield, User } from 'lucide-react'
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 
-export function Navbar() {
+import { SiteSettings } from '@/types';
+
+export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
-  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>({
-    enabled: true,
-    text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
-    linkUrl: '/quote',
-  });
+  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(
+    initialSettings?.announcementBanner !== undefined
+      ? initialSettings.announcementBanner
+      : {
+          enabled: true,
+          text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
+          linkUrl: '/quote',
+        }
+  );
   const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
-    name: 'BALAJI ARCHITECT & INTERIORS',
-    subtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
+    name: initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS',
+    subtitle: initialSettings?.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
   });
+
+  useEffect(() => {
+    if (initialSettings) {
+      if (initialSettings.brandName || initialSettings.brandSubtitle) {
+        setBrandInfo({
+          name: initialSettings.brandName || 'BALAJI ARCHITECT & INTERIORS',
+          subtitle: initialSettings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+        });
+      }
+      if (initialSettings.announcementBanner !== undefined) {
+        setAnnouncement(initialSettings.announcementBanner);
+      }
+    }
+  }, [initialSettings]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,12 +53,12 @@ export function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Fetch live studio settings
+    // Silent background sync for live updates
     fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {
-          if (data.settings.announcementBanner) {
+          if (data.settings.announcementBanner !== undefined) {
             setAnnouncement(data.settings.announcementBanner);
           }
           if (data.settings.brandName || data.settings.brandSubtitle) {

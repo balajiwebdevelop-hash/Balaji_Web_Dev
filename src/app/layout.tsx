@@ -8,6 +8,10 @@ import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { PageTransition } from '@/components/PageTransition';
+import { getSiteSettings } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Balaji Architect & Interiors — Luxury Architecture, Interior Design & Materials',
@@ -33,24 +37,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className="bg-canvas text-charcoal flex flex-col min-h-screen">
         <AdminAuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <Navbar />
+              <Navbar initialSettings={settings} />
               <main className="flex-1 pb-16 md:pb-0">
                 <PageTransition>{children}</PageTransition>
               </main>
               <CartDrawer />
               <MobileBottomNav />
-              <Footer />
+              <Footer initialSettings={settings} />
             </WishlistProvider>
           </CartProvider>
         </AdminAuthProvider>

@@ -10492,7 +10492,7 @@ body {
 ### `src/app/layout.tsx`
 
 - **File**: `src/app/layout.tsx`
-- **Size**: 2.2 KB (61 lines)
+- **Size**: 2.4 KB (67 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -10506,6 +10506,10 @@ import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { PageTransition } from '@/components/PageTransition';
+import { getSiteSettings } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Balaji Architect & Interiors — Luxury Architecture, Interior Design & Materials',
@@ -10531,24 +10535,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className="bg-canvas text-charcoal flex flex-col min-h-screen">
         <AdminAuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <Navbar />
+              <Navbar initialSettings={settings} />
               <main className="flex-1 pb-16 md:pb-0">
                 <PageTransition>{children}</PageTransition>
               </main>
               <CartDrawer />
               <MobileBottomNav />
-              <Footer />
+              <Footer initialSettings={settings} />
             </WishlistProvider>
           </CartProvider>
         </AdminAuthProvider>
@@ -13233,7 +13239,7 @@ export function CartDrawer() {
 ### `src/components/Footer.tsx`
 
 - **File**: `src/components/Footer.tsx`
-- **Size**: 8.0 KB (187 lines)
+- **Size**: 8.2 KB (192 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -13244,13 +13250,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 
-export function Footer() {
+import { SiteSettings } from '@/types';
+
+export function Footer({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const pathname = usePathname();
 
   // Do not render public footer on admin pages
   if (pathname.startsWith('/admin')) {
     return null;
   }
+
+  const brandName = initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS';
+  const brandSubtitle = initialSettings?.brandSubtitle || 'Architecture • Interior Design • Materials';
 
   return (
     <footer className="bg-espresso text-surface border-t border-espresso-light mt-auto">
@@ -13259,10 +13270,10 @@ export function Footer() {
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
             <h3 className="font-serif text-2xl tracking-widest text-surface font-light">
-              BALAJI ARCHITECT & INTERIORS
+              {brandName}
             </h3>
             <p className="text-xs uppercase tracking-widest text-champagne font-medium">
-              Architecture • Interior Design • Materials
+              {brandSubtitle}
             </p>
             <p className="text-sm text-surface/70 font-light leading-relaxed max-w-sm pt-2">
               Crafted spaces, bespoke architectural commissions, and considered materials for timeless living. We bridge the disciplines of luxury architecture, master interior craftsmanship, and global material curation.
@@ -13854,7 +13865,7 @@ export function MobileBottomNav() {
 ### `src/components/Navbar.tsx`
 
 - **File**: `src/components/Navbar.tsx`
-- **Size**: 10.3 KB (257 lines)
+- **Size**: 11.1 KB (277 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -13867,21 +13878,41 @@ import { Search, Heart, ShoppingBag, Menu, X, Shield, User } from 'lucide-react'
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 
-export function Navbar() {
+import { SiteSettings } from '@/types';
+
+export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
-  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>({
-    enabled: true,
-    text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
-    linkUrl: '/quote',
-  });
+  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(
+    initialSettings?.announcementBanner !== undefined
+      ? initialSettings.announcementBanner
+      : {
+          enabled: true,
+          text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
+          linkUrl: '/quote',
+        }
+  );
   const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
-    name: 'BALAJI ARCHITECT & INTERIORS',
-    subtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
+    name: initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS',
+    subtitle: initialSettings?.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
   });
+
+  useEffect(() => {
+    if (initialSettings) {
+      if (initialSettings.brandName || initialSettings.brandSubtitle) {
+        setBrandInfo({
+          name: initialSettings.brandName || 'BALAJI ARCHITECT & INTERIORS',
+          subtitle: initialSettings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+        });
+      }
+      if (initialSettings.announcementBanner !== undefined) {
+        setAnnouncement(initialSettings.announcementBanner);
+      }
+    }
+  }, [initialSettings]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13893,12 +13924,12 @@ export function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Fetch live studio settings
+    // Silent background sync for live updates
     fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {
-          if (data.settings.announcementBanner) {
+          if (data.settings.announcementBanner !== undefined) {
             setAnnouncement(data.settings.announcementBanner);
           }
           if (data.settings.brandName || data.settings.brandSubtitle) {

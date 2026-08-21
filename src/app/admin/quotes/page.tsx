@@ -15,7 +15,7 @@ export default function AdminQuotesPage() {
 
   const loadQuotes = async () => {
     try {
-      const res = await fetch('/api/quotes');
+      const res = await fetch('/api/quotes', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setQuotes(d.quotes || []);

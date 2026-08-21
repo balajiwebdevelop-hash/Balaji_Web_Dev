@@ -10,7 +10,8 @@ export const metadata = {
   description: 'Limited-edition architectural objects, travertine monolithic tables, cast bronze hardware, and studio design pieces.',
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ShopPage() {
   const allProducts = await getProducts({ publishedOnly: true });

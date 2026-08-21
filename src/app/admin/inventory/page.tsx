@@ -16,7 +16,7 @@ export default function AdminInventoryPage() {
 
   const loadProducts = async () => {
     try {
-      const res = await fetch('/api/products?all=true');
+      const res = await fetch('/api/products?all=true', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setProducts(d.products || []);

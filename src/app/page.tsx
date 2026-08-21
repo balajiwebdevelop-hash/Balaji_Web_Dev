@@ -6,7 +6,8 @@ import { getProjects, getProducts, getCategories, getServices, getSiteSettings }
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
-export const revalidate = 60; // SSR with caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [featuredProjects, featuredProducts, categories, services, settings] = await Promise.all([

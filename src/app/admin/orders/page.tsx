@@ -34,6 +34,7 @@ function AdminOrdersContent() {
   const loadOrders = async () => {
     try {
       const res = await fetch('/api/orders', {
+        cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' },
       });
       if (res.ok) {

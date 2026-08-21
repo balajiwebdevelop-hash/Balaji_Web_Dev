@@ -72,8 +72,8 @@ export default function AdminSettingsPage() {
       }
 
       const [setRes, logRes] = await Promise.all([
-        fetch('/api/admin/settings', { headers: { 'Cache-Control': 'no-cache' } }),
-        fetch('/api/admin/audit-logs', { headers: { 'Cache-Control': 'no-cache' } }),
+        fetch('/api/admin/settings', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
+        fetch('/api/admin/audit-logs', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
       ]);
 
       if (setRes.ok) {

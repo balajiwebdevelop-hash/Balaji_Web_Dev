@@ -30,7 +30,7 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
 
     // Fetch live studio settings
-    fetch('/api/admin/settings')
+    fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {

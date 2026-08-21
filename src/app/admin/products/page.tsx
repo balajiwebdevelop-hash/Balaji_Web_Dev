@@ -58,8 +58,8 @@ export default function AdminProductsPage() {
   const loadData = async () => {
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch('/api/products?all=true'),
-        fetch('/api/categories?admin=true'),
+        fetch('/api/products?all=true', { cache: 'no-store' }),
+        fetch('/api/categories?admin=true', { cache: 'no-store' }),
       ]);
       if (prodRes.ok) {
         const d = await prodRes.json();

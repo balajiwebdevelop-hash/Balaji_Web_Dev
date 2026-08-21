@@ -64,7 +64,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     // Load live site settings for payment gateway configuration
-    fetch('/api/admin/settings')
+    fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {

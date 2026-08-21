@@ -28,7 +28,7 @@ export default function AdminServicesPage() {
 
   const loadServices = async () => {
     try {
-      const res = await fetch('/api/services?all=true');
+      const res = await fetch('/api/services?all=true', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setServices(d.services || []);

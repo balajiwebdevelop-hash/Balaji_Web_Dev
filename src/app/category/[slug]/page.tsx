@@ -6,7 +6,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getCategoryBySlug, getProducts, getCategories } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const cat = await getCategoryBySlug(params.slug);

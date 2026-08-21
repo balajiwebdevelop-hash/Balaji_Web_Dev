@@ -2389,7 +2389,7 @@ export default function AdminCategoriesPage() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch('/api/categories?admin=true');
+      const res = await fetch('/api/categories?admin=true', { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setCategories(data.categories || []);
@@ -2839,7 +2839,7 @@ export default function AdminCustomersPage() {
 ### `src/app/admin/inventory/page.tsx`
 
 - **File**: `src/app/admin/inventory/page.tsx`
-- **Size**: 8.9 KB (218 lines)
+- **Size**: 9.0 KB (218 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -2861,7 +2861,7 @@ export default function AdminInventoryPage() {
 
   const loadProducts = async () => {
     try {
-      const res = await fetch('/api/products?all=true');
+      const res = await fetch('/api/products?all=true', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setProducts(d.products || []);
@@ -3292,7 +3292,7 @@ export default function AdminLoginPage() {
 ### `src/app/admin/orders/page.tsx`
 
 - **File**: `src/app/admin/orders/page.tsx`
-- **Size**: 18.2 KB (427 lines)
+- **Size**: 18.2 KB (428 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -3332,6 +3332,7 @@ function AdminOrdersContent() {
   const loadOrders = async () => {
     try {
       const res = await fetch('/api/orders', {
+        cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' },
       });
       if (res.ok) {
@@ -3977,7 +3978,7 @@ export default function AdminDashboardPage() {
 ### `src/app/admin/products/page.tsx`
 
 - **File**: `src/app/admin/products/page.tsx`
-- **Size**: 23.5 KB (604 lines)
+- **Size**: 23.6 KB (604 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -4041,8 +4042,8 @@ export default function AdminProductsPage() {
   const loadData = async () => {
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch('/api/products?all=true'),
-        fetch('/api/categories?admin=true'),
+        fetch('/api/products?all=true', { cache: 'no-store' }),
+        fetch('/api/categories?admin=true', { cache: 'no-store' }),
       ]);
       if (prodRes.ok) {
         const d = await prodRes.json();
@@ -4591,7 +4592,7 @@ export default function AdminProductsPage() {
 ### `src/app/admin/projects/page.tsx`
 
 - **File**: `src/app/admin/projects/page.tsx`
-- **Size**: 16.5 KB (437 lines)
+- **Size**: 16.6 KB (437 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -4632,7 +4633,7 @@ export default function AdminProjectsPage() {
 
   const loadProjects = async () => {
     try {
-      const res = await fetch('/api/projects?all=true');
+      const res = await fetch('/api/projects?all=true', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setProjects(d.projects || []);
@@ -5038,7 +5039,7 @@ export default function AdminProjectsPage() {
 ### `src/app/admin/quotes/page.tsx`
 
 - **File**: `src/app/admin/quotes/page.tsx`
-- **Size**: 12.5 KB (284 lines)
+- **Size**: 12.6 KB (284 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -5059,7 +5060,7 @@ export default function AdminQuotesPage() {
 
   const loadQuotes = async () => {
     try {
-      const res = await fetch('/api/quotes');
+      const res = await fetch('/api/quotes', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setQuotes(d.quotes || []);
@@ -5332,7 +5333,7 @@ export default function AdminQuotesPage() {
 ### `src/app/admin/services/page.tsx`
 
 - **File**: `src/app/admin/services/page.tsx`
-- **Size**: 12.6 KB (342 lines)
+- **Size**: 12.7 KB (342 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -5366,7 +5367,7 @@ export default function AdminServicesPage() {
 
   const loadServices = async () => {
     try {
-      const res = await fetch('/api/services?all=true');
+      const res = await fetch('/api/services?all=true', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
         setServices(d.services || []);
@@ -5684,7 +5685,7 @@ export default function AdminServicesPage() {
 ### `src/app/admin/settings/page.tsx`
 
 - **File**: `src/app/admin/settings/page.tsx`
-- **Size**: 61.6 KB (1292 lines)
+- **Size**: 61.7 KB (1292 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -5762,8 +5763,8 @@ export default function AdminSettingsPage() {
       }
 
       const [setRes, logRes] = await Promise.all([
-        fetch('/api/admin/settings', { headers: { 'Cache-Control': 'no-cache' } }),
-        fetch('/api/admin/audit-logs', { headers: { 'Cache-Control': 'no-cache' } }),
+        fetch('/api/admin/settings', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
+        fetch('/api/admin/audit-logs', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
       ]);
 
       if (setRes.ok) {
@@ -9015,7 +9016,7 @@ export default function CartPage() {
 ### `src/app/category/[slug]/page.tsx`
 
 - **File**: `src/app/category/[slug]/page.tsx`
-- **Size**: 7.0 KB (161 lines)
+- **Size**: 7.1 KB (162 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -9027,7 +9028,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getCategoryBySlug, getProducts, getCategories } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const cat = await getCategoryBySlug(params.slug);
@@ -9256,7 +9258,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     // Load live site settings for payment gateway configuration
-    fetch('/api/admin/settings')
+    fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {
@@ -10555,7 +10557,7 @@ export default function RootLayout({
 ### `src/app/material/[slug]/page.tsx`
 
 - **File**: `src/app/material/[slug]/page.tsx`
-- **Size**: 1.6 KB (49 lines)
+- **Size**: 1.6 KB (50 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -10566,7 +10568,8 @@ import { ArrowLeft } from 'lucide-react';
 import { getProductBySlug, getProducts } from '@/lib/db';
 import { ProductDetailClient } from '@/components/ProductDetailClient';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = await getProductBySlug(params.slug);
@@ -10614,7 +10617,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 ### `src/app/materials/page.tsx`
 
 - **File**: `src/app/materials/page.tsx`
-- **Size**: 8.0 KB (181 lines)
+- **Size**: 8.1 KB (182 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -10630,7 +10633,8 @@ export const metadata = {
   description: 'Procure authentic Italian travertines, fluted acoustic walnut, Calacatta porcelain slabs, and architectural hardware.',
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function MaterialsPage({
   searchParams,
@@ -10805,7 +10809,7 @@ export default async function MaterialsPage({
 ### `src/app/page.tsx`
 
 - **File**: `src/app/page.tsx`
-- **Size**: 20.1 KB (400 lines)
+- **Size**: 20.1 KB (401 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -10817,7 +10821,8 @@ import { getProjects, getProducts, getCategories, getServices, getSiteSettings }
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
-export const revalidate = 60; // SSR with caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [featuredProjects, featuredProducts, categories, services, settings] = await Promise.all([
@@ -11215,7 +11220,7 @@ export default async function HomePage() {
 ### `src/app/projects/[slug]/page.tsx`
 
 - **File**: `src/app/projects/[slug]/page.tsx`
-- **Size**: 9.7 KB (228 lines)
+- **Size**: 9.8 KB (229 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -11228,7 +11233,8 @@ import { getProjectBySlug, getProjects } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const project = await getProjectBySlug(params.slug);
@@ -11453,7 +11459,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 ### `src/app/projects/page.tsx`
 
 - **File**: `src/app/projects/page.tsx`
-- **Size**: 5.3 KB (131 lines)
+- **Size**: 5.3 KB (132 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -11470,7 +11476,8 @@ export const metadata = {
   description: 'Explore signature residential villas, sky penthouses, and bespoke commercial spaces crafted by Balaji Architect & Interiors.',
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ProjectsPage({
   searchParams,
@@ -12462,7 +12469,7 @@ export default async function ServicesPage() {
 ### `src/app/shop/page.tsx`
 
 - **File**: `src/app/shop/page.tsx`
-- **Size**: 4.8 KB (105 lines)
+- **Size**: 4.8 KB (106 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -12478,7 +12485,8 @@ export const metadata = {
   description: 'Limited-edition architectural objects, travertine monolithic tables, cast bronze hardware, and studio design pieces.',
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ShopPage() {
   const allProducts = await getProducts({ publishedOnly: true });
@@ -12663,7 +12671,7 @@ export default function WishlistPage() {
         return;
       }
       try {
-        const res = await fetch('/api/products');
+        const res = await fetch('/api/products', { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           const matched = (data.products || []).filter((p: Product) => wishlistIds.includes(p.id));
@@ -13907,7 +13915,7 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
 
     // Fetch live studio settings
-    fetch('/api/admin/settings')
+    fetch('/api/admin/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {

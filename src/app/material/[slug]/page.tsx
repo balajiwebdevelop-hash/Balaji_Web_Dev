@@ -5,7 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { getProductBySlug, getProducts } from '@/lib/db';
 import { ProductDetailClient } from '@/components/ProductDetailClient';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = await getProductBySlug(params.slug);

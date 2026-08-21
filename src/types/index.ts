@@ -274,6 +274,38 @@ export interface AdminUser {
   updatedAt: string;
 }
 
+export interface HomepageSettings {
+  heroEyebrow?: string;
+  heroHeadingLine1?: string;
+  heroHeadingLine2?: string;
+  heroHeadingLine3?: string;
+  heroDescription?: string;
+  heroImageUrl?: string;
+  heroPrimaryBtnText?: string;
+  heroPrimaryBtnLink?: string;
+  heroSecondaryBtnText?: string;
+  heroSecondaryBtnLink?: string;
+  trustBadge1?: string;
+  trustBadge2?: string;
+  trustBadge3?: string;
+  trustBadge4?: string;
+  introEyebrow?: string;
+  introHeading?: string;
+  introParagraph1?: string;
+  introParagraph2?: string;
+  introImageUrl?: string;
+  stat1Value?: string;
+  stat1Label?: string;
+  stat2Value?: string;
+  stat2Label?: string;
+  stat3Value?: string;
+  stat3Label?: string;
+  ctaHeading?: string;
+  ctaDescription?: string;
+  ctaBtnText?: string;
+  ctaBtnLink?: string;
+}
+
 export interface SiteSettings {
   brandName: string;
   tagline: string;
@@ -306,6 +338,7 @@ export interface SiteSettings {
     text: string;
     linkUrl?: string;
   };
+  homepage?: HomepageSettings;
 }
 
 export interface AuditLog {

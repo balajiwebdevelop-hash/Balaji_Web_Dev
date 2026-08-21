@@ -1733,6 +1733,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           text: v.announcementBanner?.text || initialSiteSettings.announcementBanner?.text || '',
           linkUrl: v.announcementBanner?.linkUrl || initialSiteSettings.announcementBanner?.linkUrl || '/quote',
         },
+        homepage: {
+          ...initialSiteSettings.homepage,
+          ...(v.homepage || {}),
+        },
         updatedAt: data.updated_at || new Date().toISOString(),
       };
     }

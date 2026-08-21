@@ -33,6 +33,43 @@ export const initialSiteSettings: SiteSettings = {
     text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
     linkUrl: '/quote',
   },
+  homepage: {
+    heroEyebrow: 'Architecture • Interior Studio • Material Curation',
+    heroHeadingLine1: 'INTERIORS.',
+    heroHeadingLine2: 'ARCHITECTURE.',
+    heroHeadingLine3: 'MATERIALS.',
+    heroDescription:
+      'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.',
+    heroImageUrl:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90',
+    heroPrimaryBtnText: 'Explore Projects',
+    heroPrimaryBtnLink: '/projects',
+    heroSecondaryBtnText: 'Explore Materials',
+    heroSecondaryBtnLink: '/materials',
+    trustBadge1: '★ 5.0 (22 Google Reviews)',
+    trustBadge2: 'Guwahati Studio Office',
+    trustBadge3: 'Turnkey Architecture',
+    trustBadge4: 'Pan-India Material Logistics',
+    introEyebrow: 'The Atelier Philosophy',
+    introHeading: 'Restraint is the ultimate form of luxury.',
+    introParagraph1:
+      'Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.',
+    introParagraph2:
+      'Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.',
+    introImageUrl:
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    stat1Value: '14+',
+    stat1Label: 'Years of Practice',
+    stat2Value: '180+',
+    stat2Label: 'Projects Handed Over',
+    stat3Value: '22+',
+    stat3Label: 'Global Quarry Partners',
+    ctaHeading: 'Commission an Architectural Dialogue',
+    ctaDescription:
+      'Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.',
+    ctaBtnText: 'Request Consultation & Quote',
+    ctaBtnLink: '/quote',
+  },
 };
 
 export const initialCategories: Category[] = [

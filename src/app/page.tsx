@@ -2,19 +2,22 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Compass, Layers, ShieldCheck, Armchair, Sparkles } from 'lucide-react';
-import { getProjects, getProducts, getCategories, getServices } from '@/lib/db';
+import { getProjects, getProducts, getCategories, getServices, getSiteSettings } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
 export const revalidate = 60; // SSR with caching
 
 export default async function HomePage() {
-  const [featuredProjects, featuredProducts, categories, services] = await Promise.all([
+  const [featuredProjects, featuredProducts, categories, services, settings] = await Promise.all([
     getProjects({ featuredOnly: true, publishedOnly: true }),
     getProducts({ featuredOnly: true, publishedOnly: true }),
     getCategories(),
     getServices(true),
+    getSiteSettings(),
   ]);
+
+  const home = settings?.homepage || {};
 
   return (
     <div className="space-y-24 sm:space-y-32 pb-24">
@@ -23,8 +26,11 @@ export default async function HomePage() {
         {/* Editorial Background Image with Dark Vignette */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
-            alt="Balaji Architect & Interiors Architectural Living Space"
+            src={
+              home.heroImageUrl ||
+              'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90'
+            }
+            alt={`${settings.brandName || 'Balaji Architect & Interiors'} Architectural Living Space`}
             fill
             priority
             className="object-cover object-center opacity-40 scale-105 transition-transform duration-1000 ease-out"
@@ -35,39 +41,40 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 pt-12">
           <Reveal delay={100}>
             <span className="text-xs sm:text-sm uppercase tracking-widest-plus text-champagne font-medium">
-              Architecture • Interior Studio • Material Curation
+              {home.heroEyebrow || 'Architecture • Interior Studio • Material Curation'}
             </span>
           </Reveal>
 
           <Reveal delay={250}>
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-surface font-light leading-[1.08]">
-              INTERIORS.
+              {home.heroHeadingLine1 || 'INTERIORS.'}
               <br />
-              ARCHITECTURE.
+              {home.heroHeadingLine2 || 'ARCHITECTURE.'}
               <br />
-              MATERIALS.
+              {home.heroHeadingLine3 || 'MATERIALS.'}
             </h1>
           </Reveal>
 
           <Reveal delay={400}>
             <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-surface/80 font-light leading-relaxed">
-              Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.
+              {home.heroDescription ||
+                'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.'}
             </p>
           </Reveal>
 
           <Reveal delay={550}>
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
               <Link
-                href="/projects"
+                href={home.heroPrimaryBtnLink || '/projects'}
                 className="w-full sm:w-auto px-8 py-4 bg-surface text-espresso hover:bg-champagne hover:text-espresso font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Explore Projects <ArrowRight className="w-4 h-4" />
+                {home.heroPrimaryBtnText || 'Explore Projects'} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/materials"
+                href={home.heroSecondaryBtnLink || '/materials'}
                 className="w-full sm:w-auto px-8 py-4 border border-surface/40 text-surface hover:bg-surface/10 font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Explore Materials
+                {home.heroSecondaryBtnText || 'Explore Materials'}
               </Link>
             </div>
           </Reveal>
@@ -77,14 +84,14 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 z-20 bg-espresso-dark/90 backdrop-blur-md border-t border-espresso-light py-3 px-4">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-around gap-y-2 text-[10px] sm:text-xs uppercase tracking-wider text-surface/90">
             <span className="flex items-center gap-1.5 font-medium text-champagne">
-              ★ 5.0 (22 Google Reviews)
+              {home.trustBadge1 || settings.googleRating || '★ 5.0 (22 Google Reviews)'}
             </span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Guwahati Studio Office</span>
+            <span className="font-light">{home.trustBadge2 || `${settings.city || 'Guwahati'} Studio Office`}</span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Turnkey Architecture</span>
+            <span className="font-light">{home.trustBadge3 || 'Turnkey Architecture'}</span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Pan-India Material Logistics</span>
+            <span className="font-light">{home.trustBadge4 || 'Pan-India Material Logistics'}</span>
           </div>
         </div>
       </section>
@@ -95,38 +102,46 @@ export default async function HomePage() {
           <div className="lg:col-span-5 space-y-6">
             <Reveal>
               <span className="text-xs uppercase tracking-widest text-bronze font-medium">
-                The Atelier Philosophy
+                {home.introEyebrow || 'The Atelier Philosophy'}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light leading-tight mt-2">
-                Restraint is the ultimate form of luxury.
+                {home.introHeading || 'Restraint is the ultimate form of luxury.'}
               </h2>
             </Reveal>
 
             <Reveal delay={150}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.
+                {home.introParagraph1 ||
+                  `Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, ${settings.brandName || 'Balaji Architect & Interiors'} crafts environments that elevate the human experience.`}
               </p>
             </Reveal>
 
             <Reveal delay={250}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.
+                {home.introParagraph2 ||
+                  'Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.'}
               </p>
             </Reveal>
 
             <Reveal delay={350}>
               <div className="pt-2 flex items-center gap-8 border-t border-atelier">
                 <div>
-                  <span className="font-serif text-3xl text-espresso">14+</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Years of Craft</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat1Value || '14+'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat1Label || 'Years of Practice'}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-serif text-3xl text-espresso">80+</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Signature Spaces</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat2Value || '180+'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat2Label || 'Signature Spaces'}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-serif text-3xl text-espresso">100%</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Direct Material Provenance</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat3Value || '100%'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat3Label || 'Direct Provenance'}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -135,10 +150,12 @@ export default async function HomePage() {
           <div className="lg:col-span-7">
             <Reveal delay={200}>
               <ImageReveal
-                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85"
-                alt="Balaji Atelier Living Pavilion"
+                src={
+                  home.introImageUrl ||
+                  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85'
+                }
+                alt={`${settings.brandName || 'Balaji Atelier'} Living Pavilion`}
                 aspectRatio="aspect-[4/3]"
-                className="shadow-md"
               />
             </Reveal>
           </div>
@@ -146,46 +163,42 @@ export default async function HomePage() {
       </section>
 
       {/* 3. FEATURED ARCHITECTURAL PROJECTS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-atelier">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-atelier">
           <div>
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Selected Works</span>
             <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light mt-1">
-              Architectural Portfolio
+              Architectural Commissions
             </h2>
           </div>
           <Link
             href="/projects"
-            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-espresso hover:text-bronze font-medium flex items-center gap-1.5 transition-colors"
+            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-bronze hover:text-espresso font-medium flex items-center gap-1.5 transition-colors"
           >
-            View All Projects ({featuredProjects.length}+) <ArrowRight className="w-3.5 h-3.5" />
+            View All Projects <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12">
-          {featuredProjects.slice(0, 4).map((project, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredProjects.slice(0, 3).map((project, idx) => (
             <Reveal key={project.id} delay={idx * 150}>
               <Link href={`/projects/${project.slug}`} className="group block space-y-4">
                 <ImageReveal
                   src={project.heroImage}
                   alt={project.title}
-                  aspectRatio="aspect-[16/11]"
-                  className="bg-canvas-subtle"
+                  aspectRatio="aspect-[4/3]"
                 />
-                <div className="space-y-1.5 pt-1">
-                  <div className="flex items-center justify-between text-xs text-warmgray">
-                    <span className="uppercase tracking-wider text-bronze font-medium">{project.projectType}</span>
-                    <span>{project.location} • {project.year}</span>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-xs text-warmgray uppercase tracking-widest">
+                    <span>{project.projectType}</span>
+                    <span>{project.year}</span>
                   </div>
-                  <h3 className="font-serif text-2xl text-espresso group-hover:text-bronze transition-colors font-normal">
+                  <h3 className="font-serif text-xl sm:text-2xl text-espresso font-light group-hover:text-bronze transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-warmgray font-light line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-warmgray line-clamp-2 leading-relaxed">
                     {project.shortDescription}
                   </p>
-                  <div className="pt-1 text-xs uppercase tracking-widest text-espresso group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                    Explore Case Study <ArrowRight className="w-3 h-3" />
-                  </div>
                 </div>
               </Link>
             </Reveal>
@@ -193,41 +206,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. MATERIAL CATEGORIES BAR */}
-      <section className="bg-surface py-20 border-y border-atelier">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Materiality</span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light">
-              Considered Interior Materials
+      {/* 4. MATERIAL CATEGORIES DISCOVERY */}
+      <section className="bg-canvas-subtle py-24 border-y border-atelier">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Curated Elements</span>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light">
+              Master Material Library
             </h2>
-            <p className="text-xs sm:text-sm text-warmgray font-light">
-              Direct-from-source architectural stones, architectural hardwood veneers, and acoustic surfaces.
+            <p className="text-sm text-warmgray font-light">
+              Directly quarried natural stones, smoked French oaks, bespoke hardware, and architectural luminescences.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.slice(0, 6).map((cat, idx) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((cat, idx) => (
               <Reveal key={cat.id} delay={idx * 80}>
                 <Link
-                  href={`/category/${cat.slug}`}
-                  className="group block bg-canvas p-4 text-center border border-atelier hover:border-bronze transition-all space-y-3"
+                  href={`/materials?category=${cat.slug}`}
+                  className="group block p-4 bg-surface border border-atelier hover:border-bronze transition-all text-center space-y-3"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-canvas-subtle">
-                    {cat.imageUrl && (
-                      <Image
-                        src={cat.imageUrl}
-                        alt={cat.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    )}
+                  <div className="relative aspect-square w-full overflow-hidden bg-canvas">
+                    <Image
+                      src={cat.imageUrl || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                      alt={cat.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm text-espresso font-medium group-hover:text-bronze transition-colors">
+                    <h3 className="font-serif text-xs sm:text-sm text-espresso group-hover:text-bronze transition-colors font-medium">
                       {cat.name}
-                    </h4>
-                    <p className="text-[10px] text-warmgray mt-0.5">{cat.productCount || 0} Materials</p>
+                    </h3>
                   </div>
                 </Link>
               </Reveal>
@@ -236,58 +246,53 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. CURATED MATERIALS & PRODUCTS SHOWCASE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-atelier">
+      {/* 5. FEATURED MATERIALS / E-COMMERCE PRODUCTS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-atelier">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Atelier Catalog</span>
+            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Direct Sourcing</span>
             <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light mt-1">
               Curated Materials & Objects
             </h2>
           </div>
           <Link
             href="/materials"
-            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-espresso hover:text-bronze font-medium flex items-center gap-1.5 transition-colors"
+            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-bronze hover:text-espresso font-medium flex items-center gap-1.5 transition-colors"
           >
-            Explore Complete Catalog <ArrowRight className="w-3.5 h-3.5" />
+            Explore Full Catalog <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.slice(0, 4).map((product, idx) => (
             <Reveal key={product.id} delay={idx * 100}>
-              <Link
-                href={`/material/${product.slug}`}
-                className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-colors space-y-2 sm:space-y-3"
-              >
-                <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                  {product.images[0] && (
-                    <Image
-                      src={product.images[0]}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-103 transition-transform duration-700"
-                    />
-                  )}
-                  {product.salePrice && product.salePrice > 0 && (
-                    <span className="absolute top-1.5 left-1.5 bg-espresso text-surface text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-semibold">
-                      Featured
+              <Link href={`/material/${product.slug}`} className="group block space-y-3">
+                <div className="relative aspect-square overflow-hidden bg-surface border border-atelier">
+                  <Image
+                    src={product.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {product.isNew && (
+                    <span className="absolute top-2 left-2 bg-espresso text-surface text-[10px] uppercase tracking-wider px-2 py-0.5">
+                      New Arrival
                     </span>
                   )}
                 </div>
-
-                <div className="space-y-0.5 sm:space-y-1">
-                  <div className="flex justify-between text-[9px] sm:text-[11px] text-warmgray">
-                    <span className="line-clamp-1">{product.subcategory || product.categoryName}</span>
-                  </div>
-                  <h4 className="font-serif text-xs sm:text-base text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-warmgray">
+                    {product.categoryName}
+                  </span>
+                  <h3 className="font-serif text-sm sm:text-base text-espresso group-hover:text-bronze transition-colors line-clamp-1">
                     {product.name}
-                  </h4>
-                  <div className="flex items-baseline gap-1 sm:gap-2 pt-0.5">
-                    <span className="text-xs sm:text-sm font-medium text-timber">
-                      ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+                  </h3>
+                  <div className="flex items-baseline gap-2 pt-1">
+                    <span className="font-mono text-sm text-espresso">
+                      {settings.currencySymbol || '₹'}
+                      {product.price.toLocaleString('en-IN')}
                     </span>
-                    <span className="text-[10px] sm:text-xs text-warmgray font-light">/ {product.unit}</span>
+                    <span className="text-[10px] text-warmgray">/ {product.unit}</span>
                   </div>
                 </div>
               </Link>
@@ -296,7 +301,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6. ARCHITECTURAL SERVICES */}
+      {/* 6. DESIGN PRACTICE & SERVICES */}
       <section className="bg-espresso text-surface py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 border-b border-atelier-dark">
@@ -355,7 +360,7 @@ export default async function HomePage() {
             &ldquo;Materials must not imitate one another. Travertine must express its volcanic geology; oak must celebrate its slow growth rings; bronze must accept the patina of living touch.&rdquo;
           </blockquote>
           <p className="text-xs uppercase tracking-widest text-warmgray font-medium mt-4">
-            — Vikas Sir, Principal Architect, Balaji Architect & Interiors
+            — {settings.architectName || 'Vikas Sir, Principal Architect'}, {settings.brandName || 'Balaji Architect & Interiors'}
           </p>
         </Reveal>
       </section>
@@ -366,17 +371,18 @@ export default async function HomePage() {
           <div className="max-w-2xl space-y-6 relative z-10">
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Commence a Project</span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light leading-tight">
-              Ready to craft your next architectural space?
+              {home.ctaHeading || 'Ready to craft your next architectural space?'}
             </h2>
             <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-              Whether you are designing a private estate, specifying large format stone slabs for a culinary island, or requesting a custom interior turnkey estimate, our design partners are ready to collaborate.
+              {home.ctaDescription ||
+                'Whether you are designing a private estate, specifying large format stone slabs for a culinary island, or requesting a custom interior turnkey estimate, our design partners are ready to collaborate.'}
             </p>
             <div className="pt-2 flex flex-col sm:flex-row gap-4">
               <Link
-                href="/quote"
+                href={home.ctaBtnLink || '/quote'}
                 className="px-8 py-4 btn-luxury-dark text-xs uppercase tracking-widest font-medium flex items-center justify-center gap-2"
               >
-                Request Custom Quote <ArrowRight className="w-4 h-4" />
+                {home.ctaBtnText || 'Request Custom Quote'} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/contact"

@@ -5655,7 +5655,7 @@ export default function AdminServicesPage() {
 ### `src/app/admin/settings/page.tsx`
 
 - **File**: `src/app/admin/settings/page.tsx`
-- **Size**: 34.0 KB (743 lines)
+- **Size**: 59.6 KB (1222 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -5678,9 +5678,14 @@ import {
   AlertCircle,
   Search,
   Filter,
+  LayoutTemplate,
+  Sparkles,
+  ArrowRight,
+  Eye,
+  ImageIcon,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
-import { SiteSettings, AuditLog } from '@/types';
+import { SiteSettings, AuditLog, HomepageSettings } from '@/types';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -5707,7 +5712,10 @@ export default function AdminSettingsPage() {
   const [pushResult, setPushResult] = useState<string | null>(null);
   const [browserPerm, setBrowserPerm] = useState<NotificationPermission | 'unsupported'>('default');
 
-  // Audit Log UI Filter States
+  // Active section tab
+  const [activeTab, setActiveTab] = useState<'homepage' | 'identity' | 'fiscal' | 'announcements' | 'push' | 'audit'>('homepage');
+
+  // Audit Log Filter States
   const [auditSearch, setAuditSearch] = useState('');
   const [entityFilter, setEntityFilter] = useState('ALL');
 
@@ -5787,6 +5795,18 @@ export default function AdminSettingsPage() {
     }
   };
 
+  const updateHomepage = (field: keyof HomepageSettings, value: string) => {
+    if (!settings) return;
+    const currentHome = settings.homepage || {};
+    setSettings({
+      ...settings,
+      homepage: {
+        ...currentHome,
+        [field]: value,
+      },
+    });
+  };
+
   const handleSendTestPush = async () => {
     setTestPushing(true);
     setPushResult(null);
@@ -5864,28 +5884,40 @@ export default function AdminSettingsPage() {
     );
   }
 
+  const home = settings.homepage || {};
+
   return (
     <AdminLayout>
-      <div className="space-y-12">
+      <div className="space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Configuration & Security</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Studio Settings & Audit</h1>
+            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Full CMS & Operations</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Studio Settings & Page Controls</h1>
           </div>
-          <button
-            onClick={loadSettingsAndLogs}
-            className="p-2.5 bg-surface border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider flex items-center gap-1.5 self-start transition-colors"
-          >
-            <RefreshCw className="w-3.5 h-3.5" /> Reload Live Config
-          </button>
+          <div className="flex items-center gap-3 self-start sm:self-auto">
+            <button
+              onClick={loadSettingsAndLogs}
+              className="p-2.5 bg-surface border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" /> Reload Config
+            </button>
+            <button
+              onClick={handleSaveSettings}
+              disabled={saving}
+              className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer"
+            >
+              {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+              {saving ? 'Saving...' : 'Save All Changes'}
+            </button>
+          </div>
         </div>
 
         {/* Global Feedback Notifications */}
         {savedSuccess && (
           <div className="p-4 bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center gap-2">
             <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-medium">Studio settings successfully saved and persisted to Supabase database.</span>
+            <span className="font-medium">All studio settings & homepage content successfully saved and persisted live to Supabase.</span>
           </div>
         )}
 
@@ -5896,507 +5928,954 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
-        {/* Studio Settings Master Form */}
-        <form onSubmit={handleSaveSettings} className="bg-surface border border-atelier p-6 sm:p-8 space-y-10">
-          {/* Section 1: Atelier Profile */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-atelier pb-3">
-              <Building2 className="w-4 h-4 text-bronze" />
-              <h2 className="font-serif text-xl text-espresso">1. Atelier Identity & Principal Profile</h2>
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-atelier pb-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab('homepage')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'homepage'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <LayoutTemplate className="w-3.5 h-3.5 text-bronze" />
+            Homepage & Hero Control
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('identity')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'identity'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5 text-bronze" />
+            Studio Identity & Contact
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('fiscal')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'fiscal'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <Truck className="w-3.5 h-3.5 text-bronze" />
+            Tax, GST & Freight
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('announcements')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'announcements'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <Megaphone className="w-3.5 h-3.5 text-bronze" />
+            Announcement Bar & Social
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('push')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'push'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <Bell className="w-3.5 h-3.5 text-bronze" />
+            Push Notifications
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('audit')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'audit'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5 text-bronze" />
+            Security Audit Trail
+          </button>
+        </div>
+
+        {/* Master Form */}
+        <form onSubmit={handleSaveSettings} className="space-y-8">
+          {/* TAB 1: HOMEPAGE & HERO CONTROL */}
+          {activeTab === 'homepage' && (
+            <div className="space-y-8">
+              {/* Hero Live Preview Card */}
+              <div className="relative rounded-sm overflow-hidden border border-atelier bg-espresso text-surface p-8 sm:p-12 text-center space-y-4">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-30"
+                  style={{
+                    backgroundImage: `url(${
+                      home.heroImageUrl ||
+                      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90'
+                    })`,
+                  }}
+                />
+                <div className="relative z-10 space-y-4 max-w-2xl mx-auto">
+                  <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">
+                    {home.heroEyebrow || 'Architecture • Interior Studio • Material Curation'}
+                  </span>
+                  <h1 className="font-serif text-2xl sm:text-4xl text-surface font-light leading-tight">
+                    {home.heroHeadingLine1 || 'INTERIORS.'} <br />
+                    {home.heroHeadingLine2 || 'ARCHITECTURE.'} <br />
+                    {home.heroHeadingLine3 || 'MATERIALS.'}
+                  </h1>
+                  <p className="text-xs text-surface/80 max-w-lg mx-auto line-clamp-2">
+                    {home.heroDescription ||
+                      'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.'}
+                  </p>
+                  <div className="flex items-center justify-center gap-3 pt-2">
+                    <span className="px-4 py-2 bg-surface text-espresso text-[10px] uppercase tracking-widest font-medium">
+                      {home.heroPrimaryBtnText || 'Explore Projects'} &rarr;
+                    </span>
+                    <span className="px-4 py-2 border border-surface/40 text-surface text-[10px] uppercase tracking-widest font-medium">
+                      {home.heroSecondaryBtnText || 'Explore Materials'}
+                    </span>
+                  </div>
+                </div>
+                <div className="absolute top-3 right-3 text-[10px] bg-canvas/80 text-espresso px-2 py-1 uppercase tracking-widest border border-atelier">
+                  Live Preview
+                </div>
+              </div>
+
+              {/* Hero Section Edit Controls */}
+              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+                <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                  <LayoutTemplate className="w-4 h-4 text-bronze" />
+                  <h2 className="font-serif text-xl text-espresso">Hero Section Typography & Media</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-warmgray font-medium flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-bronze" /> Hero Background Image URL
+                    </label>
+                    <input
+                      type="text"
+                      value={home.heroImageUrl || ''}
+                      onChange={(e) => updateHomepage('heroImageUrl', e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-[11px]"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">
+                      Hero Subtitle / Eyebrow Header
+                    </label>
+                    <input
+                      type="text"
+                      value={home.heroEyebrow || ''}
+                      onChange={(e) => updateHomepage('heroEyebrow', e.target.value)}
+                      placeholder="Architecture • Interior Studio • Material Curation"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 1</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine1 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine1', e.target.value)}
+                      placeholder="INTERIORS."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 2</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine2 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine2', e.target.value)}
+                      placeholder="ARCHITECTURE."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 3</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine3 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine3', e.target.value)}
+                      placeholder="MATERIALS."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">
+                      Hero Narrative Description
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={home.heroDescription || ''}
+                      onChange={(e) => updateHomepage('heroDescription', e.target.value)}
+                      placeholder="Crafted spaces and considered materials for timeless living..."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Primary Button Text</label>
+                    <input
+                      type="text"
+                      value={home.heroPrimaryBtnText || ''}
+                      onChange={(e) => updateHomepage('heroPrimaryBtnText', e.target.value)}
+                      placeholder="Explore Projects"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Primary Button Link</label>
+                    <input
+                      type="text"
+                      value={home.heroPrimaryBtnLink || ''}
+                      onChange={(e) => updateHomepage('heroPrimaryBtnLink', e.target.value)}
+                      placeholder="/projects"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Secondary Button Text</label>
+                    <input
+                      type="text"
+                      value={home.heroSecondaryBtnText || ''}
+                      onChange={(e) => updateHomepage('heroSecondaryBtnText', e.target.value)}
+                      placeholder="Explore Materials"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Secondary Button Link</label>
+                    <input
+                      type="text"
+                      value={home.heroSecondaryBtnLink || ''}
+                      onChange={(e) => updateHomepage('heroSecondaryBtnLink', e.target.value)}
+                      placeholder="/materials"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Trust Banner Badges */}
+              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+                <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                  <Sparkles className="w-4 h-4 text-bronze" />
+                  <h2 className="font-serif text-xl text-espresso">Hero Bottom Trust Badges (4 Items)</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 1 (Rating / Trust)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge1 || ''}
+                      onChange={(e) => updateHomepage('trustBadge1', e.target.value)}
+                      placeholder="★ 5.0 (22 Google Reviews)"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 2 (Location)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge2 || ''}
+                      onChange={(e) => updateHomepage('trustBadge2', e.target.value)}
+                      placeholder="Guwahati Studio Office"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 3 (Practice Model)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge3 || ''}
+                      onChange={(e) => updateHomepage('trustBadge3', e.target.value)}
+                      placeholder="Turnkey Architecture"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 4 (Logistics)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge4 || ''}
+                      onChange={(e) => updateHomepage('trustBadge4', e.target.value)}
+                      placeholder="Pan-India Material Logistics"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Atelier Philosophy / Studio Intro Controls */}
+              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+                <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                  <Building2 className="w-4 h-4 text-bronze" />
+                  <h2 className="font-serif text-xl text-espresso">Studio Philosophy & Signature Numbers</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Eyebrow</label>
+                    <input
+                      type="text"
+                      value={home.introEyebrow || ''}
+                      onChange={(e) => updateHomepage('introEyebrow', e.target.value)}
+                      placeholder="The Atelier Philosophy"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Heading</label>
+                    <input
+                      type="text"
+                      value={home.introHeading || ''}
+                      onChange={(e) => updateHomepage('introHeading', e.target.value)}
+                      placeholder="Restraint is the ultimate form of luxury."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Paragraph 1</label>
+                    <textarea
+                      rows={3}
+                      value={home.introParagraph1 || ''}
+                      onChange={(e) => updateHomepage('introParagraph1', e.target.value)}
+                      placeholder="Founded on the belief that genuine luxury emerges from architectural precision..."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Paragraph 2</label>
+                    <textarea
+                      rows={3}
+                      value={home.introParagraph2 || ''}
+                      onChange={(e) => updateHomepage('introParagraph2', e.target.value)}
+                      placeholder="Beyond architectural commissions, we maintain direct partnerships..."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Intro Showcase Image URL</label>
+                    <input
+                      type="text"
+                      value={home.introImageUrl || ''}
+                      onChange={(e) => updateHomepage('introImageUrl', e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-[11px]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 1 Value</label>
+                      <input
+                        type="text"
+                        value={home.stat1Value || ''}
+                        onChange={(e) => updateHomepage('stat1Value', e.target.value)}
+                        placeholder="14+"
+                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 1 Label</label>
+                      <input
+                        type="text"
+                        value={home.stat1Label || ''}
+                        onChange={(e) => updateHomepage('stat1Label', e.target.value)}
+                        placeholder="Years of Practice"
+                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 2 Value</label>
+                      <input
+                        type="text"
+                        value={home.stat2Value || ''}
+                        onChange={(e) => updateHomepage('stat2Value', e.target.value)}
+                        placeholder="180+"
+                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 2 Label</label>
+                      <input
+                        type="text"
+                        value={home.stat2Label || ''}
+                        onChange={(e) => updateHomepage('stat2Label', e.target.value)}
+                        placeholder="Signature Spaces"
+                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Commission CTA Box Controls */}
+              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+                <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                  <ArrowRight className="w-4 h-4 text-bronze" />
+                  <h2 className="font-serif text-xl text-espresso">Bottom Project Commission CTA Box</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">CTA Main Heading</label>
+                    <input
+                      type="text"
+                      value={home.ctaHeading || ''}
+                      onChange={(e) => updateHomepage('ctaHeading', e.target.value)}
+                      placeholder="Ready to craft your next architectural space?"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">CTA Sub-text</label>
+                    <textarea
+                      rows={3}
+                      value={home.ctaDescription || ''}
+                      onChange={(e) => updateHomepage('ctaDescription', e.target.value)}
+                      placeholder="Whether you are designing a private estate, specifying large format stone slabs..."
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Button Text</label>
+                    <input
+                      type="text"
+                      value={home.ctaBtnText || ''}
+                      onChange={(e) => updateHomepage('ctaBtnText', e.target.value)}
+                      placeholder="Request Custom Quote"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Button Link</label>
+                    <input
+                      type="text"
+                      value={home.ctaBtnLink || ''}
+                      onChange={(e) => updateHomepage('ctaBtnLink', e.target.value)}
+                      placeholder="/quote"
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+          )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-              <div className="space-y-1 sm:col-span-2">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Brand / Atelier Name</label>
-                <input
-                  type="text"
-                  value={settings.brandName || ''}
-                  onChange={(e) => setSettings({ ...settings, brandName: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="Balaji Architect & Interiors"
-                />
+          {/* TAB 2: STUDIO IDENTITY & CONTACT */}
+          {activeTab === 'identity' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
+              <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                <Building2 className="w-4 h-4 text-bronze" />
+                <h2 className="font-serif text-xl text-espresso">Atelier Identity & Principal Profile</h2>
               </div>
 
-              <div className="space-y-1 sm:col-span-2 lg:col-span-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Principal Architect</label>
-                <input
-                  type="text"
-                  value={settings.architectName || ''}
-                  onChange={(e) => setSettings({ ...settings, architectName: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="Vikas Sir (Principal Architect)"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Tagline / Atelier Philosophy</label>
-                <input
-                  type="text"
-                  value={settings.tagline || ''}
-                  onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="Crafted spaces, luxury architecture, and considered materials for timeless living."
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Established Year</label>
-                <input
-                  type="text"
-                  value={settings.establishedYear || '2014'}
-                  onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="2014"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Google Rating / Trust Metric</label>
-                <input
-                  type="text"
-                  value={settings.googleRating || '★ 5.0 (22 Google Reviews)'}
-                  onChange={(e) => setSettings({ ...settings, googleRating: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="★ 5.0 (22 Google Reviews)"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 2: Contact & Operating Studio */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-atelier pb-3">
-              <Phone className="w-4 h-4 text-bronze" />
-              <h2 className="font-serif text-xl text-espresso">2. Direct Inquiries & Studio Address</h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Official Studio Email</label>
-                <input
-                  type="email"
-                  value={settings.contactEmail || ''}
-                  onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="atelier@balaji-interior.com"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Direct Telephone</label>
-                <input
-                  type="text"
-                  value={settings.contactPhone || ''}
-                  onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="+91 70029 48484"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">WhatsApp Direct Line</label>
-                <input
-                  type="text"
-                  value={settings.whatsappNumber || '+91 70029 48484'}
-                  onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="+91 70029 48484"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Physical Studio Address</label>
-                <input
-                  type="text"
-                  value={settings.studioAddress || ''}
-                  onChange={(e) => setSettings({ ...settings, studioAddress: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Studio Operating Hours</label>
-                <input
-                  type="text"
-                  value={settings.businessHours || 'Mon - Sat: 10:00 AM - 7:00 PM (IST)'}
-                  onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="Mon - Sat: 10:00 AM - 7:00 PM (IST)"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">City</label>
-                <input
-                  type="text"
-                  value={settings.city || 'Guwahati'}
-                  onChange={(e) => setSettings({ ...settings, city: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">State / Province</label>
-                <input
-                  type="text"
-                  value={settings.state || 'Assam'}
-                  onChange={(e) => setSettings({ ...settings, state: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Pincode</label>
-                <input
-                  type="text"
-                  value={settings.pincode || '781040'}
-                  onChange={(e) => setSettings({ ...settings, pincode: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Fiscal, GST, & Freight Logistics */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-atelier pb-3">
-              <Truck className="w-4 h-4 text-bronze" />
-              <h2 className="font-serif text-xl text-espresso">3. Fiscal, GST & Freight Logistics</h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Standard GST Tax Rate (%)</label>
-                <input
-                  type="number"
-                  value={settings.taxRatePercent !== undefined ? settings.taxRatePercent : 18}
-                  onChange={(e) => setSettings({ ...settings, taxRatePercent: Number(e.target.value) })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Official GSTIN Number</label>
-                <input
-                  type="text"
-                  value={settings.gstinNumber || '18AAECB4848F1ZX'}
-                  onChange={(e) => setSettings({ ...settings, gstinNumber: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
-                  placeholder="18AAECB4848F1ZX"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Standard Freight Fee (₹)</label>
-                <input
-                  type="number"
-                  value={settings.standardShippingFee !== undefined ? settings.standardShippingFee : 1500}
-                  onChange={(e) => setSettings({ ...settings, standardShippingFee: Number(e.target.value) })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Complimentary Freight Threshold (₹)</label>
-                <input
-                  type="number"
-                  value={settings.freeShippingThreshold !== undefined ? settings.freeShippingThreshold : 50000}
-                  onChange={(e) => setSettings({ ...settings, freeShippingThreshold: Number(e.target.value) })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Currency Symbol</label>
-                <input
-                  type="text"
-                  value={settings.currencySymbol || '₹'}
-                  onChange={(e) => setSettings({ ...settings, currencySymbol: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Currency Code</label>
-                <input
-                  type="text"
-                  value={settings.currency || 'INR'}
-                  onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 4: Social Media & Global Presence */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-atelier pb-3">
-              <Globe className="w-4 h-4 text-bronze" />
-              <h2 className="font-serif text-xl text-espresso">4. Social Media & Global Presence</h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Instagram Atelier URL</label>
-                <input
-                  type="text"
-                  value={settings.socialInstagram || ''}
-                  onChange={(e) => setSettings({ ...settings, socialInstagram: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="https://instagram.com/balajiatelier"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Pinterest Portfolio URL</label>
-                <input
-                  type="text"
-                  value={settings.socialPinterest || ''}
-                  onChange={(e) => setSettings({ ...settings, socialPinterest: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="https://pinterest.com/balajiatelier"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">LinkedIn Practice URL</label>
-                <input
-                  type="text"
-                  value={settings.socialLinkedin || ''}
-                  onChange={(e) => setSettings({ ...settings, socialLinkedin: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="https://linkedin.com/company/balaji-atelier"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Facebook Page URL</label>
-                <input
-                  type="text"
-                  value={settings.socialFacebook || 'https://facebook.com/balajiarchitects'}
-                  onChange={(e) => setSettings({ ...settings, socialFacebook: e.target.value })}
-                  className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  placeholder="https://facebook.com/balajiarchitects"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 5: Public Announcement Banner */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 border-b border-atelier pb-3">
-              <Megaphone className="w-4 h-4 text-bronze" />
-              <h2 className="font-serif text-xl text-espresso">5. Public Announcement Banner</h2>
-            </div>
-
-            <div className="space-y-4 text-xs">
-              <div className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  id="announcementToggle"
-                  checked={settings.announcementBanner?.enabled ?? true}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      announcementBanner: {
-                        enabled: e.target.checked,
-                        text: settings.announcementBanner?.text || '',
-                        linkUrl: settings.announcementBanner?.linkUrl || '/quote',
-                      },
-                    })
-                  }
-                  className="w-4 h-4 accent-bronze cursor-pointer"
-                />
-                <label htmlFor="announcementToggle" className="cursor-pointer uppercase tracking-wider text-espresso font-medium">
-                  Display Global Announcement Bar on Header
-                </label>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="sm:col-span-2 space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Announcement Message</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand / Atelier Name</label>
                   <input
                     type="text"
-                    value={settings.announcementBanner?.text || ''}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        announcementBanner: {
-                          enabled: settings.announcementBanner?.enabled ?? true,
-                          text: e.target.value,
-                          linkUrl: settings.announcementBanner?.linkUrl || '/quote',
-                        },
-                      })
-                    }
+                    value={settings.brandName || ''}
+                    onChange={(e) => setSettings({ ...settings, brandName: e.target.value })}
                     className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    placeholder="Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions"
+                    placeholder="Balaji Architect & Interiors"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Principal Architect</label>
+                  <input
+                    type="text"
+                    value={settings.architectName || ''}
+                    onChange={(e) => setSettings({ ...settings, architectName: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    placeholder="Vikas Sir (Principal Architect)"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Tagline / Atelier Philosophy</label>
+                  <input
+                    type="text"
+                    value={settings.tagline || ''}
+                    onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Call-to-Action Link</label>
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Established Year</label>
                   <input
                     type="text"
-                    value={settings.announcementBanner?.linkUrl || '/quote'}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        announcementBanner: {
-                          enabled: settings.announcementBanner?.enabled ?? true,
-                          text: settings.announcementBanner?.text || '',
-                          linkUrl: e.target.value,
-                        },
-                      })
-                    }
+                    value={settings.establishedYear || '2014'}
+                    onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
                     className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    placeholder="/quote"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Google Rating / Trust Metric</label>
+                  <input
+                    type="text"
+                    value={settings.googleRating || '★ 5.0 (22 Google Reviews)'}
+                    onChange={(e) => setSettings({ ...settings, googleRating: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Official Studio Email</label>
+                  <input
+                    type="email"
+                    value={settings.contactEmail || ''}
+                    onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Direct Telephone</label>
+                  <input
+                    type="text"
+                    value={settings.contactPhone || ''}
+                    onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">WhatsApp Direct Line</label>
+                  <input
+                    type="text"
+                    value={settings.whatsappNumber || '+91 70029 48484'}
+                    onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Physical Studio Address</label>
+                  <input
+                    type="text"
+                    value={settings.studioAddress || ''}
+                    onChange={(e) => setSettings({ ...settings, studioAddress: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Studio Operating Hours</label>
+                  <input
+                    type="text"
+                    value={settings.businessHours || 'Mon - Sat: 10:00 AM - 7:00 PM (IST)'}
+                    onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">City</label>
+                  <input
+                    type="text"
+                    value={settings.city || 'Guwahati'}
+                    onChange={(e) => setSettings({ ...settings, city: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">State / Province</label>
+                  <input
+                    type="text"
+                    value={settings.state || 'Assam'}
+                    onChange={(e) => setSettings({ ...settings, state: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Pincode</label>
+                  <input
+                    type="text"
+                    value={settings.pincode || '781040'}
+                    onChange={(e) => setSettings({ ...settings, pincode: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
                   />
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Submit Action */}
-          <div className="pt-6 border-t border-atelier flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* TAB 3: FISCAL, GST & FREIGHT */}
+          {activeTab === 'fiscal' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
+              <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                <Truck className="w-4 h-4 text-bronze" />
+                <h2 className="font-serif text-xl text-espresso">Fiscal, GST & Freight Logistics</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Standard GST Tax Rate (%)</label>
+                  <input
+                    type="number"
+                    value={settings.taxRatePercent !== undefined ? settings.taxRatePercent : 18}
+                    onChange={(e) => setSettings({ ...settings, taxRatePercent: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Official GSTIN Number</label>
+                  <input
+                    type="text"
+                    value={settings.gstinNumber || '18AAECB4848F1ZX'}
+                    onChange={(e) => setSettings({ ...settings, gstinNumber: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                    placeholder="18AAECB4848F1ZX"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Standard Freight Fee (₹)</label>
+                  <input
+                    type="number"
+                    value={settings.standardShippingFee !== undefined ? settings.standardShippingFee : 1500}
+                    onChange={(e) => setSettings({ ...settings, standardShippingFee: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Complimentary Freight Threshold (₹)</label>
+                  <input
+                    type="number"
+                    value={settings.freeShippingThreshold !== undefined ? settings.freeShippingThreshold : 50000}
+                    onChange={(e) => setSettings({ ...settings, freeShippingThreshold: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Currency Symbol</label>
+                  <input
+                    type="text"
+                    value={settings.currencySymbol || '₹'}
+                    onChange={(e) => setSettings({ ...settings, currencySymbol: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Currency Code</label>
+                  <input
+                    type="text"
+                    value={settings.currency || 'INR'}
+                    onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: ANNOUNCEMENTS & SOCIAL */}
+          {activeTab === 'announcements' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
+              <div className="flex items-center gap-2 border-b border-atelier pb-3">
+                <Megaphone className="w-4 h-4 text-bronze" />
+                <h2 className="font-serif text-xl text-espresso">Global Announcement Banner & Socials</h2>
+              </div>
+
+              <div className="space-y-6 text-xs">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="announcementToggle"
+                    checked={settings.announcementBanner?.enabled ?? true}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        announcementBanner: {
+                          enabled: e.target.checked,
+                          text: settings.announcementBanner?.text || '',
+                          linkUrl: settings.announcementBanner?.linkUrl || '/quote',
+                        },
+                      })
+                    }
+                    className="w-4 h-4 accent-bronze cursor-pointer"
+                  />
+                  <label htmlFor="announcementToggle" className="cursor-pointer uppercase tracking-wider text-espresso font-medium">
+                    Display Announcement Header Bar on Website Top
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="sm:col-span-2 space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Announcement Message</label>
+                    <input
+                      type="text"
+                      value={settings.announcementBanner?.text || ''}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          announcementBanner: {
+                            enabled: settings.announcementBanner?.enabled ?? true,
+                            text: e.target.value,
+                            linkUrl: settings.announcementBanner?.linkUrl || '/quote',
+                          },
+                        })
+                      }
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Call-to-Action Link</label>
+                    <input
+                      type="text"
+                      value={settings.announcementBanner?.linkUrl || '/quote'}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          announcementBanner: {
+                            enabled: settings.announcementBanner?.enabled ?? true,
+                            text: settings.announcementBanner?.text || '',
+                            linkUrl: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-atelier grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Instagram Atelier URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialInstagram || ''}
+                      onChange={(e) => setSettings({ ...settings, socialInstagram: e.target.value })}
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Pinterest Portfolio URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialPinterest || ''}
+                      onChange={(e) => setSettings({ ...settings, socialPinterest: e.target.value })}
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">LinkedIn Practice URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialLinkedin || ''}
+                      onChange={(e) => setSettings({ ...settings, socialLinkedin: e.target.value })}
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-warmgray font-medium">Facebook Page URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialFacebook || 'https://facebook.com/balajiarchitects'}
+                      onChange={(e) => setSettings({ ...settings, socialFacebook: e.target.value })}
+                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: WEB PUSH NOTIFICATIONS */}
+          {activeTab === 'push' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-atelier pb-4">
+                <div className="flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-bronze" />
+                  <h2 className="font-serif text-2xl text-espresso">Web Push Dispatch System</h2>
+                </div>
+                {browserPerm === 'granted' ? (
+                  <span className="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-medium flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Alerts Active on this Device
+                  </span>
+                ) : (
+                  <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 font-medium">
+                    {browserPerm === 'denied' ? 'Notifications Blocked in Browser' : 'Registration Pending'}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-warmgray leading-relaxed max-w-2xl">
+                When a customer places an order or submits an architectural quote, the server dispatches a VAPID web push directly to all registered administrative browsers.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  type="button"
+                  onClick={handleSendTestPush}
+                  disabled={testPushing}
+                  className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-wider font-medium flex items-center gap-2 cursor-pointer"
+                >
+                  <Bell className="w-3.5 h-3.5" /> {testPushing ? 'Registering & Sending...' : 'Dispatch Test Notification'}
+                </button>
+                {pushResult && <span className="text-xs text-bronze font-medium">{pushResult}</span>}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: SECURITY AUDIT LOG */}
+          {activeTab === 'audit' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-4">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-bronze" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-espresso">Security Audit Log</h2>
+                    <span className="text-[11px] text-warmgray">Immutable Traceability & Action Records</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Search */}
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-3.5 h-3.5 text-warmgray absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search logs by action, operator, details..."
+                      value={auditSearch}
+                      onChange={(e) => setAuditSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+                    />
+                  </div>
+
+                  {/* Entity Filter */}
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Filter className="w-3.5 h-3.5 text-warmgray" />
+                    <select
+                      value={entityFilter}
+                      onChange={(e) => setEntityFilter(e.target.value)}
+                      className="p-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+                    >
+                      <option value="ALL">All Entities</option>
+                      <option value="Order">Orders</option>
+                      <option value="Product">Products</option>
+                      <option value="Category">Categories</option>
+                      <option value="SiteSettings">Site Settings</option>
+                      <option value="Auth">Authentication</option>
+                      <option value="Quote">Quotes</option>
+                      <option value="Enquiry">Enquiries</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Audit Table */}
+              <div className="overflow-x-auto max-h-[480px] overflow-y-auto border border-atelier">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="sticky top-0 bg-canvas z-10">
+                    <tr className="border-b border-atelier text-[10px] uppercase tracking-widest text-warmgray">
+                      <th className="p-3">Timestamp (IST)</th>
+                      <th className="p-3">Operator</th>
+                      <th className="p-3">Action</th>
+                      <th className="p-3">Entity</th>
+                      <th className="p-3">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-atelier/60 font-mono text-[11px]">
+                    {filteredLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="p-8 text-center text-warmgray font-sans">
+                          No audit records found matching the current filters.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-canvas/50 transition-colors">
+                          <td className="p-3 text-warmgray whitespace-nowrap">
+                            {new Date(log.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                          </td>
+                          <td className="p-3 text-espresso whitespace-nowrap font-medium">{log.adminEmail}</td>
+                          <td className="p-3">
+                            <span className="inline-block px-2 py-0.5 bg-canvas border border-atelier text-timber font-medium text-[10px] uppercase tracking-wider">
+                              {log.action}
+                            </span>
+                          </td>
+                          <td className="p-3 text-warmgray">{log.entity}</td>
+                          <td className="p-3 text-warmgray font-sans text-xs max-w-md break-words">
+                            {log.details ? (
+                              <span className="text-espresso/80">{JSON.stringify(log.details)}</span>
+                            ) : (
+                              <span className="text-warmgray/60">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Fixed Action Bar */}
+          <div className="p-4 bg-surface border border-atelier flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-xs text-warmgray">
-              All modifications are written directly to Supabase <code className="bg-canvas px-1.5 py-0.5 border border-atelier">site_settings</code> and broadcast live.
+              Changes update Supabase PostgreSQL immediately upon saving and take effect live across all pages.
             </span>
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium self-end sm:self-auto cursor-pointer"
+              className="px-8 py-3 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer shrink-0"
             >
               {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              {saving ? 'Persisting to Database...' : 'Save Studio Settings'}
+              {saving ? 'Persisting to Database...' : 'Save All Changes'}
             </button>
           </div>
         </form>
-
-        {/* Web Push Notification Diagnostic */}
-        <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-4">
-          <div className="flex items-center justify-between border-b border-atelier pb-4">
-            <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-bronze" />
-              <h2 className="font-serif text-2xl text-espresso">Web Push Dispatch System</h2>
-            </div>
-            {browserPerm === 'granted' ? (
-              <span className="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-medium flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Alerts Active on this Device
-              </span>
-            ) : (
-              <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 font-medium">
-                {browserPerm === 'denied' ? 'Notifications Blocked in Browser' : 'Registration Pending'}
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-warmgray leading-relaxed max-w-2xl">
-            When a customer places an order or submits an architectural quote, the server dispatches a VAPID web push directly to all registered administrative browsers.
-          </p>
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <button
-              type="button"
-              onClick={handleSendTestPush}
-              disabled={testPushing}
-              className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-wider font-medium flex items-center gap-2 cursor-pointer"
-            >
-              <Bell className="w-3.5 h-3.5" /> {testPushing ? 'Registering & Sending...' : 'Dispatch Test Notification'}
-            </button>
-            {pushResult && <span className="text-xs text-bronze font-medium">{pushResult}</span>}
-          </div>
-        </div>
-
-        {/* Security Audit Log with Search & Filter */}
-        <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-4">
-            <div className="flex items-center gap-2">
-              <Shield className="w-5 h-5 text-bronze" />
-              <div>
-                <h2 className="font-serif text-2xl text-espresso">Security Audit Log</h2>
-                <span className="text-[11px] text-warmgray">Immutable Traceability & Action Records</span>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Search */}
-              <div className="relative w-full sm:w-64">
-                <Search className="w-3.5 h-3.5 text-warmgray absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Search logs by action, operator, details..."
-                  value={auditSearch}
-                  onChange={(e) => setAuditSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
-                />
-              </div>
-
-              {/* Entity Filter */}
-              <div className="flex items-center gap-1.5 text-xs">
-                <Filter className="w-3.5 h-3.5 text-warmgray" />
-                <select
-                  value={entityFilter}
-                  onChange={(e) => setEntityFilter(e.target.value)}
-                  className="p-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
-                >
-                  <option value="ALL">All Entities</option>
-                  <option value="Order">Orders</option>
-                  <option value="Product">Products</option>
-                  <option value="Category">Categories</option>
-                  <option value="SiteSettings">Site Settings</option>
-                  <option value="Auth">Authentication</option>
-                  <option value="Quote">Quotes</option>
-                  <option value="Enquiry">Enquiries</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Audit Table */}
-          <div className="overflow-x-auto max-h-[480px] overflow-y-auto border border-atelier">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead className="sticky top-0 bg-canvas z-10">
-                <tr className="border-b border-atelier text-[10px] uppercase tracking-widest text-warmgray">
-                  <th className="p-3">Timestamp (IST)</th>
-                  <th className="p-3">Operator</th>
-                  <th className="p-3">Action</th>
-                  <th className="p-3">Entity</th>
-                  <th className="p-3">Details</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-atelier/60 font-mono text-[11px]">
-                {filteredLogs.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="p-8 text-center text-warmgray font-sans">
-                      No audit records found matching the current filters.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredLogs.map((log) => (
-                    <tr key={log.id} className="hover:bg-canvas/50 transition-colors">
-                      <td className="p-3 text-warmgray whitespace-nowrap">
-                        {new Date(log.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-                      </td>
-                      <td className="p-3 text-espresso whitespace-nowrap font-medium">{log.adminEmail}</td>
-                      <td className="p-3">
-                        <span className="inline-block px-2 py-0.5 bg-canvas border border-atelier text-timber font-medium text-[10px] uppercase tracking-wider">
-                          {log.action}
-                        </span>
-                      </td>
-                      <td className="p-3 text-warmgray">{log.entity}</td>
-                      <td className="p-3 text-warmgray font-sans text-xs max-w-md break-words">
-                        {log.details ? (
-                          <span className="text-espresso/80">{JSON.stringify(log.details)}</span>
-                        ) : (
-                          <span className="text-warmgray/60">—</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </AdminLayout>
   );
@@ -9581,7 +10060,7 @@ export default async function MaterialsPage({
 ### `src/app/page.tsx`
 
 - **File**: `src/app/page.tsx`
-- **Size**: 19.6 KB (394 lines)
+- **Size**: 20.1 KB (400 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -9589,19 +10068,22 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Compass, Layers, ShieldCheck, Armchair, Sparkles } from 'lucide-react';
-import { getProjects, getProducts, getCategories, getServices } from '@/lib/db';
+import { getProjects, getProducts, getCategories, getServices, getSiteSettings } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
 export const revalidate = 60; // SSR with caching
 
 export default async function HomePage() {
-  const [featuredProjects, featuredProducts, categories, services] = await Promise.all([
+  const [featuredProjects, featuredProducts, categories, services, settings] = await Promise.all([
     getProjects({ featuredOnly: true, publishedOnly: true }),
     getProducts({ featuredOnly: true, publishedOnly: true }),
     getCategories(),
     getServices(true),
+    getSiteSettings(),
   ]);
+
+  const home = settings?.homepage || {};
 
   return (
     <div className="space-y-24 sm:space-y-32 pb-24">
@@ -9610,8 +10092,11 @@ export default async function HomePage() {
         {/* Editorial Background Image with Dark Vignette */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
-            alt="Balaji Architect & Interiors Architectural Living Space"
+            src={
+              home.heroImageUrl ||
+              'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90'
+            }
+            alt={`${settings.brandName || 'Balaji Architect & Interiors'} Architectural Living Space`}
             fill
             priority
             className="object-cover object-center opacity-40 scale-105 transition-transform duration-1000 ease-out"
@@ -9622,39 +10107,40 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 pt-12">
           <Reveal delay={100}>
             <span className="text-xs sm:text-sm uppercase tracking-widest-plus text-champagne font-medium">
-              Architecture • Interior Studio • Material Curation
+              {home.heroEyebrow || 'Architecture • Interior Studio • Material Curation'}
             </span>
           </Reveal>
 
           <Reveal delay={250}>
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-surface font-light leading-[1.08]">
-              INTERIORS.
+              {home.heroHeadingLine1 || 'INTERIORS.'}
               <br />
-              ARCHITECTURE.
+              {home.heroHeadingLine2 || 'ARCHITECTURE.'}
               <br />
-              MATERIALS.
+              {home.heroHeadingLine3 || 'MATERIALS.'}
             </h1>
           </Reveal>
 
           <Reveal delay={400}>
             <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-surface/80 font-light leading-relaxed">
-              Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.
+              {home.heroDescription ||
+                'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.'}
             </p>
           </Reveal>
 
           <Reveal delay={550}>
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
               <Link
-                href="/projects"
+                href={home.heroPrimaryBtnLink || '/projects'}
                 className="w-full sm:w-auto px-8 py-4 bg-surface text-espresso hover:bg-champagne hover:text-espresso font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Explore Projects <ArrowRight className="w-4 h-4" />
+                {home.heroPrimaryBtnText || 'Explore Projects'} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/materials"
+                href={home.heroSecondaryBtnLink || '/materials'}
                 className="w-full sm:w-auto px-8 py-4 border border-surface/40 text-surface hover:bg-surface/10 font-medium text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2"
               >
-                Explore Materials
+                {home.heroSecondaryBtnText || 'Explore Materials'}
               </Link>
             </div>
           </Reveal>
@@ -9664,14 +10150,14 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 z-20 bg-espresso-dark/90 backdrop-blur-md border-t border-espresso-light py-3 px-4">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-around gap-y-2 text-[10px] sm:text-xs uppercase tracking-wider text-surface/90">
             <span className="flex items-center gap-1.5 font-medium text-champagne">
-              ★ 5.0 (22 Google Reviews)
+              {home.trustBadge1 || settings.googleRating || '★ 5.0 (22 Google Reviews)'}
             </span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Guwahati Studio Office</span>
+            <span className="font-light">{home.trustBadge2 || `${settings.city || 'Guwahati'} Studio Office`}</span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Turnkey Architecture</span>
+            <span className="font-light">{home.trustBadge3 || 'Turnkey Architecture'}</span>
             <span className="hidden sm:inline text-surface/30">•</span>
-            <span className="font-light">Pan-India Material Logistics</span>
+            <span className="font-light">{home.trustBadge4 || 'Pan-India Material Logistics'}</span>
           </div>
         </div>
       </section>
@@ -9682,38 +10168,46 @@ export default async function HomePage() {
           <div className="lg:col-span-5 space-y-6">
             <Reveal>
               <span className="text-xs uppercase tracking-widest text-bronze font-medium">
-                The Atelier Philosophy
+                {home.introEyebrow || 'The Atelier Philosophy'}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light leading-tight mt-2">
-                Restraint is the ultimate form of luxury.
+                {home.introHeading || 'Restraint is the ultimate form of luxury.'}
               </h2>
             </Reveal>
 
             <Reveal delay={150}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.
+                {home.introParagraph1 ||
+                  `Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, ${settings.brandName || 'Balaji Architect & Interiors'} crafts environments that elevate the human experience.`}
               </p>
             </Reveal>
 
             <Reveal delay={250}>
               <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-                Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.
+                {home.introParagraph2 ||
+                  'Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.'}
               </p>
             </Reveal>
 
             <Reveal delay={350}>
               <div className="pt-2 flex items-center gap-8 border-t border-atelier">
                 <div>
-                  <span className="font-serif text-3xl text-espresso">14+</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Years of Craft</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat1Value || '14+'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat1Label || 'Years of Practice'}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-serif text-3xl text-espresso">80+</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Signature Spaces</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat2Value || '180+'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat2Label || 'Signature Spaces'}
+                  </p>
                 </div>
                 <div>
-                  <span className="font-serif text-3xl text-espresso">100%</span>
-                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">Direct Material Provenance</p>
+                  <span className="font-serif text-3xl text-espresso">{home.stat3Value || '100%'}</span>
+                  <p className="text-[11px] uppercase tracking-wider text-warmgray mt-0.5">
+                    {home.stat3Label || 'Direct Provenance'}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -9722,10 +10216,12 @@ export default async function HomePage() {
           <div className="lg:col-span-7">
             <Reveal delay={200}>
               <ImageReveal
-                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85"
-                alt="Balaji Atelier Living Pavilion"
+                src={
+                  home.introImageUrl ||
+                  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85'
+                }
+                alt={`${settings.brandName || 'Balaji Atelier'} Living Pavilion`}
                 aspectRatio="aspect-[4/3]"
-                className="shadow-md"
               />
             </Reveal>
           </div>
@@ -9733,46 +10229,42 @@ export default async function HomePage() {
       </section>
 
       {/* 3. FEATURED ARCHITECTURAL PROJECTS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-atelier">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-atelier">
           <div>
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Selected Works</span>
             <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light mt-1">
-              Architectural Portfolio
+              Architectural Commissions
             </h2>
           </div>
           <Link
             href="/projects"
-            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-espresso hover:text-bronze font-medium flex items-center gap-1.5 transition-colors"
+            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-bronze hover:text-espresso font-medium flex items-center gap-1.5 transition-colors"
           >
-            View All Projects ({featuredProjects.length}+) <ArrowRight className="w-3.5 h-3.5" />
+            View All Projects <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12">
-          {featuredProjects.slice(0, 4).map((project, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredProjects.slice(0, 3).map((project, idx) => (
             <Reveal key={project.id} delay={idx * 150}>
               <Link href={`/projects/${project.slug}`} className="group block space-y-4">
                 <ImageReveal
                   src={project.heroImage}
                   alt={project.title}
-                  aspectRatio="aspect-[16/11]"
-                  className="bg-canvas-subtle"
+                  aspectRatio="aspect-[4/3]"
                 />
-                <div className="space-y-1.5 pt-1">
-                  <div className="flex items-center justify-between text-xs text-warmgray">
-                    <span className="uppercase tracking-wider text-bronze font-medium">{project.projectType}</span>
-                    <span>{project.location} • {project.year}</span>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-xs text-warmgray uppercase tracking-widest">
+                    <span>{project.projectType}</span>
+                    <span>{project.year}</span>
                   </div>
-                  <h3 className="font-serif text-2xl text-espresso group-hover:text-bronze transition-colors font-normal">
+                  <h3 className="font-serif text-xl sm:text-2xl text-espresso font-light group-hover:text-bronze transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-warmgray font-light line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-warmgray line-clamp-2 leading-relaxed">
                     {project.shortDescription}
                   </p>
-                  <div className="pt-1 text-xs uppercase tracking-widest text-espresso group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                    Explore Case Study <ArrowRight className="w-3 h-3" />
-                  </div>
                 </div>
               </Link>
             </Reveal>
@@ -9780,41 +10272,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. MATERIAL CATEGORIES BAR */}
-      <section className="bg-surface py-20 border-y border-atelier">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Materiality</span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light">
-              Considered Interior Materials
+      {/* 4. MATERIAL CATEGORIES DISCOVERY */}
+      <section className="bg-canvas-subtle py-24 border-y border-atelier">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Curated Elements</span>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light">
+              Master Material Library
             </h2>
-            <p className="text-xs sm:text-sm text-warmgray font-light">
-              Direct-from-source architectural stones, architectural hardwood veneers, and acoustic surfaces.
+            <p className="text-sm text-warmgray font-light">
+              Directly quarried natural stones, smoked French oaks, bespoke hardware, and architectural luminescences.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.slice(0, 6).map((cat, idx) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((cat, idx) => (
               <Reveal key={cat.id} delay={idx * 80}>
                 <Link
-                  href={`/category/${cat.slug}`}
-                  className="group block bg-canvas p-4 text-center border border-atelier hover:border-bronze transition-all space-y-3"
+                  href={`/materials?category=${cat.slug}`}
+                  className="group block p-4 bg-surface border border-atelier hover:border-bronze transition-all text-center space-y-3"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-canvas-subtle">
-                    {cat.imageUrl && (
-                      <Image
-                        src={cat.imageUrl}
-                        alt={cat.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    )}
+                  <div className="relative aspect-square w-full overflow-hidden bg-canvas">
+                    <Image
+                      src={cat.imageUrl || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                      alt={cat.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm text-espresso font-medium group-hover:text-bronze transition-colors">
+                    <h3 className="font-serif text-xs sm:text-sm text-espresso group-hover:text-bronze transition-colors font-medium">
                       {cat.name}
-                    </h4>
-                    <p className="text-[10px] text-warmgray mt-0.5">{cat.productCount || 0} Materials</p>
+                    </h3>
                   </div>
                 </Link>
               </Reveal>
@@ -9823,58 +10312,53 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. CURATED MATERIALS & PRODUCTS SHOWCASE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-atelier">
+      {/* 5. FEATURED MATERIALS / E-COMMERCE PRODUCTS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-atelier">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Atelier Catalog</span>
+            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Direct Sourcing</span>
             <h2 className="font-serif text-3xl sm:text-4xl text-espresso font-light mt-1">
               Curated Materials & Objects
             </h2>
           </div>
           <Link
             href="/materials"
-            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-espresso hover:text-bronze font-medium flex items-center gap-1.5 transition-colors"
+            className="mt-4 md:mt-0 text-xs uppercase tracking-widest text-bronze hover:text-espresso font-medium flex items-center gap-1.5 transition-colors"
           >
-            Explore Complete Catalog <ArrowRight className="w-3.5 h-3.5" />
+            Explore Full Catalog <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.slice(0, 4).map((product, idx) => (
             <Reveal key={product.id} delay={idx * 100}>
-              <Link
-                href={`/material/${product.slug}`}
-                className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-colors space-y-2 sm:space-y-3"
-              >
-                <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                  {product.images[0] && (
-                    <Image
-                      src={product.images[0]}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-103 transition-transform duration-700"
-                    />
-                  )}
-                  {product.salePrice && product.salePrice > 0 && (
-                    <span className="absolute top-1.5 left-1.5 bg-espresso text-surface text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-semibold">
-                      Featured
+              <Link href={`/material/${product.slug}`} className="group block space-y-3">
+                <div className="relative aspect-square overflow-hidden bg-surface border border-atelier">
+                  <Image
+                    src={product.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {product.isNew && (
+                    <span className="absolute top-2 left-2 bg-espresso text-surface text-[10px] uppercase tracking-wider px-2 py-0.5">
+                      New Arrival
                     </span>
                   )}
                 </div>
-
-                <div className="space-y-0.5 sm:space-y-1">
-                  <div className="flex justify-between text-[9px] sm:text-[11px] text-warmgray">
-                    <span className="line-clamp-1">{product.subcategory || product.categoryName}</span>
-                  </div>
-                  <h4 className="font-serif text-xs sm:text-base text-espresso group-hover:text-bronze transition-colors font-medium leading-snug line-clamp-1">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-warmgray">
+                    {product.categoryName}
+                  </span>
+                  <h3 className="font-serif text-sm sm:text-base text-espresso group-hover:text-bronze transition-colors line-clamp-1">
                     {product.name}
-                  </h4>
-                  <div className="flex items-baseline gap-1 sm:gap-2 pt-0.5">
-                    <span className="text-xs sm:text-sm font-medium text-timber">
-                      ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+                  </h3>
+                  <div className="flex items-baseline gap-2 pt-1">
+                    <span className="font-mono text-sm text-espresso">
+                      {settings.currencySymbol || '₹'}
+                      {product.price.toLocaleString('en-IN')}
                     </span>
-                    <span className="text-[10px] sm:text-xs text-warmgray font-light">/ {product.unit}</span>
+                    <span className="text-[10px] text-warmgray">/ {product.unit}</span>
                   </div>
                 </div>
               </Link>
@@ -9883,7 +10367,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6. ARCHITECTURAL SERVICES */}
+      {/* 6. DESIGN PRACTICE & SERVICES */}
       <section className="bg-espresso text-surface py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between pb-8 border-b border-atelier-dark">
@@ -9942,7 +10426,7 @@ export default async function HomePage() {
             &ldquo;Materials must not imitate one another. Travertine must express its volcanic geology; oak must celebrate its slow growth rings; bronze must accept the patina of living touch.&rdquo;
           </blockquote>
           <p className="text-xs uppercase tracking-widest text-warmgray font-medium mt-4">
-            — Vikas Sir, Principal Architect, Balaji Architect & Interiors
+            — {settings.architectName || 'Vikas Sir, Principal Architect'}, {settings.brandName || 'Balaji Architect & Interiors'}
           </p>
         </Reveal>
       </section>
@@ -9953,17 +10437,18 @@ export default async function HomePage() {
           <div className="max-w-2xl space-y-6 relative z-10">
             <span className="text-xs uppercase tracking-widest text-bronze font-medium">Commence a Project</span>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-espresso font-light leading-tight">
-              Ready to craft your next architectural space?
+              {home.ctaHeading || 'Ready to craft your next architectural space?'}
             </h2>
             <p className="text-sm sm:text-base text-warmgray font-light leading-relaxed">
-              Whether you are designing a private estate, specifying large format stone slabs for a culinary island, or requesting a custom interior turnkey estimate, our design partners are ready to collaborate.
+              {home.ctaDescription ||
+                'Whether you are designing a private estate, specifying large format stone slabs for a culinary island, or requesting a custom interior turnkey estimate, our design partners are ready to collaborate.'}
             </p>
             <div className="pt-2 flex flex-col sm:flex-row gap-4">
               <Link
-                href="/quote"
+                href={home.ctaBtnLink || '/quote'}
                 className="px-8 py-4 btn-luxury-dark text-xs uppercase tracking-widest font-medium flex items-center justify-center gap-2"
               >
-                Request Custom Quote <ArrowRight className="w-4 h-4" />
+                {home.ctaBtnText || 'Request Custom Quote'} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/contact"
@@ -13813,7 +14298,7 @@ export function verifyAdminToken(token: string): AdminTokenPayload | null {
 ### `src/lib/db.ts`
 
 - **File**: `src/lib/db.ts`
-- **Size**: 63.8 KB (1847 lines)
+- **Size**: 63.9 KB (1851 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -15552,6 +16037,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           text: v.announcementBanner?.text || initialSiteSettings.announcementBanner?.text || '',
           linkUrl: v.announcementBanner?.linkUrl || initialSiteSettings.announcementBanner?.linkUrl || '/quote',
         },
+        homepage: {
+          ...initialSiteSettings.homepage,
+          ...(v.homepage || {}),
+        },
         updatedAt: data.updated_at || new Date().toISOString(),
       };
     }
@@ -15890,7 +16379,7 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
 ### `src/lib/seedData.ts`
 
 - **File**: `src/lib/seedData.ts`
-- **Size**: 33.3 KB (783 lines)
+- **Size**: 35.4 KB (820 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -15928,6 +16417,43 @@ export const initialSiteSettings: SiteSettings = {
     enabled: true,
     text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
     linkUrl: '/quote',
+  },
+  homepage: {
+    heroEyebrow: 'Architecture • Interior Studio • Material Curation',
+    heroHeadingLine1: 'INTERIORS.',
+    heroHeadingLine2: 'ARCHITECTURE.',
+    heroHeadingLine3: 'MATERIALS.',
+    heroDescription:
+      'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.',
+    heroImageUrl:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90',
+    heroPrimaryBtnText: 'Explore Projects',
+    heroPrimaryBtnLink: '/projects',
+    heroSecondaryBtnText: 'Explore Materials',
+    heroSecondaryBtnLink: '/materials',
+    trustBadge1: '★ 5.0 (22 Google Reviews)',
+    trustBadge2: 'Guwahati Studio Office',
+    trustBadge3: 'Turnkey Architecture',
+    trustBadge4: 'Pan-India Material Logistics',
+    introEyebrow: 'The Atelier Philosophy',
+    introHeading: 'Restraint is the ultimate form of luxury.',
+    introParagraph1:
+      'Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.',
+    introParagraph2:
+      'Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.',
+    introImageUrl:
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    stat1Value: '14+',
+    stat1Label: 'Years of Practice',
+    stat2Value: '180+',
+    stat2Label: 'Projects Handed Over',
+    stat3Value: '22+',
+    stat3Label: 'Global Quarry Partners',
+    ctaHeading: 'Commission an Architectural Dialogue',
+    ctaDescription:
+      'Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.',
+    ctaBtnText: 'Request Consultation & Quote',
+    ctaBtnLink: '/quote',
   },
 };
 
@@ -16711,7 +17237,7 @@ export function getServiceSupabase() {
 ### `src/types/index.ts`
 
 - **File**: `src/types/index.ts`
-- **Size**: 6.4 KB (331 lines)
+- **Size**: 7.2 KB (364 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -16991,6 +17517,38 @@ export interface AdminUser {
   updatedAt: string;
 }
 
+export interface HomepageSettings {
+  heroEyebrow?: string;
+  heroHeadingLine1?: string;
+  heroHeadingLine2?: string;
+  heroHeadingLine3?: string;
+  heroDescription?: string;
+  heroImageUrl?: string;
+  heroPrimaryBtnText?: string;
+  heroPrimaryBtnLink?: string;
+  heroSecondaryBtnText?: string;
+  heroSecondaryBtnLink?: string;
+  trustBadge1?: string;
+  trustBadge2?: string;
+  trustBadge3?: string;
+  trustBadge4?: string;
+  introEyebrow?: string;
+  introHeading?: string;
+  introParagraph1?: string;
+  introParagraph2?: string;
+  introImageUrl?: string;
+  stat1Value?: string;
+  stat1Label?: string;
+  stat2Value?: string;
+  stat2Label?: string;
+  stat3Value?: string;
+  stat3Label?: string;
+  ctaHeading?: string;
+  ctaDescription?: string;
+  ctaBtnText?: string;
+  ctaBtnLink?: string;
+}
+
 export interface SiteSettings {
   brandName: string;
   tagline: string;
@@ -17023,6 +17581,7 @@ export interface SiteSettings {
     text: string;
     linkUrl?: string;
   };
+  homepage?: HomepageSettings;
 }
 
 export interface AuditLog {

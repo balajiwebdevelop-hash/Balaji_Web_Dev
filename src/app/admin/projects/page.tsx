@@ -148,9 +148,13 @@ export default function AdminProjectsPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.project) {
         setIsModalOpen(false);
-        loadProjects();
+        if (editingProject) {
+          setProjects((prev) => prev.map((p) => (p.id === data.project.id ? data.project : p)));
+        } else {
+          setProjects((prev) => [data.project, ...prev]);
+        }
       } else {
         setFormError(data.error || 'Failed to save project');
       }

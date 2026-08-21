@@ -19,6 +19,7 @@ export default function AdminCategoriesPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [sortOrder, setSortOrder] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadCategories = async () => {
@@ -65,6 +66,7 @@ export default function AdminCategoriesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormLoading(true);
     setFormError(null);
 
     const payload = {
@@ -87,14 +89,20 @@ export default function AdminCategoriesPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.category) {
         setIsModalOpen(false);
-        loadCategories();
+        if (editingCategory) {
+          setCategories((prev) => prev.map((c) => (c.id === data.category.id ? data.category : c)));
+        } else {
+          setCategories((prev) => [...prev, data.category]);
+        }
       } else {
         setFormError(data.error || 'Failed to save category');
       }
     } catch (err: any) {
       setFormError(err.message || 'Server error');
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -280,9 +288,10 @@ export default function AdminCategoriesPage() {
                 </button>
                 <button
                   type="submit"
+                  disabled={formLoading}
                   className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
                 >
-                  Save Category
+                  {formLoading ? 'Saving...' : editingCategory ? 'Update Category' : 'Create Category'}
                 </button>
               </div>
             </form>

@@ -2359,7 +2359,7 @@ export default function AccountPage() {
 ### `src/app/admin/categories/page.tsx`
 
 - **File**: `src/app/admin/categories/page.tsx`
-- **Size**: 10.9 KB (295 lines)
+- **Size**: 11.4 KB (304 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -2384,6 +2384,7 @@ export default function AdminCategoriesPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [sortOrder, setSortOrder] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadCategories = async () => {
@@ -2430,6 +2431,7 @@ export default function AdminCategoriesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormLoading(true);
     setFormError(null);
 
     const payload = {
@@ -2452,14 +2454,20 @@ export default function AdminCategoriesPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.category) {
         setIsModalOpen(false);
-        loadCategories();
+        if (editingCategory) {
+          setCategories((prev) => prev.map((c) => (c.id === data.category.id ? data.category : c)));
+        } else {
+          setCategories((prev) => [...prev, data.category]);
+        }
       } else {
         setFormError(data.error || 'Failed to save category');
       }
     } catch (err: any) {
       setFormError(err.message || 'Server error');
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -2645,9 +2653,10 @@ export default function AdminCategoriesPage() {
                 </button>
                 <button
                   type="submit"
+                  disabled={formLoading}
                   className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
                 >
-                  Save Category
+                  {formLoading ? 'Saving...' : editingCategory ? 'Update Category' : 'Create Category'}
                 </button>
               </div>
             </form>
@@ -2830,7 +2839,7 @@ export default function AdminCustomersPage() {
 ### `src/app/admin/inventory/page.tsx`
 
 - **File**: `src/app/admin/inventory/page.tsx`
-- **Size**: 8.7 KB (214 lines)
+- **Size**: 8.9 KB (218 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -2880,17 +2889,21 @@ export default function AdminInventoryPage() {
     setSavingId(product.id);
 
     try {
-      // Partial update rule: Send only ID and stock
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock: Number(newStock) }),
       });
 
-      if (res.ok) {
-        setProducts(products.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.product) {
+        setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);
-        setTimeout(() => setSaveSuccessId(null), 2000);
+        setTimeout(() => setSaveSuccessId(null), 2500);
+      } else if (res.ok) {
+        setProducts((prev) => prev.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
+        setSaveSuccessId(product.id);
+        setTimeout(() => setSaveSuccessId(null), 2500);
       }
     } catch (e) {
       console.error('Failed to update stock', e);
@@ -3964,7 +3977,7 @@ export default function AdminDashboardPage() {
 ### `src/app/admin/products/page.tsx`
 
 - **File**: `src/app/admin/products/page.tsx`
-- **Size**: 23.1 KB (597 lines)
+- **Size**: 23.5 KB (604 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -4110,8 +4123,11 @@ export default function AdminProductsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ published: !p.published }),
       });
-      if (res.ok) {
-        setProducts(products.map((item) => (item.id === p.id ? { ...item, published: !p.published } : item)));
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.product) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? data.product : item)));
+      } else if (res.ok) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? { ...item, published: !p.published } : item)));
       }
     } catch (e) {
       console.error(e);
@@ -4123,7 +4139,7 @@ export default function AdminProductsPage() {
     try {
       const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setProducts(products.filter((p) => p.id !== id));
+        setProducts((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (e) {
       console.error(e);
@@ -4169,9 +4185,13 @@ export default function AdminProductsPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.product) {
         setIsModalOpen(false);
-        loadData();
+        if (editingProduct) {
+          setProducts((prev) => prev.map((item) => (item.id === data.product.id ? data.product : item)));
+        } else {
+          setProducts((prev) => [data.product, ...prev]);
+        }
       } else {
         setFormError(data.error || 'Failed to save product');
       }
@@ -4571,7 +4591,7 @@ export default function AdminProductsPage() {
 ### `src/app/admin/projects/page.tsx`
 
 - **File**: `src/app/admin/projects/page.tsx`
-- **Size**: 16.3 KB (433 lines)
+- **Size**: 16.5 KB (437 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -4725,9 +4745,13 @@ export default function AdminProjectsPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.project) {
         setIsModalOpen(false);
-        loadProjects();
+        if (editingProject) {
+          setProjects((prev) => prev.map((p) => (p.id === data.project.id ? data.project : p)));
+        } else {
+          setProjects((prev) => [data.project, ...prev]);
+        }
       } else {
         setFormError(data.error || 'Failed to save project');
       }
@@ -5308,7 +5332,7 @@ export default function AdminQuotesPage() {
 ### `src/app/admin/services/page.tsx`
 
 - **File**: `src/app/admin/services/page.tsx`
-- **Size**: 12.3 KB (337 lines)
+- **Size**: 12.6 KB (342 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -5337,6 +5361,7 @@ export default function AdminServicesPage() {
   const [deliverableInput, setDeliverableInput] = useState('');
   const [sortOrder, setSortOrder] = useState(0);
   const [isPublished, setIsPublished] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadServices = async () => {
@@ -5364,11 +5389,7 @@ export default function AdminServicesPage() {
     setShortDesc('');
     setFullDesc('');
     setImageUrl('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
-    setDeliverables([
-      'Comprehensive architectural drawing sets',
-      'Direct material quarry selection',
-      'On-site artisan supervision',
-    ]);
+    setDeliverables(['Concept Moodboards', 'Spatial CAD Layouts', 'Material Procurement Schedule']);
     setSortOrder(services.length + 1);
     setIsPublished(true);
     setFormError(null);
@@ -5381,7 +5402,7 @@ export default function AdminServicesPage() {
     setSlug(s.slug);
     setShortDesc(s.shortDesc);
     setFullDesc(s.fullDesc);
-    setImageUrl(s.imageUrl);
+    setImageUrl(s.imageUrl || '');
     setDeliverables(s.deliverables || []);
     setSortOrder(s.sortOrder);
     setIsPublished(s.isPublished);
@@ -5409,7 +5430,7 @@ export default function AdminServicesPage() {
     try {
       const res = await fetch(`/api/services/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setServices(services.filter((s) => s.id !== id));
+        setServices((prev) => prev.filter((s) => s.id !== id));
       }
     } catch (e) {
       console.error(e);
@@ -5418,6 +5439,7 @@ export default function AdminServicesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormLoading(true);
     setFormError(null);
 
     const payload = {
@@ -5443,14 +5465,20 @@ export default function AdminServicesPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.service) {
         setIsModalOpen(false);
-        loadServices();
+        if (editingService) {
+          setServices((prev) => prev.map((s) => (s.id === data.service.id ? data.service : s)));
+        } else {
+          setServices((prev) => [...prev, data.service]);
+        }
       } else {
         setFormError(data.error || 'Failed to save service');
       }
     } catch (err: any) {
       setFormError(err.message || 'Error occurred');
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -5636,9 +5664,10 @@ export default function AdminServicesPage() {
                 </button>
                 <button
                   type="submit"
+                  disabled={formLoading}
                   className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
                 >
-                  Save Service
+                  {formLoading ? 'Saving...' : editingService ? 'Update Service' : 'Create Service'}
                 </button>
               </div>
             </form>
@@ -7048,11 +7077,12 @@ export async function POST(req: NextRequest) {
 ### `src/app/api/admin/settings/route.ts`
 
 - **File**: `src/app/api/admin/settings/route.ts`
-- **Size**: 2.0 KB (67 lines)
+- **Size**: 2.4 KB (80 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSiteSettings, updateSiteSettings, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -7103,6 +7133,18 @@ export async function PATCH(req: NextRequest) {
       });
     } catch (auditErr) {
       console.warn('Audit log write notice:', auditErr);
+    }
+
+    // Invalidate customer-facing pages immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/checkout');
+      revalidatePath('/quote');
+      revalidatePath('/about');
+      revalidatePath('/contact');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
     }
 
     return NextResponse.json(
@@ -7458,17 +7500,21 @@ export async function GET(req: NextRequest) {
 ### `src/app/api/categories/[id]/route.ts`
 
 - **File**: `src/app/api/categories/[id]/route.ts`
-- **Size**: 2.0 KB (61 lines)
+- **Size**: 3.3 KB (104 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { updateCategory, deleteCategory, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -7490,7 +7536,25 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       details: { modifiedKeys: Object.keys(partialData) },
     });
 
-    return NextResponse.json({ success: true, category: updated });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, category: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7498,7 +7562,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -7517,7 +7584,25 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       entityId: params.id,
     });
 
-    return NextResponse.json({ success: true, message: 'Category deleted successfully' });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Category deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7529,11 +7614,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 ### `src/app/api/categories/route.ts`
 
 - **File**: `src/app/api/categories/route.ts`
-- **Size**: 1.9 KB (61 lines)
+- **Size**: 2.6 KB (83 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getCategories, getAllCategoriesAdmin, createCategory, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -7543,7 +7629,14 @@ export async function GET(req: NextRequest) {
     const isAdmin = searchParams.get('admin') === 'true';
 
     const categories = isAdmin ? await getAllCategoriesAdmin() : await getCategories();
-    return NextResponse.json({ categories });
+    return NextResponse.json(
+      { categories },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7551,7 +7644,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -7587,6 +7683,17 @@ export async function POST(req: NextRequest) {
       entityId: newCategory.id,
       details: { name: newCategory.name, slug: newCategory.slug },
     });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
 
     return NextResponse.json({ success: true, category: newCategory });
   } catch (err: any) {
@@ -7795,11 +7902,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 ### `src/app/api/orders/route.ts`
 
 - **File**: `src/app/api/orders/route.ts`
-- **Size**: 2.5 KB (76 lines)
+- **Size**: 2.9 KB (88 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createOrderAtomic, getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -7861,12 +7969,23 @@ export async function POST(req: NextRequest) {
       shippingAddress: body.shippingAddress,
       billingAddress: body.billingAddress,
       items: body.items,
-      paymentMethod: body.paymentMethod || 'Credit Card',
+      paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
       notes: body.notes,
     });
 
     if (!result.success || !result.order) {
       return NextResponse.json({ success: false, error: result.error }, { status: 400 });
+    }
+
+    // Invalidate customer-facing stock & product caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
     }
 
     return NextResponse.json({ success: true, order: result.order });
@@ -7881,11 +8000,12 @@ export async function POST(req: NextRequest) {
 ### `src/app/api/products/[id]/route.ts`
 
 - **File**: `src/app/api/products/[id]/route.ts`
-- **Size**: 2.5 KB (73 lines)
+- **Size**: 4.0 KB (125 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getProductById, updateProduct, deleteProduct, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -7895,7 +8015,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     if (!product) {
       return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, product });
+    return NextResponse.json(
+      { success: true, product },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7903,7 +8030,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -7925,7 +8055,26 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       details: { modifiedKeys: Object.keys(partialData) },
     });
 
-    return NextResponse.json({ success: true, product: updated });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, product: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7933,7 +8082,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -7952,7 +8104,26 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       entityId: params.id,
     });
 
-    return NextResponse.json({ success: true, message: 'Product deleted successfully' });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Product deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7964,11 +8135,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 ### `src/app/api/products/route.ts`
 
 - **File**: `src/app/api/products/route.ts`
-- **Size**: 3.3 KB (96 lines)
+- **Size**: 3.9 KB (119 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getProducts, createProduct, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -7989,7 +8161,14 @@ export async function GET(req: NextRequest) {
       publishedOnly,
     });
 
-    return NextResponse.json({ products });
+    return NextResponse.json(
+      { products },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -7997,7 +8176,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8058,6 +8240,18 @@ export async function POST(req: NextRequest) {
       details: { name: newProduct.name, sku: newProduct.sku, price: newProduct.price },
     });
 
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
     return NextResponse.json({ success: true, product: newProduct });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -8070,11 +8264,12 @@ export async function POST(req: NextRequest) {
 ### `src/app/api/projects/[id]/route.ts`
 
 - **File**: `src/app/api/projects/[id]/route.ts`
-- **Size**: 2.5 KB (73 lines)
+- **Size**: 3.7 KB (119 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getProjectById, updateProject, deleteProject, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -8084,7 +8279,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     if (!project) {
       return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, project });
+    return NextResponse.json(
+      { success: true, project },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8092,7 +8294,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8114,7 +8319,23 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       details: { modifiedKeys: Object.keys(partialData) },
     });
 
-    return NextResponse.json({ success: true, project: updated });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, project: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8122,7 +8343,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8141,7 +8365,23 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       entityId: params.id,
     });
 
-    return NextResponse.json({ success: true, message: 'Project deleted successfully' });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Project deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8153,11 +8393,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 ### `src/app/api/projects/route.ts`
 
 - **File**: `src/app/api/projects/route.ts`
-- **Size**: 2.6 KB (75 lines)
+- **Size**: 3.1 KB (95 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getProjects, createProject, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -8168,7 +8409,14 @@ export async function GET(req: NextRequest) {
     const publishedOnly = searchParams.get('all') === 'true' ? false : true;
 
     const projects = await getProjects({ featuredOnly, publishedOnly });
-    return NextResponse.json({ projects });
+    return NextResponse.json(
+      { projects },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8176,7 +8424,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8225,6 +8476,15 @@ export async function POST(req: NextRequest) {
       entityId: newProject.id,
       details: { title: newProject.title, slug: newProject.slug },
     });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
 
     return NextResponse.json({ success: true, project: newProject });
   } catch (err: any) {
@@ -8361,17 +8621,21 @@ export async function POST(req: NextRequest) {
 ### `src/app/api/services/[id]/route.ts`
 
 - **File**: `src/app/api/services/[id]/route.ts`
-- **Size**: 2.0 KB (61 lines)
+- **Size**: 3.0 KB (98 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { updateService, deleteService, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8393,7 +8657,22 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       details: { modifiedKeys: Object.keys(partialData) },
     });
 
-    return NextResponse.json({ success: true, service: updated });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, service: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8401,7 +8680,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8420,7 +8702,22 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       entityId: params.id,
     });
 
-    return NextResponse.json({ success: true, message: 'Service deleted successfully' });
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Service deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8432,11 +8729,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 ### `src/app/api/services/route.ts`
 
 - **File**: `src/app/api/services/route.ts`
-- **Size**: 2.0 KB (62 lines)
+- **Size**: 2.5 KB (81 lines)
 - **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getServices, createService, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -8445,7 +8743,14 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const publishedOnly = searchParams.get('all') === 'true' ? false : true;
     const services = await getServices(publishedOnly);
-    return NextResponse.json({ services });
+    return NextResponse.json(
+      { services },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -8453,7 +8758,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -8491,6 +8799,14 @@ export async function POST(req: NextRequest) {
       entityId: newService.id,
       details: { title: newService.title },
     });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
 
     return NextResponse.json({ success: true, service: newService });
   } catch (err: any) {
@@ -11741,7 +12057,7 @@ export default function robots(): MetadataRoute.Robots {
 ### `src/app/search/page.tsx`
 
 - **File**: `src/app/search/page.tsx`
-- **Size**: 7.3 KB (182 lines)
+- **Size**: 7.9 KB (204 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -11763,42 +12079,64 @@ export default function SearchPage() {
     if (!query.trim()) {
       setProducts([]);
       setProjects([]);
+      setLoading(false);
       return;
     }
+
+    const abortController = new AbortController();
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
         const [prodRes, projRes] = await Promise.all([
-          fetch(`/api/products?search=${encodeURIComponent(query)}`),
-          fetch(`/api/projects`),
+          fetch(`/api/products?search=${encodeURIComponent(query)}`, {
+            signal: abortController.signal,
+            headers: { 'Cache-Control': 'no-cache' },
+          }),
+          fetch(`/api/projects`, {
+            signal: abortController.signal,
+            headers: { 'Cache-Control': 'no-cache' },
+          }),
         ]);
+
+        if (abortController.signal.aborted) return;
 
         if (prodRes.ok) {
           const prodData = await prodRes.json();
-          setProducts(prodData.products || []);
+          if (!abortController.signal.aborted) {
+            setProducts(prodData.products || []);
+          }
         }
 
         if (projRes.ok) {
           const projData = await projRes.json();
-          const q = query.toLowerCase();
-          const filteredProj = (projData.projects || []).filter(
-            (p: Project) =>
-              p.title.toLowerCase().includes(q) ||
-              p.location.toLowerCase().includes(q) ||
-              p.projectType.toLowerCase().includes(q) ||
-              p.shortDescription.toLowerCase().includes(q)
-          );
-          setProjects(filteredProj);
+          if (!abortController.signal.aborted) {
+            const q = query.toLowerCase();
+            const filteredProj = (projData.projects || []).filter(
+              (p: Project) =>
+                p.title.toLowerCase().includes(q) ||
+                p.location.toLowerCase().includes(q) ||
+                p.projectType.toLowerCase().includes(q) ||
+                p.shortDescription.toLowerCase().includes(q)
+            );
+            setProjects(filteredProj);
+          }
         }
-      } catch (err) {
-        console.error('Search fetch error', err);
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.error('Search fetch error', err);
+        }
       } finally {
-        setLoading(false);
+        if (!abortController.signal.aborted) {
+          setLoading(false);
+        }
       }
-    }, 250);
+    }, 200);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      abortController.abort();
+    };
   }, [query]);
 
   return (
@@ -13833,7 +14171,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 ### `src/components/ProductDetailClient.tsx`
 
 - **File**: `src/components/ProductDetailClient.tsx`
-- **Size**: 17.5 KB (393 lines)
+- **Size**: 17.9 KB (397 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -13879,11 +14217,15 @@ export function ProductDetailClient({
 
   const isFavorited = isInWishlist(product.id);
 
+  const safeImageIndex = product.images && product.images.length > 0 ? Math.min(selectedImage, product.images.length - 1) : 0;
+  const currentImage = product.images && product.images[safeImageIndex] ? product.images[safeImageIndex] : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
+  const safeVariant = selectedVariant && product.variants?.some((v) => v.id === selectedVariant.id) ? selectedVariant : (product.variants && product.variants[0]);
+
   const basePrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
-  const currentPrice = basePrice + (selectedVariant?.priceModifier || 0);
+  const currentPrice = basePrice + (safeVariant?.priceModifier || 0);
 
   const handleAddToCart = () => {
-    addItem(product, quantity, selectedVariant);
+    addItem(product, quantity, safeVariant);
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
   };
@@ -13898,10 +14240,10 @@ export function ProductDetailClient({
         {/* Left: Gallery */}
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-[4/3] sm:aspect-[16/11] bg-canvas overflow-hidden border border-atelier">
-            {product.images[selectedImage] && (
+            {currentImage && (
               <Image
-                src={product.images[selectedImage]}
-                alt={`${product.name} - View ${selectedImage + 1}`}
+                src={currentImage}
+                alt={`${product.name} - View ${safeImageIndex + 1}`}
                 fill
                 priority
                 className="object-cover"
@@ -14739,7 +15081,7 @@ export function verifyAdminToken(token: string): AdminTokenPayload | null {
 ### `src/lib/db.ts`
 
 - **File**: `src/lib/db.ts`
-- **Size**: 64.1 KB (1856 lines)
+- **Size**: 64.7 KB (1868 lines)
 - **Language**: `typescript`
 
 ```typescript
@@ -15238,7 +15580,13 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
       throw new Error(`Failed to create product in database: ${error?.message}`);
     }
 
-    return mapSupabaseProduct(inserted);
+    let catMap: Map<string, { name: string; slug: string }> | undefined;
+    if (inserted.category_id) {
+      const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', inserted.category_id).maybeSingle();
+      if (cat) catMap = new Map([[inserted.category_id, cat]]);
+    }
+
+    return mapSupabaseProduct(inserted, catMap);
   }
 
   const db = getDb();
@@ -15300,7 +15648,13 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
     }
     if (!data) return null;
 
-    return mapSupabaseProduct(data);
+    let catMap: Map<string, { name: string; slug: string }> | undefined;
+    if (data.category_id) {
+      const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
+      if (cat) catMap = new Map([[data.category_id, cat]]);
+    }
+
+    return mapSupabaseProduct(data, catMap);
   }
 
   const db = getDb();

@@ -493,7 +493,13 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
       throw new Error(`Failed to create product in database: ${error?.message}`);
     }
 
-    return mapSupabaseProduct(inserted);
+    let catMap: Map<string, { name: string; slug: string }> | undefined;
+    if (inserted.category_id) {
+      const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', inserted.category_id).maybeSingle();
+      if (cat) catMap = new Map([[inserted.category_id, cat]]);
+    }
+
+    return mapSupabaseProduct(inserted, catMap);
   }
 
   const db = getDb();
@@ -555,7 +561,13 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
     }
     if (!data) return null;
 
-    return mapSupabaseProduct(data);
+    let catMap: Map<string, { name: string; slug: string }> | undefined;
+    if (data.category_id) {
+      const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
+      if (cat) catMap = new Map([[data.category_id, cat]]);
+    }
+
+    return mapSupabaseProduct(data, catMap);
   }
 
   const db = getDb();

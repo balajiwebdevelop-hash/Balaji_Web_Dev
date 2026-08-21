@@ -140,8 +140,11 @@ export default function AdminProductsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ published: !p.published }),
       });
-      if (res.ok) {
-        setProducts(products.map((item) => (item.id === p.id ? { ...item, published: !p.published } : item)));
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.product) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? data.product : item)));
+      } else if (res.ok) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? { ...item, published: !p.published } : item)));
       }
     } catch (e) {
       console.error(e);
@@ -153,7 +156,7 @@ export default function AdminProductsPage() {
     try {
       const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setProducts(products.filter((p) => p.id !== id));
+        setProducts((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (e) {
       console.error(e);
@@ -199,9 +202,13 @@ export default function AdminProductsPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.product) {
         setIsModalOpen(false);
-        loadData();
+        if (editingProduct) {
+          setProducts((prev) => prev.map((item) => (item.id === data.product.id ? data.product : item)));
+        } else {
+          setProducts((prev) => [data.product, ...prev]);
+        }
       } else {
         setFormError(data.error || 'Failed to save product');
       }

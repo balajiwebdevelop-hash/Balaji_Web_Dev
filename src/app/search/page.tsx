@@ -16,42 +16,64 @@ export default function SearchPage() {
     if (!query.trim()) {
       setProducts([]);
       setProjects([]);
+      setLoading(false);
       return;
     }
+
+    const abortController = new AbortController();
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
         const [prodRes, projRes] = await Promise.all([
-          fetch(`/api/products?search=${encodeURIComponent(query)}`),
-          fetch(`/api/projects`),
+          fetch(`/api/products?search=${encodeURIComponent(query)}`, {
+            signal: abortController.signal,
+            headers: { 'Cache-Control': 'no-cache' },
+          }),
+          fetch(`/api/projects`, {
+            signal: abortController.signal,
+            headers: { 'Cache-Control': 'no-cache' },
+          }),
         ]);
+
+        if (abortController.signal.aborted) return;
 
         if (prodRes.ok) {
           const prodData = await prodRes.json();
-          setProducts(prodData.products || []);
+          if (!abortController.signal.aborted) {
+            setProducts(prodData.products || []);
+          }
         }
 
         if (projRes.ok) {
           const projData = await projRes.json();
-          const q = query.toLowerCase();
-          const filteredProj = (projData.projects || []).filter(
-            (p: Project) =>
-              p.title.toLowerCase().includes(q) ||
-              p.location.toLowerCase().includes(q) ||
-              p.projectType.toLowerCase().includes(q) ||
-              p.shortDescription.toLowerCase().includes(q)
-          );
-          setProjects(filteredProj);
+          if (!abortController.signal.aborted) {
+            const q = query.toLowerCase();
+            const filteredProj = (projData.projects || []).filter(
+              (p: Project) =>
+                p.title.toLowerCase().includes(q) ||
+                p.location.toLowerCase().includes(q) ||
+                p.projectType.toLowerCase().includes(q) ||
+                p.shortDescription.toLowerCase().includes(q)
+            );
+            setProjects(filteredProj);
+          }
         }
-      } catch (err) {
-        console.error('Search fetch error', err);
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.error('Search fetch error', err);
+        }
       } finally {
-        setLoading(false);
+        if (!abortController.signal.aborted) {
+          setLoading(false);
+        }
       }
-    }, 250);
+    }, 200);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      abortController.abort();
+    };
   }, [query]);
 
   return (

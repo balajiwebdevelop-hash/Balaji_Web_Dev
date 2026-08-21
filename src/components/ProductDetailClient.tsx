@@ -40,11 +40,15 @@ export function ProductDetailClient({
 
   const isFavorited = isInWishlist(product.id);
 
+  const safeImageIndex = product.images && product.images.length > 0 ? Math.min(selectedImage, product.images.length - 1) : 0;
+  const currentImage = product.images && product.images[safeImageIndex] ? product.images[safeImageIndex] : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
+  const safeVariant = selectedVariant && product.variants?.some((v) => v.id === selectedVariant.id) ? selectedVariant : (product.variants && product.variants[0]);
+
   const basePrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
-  const currentPrice = basePrice + (selectedVariant?.priceModifier || 0);
+  const currentPrice = basePrice + (safeVariant?.priceModifier || 0);
 
   const handleAddToCart = () => {
-    addItem(product, quantity, selectedVariant);
+    addItem(product, quantity, safeVariant);
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 3000);
   };
@@ -59,10 +63,10 @@ export function ProductDetailClient({
         {/* Left: Gallery */}
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-[4/3] sm:aspect-[16/11] bg-canvas overflow-hidden border border-atelier">
-            {product.images[selectedImage] && (
+            {currentImage && (
               <Image
-                src={product.images[selectedImage]}
-                alt={`${product.name} - View ${selectedImage + 1}`}
+                src={currentImage}
+                alt={`${product.name} - View ${safeImageIndex + 1}`}
                 fill
                 priority
                 className="object-cover"

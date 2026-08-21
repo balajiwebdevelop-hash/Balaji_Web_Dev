@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getCategories, getAllCategoriesAdmin, createCategory, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -8,7 +9,14 @@ export async function GET(req: NextRequest) {
     const isAdmin = searchParams.get('admin') === 'true';
 
     const categories = isAdmin ? await getAllCategoriesAdmin() : await getCategories();
-    return NextResponse.json({ categories });
+    return NextResponse.json(
+      { categories },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -16,7 +24,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -52,6 +63,17 @@ export async function POST(req: NextRequest) {
       entityId: newCategory.id,
       details: { name: newCategory.name, slug: newCategory.slug },
     });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
 
     return NextResponse.json({ success: true, category: newCategory });
   } catch (err: any) {

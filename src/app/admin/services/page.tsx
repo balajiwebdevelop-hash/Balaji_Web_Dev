@@ -23,6 +23,7 @@ export default function AdminServicesPage() {
   const [deliverableInput, setDeliverableInput] = useState('');
   const [sortOrder, setSortOrder] = useState(0);
   const [isPublished, setIsPublished] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadServices = async () => {
@@ -50,11 +51,7 @@ export default function AdminServicesPage() {
     setShortDesc('');
     setFullDesc('');
     setImageUrl('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
-    setDeliverables([
-      'Comprehensive architectural drawing sets',
-      'Direct material quarry selection',
-      'On-site artisan supervision',
-    ]);
+    setDeliverables(['Concept Moodboards', 'Spatial CAD Layouts', 'Material Procurement Schedule']);
     setSortOrder(services.length + 1);
     setIsPublished(true);
     setFormError(null);
@@ -67,7 +64,7 @@ export default function AdminServicesPage() {
     setSlug(s.slug);
     setShortDesc(s.shortDesc);
     setFullDesc(s.fullDesc);
-    setImageUrl(s.imageUrl);
+    setImageUrl(s.imageUrl || '');
     setDeliverables(s.deliverables || []);
     setSortOrder(s.sortOrder);
     setIsPublished(s.isPublished);
@@ -95,7 +92,7 @@ export default function AdminServicesPage() {
     try {
       const res = await fetch(`/api/services/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setServices(services.filter((s) => s.id !== id));
+        setServices((prev) => prev.filter((s) => s.id !== id));
       }
     } catch (e) {
       console.error(e);
@@ -104,6 +101,7 @@ export default function AdminServicesPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormLoading(true);
     setFormError(null);
 
     const payload = {
@@ -129,14 +127,20 @@ export default function AdminServicesPage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.service) {
         setIsModalOpen(false);
-        loadServices();
+        if (editingService) {
+          setServices((prev) => prev.map((s) => (s.id === data.service.id ? data.service : s)));
+        } else {
+          setServices((prev) => [...prev, data.service]);
+        }
       } else {
         setFormError(data.error || 'Failed to save service');
       }
     } catch (err: any) {
       setFormError(err.message || 'Error occurred');
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -322,9 +326,10 @@ export default function AdminServicesPage() {
                 </button>
                 <button
                   type="submit"
+                  disabled={formLoading}
                   className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
                 >
-                  Save Service
+                  {formLoading ? 'Saving...' : editingService ? 'Update Service' : 'Create Service'}
                 </button>
               </div>
             </form>

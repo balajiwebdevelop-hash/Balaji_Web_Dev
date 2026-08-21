@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getProjects, createProject, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -9,7 +10,14 @@ export async function GET(req: NextRequest) {
     const publishedOnly = searchParams.get('all') === 'true' ? false : true;
 
     const projects = await getProjects({ featuredOnly, publishedOnly });
-    return NextResponse.json({ projects });
+    return NextResponse.json(
+      { projects },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
@@ -17,7 +25,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
     const admin = token ? verifyAdminToken(token) : null;
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
@@ -66,6 +77,15 @@ export async function POST(req: NextRequest) {
       entityId: newProject.id,
       details: { title: newProject.title, slug: newProject.slug },
     });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
 
     return NextResponse.json({ success: true, project: newProject });
   } catch (err: any) {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSiteSettings, updateSiteSettings, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -49,6 +50,18 @@ export async function PATCH(req: NextRequest) {
       });
     } catch (auditErr) {
       console.warn('Audit log write notice:', auditErr);
+    }
+
+    // Invalidate customer-facing pages immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/checkout');
+      revalidatePath('/quote');
+      revalidatePath('/about');
+      revalidatePath('/contact');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
     }
 
     return NextResponse.json(

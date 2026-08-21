@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createOrderAtomic, getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -60,12 +61,23 @@ export async function POST(req: NextRequest) {
       shippingAddress: body.shippingAddress,
       billingAddress: body.billingAddress,
       items: body.items,
-      paymentMethod: body.paymentMethod || 'Credit Card',
+      paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
       notes: body.notes,
     });
 
     if (!result.success || !result.order) {
       return NextResponse.json({ success: false, error: result.error }, { status: 400 });
+    }
+
+    // Invalidate customer-facing stock & product caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
     }
 
     return NextResponse.json({ success: true, order: result.order });

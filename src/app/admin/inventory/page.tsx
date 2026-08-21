@@ -44,17 +44,21 @@ export default function AdminInventoryPage() {
     setSavingId(product.id);
 
     try {
-      // Partial update rule: Send only ID and stock
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock: Number(newStock) }),
       });
 
-      if (res.ok) {
-        setProducts(products.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.product) {
+        setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);
-        setTimeout(() => setSaveSuccessId(null), 2000);
+        setTimeout(() => setSaveSuccessId(null), 2500);
+      } else if (res.ok) {
+        setProducts((prev) => prev.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
+        setSaveSuccessId(product.id);
+        setTimeout(() => setSaveSuccessId(null), 2500);
       }
     } catch (e) {
       console.error('Failed to update stock', e);

@@ -75,12 +75,18 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (checkoutStep !== 'payment') return;
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [checkoutStep]);
 
   const formatTimer = (seconds: number) => {
     const m = Math.floor(seconds / 60);

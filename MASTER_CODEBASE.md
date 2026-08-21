@@ -9188,7 +9188,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 ### `src/app/checkout/page.tsx`
 
 - **File**: `src/app/checkout/page.tsx`
-- **Size**: 39.6 KB (856 lines)
+- **Size**: 39.7 KB (862 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -9269,12 +9269,18 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (checkoutStep !== 'payment') return;
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [checkoutStep]);
 
   const formatTimer = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -13424,13 +13430,13 @@ export function Footer() {
 ### `src/components/ImageReveal.tsx`
 
 - **File**: `src/components/ImageReveal.tsx`
-- **Size**: 2.0 KB (84 lines)
+- **Size**: 1.1 KB (53 lines)
 - **Language**: `tsx`
 
 ```tsx
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 interface ImageRevealProps {
@@ -13442,7 +13448,7 @@ interface ImageRevealProps {
   className?: string;
   imageClassName?: string;
   priority?: boolean;
-  aspectRatio?: string; // e.g. "aspect-[4/3]"
+  aspectRatio?: string;
 }
 
 export function ImageReveal({
@@ -13456,33 +13462,8 @@ export function ImageReveal({
   priority = false,
   aspectRatio = 'aspect-[16/10]',
 }: ImageRevealProps) {
-  const [loaded, setLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.05 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={containerRef}
-      className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}
-    >
+    <div className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}>
       {fill ? (
         <Image
           src={src}
@@ -13490,10 +13471,7 @@ export function ImageReveal({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
-          onLoad={() => setLoaded(true)}
-          className={`object-cover transition-all duration-1000 ease-out ${
-            loaded && isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-          } ${imageClassName}`}
+          className={`object-cover ${imageClassName}`}
         />
       ) : (
         <Image
@@ -13502,10 +13480,7 @@ export function ImageReveal({
           width={width || 800}
           height={height || 600}
           priority={priority}
-          onLoad={() => setLoaded(true)}
-          className={`object-cover transition-all duration-1000 ease-out ${
-            loaded && isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-          } ${imageClassName}`}
+          className={`object-cover ${imageClassName}`}
         />
       )}
     </div>
@@ -13879,7 +13854,7 @@ export function MobileBottomNav() {
 ### `src/components/Navbar.tsx`
 
 - **File**: `src/components/Navbar.tsx`
-- **Size**: 10.1 KB (253 lines)
+- **Size**: 10.3 KB (257 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -13898,7 +13873,11 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
-  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(null);
+  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>({
+    enabled: true,
+    text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
+    linkUrl: '/quote',
+  });
   const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
     name: 'BALAJI ARCHITECT & INTERIORS',
     subtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
@@ -14142,33 +14121,18 @@ export function Navbar() {
 ### `src/components/PageTransition.tsx`
 
 - **File**: `src/components/PageTransition.tsx`
-- **Size**: 0.7 KB (27 lines)
+- **Size**: 0.2 KB (12 lines)
 - **Language**: `tsx`
 
 ```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import React from 'react';
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const [displayChildren, setDisplayChildren] = useState(children);
-  const [transitionStage, setTransitionStage] = useState<'fadeIn' | 'fadeOut'>('fadeIn');
-
-  useEffect(() => {
-    setDisplayChildren(children);
-    setTransitionStage('fadeIn');
-  }, [pathname, children]);
-
   return (
-    <div
-      key={pathname}
-      className={`min-h-[calc(100vh-80px)] transition-opacity duration-300 ease-out ${
-        transitionStage === 'fadeIn' ? 'opacity-100' : 'opacity-0'
-      }`}
-    >
-      {displayChildren}
+    <div className="min-h-[calc(100vh-80px)]">
+      {children}
     </div>
   );
 }
@@ -14586,61 +14550,28 @@ export function ProductDetailClient({
 ### `src/components/Reveal.tsx`
 
 - **File**: `src/components/Reveal.tsx`
-- **Size**: 1.3 KB (56 lines)
+- **Size**: 0.3 KB (23 lines)
 - **Language**: `tsx`
 
 ```tsx
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 interface RevealProps {
   children: React.ReactNode;
   className?: string;
-  delay?: number; // ms
-  duration?: number; // ms
-  yOffset?: number; // px
+  delay?: number;
+  duration?: number;
+  yOffset?: number;
 }
 
 export function Reveal({
   children,
   className = '',
-  delay = 0,
-  duration = 700,
-  yOffset = 20,
 }: RevealProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : `translateY(${yOffset}px)`,
-        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        willChange: 'opacity, transform',
-      }}
-    >
+    <div className={className}>
       {children}
     </div>
   );

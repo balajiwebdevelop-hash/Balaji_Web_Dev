@@ -13,7 +13,11 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
-  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(null);
+  const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>({
+    enabled: true,
+    text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
+    linkUrl: '/quote',
+  });
   const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
     name: 'BALAJI ARCHITECT & INTERIORS',
     subtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 interface ImageRevealProps {
@@ -12,7 +12,7 @@ interface ImageRevealProps {
   className?: string;
   imageClassName?: string;
   priority?: boolean;
-  aspectRatio?: string; // e.g. "aspect-[4/3]"
+  aspectRatio?: string;
 }
 
 export function ImageReveal({
@@ -26,33 +26,8 @@ export function ImageReveal({
   priority = false,
   aspectRatio = 'aspect-[16/10]',
 }: ImageRevealProps) {
-  const [loaded, setLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.05 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={containerRef}
-      className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}
-    >
+    <div className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}>
       {fill ? (
         <Image
           src={src}
@@ -60,10 +35,7 @@ export function ImageReveal({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
-          onLoad={() => setLoaded(true)}
-          className={`object-cover transition-all duration-1000 ease-out ${
-            loaded && isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-          } ${imageClassName}`}
+          className={`object-cover ${imageClassName}`}
         />
       ) : (
         <Image
@@ -72,10 +44,7 @@ export function ImageReveal({
           width={width || 800}
           height={height || 600}
           priority={priority}
-          onLoad={() => setLoaded(true)}
-          className={`object-cover transition-all duration-1000 ease-out ${
-            loaded && isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-          } ${imageClassName}`}
+          className={`object-cover ${imageClassName}`}
         />
       )}
     </div>

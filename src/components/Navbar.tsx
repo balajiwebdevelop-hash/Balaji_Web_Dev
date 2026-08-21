@@ -196,58 +196,59 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-surface/98 backdrop-blur-lg flex flex-col p-6 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 z-50 bg-[#FCFAF6] flex flex-col p-6 overflow-y-auto">
           <div className="flex items-center justify-between pb-6 border-b border-atelier">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
               className="flex flex-col"
             >
-              <span className="font-serif text-lg tracking-widest text-espresso">BALAJI ARCHITECT & INTERIORS</span>
-              <span className="text-[8px] uppercase tracking-widest text-warmgray">Architecture • Interiors • Materials</span>
+              <span className="font-serif text-lg tracking-widest text-espresso font-medium">{brandInfo.name}</span>
+              <span className="text-[9px] uppercase tracking-widest text-warmgray">{brandInfo.subtitle}</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-espresso hover:text-bronze"
+              className="p-2 text-espresso hover:text-bronze transition-colors"
+              aria-label="Close menu"
             >
               <X className="w-6 h-6" />
             </button>
           </div>
 
-          <div className="flex flex-col py-6 space-y-5">
+          <div className="flex flex-col py-6 space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="font-serif text-xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-1 border-b border-atelier/30"
+                className="font-serif text-2xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-2.5 border-b border-atelier"
               >
-                <span>{link.label}</span>
-                <span className="text-xs text-bronze font-sans tracking-widest">→</span>
+                <span className="tracking-wide">{link.label}</span>
+                <span className="text-sm text-bronze font-sans">→</span>
               </Link>
             ))}
             <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-serif text-xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-1 border-b border-atelier/30"
+              className="font-serif text-2xl text-espresso hover:text-bronze transition-colors flex items-center justify-between py-2.5 border-b border-atelier"
             >
-              <span>CONTACT & STUDIO</span>
-              <span className="text-xs text-bronze font-sans tracking-widest">→</span>
+              <span className="tracking-wide">CONTACT & STUDIO</span>
+              <span className="text-sm text-bronze font-sans">→</span>
             </Link>
 
             {/* Quick Action Contact Row on Mobile Drawer */}
-            <div className="grid grid-cols-2 gap-3 pt-3">
+            <div className="grid grid-cols-2 gap-3 pt-4">
               <a
                 href="https://wa.me/917002948484?text=Hello%20Balaji%20Architect%20%26%20Interiors%2C%20I%20would%20like%20to%20consult%20on%20a%20project."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 bg-green-700 text-white rounded text-center text-xs uppercase tracking-wider font-medium"
+                className="p-3.5 bg-green-700 hover:bg-green-800 text-white rounded text-center text-xs uppercase tracking-wider font-medium shadow-sm transition-colors"
               >
                 WhatsApp Us
               </a>
               <a
                 href="tel:+917002948484"
-                className="p-3 bg-espresso text-surface rounded text-center text-xs uppercase tracking-wider font-medium"
+                className="p-3.5 bg-espresso hover:bg-timber text-surface rounded text-center text-xs uppercase tracking-wider font-medium shadow-sm transition-colors"
               >
                 Call Studio
               </a>
@@ -256,9 +257,9 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             <Link
               href="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-serif text-base text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4"
+              className="text-xs uppercase tracking-widest text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4"
             >
-              <Shield className="w-4 h-4" />
+              <Shield className="w-4 h-4 text-bronze" />
               <span>Studio Admin Portal</span>
             </Link>
           </div>

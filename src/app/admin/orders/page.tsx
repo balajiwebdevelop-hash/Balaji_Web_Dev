@@ -104,7 +104,7 @@ function AdminOrdersContent() {
       if (res.ok) {
         const data = await res.json();
         if (data.order) {
-          setOrders(orders.map((o) => (o.id === orderId ? data.order : o)));
+          setOrders((prev) => prev.map((o) => (o.id === orderId ? data.order : o)));
           if (selectedOrder && selectedOrder.id === orderId) {
             setSelectedOrder(data.order);
           }

@@ -3402,7 +3402,7 @@ function AdminOrdersContent() {
       if (res.ok) {
         const data = await res.json();
         if (data.order) {
-          setOrders(orders.map((o) => (o.id === orderId ? data.order : o)));
+          setOrders((prev) => prev.map((o) => (o.id === orderId ? data.order : o)));
           if (selectedOrder && selectedOrder.id === orderId) {
             setSelectedOrder(data.order);
           }
@@ -5100,7 +5100,7 @@ export default function AdminQuotesPage() {
       if (res.ok) {
         const d = await res.json();
         if (d.quote) {
-          setQuotes(quotes.map((item) => (item.id === selectedQuote.id ? d.quote : item)));
+          setQuotes((prev) => prev.map((item) => (item.id === selectedQuote.id ? d.quote : item)));
           setSelectedQuote(d.quote);
         }
       }

@@ -55,7 +55,7 @@ export default function AdminQuotesPage() {
       if (res.ok) {
         const d = await res.json();
         if (d.quote) {
-          setQuotes(quotes.map((item) => (item.id === selectedQuote.id ? d.quote : item)));
+          setQuotes((prev) => prev.map((item) => (item.id === selectedQuote.id ? d.quote : item)));
           setSelectedQuote(d.quote);
         }
       }

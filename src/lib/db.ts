@@ -1704,6 +1704,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         ...initialSiteSettings,
         ...v,
         brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
+        brandSubtitle: v.brandSubtitle || initialSiteSettings.brandSubtitle,
         tagline: v.tagline || initialSiteSettings.tagline,
         architectName: v.architectName || initialSiteSettings.architectName,
         establishedYear: v.establishedYear || initialSiteSettings.establishedYear,
@@ -1736,6 +1737,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         homepage: {
           ...initialSiteSettings.homepage,
           ...(v.homepage || {}),
+        },
+        paymentGateway: {
+          ...initialSiteSettings.paymentGateway,
+          ...(v.paymentGateway || {}),
         },
         updatedAt: data.updated_at || new Date().toISOString(),
       };

@@ -2,7 +2,8 @@ import { hashPassword } from './auth';
 import { Category, Product, Project, Service, SiteSettings } from '@/types';
 
 export const initialSiteSettings: SiteSettings = {
-  brandName: 'Balaji Architect & Interiors',
+  brandName: 'BALAJI ARCHITECT & INTERIORS',
+  brandSubtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
   tagline: 'Crafted spaces, luxury architecture, and considered materials for timeless living.',
   architectName: 'Vikas Sir (Principal Architect)',
   establishedYear: '2014',
@@ -69,6 +70,23 @@ export const initialSiteSettings: SiteSettings = {
       'Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.',
     ctaBtnText: 'Request Consultation & Quote',
     ctaBtnLink: '/quote',
+  },
+  paymentGateway: {
+    enabled: true,
+    gatewayName: 'Balaji PG',
+    methodName: 'Balaji QR Payment',
+    upiId: '6000149918@fam',
+    merchantName: 'Balaji Architect & Interiors',
+    instructions:
+      '1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee "Balaji Architect & Interiors" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.',
+    qrExpiryMinutes: 10,
+    enableGPay: true,
+    enablePhonePe: true,
+    enablePaytm: true,
+    enableBhim: true,
+    enableCred: true,
+    enableAmazonPay: true,
+    requireUtr: true,
   },
 };
 

@@ -207,9 +207,28 @@ export interface Order {
   orderStatus: OrderStatus;
   paymentStatus: PaymentStatus;
   paymentMethod: string;
+  transactionId?: string;
+  utrNumber?: string;
   notes?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PaymentGatewaySettings {
+  enabled: boolean;
+  gatewayName: string; // 'Balaji PG'
+  methodName: string; // 'Balaji QR Payment'
+  upiId: string; // '6000149918@fam'
+  merchantName: string; // 'Balaji Architect & Interiors'
+  instructions: string;
+  qrExpiryMinutes: number; // 10
+  enableGPay: boolean;
+  enablePhonePe: boolean;
+  enablePaytm: boolean;
+  enableBhim: boolean;
+  enableCred: boolean;
+  enableAmazonPay: boolean;
+  requireUtr: boolean;
 }
 
 export type QuoteStatus =
@@ -308,6 +327,7 @@ export interface HomepageSettings {
 
 export interface SiteSettings {
   brandName: string;
+  brandSubtitle?: string;
   tagline: string;
   architectName?: string;
   establishedYear?: string;
@@ -339,6 +359,7 @@ export interface SiteSettings {
     linkUrl?: string;
   };
   homepage?: HomepageSettings;
+  paymentGateway?: PaymentGatewaySettings;
 }
 
 export interface AuditLog {

@@ -22,9 +22,12 @@ import {
   ArrowRight,
   Eye,
   ImageIcon,
+  QrCode,
+  CreditCard,
+  Copy,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
-import { SiteSettings, AuditLog, HomepageSettings } from '@/types';
+import { SiteSettings, AuditLog, HomepageSettings, PaymentGatewaySettings } from '@/types';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -52,7 +55,9 @@ export default function AdminSettingsPage() {
   const [browserPerm, setBrowserPerm] = useState<NotificationPermission | 'unsupported'>('default');
 
   // Active section tab
-  const [activeTab, setActiveTab] = useState<'homepage' | 'identity' | 'fiscal' | 'announcements' | 'push' | 'audit'>('homepage');
+  const [activeTab, setActiveTab] = useState<
+    'homepage' | 'identity' | 'payment' | 'fiscal' | 'announcements' | 'push' | 'audit'
+  >('homepage');
 
   // Audit Log Filter States
   const [auditSearch, setAuditSearch] = useState('');
@@ -146,6 +151,34 @@ export default function AdminSettingsPage() {
     });
   };
 
+  const updatePaymentGateway = (field: keyof PaymentGatewaySettings, value: any) => {
+    if (!settings) return;
+    const currentPg = settings.paymentGateway || {
+      enabled: true,
+      gatewayName: 'Balaji PG',
+      methodName: 'Balaji QR Payment',
+      upiId: '6000149918@fam',
+      merchantName: 'Balaji Architect & Interiors',
+      instructions: '',
+      qrExpiryMinutes: 10,
+      enableGPay: true,
+      enablePhonePe: true,
+      enablePaytm: true,
+      enableBhim: true,
+      enableCred: true,
+      enableAmazonPay: true,
+      requireUtr: true,
+    };
+
+    setSettings({
+      ...settings,
+      paymentGateway: {
+        ...currentPg,
+        [field]: value,
+      },
+    });
+  };
+
   const handleSendTestPush = async () => {
     setTestPushing(true);
     setPushResult(null);
@@ -224,6 +257,23 @@ export default function AdminSettingsPage() {
   }
 
   const home = settings.homepage || {};
+  const pg = settings.paymentGateway || {
+    enabled: true,
+    gatewayName: 'Balaji PG',
+    methodName: 'Balaji QR Payment',
+    upiId: '6000149918@fam',
+    merchantName: 'Balaji Architect & Interiors',
+    instructions:
+      '1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee "Balaji Architect & Interiors" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.',
+    qrExpiryMinutes: 10,
+    enableGPay: true,
+    enablePhonePe: true,
+    enablePaytm: true,
+    enableBhim: true,
+    enableCred: true,
+    enableAmazonPay: true,
+    requireUtr: true,
+  };
 
   return (
     <AdminLayout>
@@ -256,7 +306,7 @@ export default function AdminSettingsPage() {
         {savedSuccess && (
           <div className="p-4 bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center gap-2">
             <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-medium">All studio settings & homepage content successfully saved and persisted live to Supabase.</span>
+            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to Supabase.</span>
           </div>
         )}
 
@@ -292,7 +342,20 @@ export default function AdminSettingsPage() {
             }`}
           >
             <Building2 className="w-3.5 h-3.5 text-bronze" />
-            Studio Identity & Contact
+            Brand Logo & Identity
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('payment')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+              activeTab === 'payment'
+                ? 'bg-espresso text-surface border border-espresso'
+                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+            }`}
+          >
+            <QrCode className="w-3.5 h-3.5 text-bronze" />
+            Balaji PG / QR Gateway
           </button>
 
           <button
@@ -570,196 +633,53 @@ export default function AdminSettingsPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Atelier Philosophy / Studio Intro Controls */}
-              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-                <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                  <Building2 className="w-4 h-4 text-bronze" />
-                  <h2 className="font-serif text-xl text-espresso">Studio Philosophy & Signature Numbers</h2>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
-                  <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Eyebrow</label>
-                    <input
-                      type="text"
-                      value={home.introEyebrow || ''}
-                      onChange={(e) => updateHomepage('introEyebrow', e.target.value)}
-                      placeholder="The Atelier Philosophy"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Heading</label>
-                    <input
-                      type="text"
-                      value={home.introHeading || ''}
-                      onChange={(e) => updateHomepage('introHeading', e.target.value)}
-                      placeholder="Restraint is the ultimate form of luxury."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    />
-                  </div>
-
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Paragraph 1</label>
-                    <textarea
-                      rows={3}
-                      value={home.introParagraph1 || ''}
-                      onChange={(e) => updateHomepage('introParagraph1', e.target.value)}
-                      placeholder="Founded on the belief that genuine luxury emerges from architectural precision..."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Philosophy Paragraph 2</label>
-                    <textarea
-                      rows={3}
-                      value={home.introParagraph2 || ''}
-                      onChange={(e) => updateHomepage('introParagraph2', e.target.value)}
-                      placeholder="Beyond architectural commissions, we maintain direct partnerships..."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Intro Showcase Image URL</label>
-                    <input
-                      type="text"
-                      value={home.introImageUrl || ''}
-                      onChange={(e) => updateHomepage('introImageUrl', e.target.value)}
-                      placeholder="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-[11px]"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 1 Value</label>
-                      <input
-                        type="text"
-                        value={home.stat1Value || ''}
-                        onChange={(e) => updateHomepage('stat1Value', e.target.value)}
-                        placeholder="14+"
-                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 1 Label</label>
-                      <input
-                        type="text"
-                        value={home.stat1Label || ''}
-                        onChange={(e) => updateHomepage('stat1Label', e.target.value)}
-                        placeholder="Years of Practice"
-                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 2 Value</label>
-                      <input
-                        type="text"
-                        value={home.stat2Value || ''}
-                        onChange={(e) => updateHomepage('stat2Value', e.target.value)}
-                        placeholder="180+"
-                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="uppercase tracking-wider text-warmgray font-medium">Stat 2 Label</label>
-                      <input
-                        type="text"
-                        value={home.stat2Label || ''}
-                        onChange={(e) => updateHomepage('stat2Label', e.target.value)}
-                        placeholder="Signature Spaces"
-                        className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Commission CTA Box Controls */}
-              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-                <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                  <ArrowRight className="w-4 h-4 text-bronze" />
-                  <h2 className="font-serif text-xl text-espresso">Bottom Project Commission CTA Box</h2>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">CTA Main Heading</label>
-                    <input
-                      type="text"
-                      value={home.ctaHeading || ''}
-                      onChange={(e) => updateHomepage('ctaHeading', e.target.value)}
-                      placeholder="Ready to craft your next architectural space?"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    />
-                  </div>
-
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">CTA Sub-text</label>
-                    <textarea
-                      rows={3}
-                      value={home.ctaDescription || ''}
-                      onChange={(e) => updateHomepage('ctaDescription', e.target.value)}
-                      placeholder="Whether you are designing a private estate, specifying large format stone slabs..."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Button Text</label>
-                    <input
-                      type="text"
-                      value={home.ctaBtnText || ''}
-                      onChange={(e) => updateHomepage('ctaBtnText', e.target.value)}
-                      placeholder="Request Custom Quote"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Button Link</label>
-                    <input
-                      type="text"
-                      value={home.ctaBtnLink || ''}
-                      onChange={(e) => updateHomepage('ctaBtnLink', e.target.value)}
-                      placeholder="/quote"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
-          {/* TAB 2: STUDIO IDENTITY & CONTACT */}
+          {/* TAB 2: BRAND LOGO & IDENTITY */}
           {activeTab === 'identity' && (
             <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
               <div className="flex items-center gap-2 border-b border-atelier pb-3">
                 <Building2 className="w-4 h-4 text-bronze" />
-                <h2 className="font-serif text-xl text-espresso">Atelier Identity & Principal Profile</h2>
+                <h2 className="font-serif text-xl text-espresso">Header Branding Typography & Studio Profile</h2>
+              </div>
+
+              {/* Live Header Logo Preview */}
+              <div className="p-6 bg-canvas border border-atelier flex flex-col items-center justify-center text-center space-y-1">
+                <span className="font-serif text-xl tracking-widest text-espresso font-normal">
+                  {settings.brandName || 'BALAJI ARCHITECT & INTERIORS'}
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-warmgray font-medium">
+                  {settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS'}
+                </span>
+                <span className="text-[9px] uppercase tracking-wider text-bronze pt-2">Live Header Brand Preview</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand / Atelier Name</label>
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Name (Header Title)</label>
                   <input
                     type="text"
                     value={settings.brandName || ''}
                     onChange={(e) => setSettings({ ...settings, brandName: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                    placeholder="Balaji Architect & Interiors"
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-serif text-sm tracking-wider"
+                    placeholder="BALAJI ARCHITECT & INTERIORS"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2 lg:col-span-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Principal Architect</label>
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Subtitle (Header Sub-text)</label>
+                  <input
+                    type="text"
+                    value={settings.brandSubtitle || ''}
+                    onChange={(e) => setSettings({ ...settings, brandSubtitle: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden uppercase tracking-widest text-[11px]"
+                    placeholder="ARCHITECTURE • INTERIORS • MATERIALS"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Principal Architect Name</label>
                   <input
                     type="text"
                     value={settings.architectName || ''}
@@ -769,22 +689,22 @@ export default function AdminSettingsPage() {
                   />
                 </div>
 
-                <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Tagline / Atelier Philosophy</label>
-                  <input
-                    type="text"
-                    value={settings.tagline || ''}
-                    onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  />
-                </div>
-
                 <div className="space-y-1">
                   <label className="uppercase tracking-wider text-warmgray font-medium">Established Year</label>
                   <input
                     type="text"
                     value={settings.establishedYear || '2014'}
                     onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Tagline / Atelier Philosophy</label>
+                  <input
+                    type="text"
+                    value={settings.tagline || ''}
+                    onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
                     className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
                   />
                 </div>
@@ -840,7 +760,7 @@ export default function AdminSettingsPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Studio Operating Hours</label>
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Operating Hours</label>
                   <input
                     type="text"
                     value={settings.businessHours || 'Mon - Sat: 10:00 AM - 7:00 PM (IST)'}
@@ -848,41 +768,191 @@ export default function AdminSettingsPage() {
                     className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
                   />
                 </div>
-
-                <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">City</label>
-                  <input
-                    type="text"
-                    value={settings.city || 'Guwahati'}
-                    onChange={(e) => setSettings({ ...settings, city: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">State / Province</label>
-                  <input
-                    type="text"
-                    value={settings.state || 'Assam'}
-                    onChange={(e) => setSettings({ ...settings, state: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Pincode</label>
-                  <input
-                    type="text"
-                    value={settings.pincode || '781040'}
-                    onChange={(e) => setSettings({ ...settings, pincode: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
-                  />
-                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: FISCAL, GST & FREIGHT */}
+          {/* TAB 3: BALAJI PG / PAYMENT GATEWAY (DYNAMIC QR PAYMENT) */}
+          {activeTab === 'payment' && (
+            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
+              <div className="flex items-center justify-between border-b border-atelier pb-4">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-5 h-5 text-bronze" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-espresso">Balaji PG • Dynamic QR Payment Gateway</h2>
+                    <span className="text-[11px] text-warmgray">Real-Time UPI Gateway Configuration</span>
+                  </div>
+                </div>
+                <label className="flex items-center gap-2 text-xs uppercase tracking-wider font-medium text-espresso cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={pg.enabled ?? true}
+                    onChange={(e) => updatePaymentGateway('enabled', e.target.checked)}
+                    className="w-4 h-4 accent-bronze"
+                  />
+                  <span>Gateway Active</span>
+                </label>
+              </div>
+
+              {/* Gateway Parameters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Gateway Brand Name</label>
+                  <input
+                    type="text"
+                    value={pg.gatewayName || 'Balaji PG'}
+                    onChange={(e) => updatePaymentGateway('gatewayName', e.target.value)}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-medium"
+                    placeholder="Balaji PG"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Payment Method Name</label>
+                  <input
+                    type="text"
+                    value={pg.methodName || 'Balaji QR Payment'}
+                    onChange={(e) => updatePaymentGateway('methodName', e.target.value)}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    placeholder="Balaji QR Payment"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium text-bronze">
+                    Primary Payee UPI ID (Settlement Account) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={pg.upiId || '6000149918@fam'}
+                    onChange={(e) => updatePaymentGateway('upiId', e.target.value)}
+                    className="w-full p-2.5 bg-canvas border border-bronze focus:border-bronze focus:outline-hidden font-mono text-xs font-semibold text-espresso"
+                    placeholder="6000149918@fam"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Payee Merchant / Studio Name</label>
+                  <input
+                    type="text"
+                    value={pg.merchantName || 'Balaji Architect & Interiors'}
+                    onChange={(e) => updatePaymentGateway('merchantName', e.target.value)}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-medium"
+                    placeholder="Balaji Architect & Interiors"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">QR Auto-Expiry Duration (Minutes)</label>
+                  <input
+                    type="number"
+                    value={pg.qrExpiryMinutes || 10}
+                    onChange={(e) => updatePaymentGateway('qrExpiryMinutes', Number(e.target.value))}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">
+                    Customer Step-by-Step Payment Instructions
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={pg.instructions || ''}
+                    onChange={(e) => updatePaymentGateway('instructions', e.target.value)}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden text-xs leading-relaxed"
+                    placeholder="1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay)..."
+                  />
+                </div>
+              </div>
+
+              {/* Supported UPI Apps Control */}
+              <div className="pt-6 border-t border-atelier space-y-4">
+                <span className="text-xs uppercase tracking-widest text-espresso font-medium block">
+                  Active UPI Application Badges on Checkout:
+                </span>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableGPay ?? true}
+                      onChange={(e) => updatePaymentGateway('enableGPay', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">Google Pay</span>
+                  </label>
+
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enablePhonePe ?? true}
+                      onChange={(e) => updatePaymentGateway('enablePhonePe', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">PhonePe</span>
+                  </label>
+
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enablePaytm ?? true}
+                      onChange={(e) => updatePaymentGateway('enablePaytm', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">Paytm UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableBhim ?? true}
+                      onChange={(e) => updatePaymentGateway('enableBhim', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">BHIM UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableCred ?? true}
+                      onChange={(e) => updatePaymentGateway('enableCred', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">CRED UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableAmazonPay ?? true}
+                      onChange={(e) => updatePaymentGateway('enableAmazonPay', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-bronze"
+                    />
+                    <span className="font-medium text-espresso">Amazon Pay</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* UTR Verification Toggle */}
+              <div className="pt-4 border-t border-atelier flex items-center gap-3 text-xs">
+                <input
+                  type="checkbox"
+                  id="requireUtr"
+                  checked={pg.requireUtr ?? true}
+                  onChange={(e) => updatePaymentGateway('requireUtr', e.target.checked)}
+                  className="w-4 h-4 accent-bronze cursor-pointer"
+                />
+                <label htmlFor="requireUtr" className="cursor-pointer text-espresso font-medium">
+                  Require customer to enter 12-digit UPI Reference / UTR Number before order placement
+                </label>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: FISCAL, GST & FREIGHT */}
           {activeTab === 'fiscal' && (
             <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
               <div className="flex items-center gap-2 border-b border-atelier pb-3">
@@ -955,7 +1025,7 @@ export default function AdminSettingsPage() {
             </div>
           )}
 
-          {/* TAB 4: ANNOUNCEMENTS & SOCIAL */}
+          {/* TAB 5: ANNOUNCEMENTS & SOCIAL */}
           {activeTab === 'announcements' && (
             <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
               <div className="flex items-center gap-2 border-b border-atelier pb-3">
@@ -1071,7 +1141,7 @@ export default function AdminSettingsPage() {
             </div>
           )}
 
-          {/* TAB 5: WEB PUSH NOTIFICATIONS */}
+          {/* TAB 6: WEB PUSH NOTIFICATIONS */}
           {activeTab === 'push' && (
             <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
               <div className="flex items-center justify-between border-b border-atelier pb-4">
@@ -1106,7 +1176,7 @@ export default function AdminSettingsPage() {
             </div>
           )}
 
-          {/* TAB 6: SECURITY AUDIT LOG */}
+          {/* TAB 7: SECURITY AUDIT LOG */}
           {activeTab === 'audit' && (
             <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-4">

@@ -14,6 +14,10 @@ export function Navbar() {
   const { itemCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
   const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(null);
+  const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
+    name: 'BALAJI ARCHITECT & INTERIORS',
+    subtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,12 +29,20 @@ export function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Fetch live studio announcement banner
+    // Fetch live studio settings
     fetch('/api/admin/settings')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.settings?.announcementBanner) {
-          setAnnouncement(data.settings.announcementBanner);
+        if (data?.settings) {
+          if (data.settings.announcementBanner) {
+            setAnnouncement(data.settings.announcementBanner);
+          }
+          if (data.settings.brandName || data.settings.brandSubtitle) {
+            setBrandInfo({
+              name: data.settings.brandName || 'BALAJI ARCHITECT & INTERIORS',
+              subtitle: data.settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+            });
+          }
         }
       })
       .catch(() => {});
@@ -75,10 +87,10 @@ export function Navbar() {
           {/* Studio Brand */}
           <Link href="/" className="flex flex-col group">
             <span className="font-serif text-lg sm:text-xl md:text-2xl tracking-widest text-espresso font-normal group-hover:text-bronze transition-colors">
-              BALAJI ARCHITECT & INTERIORS
+              {brandInfo.name}
             </span>
             <span className="text-[9px] uppercase tracking-widest-plus text-warmgray font-medium -mt-0.5">
-              Architecture • Interiors • Materials
+              {brandInfo.subtitle}
             </span>
           </Link>
 

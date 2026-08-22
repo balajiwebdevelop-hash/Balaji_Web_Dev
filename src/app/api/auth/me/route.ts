@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminToken } from '@/lib/auth';
 import { getAdminByEmail } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const token = req.cookies.get('balaji_admin_session')?.value;
@@ -15,7 +17,7 @@ export async function GET(req: NextRequest) {
     }
 
     const currentAdmin = await getAdminByEmail(payload.email);
-    if (!currentAdmin) {
+    if (!currentAdmin || currentAdmin.status === 'disabled') {
       return NextResponse.json({ admin: null });
     }
 
@@ -25,6 +27,7 @@ export async function GET(req: NextRequest) {
         email: currentAdmin.email,
         name: currentAdmin.name,
         role: currentAdmin.role,
+        status: currentAdmin.status,
         mustChangePassword: currentAdmin.mustChangePassword,
       },
     });

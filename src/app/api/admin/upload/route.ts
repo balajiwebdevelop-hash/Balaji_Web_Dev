@@ -1,28 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwnerOrEmployee } from '@/lib/auth';
 import { getServiceSupabase } from '@/lib/supabase';
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
   try {
-    // 1. Authenticate admin
-    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-    const token = cookieToken || authHeader;
-
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized admin access. Please log in.' },
-        { status: 401 }
-      );
-    }
-
-    // 2. Parse file from FormData
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
     const bucket = (formData.get('bucket') as string) || 'products';
@@ -53,11 +44,10 @@ export async function POST(req: NextRequest) {
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
 
-    // 3. Primary: Try Supabase Cloud Storage
+    // Try Supabase Cloud Storage
     try {
       const supabase = getServiceSupabase();
 
-      // Ensure bucket exists
       await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
 
       const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
@@ -82,7 +72,7 @@ export async function POST(req: NextRequest) {
       console.warn('Supabase storage exception, saving to local static storage:', sbErr.message);
     }
 
-    // 4. Fallback: Local Server Storage (/public/uploads)
+    // Fallback: Local Server Storage (/public/uploads)
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });

@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateEnquiryStatus } from '@/lib/db';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
-    }
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
 
+  try {
     const { status } = await req.json();
     const updated = await updateEnquiryStatus(params.id, status);
 

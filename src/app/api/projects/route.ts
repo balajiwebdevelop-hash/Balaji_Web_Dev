@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProjects, createProject, addAuditLog } from '@/lib/db';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
@@ -24,16 +26,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
   try {
-    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-    const token = cookieToken || authHeader;
-
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
-    }
-
     const body = await req.json();
     if (!body.title || !body.heroImage) {
       return NextResponse.json(
@@ -70,8 +66,8 @@ export async function POST(req: NextRequest) {
     });
 
     await addAuditLog({
-      adminId: admin.id,
-      adminEmail: admin.email,
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
       action: 'PROJECT_CREATED',
       entity: 'Project',
       entityId: newProject.id,

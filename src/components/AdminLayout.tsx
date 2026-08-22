@@ -21,6 +21,7 @@ import {
   X,
   ExternalLink,
   Shield,
+  UserCheck,
 } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 
@@ -45,11 +46,22 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [pushStatus, setPushStatus] = useState<NotificationPermission | 'default'>('default');
 
+  const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
+
   useEffect(() => {
     if (!loading && !admin && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
   }, [admin, loading, pathname, router]);
+
+  // Route security check: block employees from accessing owner-only routes
+  useEffect(() => {
+    if (!loading && admin && !isOwner) {
+      if (pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/employees')) {
+        router.replace('/admin');
+      }
+    }
+  }, [admin, isOwner, loading, pathname, router]);
 
   // Register service worker and synchronize existing push subscription
   useEffect(() => {
@@ -137,6 +149,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return null;
   }
 
+  // Define navigational links according to role permissions
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Products & Materials', href: '/admin/products', icon: Package },
@@ -147,7 +160,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     { label: 'Design Services', href: '/admin/services', icon: Compass },
     { label: 'Quotes & Inquiries', href: '/admin/quotes', icon: FileText },
     { label: 'Customer Directory', href: '/admin/customers', icon: Users },
-    { label: 'Studio Settings', href: '/admin/settings', icon: Settings },
+    ...(isOwner
+      ? [
+          { label: 'Employee Management', href: '/admin/employees', icon: UserCheck },
+          { label: 'Studio Settings', href: '/admin/settings', icon: Settings },
+        ]
+      : []),
   ];
 
   return (
@@ -157,6 +175,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-champagne" />
           <span className="font-serif text-lg tracking-wider">BALAJI ADMIN</span>
+          <span
+            className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-bold ${
+              isOwner ? 'bg-champagne/20 text-champagne' : 'bg-surface/20 text-surface'
+            }`}
+          >
+            {isOwner ? 'OWNER' : 'EMPLOYEE'}
+          </span>
         </div>
         <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="p-1">
           {mobileNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -223,6 +248,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <div className="truncate">
               <span className="font-medium text-surface block text-xs truncate">{admin.name}</span>
               <span className="text-[10px] text-surface/50 truncate block">{admin.email}</span>
+              <div className="flex items-center gap-1.5 mt-1">
+                <span
+                  className={`inline-flex items-center px-1.5 py-0.5 text-[8px] uppercase tracking-wider font-semibold ${
+                    isOwner
+                      ? 'bg-champagne/20 text-champagne border border-champagne/40'
+                      : 'bg-surface/10 text-surface/80 border border-surface/20'
+                  }`}
+                >
+                  {isOwner ? 'OWNER' : 'EMPLOYEE'}
+                </span>
+                <span className="text-[9px] text-green-400">● Active</span>
+              </div>
             </div>
             <button
               onClick={() => logout()}

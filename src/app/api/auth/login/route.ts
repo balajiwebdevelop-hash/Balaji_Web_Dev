@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail, recordAdminLogin, addAuditLog } from '@/lib/db';
 import { verifyPassword, signAdminToken } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
@@ -13,6 +15,13 @@ export async function POST(req: NextRequest) {
     const admin = await getAdminByEmail(email);
     if (!admin) {
       return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
+    }
+
+    if (admin.status === 'disabled') {
+      return NextResponse.json(
+        { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
+        { status: 403 }
+      );
     }
 
     const isMatch = verifyPassword(password, admin.passwordHash);
@@ -36,7 +45,7 @@ export async function POST(req: NextRequest) {
       action: 'ADMIN_LOGIN_SUCCESS',
       entity: 'Auth',
       entityId: admin.id,
-      details: { mustChangePassword: admin.mustChangePassword },
+      details: { role: admin.role, mustChangePassword: admin.mustChangePassword },
     });
 
     const response = NextResponse.json({
@@ -46,6 +55,7 @@ export async function POST(req: NextRequest) {
         email: admin.email,
         name: admin.name,
         role: admin.role,
+        status: admin.status,
         mustChangePassword: admin.mustChangePassword,
       },
     });

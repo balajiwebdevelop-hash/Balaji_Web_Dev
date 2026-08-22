@@ -282,11 +282,15 @@ export interface Enquiry {
   createdAt: string;
 }
 
+export type AdminRole = 'owner' | 'employee' | 'super_admin' | 'editor' | 'viewer';
+export type AdminStatus = 'active' | 'disabled';
+
 export interface AdminUser {
   id: string;
   email: string;
   name: string;
-  role: 'super_admin' | 'editor' | 'viewer';
+  role: AdminRole;
+  status: AdminStatus;
   mustChangePassword: boolean;
   lastLoginAt?: string;
   createdAt: string;

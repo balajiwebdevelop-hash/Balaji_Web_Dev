@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getQuoteById, updateQuoteStatus, addAuditLog } from '@/lib/db';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -15,13 +17,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const token = req.cookies.get('balaji_admin_session')?.value;
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
-    }
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
 
+  try {
     const { status, totalQuotedAmount, adminNotes } = await req.json();
     const updated = await updateQuoteStatus(params.id, status, totalQuotedAmount, adminNotes);
 
@@ -30,8 +29,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     }
 
     await addAuditLog({
-      adminId: admin.id,
-      adminEmail: admin.email,
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
       action: 'QUOTE_STATUS_UPDATED',
       entity: 'Quote',
       entityId: params.id,

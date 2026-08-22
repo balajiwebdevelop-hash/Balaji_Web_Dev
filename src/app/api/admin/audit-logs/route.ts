@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuditLogs } from '@/lib/db';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
   try {
-    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-    const token = cookieToken || authHeader;
-
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(req.url);
     const limit = Number(searchParams.get('limit') || 200);
     const entity = searchParams.get('entity');

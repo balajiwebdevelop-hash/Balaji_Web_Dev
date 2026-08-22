@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import {
   AdminUser,
+  AdminRole,
+  AdminStatus,
   AuditLog,
   Category,
   Enquiry,
@@ -22,6 +24,7 @@ import {
 } from './seedData';
 import { getServiceSupabase } from './supabase';
 import { sendNewOrderPush } from './push';
+import { hashPassword } from './auth';
 
 export interface DatabaseState {
   admins: AdminUser[];
@@ -116,23 +119,6 @@ function ensureDbFile(): DatabaseState {
 
 export function resetDbCache(): void {
   dbCache = null;
-}
-
-export async function recordAdminLogin(adminId: string): Promise<void> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    if (isUUID(adminId)) {
-      await supabase.from('admins').update({ updated_at: new Date().toISOString() }).eq('id', adminId);
-    }
-    return;
-  }
-
-  const db = getDb();
-  const admin = db.admins.find((a) => a.id === adminId);
-  if (admin) {
-    admin.updatedAt = new Date().toISOString();
-    saveDb(db);
-  }
 }
 
 export function getDb(): DatabaseState {
@@ -1627,35 +1613,379 @@ export async function updateEnquiryStatus(id: string, status: Enquiry['status'])
 }
 
 // =============================================================
-// ADMIN AUTH & CREDENTIALS
+// =============================================================
+// ADMIN AUTH & ROLE-BASED EMPLOYEE MANAGEMENT
 // =============================================================
 
-export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
+  const isOwner =
+    data.email?.toLowerCase() === 'vicks@balaji.com' ||
+    data.role === 'owner' ||
+    data.role === 'super_admin';
+  const isDisabled =
+    data.role === 'disabled' || (typeof data.role === 'string' && data.role.endsWith(':disabled'));
+  const cleanRole: AdminRole = isOwner ? 'owner' : 'employee';
+  const status: AdminStatus = isDisabled ? 'disabled' : 'active';
+
+  return {
+    id: data.id,
+    email: data.email,
+    passwordHash: data.password_hash || data.passwordHash || '',
+    name: data.name,
+    role: cleanRole,
+    status: status,
+    mustChangePassword: Boolean(
+      data.must_change_password !== undefined ? data.must_change_password : data.mustChangePassword
+    ),
+    lastLoginAt: data.last_login_at || data.lastLoginAt || undefined,
+    createdAt: data.created_at || data.createdAt || new Date().toISOString(),
+    updatedAt: data.updated_at || data.updatedAt || new Date().toISOString(),
+  };
+}
+
+export async function getAdmins(): Promise<AdminUser[]> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('admins').select('*').ilike('email', email).maybeSingle();
-    if (error) throw new Error(`Database authentication error: ${error.message}`);
-    if (data) {
-      return {
-        id: data.id,
-        email: data.email,
-        passwordHash: data.password_hash,
-        name: data.name,
-        role: data.role || 'Principal Architect',
-        mustChangePassword: Boolean(data.must_change_password),
-        createdAt: data.created_at,
-        updatedAt: data.updated_at,
-      };
-    }
+    const { data, error } = await supabase
+      .from('admins')
+      .select('*')
+      .order('created_at', { ascending: true });
+    if (error) throw new Error(`Failed to load admin accounts: ${error.message}`);
+    return (data || []).map((row) => {
+      const mapped = mapAdminUser(row);
+      const { passwordHash, ...safeAdmin } = mapped;
+      return safeAdmin;
+    });
+  }
+
+  const db = getDb();
+  return (db.admins || []).map((row) => {
+    const mapped = mapAdminUser(row);
+    const { passwordHash, ...safeAdmin } = mapped;
+    return safeAdmin;
+  });
+}
+
+export async function getAdminById(id: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
+    if (error) throw new Error(`Database error fetching admin: ${error.message}`);
+    if (data) return mapAdminUser(data);
     return null;
   }
 
   const db = getDb();
-  const admin = db.admins.find((a) => a.email.toLowerCase() === email.toLowerCase());
-  return (admin as any) || null;
+  const admin = db.admins.find((a) => a.id === id);
+  return admin ? mapAdminUser(admin) : null;
 }
 
-export async function updateAdminPassword(adminId: string, newPasswordHash: string): Promise<boolean> {
+export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('admins').select('*').ilike('email', email.trim()).maybeSingle();
+    if (error) throw new Error(`Database authentication error: ${error.message}`);
+    if (data) return mapAdminUser(data);
+    return null;
+  }
+
+  const db = getDb();
+  const admin = db.admins.find((a) => a.email.toLowerCase() === email.trim().toLowerCase());
+  return admin ? mapAdminUser(admin) : null;
+}
+
+export async function createEmployeeAdmin(
+  input: {
+    name: string;
+    email: string;
+    role?: string;
+    temporaryPassword?: string;
+    mustChangePassword?: boolean;
+  },
+  actor?: { id: string; email: string }
+): Promise<AdminUser> {
+  const normalizedEmail = input.email.trim().toLowerCase();
+  if (!normalizedEmail || !normalizedEmail.includes('@')) {
+    throw new Error('Valid email address is required');
+  }
+  if (!input.name || input.name.trim().length === 0) {
+    throw new Error('Employee full name is required');
+  }
+
+  const existing = await getAdminByEmail(normalizedEmail);
+  if (existing) {
+    throw new Error('An account with this email address already exists');
+  }
+
+  const tempPass = input.temporaryPassword || 'employee@123';
+  if (tempPass.length < 6) {
+    throw new Error('Password must be at least 6 characters');
+  }
+  const passwordHash = hashPassword(tempPass);
+  const newId = crypto.randomUUID();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('admins')
+      .insert({
+        id: newId,
+        email: normalizedEmail,
+        name: input.name.trim(),
+        password_hash: passwordHash,
+        role: 'employee',
+        must_change_password: input.mustChangePassword !== undefined ? input.mustChangePassword : true,
+      })
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Failed to create employee in database: ${error?.message || 'DB error'}`);
+    }
+
+    try {
+      await addAuditLog({
+        adminId: actor?.id || 'system',
+        adminEmail: actor?.email || 'owner@balaji.com',
+        action: 'EMPLOYEE_CREATED',
+        entity: 'Admin',
+        entityId: data.id,
+        details: { email: normalizedEmail, name: input.name.trim(), role: 'employee' },
+      });
+    } catch (e) {}
+
+    const mapped = mapAdminUser(data);
+    const { passwordHash: _, ...safeAdmin } = mapped;
+    return safeAdmin;
+  }
+
+  const db = getDb();
+  const newAdmin = {
+    id: newId,
+    email: normalizedEmail,
+    name: input.name.trim(),
+    passwordHash: passwordHash,
+    role: 'employee' as const,
+    status: 'active' as const,
+    mustChangePassword: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  db.admins.push(newAdmin as any);
+  saveDb(db);
+  const mapped = mapAdminUser(newAdmin);
+  const { passwordHash: _, ...safeAdmin } = mapped;
+  return safeAdmin;
+}
+
+export async function updateEmployeeAdmin(
+  id: string,
+  updates: {
+    name?: string;
+    email?: string;
+    role?: string;
+    status?: 'active' | 'disabled';
+  },
+  actor?: { id: string; email: string }
+): Promise<AdminUser> {
+  const existing = await getAdminById(id);
+  if (!existing) {
+    throw new Error('Employee account not found');
+  }
+
+  // Protect Owner Account from role downgrade or disabling
+  if (existing.role === 'owner' || existing.email.toLowerCase() === 'vicks@balaji.com') {
+    if (updates.role && updates.role !== 'owner') {
+      throw new Error('Cannot change the role of the studio owner account');
+    }
+    if (updates.status === 'disabled') {
+      throw new Error('Cannot disable the studio owner account');
+    }
+  }
+
+  // Prevent escalating employee to owner through employee UI
+  if (existing.role !== 'owner' && updates.role === 'owner') {
+    throw new Error('Cannot assign owner role to an employee account');
+  }
+
+  let dbRole: string = existing.role;
+  if (updates.status === 'disabled') {
+    dbRole = 'employee:disabled';
+  } else if (updates.status === 'active') {
+    dbRole = 'employee';
+  }
+
+  const payload: any = {
+    updated_at: new Date().toISOString(),
+  };
+  if (updates.name !== undefined) payload.name = updates.name.trim();
+  if (updates.email !== undefined) {
+    const newEmail = updates.email.trim().toLowerCase();
+    if (newEmail !== existing.email.toLowerCase()) {
+      const emailCheck = await getAdminByEmail(newEmail);
+      if (emailCheck && emailCheck.id !== id) {
+        throw new Error('Email is already in use by another account');
+      }
+      payload.email = newEmail;
+    }
+  }
+  if (updates.status !== undefined || updates.role !== undefined) {
+    payload.role = dbRole;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('admins')
+      .update(payload)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(`Failed to update employee: ${error?.message || 'DB error'}`);
+    }
+
+    try {
+      const action =
+        updates.status === 'disabled'
+          ? 'EMPLOYEE_DISABLED'
+          : updates.status === 'active' && existing.status === 'disabled'
+          ? 'EMPLOYEE_ENABLED'
+          : updates.role && updates.role !== existing.role
+          ? 'EMPLOYEE_ROLE_CHANGED'
+          : 'EMPLOYEE_UPDATED';
+
+      await addAuditLog({
+        adminId: actor?.id || 'system',
+        adminEmail: actor?.email || 'owner@balaji.com',
+        action,
+        entity: 'Admin',
+        entityId: id,
+        details: { updates, previousRole: existing.role, previousStatus: existing.status },
+      });
+    } catch (e) {}
+
+    const mapped = mapAdminUser(data);
+    const { passwordHash: _, ...safeAdmin } = mapped;
+    return safeAdmin;
+  }
+
+  const db = getDb();
+  const admin = db.admins.find((a) => a.id === id);
+  if (!admin) throw new Error('Employee account not found');
+  if (updates.name) admin.name = updates.name.trim();
+  if (updates.email) admin.email = updates.email.trim().toLowerCase();
+  if (updates.status === 'disabled') (admin as any).status = 'disabled';
+  if (updates.status === 'active') (admin as any).status = 'active';
+  admin.updatedAt = new Date().toISOString();
+  saveDb(db);
+  const mapped = mapAdminUser(admin);
+  const { passwordHash: _, ...safeAdmin } = mapped;
+  return safeAdmin;
+}
+
+export async function deleteEmployeeAdmin(id: string, actor?: { id: string; email: string }): Promise<boolean> {
+  const existing = await getAdminById(id);
+  if (!existing) {
+    throw new Error('Employee account not found');
+  }
+
+  if (existing.role === 'owner' || existing.email.toLowerCase() === 'vicks@balaji.com') {
+    throw new Error('Cannot delete the studio owner account');
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('admins').delete().eq('id', id);
+    if (error) {
+      throw new Error(`Failed to delete employee account: ${error.message}`);
+    }
+
+    try {
+      await addAuditLog({
+        adminId: actor?.id || 'system',
+        adminEmail: actor?.email || 'owner@balaji.com',
+        action: 'EMPLOYEE_DELETED',
+        entity: 'Admin',
+        entityId: id,
+        details: { deletedEmail: existing.email, deletedName: existing.name },
+      });
+    } catch (e) {}
+
+    return true;
+  }
+
+  const db = getDb();
+  db.admins = db.admins.filter((a) => a.id !== id);
+  saveDb(db);
+  return true;
+}
+
+export async function resetEmployeePassword(
+  id: string,
+  newTemporaryPassword: string,
+  actor?: { id: string; email: string }
+): Promise<boolean> {
+  const existing = await getAdminById(id);
+  if (!existing) {
+    throw new Error('Employee account not found');
+  }
+
+  if (existing.role === 'owner' || existing.email.toLowerCase() === 'vicks@balaji.com') {
+    throw new Error('Cannot reset the studio owner password through employee management');
+  }
+
+  if (!newTemporaryPassword || newTemporaryPassword.length < 6) {
+    throw new Error('Temporary password must be at least 6 characters');
+  }
+
+  const newHash = hashPassword(newTemporaryPassword);
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase
+      .from('admins')
+      .update({
+        password_hash: newHash,
+        must_change_password: true,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Failed to reset employee password: ${error.message}`);
+    }
+
+    try {
+      await addAuditLog({
+        adminId: actor?.id || 'system',
+        adminEmail: actor?.email || 'owner@balaji.com',
+        action: 'EMPLOYEE_PASSWORD_RESET',
+        entity: 'Admin',
+        entityId: id,
+        details: { employeeEmail: existing.email, employeeName: existing.name },
+      });
+    } catch (e) {}
+
+    return true;
+  }
+
+  const db = getDb();
+  const admin = db.admins.find((a) => a.id === id);
+  if (!admin) throw new Error('Employee account not found');
+  (admin as any).passwordHash = newHash;
+  admin.mustChangePassword = true;
+  admin.updatedAt = new Date().toISOString();
+  saveDb(db);
+  return true;
+}
+
+export async function updateAdminPassword(
+  adminId: string,
+  newPasswordHash: string,
+  actorEmail?: string
+): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { error } = await supabase
@@ -1675,7 +2005,7 @@ export async function updateAdminPassword(adminId: string, newPasswordHash: stri
     try {
       await supabase.from('audit_logs').insert({
         admin_id: adminId,
-        admin_email: 'vicks@balaji.com',
+        admin_email: actorEmail || 'vicks@balaji.com',
         action: 'ADMIN_PASSWORD_CHANGED',
         entity: 'Admin',
         entity_id: adminId,
@@ -1695,6 +2025,43 @@ export async function updateAdminPassword(adminId: string, newPasswordHash: stri
   admin.updatedAt = new Date().toISOString();
   saveDb(db);
   return true;
+}
+
+export async function recordAdminLogin(adminId: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    await supabase
+      .from('admins')
+      .update({
+        last_login_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', adminId);
+  } else {
+    const db = getDb();
+    const admin = db.admins.find((a) => a.id === adminId);
+    if (admin) {
+      admin.lastLoginAt = new Date().toISOString();
+      saveDb(db);
+    }
+  }
+}
+
+export async function bootstrapInitialEmployee(): Promise<void> {
+  const existing = await getAdminByEmail('employee@balaji.com');
+  if (!existing) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const hash = hashPassword('employee@123');
+      await supabase.from('admins').insert({
+        email: 'employee@balaji.com',
+        name: 'Balaji Studio Associate',
+        password_hash: hash,
+        role: 'employee',
+        must_change_password: true,
+      });
+    }
+  }
 }
 
 // =============================================================

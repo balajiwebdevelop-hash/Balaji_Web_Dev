@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getSiteSettings, updateSiteSettings, addAuditLog } from '@/lib/db';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireOwner } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
   try {
     const settings = await getSiteSettings();
     return NextResponse.json(
@@ -20,16 +25,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
   try {
-    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-    const token = cookieToken || authHeader;
-
-    const admin = token ? verifyAdminToken(token) : null;
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
-    }
-
     const partialData = await req.json();
     if (!partialData || typeof partialData !== 'object') {
       return NextResponse.json({ success: false, error: 'Invalid settings payload' }, { status: 400 });
@@ -39,8 +38,8 @@ export async function PATCH(req: NextRequest) {
 
     try {
       await addAuditLog({
-        adminId: admin.id,
-        adminEmail: admin.email,
+        adminId: auth.admin.id,
+        adminEmail: auth.admin.email,
         action: 'SITE_SETTINGS_UPDATED',
         entity: 'SiteSettings',
         details: {

@@ -25,9 +25,11 @@ import {
   QrCode,
   CreditCard,
   Copy,
+  ShieldAlert,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { SiteSettings, AuditLog, HomepageSettings, PaymentGatewaySettings } from '@/types';
+import { useAdminAuth } from '@/context/AdminAuthContext';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -44,6 +46,9 @@ const DEFAULT_VAPID_PUBLIC_KEY =
   'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
 
 export default function AdminSettingsPage() {
+  const { admin } = useAdminAuth();
+  const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
+
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -244,6 +249,20 @@ export default function AdminSettingsPage() {
 
     return matchesSearch && matchesEntity;
   });
+
+  if (!isOwner) {
+    return (
+      <AdminLayout>
+        <div className="bg-red-50 border border-red-200 p-8 text-center space-y-4 max-w-lg mx-auto mt-12">
+          <ShieldAlert className="w-12 h-12 text-red-600 mx-auto" />
+          <h2 className="font-serif text-2xl text-red-900">Access Restricted</h2>
+          <p className="text-xs text-red-700 leading-relaxed">
+            Studio Settings & Global Configuration is strictly restricted to the Studio Owner. If you require changes to branding, payment, or studio configuration, please contact Vikas Sir (Principal Architect).
+          </p>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   if (loading || !settings) {
     return (

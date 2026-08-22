@@ -664,18 +664,43 @@ export default function AdminSettingsPage() {
               </div>
 
               {/* Live Header Logo Preview */}
-              <div className="p-6 bg-canvas border border-atelier flex flex-col items-center justify-center text-center space-y-1">
-                <span className="font-serif text-xl tracking-widest text-espresso font-normal">
-                  {settings.brandName || 'BALAJI ARCHITECT & INTERIORS'}
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-warmgray font-medium">
-                  {settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS'}
-                </span>
-                <span className="text-[9px] uppercase tracking-wider text-bronze pt-2">Live Header Brand Preview</span>
+              <div className="p-6 bg-canvas border border-atelier flex flex-col items-center justify-center text-center space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+                    <img
+                      src={settings.logoUrl || '/logo.png'}
+                      alt="Brand Logo"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="font-serif text-xl tracking-widest text-espresso font-normal leading-tight">
+                      {settings.brandName || 'BALAJI ARCHITECT & INTERIORS'}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-widest text-warmgray font-medium mt-0.5">
+                      {settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS'}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[9px] uppercase tracking-wider text-bronze pt-1">Live Header Brand & Logo Preview</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Logo Image Path / URL</label>
+                  <input
+                    type="text"
+                    value={settings.logoUrl || '/logo.png'}
+                    onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
+                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-xs"
+                    placeholder="/logo.png"
+                  />
+                  <span className="text-[10px] text-warmgray">
+                    Master high-resolution brand logo & iOS app icon (stored in public/logo.png).
+                  </span>
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-1">
                   <label className="uppercase tracking-wider text-warmgray font-medium">Brand Name (Header Title)</label>
                   <input
                     type="text"

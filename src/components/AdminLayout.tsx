@@ -173,8 +173,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile Admin Header */}
       <div className="md:hidden bg-espresso text-surface p-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <Shield className="w-4 h-4 text-champagne" />
-          <span className="font-serif text-lg tracking-wider">BALAJI ADMIN</span>
+          <div className="w-6 h-6 rounded-sm overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+            <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
+          </div>
+          <span className="font-serif text-base tracking-wider">BALAJI ADMIN</span>
           <span
             className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-bold ${
               isOwner ? 'bg-champagne/20 text-champagne' : 'bg-surface/20 text-surface'
@@ -196,13 +198,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       >
         {/* Brand Header */}
         <div className="p-6 border-b border-atelier-dark space-y-1">
-          <Link href="/admin" className="block">
-            <span className="font-serif text-base tracking-widest text-surface block font-light leading-snug">
-              BALAJI ARCHITECT & INTERIORS
-            </span>
-            <span className="text-[9px] uppercase tracking-widest text-champagne font-medium">
-              Studio Management Portal
-            </span>
+          <Link href="/admin" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+              <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-sm tracking-widest text-surface block font-light leading-tight">
+                BALAJI ARCHITECT
+              </span>
+              <span className="text-[8px] uppercase tracking-widest text-champagne font-medium mt-0.5">
+                Studio Management Portal
+              </span>
+            </div>
           </Link>
           <div className="flex items-center gap-1.5 pt-2 text-[10px] text-green-400">
             <Radio className="w-3 h-3 animate-pulse" />

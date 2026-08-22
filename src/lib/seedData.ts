@@ -8,7 +8,7 @@ export const initialSiteSettings: SiteSettings = {
   architectName: 'Vikas Sir (Principal Architect)',
   establishedYear: '2014',
   googleRating: '★ 5.0 (22 Google Reviews)',
-  logoUrl: '',
+  logoUrl: '/logo.png',
   contactEmail: 'atelier@balaji-interior.com',
   contactPhone: '+91 70029 48484',
   whatsappNumber: '+91 70029 48484',

@@ -154,8 +154,24 @@ body {
   padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem));
 }
 
+.safe-area-top {
+  padding-top: max(0px, env(safe-area-inset-top, 0px));
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS Home Screen Standalone App Enhancements */
+@supports (-webkit-touch-callout: none) {
+  html {
+    background-color: #FCFAF6;
+  }
+  
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

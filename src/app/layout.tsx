@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
@@ -13,10 +13,23 @@ import { getSiteSettings } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FCFAF6' },
+    { media: '(prefers-color-scheme: dark)', color: '#1A1614' },
+  ],
+};
+
 export const metadata: Metadata = {
   title: 'Balaji Architect & Interiors — Luxury Architecture, Interior Design & Materials',
   description:
     'Crafted spaces and considered materials for timeless living. Balaji Architect & Interiors unites high-end residential architecture, turnkey interior design, and a curated marketplace of natural stones, hardwood veneers, and acoustic surfaces.',
+  applicationName: 'Balaji Architect & Interiors',
   keywords: [
     'Balaji Architect & Interiors',
     'Luxury Interior Design Guwahati',
@@ -27,11 +40,49 @@ export const metadata: Metadata = {
     'Turnkey Luxury Architecture',
   ],
   authors: [{ name: 'Balaji Architect & Interiors' }],
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon-180x180.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon-167x167.png', sizes: '167x167', type: 'image/png' },
+      { url: '/apple-touch-icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/apple-touch-icon-120x120.png', sizes: '120x120', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Balaji Atelier',
+    startupImage: [
+      {
+        url: '/logo.png',
+      },
+    ],
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: 'Balaji Architect & Interiors — Architecture & Considered Materials',
     description: 'Crafted spaces and considered materials for timeless living.',
     url: 'https://balaji-atelier.com',
     siteName: 'Balaji Architect & Interiors',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1024,
+        height: 1024,
+        alt: 'Balaji Architect & Interiors',
+      },
+    ],
     locale: 'en_IN',
     type: 'website',
   },
@@ -46,6 +97,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        {/* iOS Specific Home Screen App Meta Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Balaji Atelier" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon.png" />
+      </head>
       <body className="bg-canvas text-charcoal flex flex-col min-h-screen">
         <AdminAuthProvider>
           <CartProvider>

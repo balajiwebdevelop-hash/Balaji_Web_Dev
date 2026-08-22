@@ -76,8 +76,8 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md bg-surface border border-atelier shadow-2xl p-8 sm:p-10 space-y-8 relative z-10">
         {/* Studio Branding */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-espresso text-champagne rounded-full flex items-center justify-center mx-auto mb-3">
-            <Shield className="w-6 h-6 stroke-[1.5]" />
+          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-espresso shadow-lg mx-auto mb-3 border border-champagne/40">
+            <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-[10px] uppercase tracking-widest-plus text-bronze font-medium">
             Studio Administration

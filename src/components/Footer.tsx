@@ -24,12 +24,23 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-atelier-dark">
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
-            <h3 className="font-serif text-2xl tracking-widest text-surface font-light">
-              {brandName}
-            </h3>
-            <p className="text-xs uppercase tracking-widest text-champagne font-medium">
-              {brandSubtitle}
-            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40">
+                <img
+                  src={initialSettings?.logoUrl || '/logo.png'}
+                  alt={brandName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl tracking-widest text-surface font-light">
+                  {brandName}
+                </h3>
+                <p className="text-[9px] uppercase tracking-widest text-champagne font-medium">
+                  {brandSubtitle}
+                </p>
+              </div>
+            </div>
             <p className="text-sm text-surface/70 font-light leading-relaxed max-w-sm pt-2">
               Crafted spaces, bespoke architectural commissions, and considered materials for timeless living. We bridge the disciplines of luxury architecture, master interior craftsmanship, and global material curation.
             </p>

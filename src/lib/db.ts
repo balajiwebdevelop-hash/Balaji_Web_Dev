@@ -2084,6 +2084,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         ...v,
         brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
         brandSubtitle: v.brandSubtitle || initialSiteSettings.brandSubtitle,
+        logoUrl: v.logoUrl || v.logo || initialSiteSettings.logoUrl || '/logo.png',
         tagline: v.tagline || initialSiteSettings.tagline,
         architectName: v.architectName || initialSiteSettings.architectName,
         establishedYear: v.establishedYear || initialSiteSettings.establishedYear,

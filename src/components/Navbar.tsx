@@ -24,19 +24,19 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
           linkUrl: '/quote',
         }
   );
-  const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string }>({
+  const [brandInfo, setBrandInfo] = useState<{ name: string; subtitle: string; logoUrl: string }>({
     name: initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS',
     subtitle: initialSettings?.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+    logoUrl: initialSettings?.logoUrl || '/logo.png',
   });
 
   useEffect(() => {
     if (initialSettings) {
-      if (initialSettings.brandName || initialSettings.brandSubtitle) {
-        setBrandInfo({
-          name: initialSettings.brandName || 'BALAJI ARCHITECT & INTERIORS',
-          subtitle: initialSettings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
-        });
-      }
+      setBrandInfo({
+        name: initialSettings.brandName || 'BALAJI ARCHITECT & INTERIORS',
+        subtitle: initialSettings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+        logoUrl: initialSettings.logoUrl || '/logo.png',
+      });
       if (initialSettings.announcementBanner !== undefined) {
         setAnnouncement(initialSettings.announcementBanner);
       }
@@ -61,12 +61,11 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
           if (data.settings.announcementBanner !== undefined) {
             setAnnouncement(data.settings.announcementBanner);
           }
-          if (data.settings.brandName || data.settings.brandSubtitle) {
-            setBrandInfo({
-              name: data.settings.brandName || 'BALAJI ARCHITECT & INTERIORS',
-              subtitle: data.settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
-            });
-          }
+          setBrandInfo({
+            name: data.settings.brandName || 'BALAJI ARCHITECT & INTERIORS',
+            subtitle: data.settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
+            logoUrl: data.settings.logoUrl || '/logo.png',
+          });
         }
       })
       .catch(() => {});
@@ -109,13 +108,22 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Studio Brand */}
-          <Link href="/" className="flex flex-col group">
-            <span className="font-serif text-lg sm:text-xl md:text-2xl tracking-widest text-espresso font-normal group-hover:text-bronze transition-colors">
-              {brandInfo.name}
-            </span>
-            <span className="text-[9px] uppercase tracking-widest-plus text-warmgray font-medium -mt-0.5">
-              {brandInfo.subtitle}
-            </span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+              <img
+                src={brandInfo.logoUrl || '/logo.png'}
+                alt={brandInfo.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-base sm:text-lg md:text-xl tracking-widest text-espresso font-normal group-hover:text-bronze transition-colors leading-tight">
+                {brandInfo.name}
+              </span>
+              <span className="text-[8px] sm:text-[9px] uppercase tracking-widest-plus text-warmgray font-medium mt-0.5">
+                {brandInfo.subtitle}
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -201,10 +209,19 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex flex-col"
+              className="flex items-center gap-3"
             >
-              <span className="font-serif text-lg tracking-widest text-espresso font-medium">{brandInfo.name}</span>
-              <span className="text-[9px] uppercase tracking-widest text-warmgray">{brandInfo.subtitle}</span>
+              <div className="w-10 h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+                <img
+                  src={brandInfo.logoUrl || '/logo.png'}
+                  alt={brandInfo.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-serif text-base tracking-widest text-espresso font-medium">{brandInfo.name}</span>
+                <span className="text-[8px] uppercase tracking-widest text-warmgray mt-0.5">{brandInfo.subtitle}</span>
+              </div>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}

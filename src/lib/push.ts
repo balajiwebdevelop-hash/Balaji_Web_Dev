@@ -2,14 +2,10 @@ import webPush from 'web-push';
 import { getServiceSupabase } from './supabase';
 import { Order } from '@/types';
 
-// Configure Web Push with VAPID credentials (with built-in studio fallbacks)
-const DEFAULT_VAPID_PUBLIC_KEY = 'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
-const DEFAULT_VAPID_PRIVATE_KEY = 'SmPawdxDpbEkoUP5Wny9uXJ-kqrA8FWeu5052EG-ffE';
-const DEFAULT_VAPID_SUBJECT = 'mailto:atelier@balaji-interior.com';
-
-const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || DEFAULT_VAPID_PRIVATE_KEY;
-const vapidSubject = process.env.VAPID_SUBJECT || DEFAULT_VAPID_SUBJECT;
+// Configure Web Push with VAPID credentials
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:atelier@balaji-interior.com';
 
 if (vapidPublicKey && vapidPrivateKey) {
   try {

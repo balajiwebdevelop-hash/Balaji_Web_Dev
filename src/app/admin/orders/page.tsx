@@ -57,31 +57,34 @@ function AdminOrdersContent() {
   useEffect(() => {
     loadOrders();
 
-    // 1. Setup Supabase Realtime Channel
-    const channel = supabase
-      .channel('admin-orders-realtime-stream')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'orders' },
-        (payload) => {
-          // Immediately reload orders on any new order insertion or status update
-          loadOrders();
+    // 1. Setup Supabase Realtime Channel if client is configured
+    let channel: any = null;
+    if (supabase) {
+      channel = supabase
+        .channel('admin-orders-realtime-stream')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'orders' },
+          (payload: any) => {
+            // Immediately reload orders on any new order insertion or status update
+            loadOrders();
 
-          // If browser notifications are permitted, display order alert
-          if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
-            const newRecord = payload.new as any;
-            new Notification('New Order Placed — Balaji Architect & Interiors', {
-              body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
-              icon: '/favicon.ico',
-            });
+            // If browser notifications are permitted, display order alert
+            if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
+              const newRecord = payload.new as any;
+              new Notification('New Order Placed — Balaji Architect & Interiors', {
+                body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
+                icon: '/favicon.ico',
+              });
+            }
           }
-        }
-      )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setIsLiveConnected(true);
-        }
-      });
+        )
+        .subscribe((status: string) => {
+          if (status === 'SUBSCRIBED') {
+            setIsLiveConnected(true);
+          }
+        });
+    }
 
     // 2. Periodic sync fallback (every 30 seconds when tab is active)
     const interval = setInterval(() => {
@@ -91,7 +94,9 @@ function AdminOrdersContent() {
     }, 30000);
 
     return () => {
-      supabase.removeChannel(channel);
+      if (supabase && channel) {
+        supabase.removeChannel(channel);
+      }
       clearInterval(interval);
     };
   }, []);

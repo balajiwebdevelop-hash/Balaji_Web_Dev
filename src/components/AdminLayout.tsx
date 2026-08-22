@@ -36,9 +36,6 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-const DEFAULT_VAPID_PUBLIC_KEY =
-  'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
-
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -73,7 +70,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         .then(async (reg) => {
           if (Notification.permission === 'granted') {
             try {
-              const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+              const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+              if (!vapidKey) return;
               const convertedKey = urlBase64ToUint8Array(vapidKey);
               let sub = await reg.pushManager.getSubscription();
               if (!sub) {
@@ -107,7 +105,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         setPushStatus(permission);
         if (permission === 'granted') {
           const reg = await navigator.serviceWorker.ready;
-          const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+          const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+          if (!vapidKey) return;
           const convertedKey = urlBase64ToUint8Array(vapidKey);
           let sub = await reg.pushManager.getSubscription();
           if (!sub) {

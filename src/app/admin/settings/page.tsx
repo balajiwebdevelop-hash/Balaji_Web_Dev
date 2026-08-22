@@ -42,9 +42,6 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-const DEFAULT_VAPID_PUBLIC_KEY =
-  'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
-
 export default function AdminSettingsPage() {
   const { admin } = useAdminAuth();
   const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
@@ -201,7 +198,12 @@ export default function AdminSettingsPage() {
         }
 
         const reg = await navigator.serviceWorker.ready;
-        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        if (!vapidKey) {
+          setPushResult('VAPID public key not configured in environment.');
+          setTestPushing(false);
+          return;
+        }
         const convertedKey = urlBase64ToUint8Array(vapidKey);
         let sub = await reg.pushManager.getSubscription();
         if (!sub) {

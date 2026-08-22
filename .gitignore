@@ -30,6 +30,7 @@ yarn-error.log*
 # System & Editor files
 .DS_Store
 *.pem
+*.tsbuildinfo
 .vscode/
 .idea/
 .gemini/

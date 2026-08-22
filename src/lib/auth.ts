@@ -4,7 +4,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail } from './db';
 import { AdminUser } from '@/types';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'balaji_atelier_secure_jwt_secret_production_2026_key';
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Critical Security Error: Missing JWT_SECRET environment variable.');
+    }
+    return 'development_only_jwt_secret_do_not_use_in_production_key';
+  }
+  return secret;
+}
+
 const SALT_ROUNDS = 10000;
 const KEY_LEN = 64;
 const DIGEST = 'sha512';
@@ -45,7 +55,7 @@ export interface AdminTokenPayload {
  * Signs an admin JWT session token
  */
 export function signAdminToken(payload: AdminTokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: '7d' });
 }
 
 /**
@@ -53,7 +63,7 @@ export function signAdminToken(payload: AdminTokenPayload): string {
  */
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as AdminTokenPayload;
+    return jwt.verify(token, getJwtSecret()) as AdminTokenPayload;
   } catch {
     return null;
   }

@@ -2529,3 +2529,54 @@ export async function getCustomerOrders(email: string): Promise<Order[]> {
     (o) => o.customerEmail.toLowerCase().trim() === normalizedEmail
   );
 }
+
+export async function getCustomers(): Promise<CustomerRecord[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
+    if (error) {
+      console.error('Failed to fetch customers:', error.message);
+      return [];
+    }
+    return (data || []).map((c: any) => ({
+      id: c.id,
+      email: c.email,
+      fullName: c.full_name,
+      phone: c.phone || '',
+      isGuest: c.is_guest || false,
+      createdAt: c.created_at,
+      updatedAt: c.updated_at,
+    }));
+  }
+
+  const db = getDb();
+  const rawCustomers = (db as any).customers || [];
+  if (rawCustomers.length > 0) {
+    return rawCustomers.map((c: any) => ({
+      id: c.id,
+      email: c.email,
+      fullName: c.fullName || c.full_name || 'Client',
+      phone: c.phone || '',
+      isGuest: c.isGuest || false,
+      createdAt: c.createdAt || new Date().toISOString(),
+      updatedAt: c.updatedAt || new Date().toISOString(),
+    }));
+  }
+
+  // Derive unique customer list from orders if not standalone
+  const customerMap = new Map<string, CustomerRecord>();
+  db.orders.forEach((o) => {
+    if (o.customerEmail && !customerMap.has(o.customerEmail.toLowerCase())) {
+      customerMap.set(o.customerEmail.toLowerCase(), {
+        id: `cust-${o.id}`,
+        email: o.customerEmail,
+        fullName: o.customerName,
+        phone: o.customerPhone,
+        isGuest: false,
+        createdAt: o.createdAt,
+        updatedAt: o.updatedAt || o.createdAt,
+      });
+    }
+  });
+  return Array.from(customerMap.values());
+}

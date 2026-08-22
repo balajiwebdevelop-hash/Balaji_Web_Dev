@@ -203,3 +203,17 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
     return { success: false, sent: 0, message: err.message || 'Error triggering test push notification.' };
   }
 }
+
+/**
+ * Converts a base64 VAPID public key string into a Uint8Array for browser push subscription registration.
+ */
+export function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}

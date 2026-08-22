@@ -392,12 +392,6 @@ export default async function HomePage() {
               >
                 Schedule Studio Visit
               </Link>
-              <Link
-                href="/studio"
-                className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 bg-surface hover:bg-canvas border border-atelier text-[11px] sm:text-xs uppercase tracking-widest font-medium text-espresso flex items-center justify-center transition-colors"
-              >
-                Studio Access
-              </Link>
             </div>
           </div>
         </div>

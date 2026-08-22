@@ -165,11 +165,10 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             <Link
               href="/studio"
               aria-label="Studio Access"
-              className="hidden sm:flex text-espresso/70 hover:text-bronze transition-colors p-1 items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium"
+              className="text-espresso/80 hover:text-bronze transition-colors p-1"
               title="Studio Portal"
             >
-              <User className="w-3.5 h-3.5 stroke-[1.8]" />
-              <span className="hidden lg:inline text-[10px]">Studio</span>
+              <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </Link>
 
             {/* Mobile Menu Button */}

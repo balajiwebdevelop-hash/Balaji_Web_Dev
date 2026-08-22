@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin', '/admin/*', '/api/admin/*'],
+        disallow: ['/admin', '/admin/*', '/api/admin/*', '/studio', '/auth/*', '/account'],
       },
     ],
     sitemap: 'https://balaji-atelier.com/sitemap.xml',

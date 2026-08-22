@@ -163,12 +163,12 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             </button>
 
             <Link
-              href="/admin"
-              aria-label="Studio Admin"
-              className="hidden sm:flex text-espresso/60 hover:text-espresso transition-colors p-1 items-center gap-1 text-[11px] uppercase tracking-wider"
-              title="Studio Admin Portal"
+              href="/studio"
+              aria-label="Studio Access"
+              className="hidden sm:flex text-espresso/70 hover:text-bronze transition-colors p-1 items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium"
+              title="Studio Portal"
             >
-              <Shield className="w-3.5 h-3.5" />
+              <User className="w-3.5 h-3.5 stroke-[1.8]" />
               <span className="hidden lg:inline text-[10px]">Studio</span>
             </Link>
 
@@ -254,12 +254,12 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             </div>
 
             <Link
-              href="/admin"
+              href="/studio"
               onClick={() => setMobileMenuOpen(false)}
               className="text-xs uppercase tracking-widest text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4"
             >
-              <Shield className="w-4 h-4 text-bronze" />
-              <span>Studio Admin Portal</span>
+              <User className="w-4 h-4 text-bronze" />
+              <span>Studio Access</span>
             </Link>
           </div>
 

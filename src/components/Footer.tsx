@@ -191,8 +191,8 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
             <Link href="/about" className="hover:text-surface/70 transition-colors">
               Terms of Supply
             </Link>
-            <Link href="/admin/login" className="hover:text-surface/70 transition-colors text-surface/30">
-              Studio Portal
+            <Link href="/studio" className="hover:text-surface/70 transition-colors text-surface/30">
+              Studio
             </Link>
           </div>
         </div>

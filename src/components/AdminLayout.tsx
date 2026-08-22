@@ -46,10 +46,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
 
   useEffect(() => {
-    if (!loading && !admin && pathname !== '/admin/login') {
-      router.push('/admin/login');
+    if (!loading && !admin) {
+      router.replace('/studio');
     }
-  }, [admin, loading, pathname, router]);
+  }, [admin, loading, router]);
 
   // Route security check: block employees from accessing owner-only routes
   useEffect(() => {

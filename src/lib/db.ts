@@ -2386,7 +2386,7 @@ export async function getAuditLogs(limit = 100): Promise<AuditLog[]> {
       id: l.id,
       adminId: l.admin_id || 'system',
       adminEmail: l.admin_email,
-      action: l.action,
+      action: data ? l.action : '',
       entity: l.entity,
       entityId: l.entity_id,
       details: l.details,
@@ -2396,4 +2396,136 @@ export async function getAuditLogs(limit = 100): Promise<AuditLog[]> {
 
   const db = getDb();
   return db.auditLogs.slice(0, limit);
+}
+
+// =============================================================
+// CUSTOMERS & CLIENT PORTAL
+// =============================================================
+
+export interface CustomerRecord {
+  id: string;
+  email: string;
+  fullName: string;
+  phone?: string;
+  isGuest: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function upsertCustomer(input: {
+  email: string;
+  fullName: string;
+  phone?: string;
+  isGuest?: boolean;
+}): Promise<CustomerRecord> {
+  const normalizedEmail = input.email.trim().toLowerCase();
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: existing } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    if (existing) {
+      const updates: any = { updated_at: now };
+      if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
+        updates.full_name = input.fullName;
+      }
+      if (input.phone && !existing.phone) {
+        updates.phone = input.phone;
+      }
+      if (input.isGuest === false && existing.is_guest) {
+        updates.is_guest = false;
+      }
+
+      const { data: updated } = await supabase
+        .from('customers')
+        .update(updates)
+        .eq('id', existing.id)
+        .select()
+        .single();
+
+      const res = updated || existing;
+      return {
+        id: res.id,
+        email: res.email,
+        fullName: res.full_name,
+        phone: res.phone,
+        isGuest: res.is_guest,
+        createdAt: res.created_at,
+        updatedAt: res.updated_at,
+      };
+    }
+
+    const { data: inserted, error } = await supabase
+      .from('customers')
+      .insert({
+        email: normalizedEmail,
+        full_name: input.fullName || 'Client',
+        phone: input.phone || null,
+        is_guest: input.isGuest !== undefined ? input.isGuest : false,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      return {
+        id: crypto.randomUUID(),
+        email: normalizedEmail,
+        fullName: input.fullName || 'Client',
+        phone: input.phone,
+        isGuest: input.isGuest || false,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }
+
+    return {
+      id: inserted.id,
+      email: inserted.email,
+      fullName: inserted.full_name,
+      phone: inserted.phone,
+      isGuest: inserted.is_guest,
+      createdAt: inserted.created_at,
+      updatedAt: inserted.updated_at,
+    };
+  }
+
+  return {
+    id: `cust-${Date.now()}`,
+    email: normalizedEmail,
+    fullName: input.fullName || 'Client',
+    phone: input.phone,
+    isGuest: input.isGuest || false,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+export async function getCustomerOrders(email: string): Promise<Order[]> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*, items:order_items(*)')
+      .ilike('customer_email', normalizedEmail)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to load customer orders:', error.message);
+      return [];
+    }
+    return (orders || []).map(mapSupabaseOrder);
+  }
+
+  const db = getDb();
+  return db.orders.filter(
+    (o) => o.customerEmail.toLowerCase().trim() === normalizedEmail
+  );
 }

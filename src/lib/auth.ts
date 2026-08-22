@@ -191,6 +191,79 @@ export async function requireOwnerOrEmployee(
 }
 
 /**
+ * Customer session payload
+ */
+export interface CustomerTokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  role: 'customer';
+  provider?: 'google' | 'email';
+}
+
+/**
+ * Signs a customer JWT session token (30-day session)
+ */
+export function signCustomerToken(payload: CustomerTokenPayload): string {
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: '30d' });
+}
+
+/**
+ * Verifies and decodes a customer JWT token
+ */
+export function verifyCustomerToken(token: string): CustomerTokenPayload | null {
+  try {
+    const decoded = jwt.verify(token, getJwtSecret()) as any;
+    if (decoded && (decoded.role === 'customer' || !decoded.role)) {
+      return {
+        id: decoded.id || '',
+        email: decoded.email,
+        name: decoded.name || 'Client',
+        role: 'customer',
+        provider: decoded.provider || 'email',
+      };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Extracts customer session token from cookie or header
+ */
+export function getCustomerTokenFromRequest(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get('balaji_customer_session')?.value;
+  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+  return cookieToken || authHeader || null;
+}
+
+/**
+ * Authoritatively resolves user role from email against the database
+ */
+export async function resolveAccountRole(email: string): Promise<{
+  role: 'owner' | 'employee' | 'customer';
+  adminUser?: AdminUser;
+  isDisabled?: boolean;
+}> {
+  const normalizedEmail = email.trim().toLowerCase();
+  try {
+    const admin = await getAdminByEmail(normalizedEmail);
+    if (admin) {
+      if (admin.status === 'disabled') {
+        return { role: 'customer', isDisabled: true };
+      }
+      const { passwordHash: _, ...safeAdmin } = admin;
+      const role = (admin.role === 'owner' || admin.role === 'super_admin') ? 'owner' : 'employee';
+      return { role, adminUser: safeAdmin };
+    }
+  } catch (err) {
+    console.error('Role resolution check notice:', err);
+  }
+  return { role: 'customer' };
+}
+
+/**
  * Enforces active admin verification
  */
 export async function requireActiveAdmin(

@@ -69,6 +69,7 @@ export function ProductDetailClient({
                 alt={`${product.name} - View ${safeImageIndex + 1}`}
                 fill
                 priority
+                sizes="(max-width: 1024px) 100vw, 55vw"
                 className="object-cover"
               />
             )}
@@ -90,7 +91,7 @@ export function ProductDetailClient({
                     selectedImage === idx ? 'border-bronze opacity-100 ring-1 ring-bronze' : 'border-atelier opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="object-cover" />
+                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -337,7 +338,13 @@ export function ProductDetailClient({
               >
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
                   {rel.images[0] && (
-                    <Image src={rel.images[0]} alt={rel.name} fill className="object-cover group-hover:scale-103 transition-transform duration-500" />
+                    <Image
+                      src={rel.images[0]}
+                      alt={rel.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
+                      className="object-cover group-hover:scale-103 transition-transform duration-500"
+                    />
                   )}
                 </div>
                 <h4 className="font-serif text-xs sm:text-sm text-espresso group-hover:text-bronze transition-colors font-medium truncate">

@@ -10,8 +10,7 @@ export const metadata = {
   description: 'Procure authentic Italian travertines, fluted acoustic walnut, Calacatta porcelain slabs, and architectural hardware.',
 };
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function MaterialsPage({
   searchParams,

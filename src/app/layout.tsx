@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
@@ -10,8 +11,22 @@ import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { PageTransition } from '@/components/PageTransition';
 import { getSiteSettings } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
+
+export const revalidate = 60;
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -74,7 +89,6 @@ export const metadata: Metadata = {
     title: 'Balaji Architect & Interiors — Architecture & Considered Materials',
     description: 'Crafted spaces and considered materials for timeless living.',
     url: 'https://balaji-atelier.com',
-    siteName: 'Balaji Architect & Interiors',
     images: [
       {
         url: '/logo.png',
@@ -96,7 +110,7 @@ export default async function RootLayout({
   const settings = await getSiteSettings();
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${cormorant.variable} ${jakarta.variable}`}>
       <head>
         {/* iOS Specific Home Screen App Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />

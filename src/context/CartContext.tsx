@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { CartItem, Product, ProductVariant } from '@/types';
 
 interface CartContextType {
@@ -49,7 +49,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, isLoaded]);
 
-  const addItem = (product: Product, quantity = 1, variant?: ProductVariant) => {
+  const addItem = useCallback((product: Product, quantity = 1, variant?: ProductVariant) => {
     setItems((prev) => {
       const existingIdx = prev.findIndex(
         (it) => it.productId === product.id && (variant ? it.variantId === variant.id : !it.variantId)
@@ -79,15 +79,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     });
     setIsCartOpen(true);
-  };
+  }, []);
 
-  const removeItem = (productId: string, variantId?: string) => {
+  const removeItem = useCallback((productId: string, variantId?: string) => {
     setItems((prev) =>
       prev.filter((it) => !(it.productId === productId && (variantId ? it.variantId === variantId : !it.variantId)))
     );
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number, variantId?: string) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, variantId?: string) => {
     if (quantity <= 0) {
       removeItem(productId, variantId);
       return;
@@ -100,35 +100,50 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return it;
       })
     );
-  };
+  }, [removeItem]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
-  const tax = Math.round(subtotal * 0.18); // 18% GST standard
-  const shipping = subtotal >= 50000 || subtotal === 0 ? 0 : 1500;
-  const total = subtotal + tax + shipping;
+  const itemCount = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
+  const subtotal = useMemo(() => items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0), [items]);
+  const tax = useMemo(() => Math.round(subtotal * 0.18), [subtotal]); // 18% GST standard
+  const shipping = useMemo(() => (subtotal >= 50000 || subtotal === 0 ? 0 : 1500), [subtotal]);
+  const total = useMemo(() => subtotal + tax + shipping, [subtotal, tax, shipping]);
+
+  const contextValue = useMemo(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      itemCount,
+      subtotal,
+      tax,
+      shipping,
+      total,
+      isCartOpen,
+      setIsCartOpen,
+    }),
+    [
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      itemCount,
+      subtotal,
+      tax,
+      shipping,
+      total,
+      isCartOpen,
+    ]
+  );
 
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        itemCount,
-        subtotal,
-        tax,
-        shipping,
-        total,
-        isCartOpen,
-        setIsCartOpen,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );

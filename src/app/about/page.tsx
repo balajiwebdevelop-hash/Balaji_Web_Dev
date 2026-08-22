@@ -10,6 +10,8 @@ export const metadata = {
   description: 'Learn about Balaji Architect & Interiors, our architectural philosophy, craftsmanship pedigree, and material sourcing excellence.',
 };
 
+export const revalidate = 60;
+
 export default function AboutPage() {
   const principles = [
     {

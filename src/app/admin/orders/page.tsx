@@ -83,8 +83,12 @@ function AdminOrdersContent() {
         }
       });
 
-    // 2. Periodic sync fallback (every 8 seconds)
-    const interval = setInterval(loadOrders, 8000);
+    // 2. Periodic sync fallback (every 30 seconds when tab is active)
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        loadOrders();
+      }
+    }, 30000);
 
     return () => {
       supabase.removeChannel(channel);

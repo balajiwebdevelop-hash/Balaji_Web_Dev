@@ -11,8 +11,7 @@ export const metadata = {
   description: 'Explore signature residential villas, sky penthouses, and bespoke commercial spaces crafted by Balaji Architect & Interiors.',
 };
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function ProjectsPage({
   searchParams,

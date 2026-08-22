@@ -54,8 +54,12 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     loadData();
-    // Realtime polling / event fallback
-    const interval = setInterval(loadData, 10000);
+    // Background polling every 30 seconds when tab is active
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        loadData();
+      }
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 

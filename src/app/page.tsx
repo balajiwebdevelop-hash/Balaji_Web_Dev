@@ -6,8 +6,7 @@ import { getProjects, getProducts, getCategories, getServices, getSiteSettings }
 import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [featuredProjects, featuredProducts, categories, services, settings] = await Promise.all([
@@ -232,6 +231,7 @@ export default async function HomePage() {
                       src={cat.imageUrl || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
                       alt={cat.name}
                       fill
+                      sizes="(max-width: 640px) 33vw, (max-width: 1024px) 16vw, 150px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -273,6 +273,7 @@ export default async function HomePage() {
                     src={product.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
                     alt={product.name}
                     fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   {product.isNew && (

@@ -10,7 +10,20 @@ export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Fetch projects once on mount for instant client-side matching
+  useEffect(() => {
+    fetch('/api/projects')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.projects) {
+          setAllProjects(data.projects);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -20,21 +33,25 @@ export default function SearchPage() {
       return;
     }
 
+    // Instant local filter on cached projects
+    const q = query.toLowerCase();
+    const matchedProjects = allProjects.filter(
+      (p: Project) =>
+        p.title.toLowerCase().includes(q) ||
+        p.location.toLowerCase().includes(q) ||
+        p.projectType.toLowerCase().includes(q) ||
+        p.shortDescription.toLowerCase().includes(q)
+    );
+    setProjects(matchedProjects);
+
     const abortController = new AbortController();
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const [prodRes, projRes] = await Promise.all([
-          fetch(`/api/products?search=${encodeURIComponent(query)}`, {
-            signal: abortController.signal,
-            headers: { 'Cache-Control': 'no-cache' },
-          }),
-          fetch(`/api/projects`, {
-            signal: abortController.signal,
-            headers: { 'Cache-Control': 'no-cache' },
-          }),
-        ]);
+        const prodRes = await fetch(`/api/products?search=${encodeURIComponent(query)}`, {
+          signal: abortController.signal,
+        });
 
         if (abortController.signal.aborted) return;
 
@@ -42,21 +59,6 @@ export default function SearchPage() {
           const prodData = await prodRes.json();
           if (!abortController.signal.aborted) {
             setProducts(prodData.products || []);
-          }
-        }
-
-        if (projRes.ok) {
-          const projData = await projRes.json();
-          if (!abortController.signal.aborted) {
-            const q = query.toLowerCase();
-            const filteredProj = (projData.projects || []).filter(
-              (p: Project) =>
-                p.title.toLowerCase().includes(q) ||
-                p.location.toLowerCase().includes(q) ||
-                p.projectType.toLowerCase().includes(q) ||
-                p.shortDescription.toLowerCase().includes(q)
-            );
-            setProjects(filteredProj);
           }
         }
       } catch (err: any) {
@@ -68,13 +70,13 @@ export default function SearchPage() {
           setLoading(false);
         }
       }
-    }, 200);
+    }, 180);
 
     return () => {
       clearTimeout(timer);
       abortController.abort();
     };
-  }, [query]);
+  }, [query, allProjects]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12 min-h-[70vh]">

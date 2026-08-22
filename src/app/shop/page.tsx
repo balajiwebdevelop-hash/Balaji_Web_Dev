@@ -10,8 +10,7 @@ export const metadata = {
   description: 'Limited-edition architectural objects, travertine monolithic tables, cast bronze hardware, and studio design pieces.',
 };
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function ShopPage() {
   const allProducts = await getProducts({ publishedOnly: true });
@@ -61,6 +60,7 @@ export default async function ShopPage() {
                       src={product.images[0]}
                       alt={product.name}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
                     />
                   )}

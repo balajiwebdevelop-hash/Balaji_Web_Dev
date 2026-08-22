@@ -6,8 +6,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getCategoryBySlug, getProducts, getCategories } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const cat = await getCategoryBySlug(params.slug);
@@ -115,6 +114,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                           src={product.images[0]}
                           alt={product.name}
                           fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                           className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
                         />
                       )}

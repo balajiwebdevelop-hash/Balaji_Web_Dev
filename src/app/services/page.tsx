@@ -11,6 +11,8 @@ export const metadata = {
   description: 'Explore our turnkey interior design, residential architecture, bespoke millwork, and material advisory capabilities.',
 };
 
+export const revalidate = 60;
+
 export default async function ServicesPage() {
   const services = await getServices(true);
 

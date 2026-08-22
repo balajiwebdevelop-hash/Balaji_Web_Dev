@@ -51,25 +51,7 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
         setIsScrolled(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
-
-    // Silent background sync for live updates
-    fetch('/api/admin/settings', { cache: 'no-store' })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.settings) {
-          if (data.settings.announcementBanner !== undefined) {
-            setAnnouncement(data.settings.announcementBanner);
-          }
-          setBrandInfo({
-            name: data.settings.brandName || 'BALAJI ARCHITECT & INTERIORS',
-            subtitle: data.settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS',
-            logoUrl: data.settings.logoUrl || '/logo.png',
-          });
-        }
-      })
-      .catch(() => {});
-
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

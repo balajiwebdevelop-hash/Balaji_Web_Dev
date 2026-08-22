@@ -51,6 +51,50 @@ const DB_FILE = path.join(DATA_DIR, 'db.json');
 
 let dbCache: DatabaseState | null = null;
 
+// =============================================================
+// HIGH-PERFORMANCE IN-MEMORY CACHE WITH INSTANT ON-DEMAND PURGE
+// =============================================================
+const CACHE_TTL_MS = 60 * 1000; // 60s TTL
+
+interface MemoryCacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+const memoryCache = {
+  settings: null as MemoryCacheEntry<SiteSettings> | null,
+  categories: null as MemoryCacheEntry<Category[]> | null,
+  categoriesAdmin: null as MemoryCacheEntry<Category[]> | null,
+  products: new Map<string, MemoryCacheEntry<Product[]>>(),
+  productByIdOrSlug: new Map<string, MemoryCacheEntry<Product | null>>(),
+  projects: new Map<string, MemoryCacheEntry<Project[]>>(),
+  projectByIdOrSlug: new Map<string, MemoryCacheEntry<Project | null>>(),
+  services: new Map<string, MemoryCacheEntry<Service[]>>(),
+};
+
+export function invalidateMemoryCache(scope: 'all' | 'products' | 'categories' | 'projects' | 'services' | 'settings' = 'all') {
+  if (scope === 'all' || scope === 'settings') {
+    memoryCache.settings = null;
+  }
+  if (scope === 'all' || scope === 'categories') {
+    memoryCache.categories = null;
+    memoryCache.categoriesAdmin = null;
+  }
+  if (scope === 'all' || scope === 'products') {
+    memoryCache.products.clear();
+    memoryCache.productByIdOrSlug.clear();
+    memoryCache.categories = null;
+    memoryCache.categoriesAdmin = null;
+  }
+  if (scope === 'all' || scope === 'projects') {
+    memoryCache.projects.clear();
+    memoryCache.projectByIdOrSlug.clear();
+  }
+  if (scope === 'all' || scope === 'services') {
+    memoryCache.services.clear();
+  }
+}
+
 export function isSupabaseConfigured(): boolean {
   if (process.env.NODE_ENV === 'test') {
     return false;
@@ -332,6 +376,13 @@ export async function getProducts(options?: {
   search?: string;
   publishedOnly?: boolean;
 }): Promise<Product[]> {
+  const cacheKey = JSON.stringify(options || {});
+  const now = Date.now();
+  const cached = memoryCache.products.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('products').select('*').order('created_at', { ascending: false });
@@ -349,24 +400,29 @@ export async function getProducts(options?: {
       query = query.or(`name.ilike.%${options.search}%,sku.ilike.%${options.search}%,material.ilike.%${options.search}%`);
     }
 
-    const { data: rows, error } = await query;
-    if (error) {
-      console.error('Supabase getProducts error:', error);
-      throw new Error(`Failed to load materials from database: ${error.message}`);
+    // Parallel fetch query + categories map
+    const [prodResult, catResult] = await Promise.all([
+      query,
+      supabase.from('categories').select('id, name, slug')
+    ]);
+
+    if (prodResult.error) {
+      console.error('Supabase getProducts error:', prodResult.error);
+      throw new Error(`Failed to load materials from database: ${prodResult.error.message}`);
     }
 
-    const { data: categories } = await supabase.from('categories').select('id, name, slug');
     const categoryMap = new Map<string, { name: string; slug: string }>();
-    if (categories) {
-      categories.forEach((c: any) => categoryMap.set(c.id, { name: c.name, slug: c.slug }));
+    if (catResult.data) {
+      catResult.data.forEach((c: any) => categoryMap.set(c.id, { name: c.name, slug: c.slug }));
     }
 
-    let products = (rows || []).map((row: any) => mapSupabaseProduct(row, categoryMap));
+    let products = (prodResult.data || []).map((row: any) => mapSupabaseProduct(row, categoryMap));
 
     if (options?.categorySlug) {
       products = products.filter((p) => p.categorySlug === options.categorySlug);
     }
 
+    memoryCache.products.set(cacheKey, { data: products, timestamp: now });
     return products;
   }
 
@@ -381,6 +437,12 @@ export async function getProducts(options?: {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
+  const now = Date.now();
+  const cached = memoryCache.productByIdOrSlug.get(id);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('products').select('*');
@@ -399,7 +461,10 @@ export async function getProductById(id: string): Promise<Product | null> {
 
     const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
     const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
-    return mapSupabaseProduct(data, catMap);
+    const res = mapSupabaseProduct(data, catMap);
+    memoryCache.productByIdOrSlug.set(id, { data: res, timestamp: now });
+    if (res.slug) memoryCache.productByIdOrSlug.set(res.slug, { data: res, timestamp: now });
+    return res;
   }
 
   const db = getDb();
@@ -407,6 +472,12 @@ export async function getProductById(id: string): Promise<Product | null> {
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const now = Date.now();
+  const cached = memoryCache.productByIdOrSlug.get(slug);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { data, error } = await supabase.from('products').select('*').eq('slug', slug).maybeSingle();
@@ -418,7 +489,10 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
     const { data: cat } = await supabase.from('categories').select('name, slug').eq('id', data.category_id).maybeSingle();
     const catMap = cat ? new Map([[data.category_id, cat]]) : undefined;
-    return mapSupabaseProduct(data, catMap);
+    const res = mapSupabaseProduct(data, catMap);
+    memoryCache.productByIdOrSlug.set(slug, { data: res, timestamp: now });
+    if (res.id) memoryCache.productByIdOrSlug.set(res.id, { data: res, timestamp: now });
+    return res;
   }
 
   const db = getDb();
@@ -485,6 +559,7 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
       if (cat) catMap = new Map([[inserted.category_id, cat]]);
     }
 
+    invalidateMemoryCache('products');
     return mapSupabaseProduct(inserted, catMap);
   }
 
@@ -497,6 +572,7 @@ export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'up
   };
   db.products.unshift(newProduct);
   saveDb(db);
+  invalidateMemoryCache('products');
   return newProduct;
 }
 
@@ -553,6 +629,7 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
       if (cat) catMap = new Map([[data.category_id, cat]]);
     }
 
+    invalidateMemoryCache('products');
     return mapSupabaseProduct(data, catMap);
   }
 
@@ -563,6 +640,7 @@ export async function updateProduct(id: string, partialData: Partial<Product>): 
   const updated: Product = { ...existing, ...partialData, id: existing.id, updatedAt: new Date().toISOString() };
   db.products[index] = updated;
   saveDb(db);
+  invalidateMemoryCache('products');
   return updated;
 }
 
@@ -580,6 +658,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
       console.error('Supabase deleteProduct error:', error);
       throw new Error(`Failed to delete product from database: ${error.message}`);
     }
+    invalidateMemoryCache('products');
     return true;
   }
 
@@ -588,6 +667,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
   if (index === -1) return false;
   db.products.splice(index, 1);
   saveDb(db);
+  invalidateMemoryCache('products');
   return true;
 }
 
@@ -596,28 +676,39 @@ export async function deleteProduct(id: string): Promise<boolean> {
 // =============================================================
 
 export async function getCategories(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categories && now - memoryCache.categories.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categories.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data: cats, error } = await supabase.from('categories').select('*').order('sort_order', { ascending: true });
-    if (error) {
-      console.error('Supabase getCategories error:', error);
-      throw new Error(`Failed to load categories: ${error.message}`);
+    const [catsRes, prodsRes] = await Promise.all([
+      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
+      supabase.from('products').select('category_id, published')
+    ]);
+
+    if (catsRes.error) {
+      console.error('Supabase getCategories error:', catsRes.error);
+      throw new Error(`Failed to load categories: ${catsRes.error.message}`);
     }
 
-    const { data: prods } = await supabase.from('products').select('category_id, published');
     const prodCounts = new Map<string, number>();
-    (prods || []).forEach((p: any) => {
+    (prodsRes.data || []).forEach((p: any) => {
       if (p.published && p.category_id) {
         prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
       }
     });
 
-    return (cats || [])
+    const result = (catsRes.data || [])
       .filter((c: any) => c.is_active !== false)
       .map((c: any) => ({
         ...mapSupabaseCategory(c),
         productCount: prodCounts.get(c.id) || 0,
       }));
+
+    memoryCache.categories = { data: result, timestamp: now };
+    return result;
   }
 
   const db = getDb();
@@ -625,23 +716,34 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getAllCategoriesAdmin(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categoriesAdmin.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const { data: cats, error } = await supabase.from('categories').select('*').order('sort_order', { ascending: true });
-    if (error) throw new Error(error.message);
+    const [catsRes, prodsRes] = await Promise.all([
+      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
+      supabase.from('products').select('category_id')
+    ]);
 
-    const { data: prods } = await supabase.from('products').select('category_id');
+    if (catsRes.error) throw new Error(catsRes.error.message);
+
     const prodCounts = new Map<string, number>();
-    (prods || []).forEach((p: any) => {
+    (prodsRes.data || []).forEach((p: any) => {
       if (p.category_id) {
         prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
       }
     });
 
-    return (cats || []).map((c: any) => ({
+    const result = (catsRes.data || []).map((c: any) => ({
       ...mapSupabaseCategory(c),
       productCount: prodCounts.get(c.id) || 0,
     }));
+
+    memoryCache.categoriesAdmin = { data: result, timestamp: now };
+    return result;
   }
 
   const db = getDb();
@@ -685,6 +787,7 @@ export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | '
       .single();
 
     if (error || !inserted) throw new Error(`Failed to create category: ${error?.message}`);
+    invalidateMemoryCache('categories');
     return mapSupabaseCategory(inserted);
   }
 
@@ -697,6 +800,7 @@ export async function createCategory(data: Omit<Category, 'id' | 'createdAt' | '
   };
   db.categories.push(newCat);
   saveDb(db);
+  invalidateMemoryCache('categories');
   return newCat;
 }
 
@@ -721,6 +825,7 @@ export async function updateCategory(id: string, partial: Partial<Category>): Pr
     const { data, error } = await query.select().maybeSingle();
     if (error) throw new Error(`Failed to update category: ${error.message}`);
     if (!data) return null;
+    invalidateMemoryCache('categories');
     return mapSupabaseCategory(data);
   }
 
@@ -731,6 +836,7 @@ export async function updateCategory(id: string, partial: Partial<Category>): Pr
   const updated: Category = { ...existing, ...partial, id: existing.id, updatedAt: new Date().toISOString() };
   db.categories[idx] = updated;
   saveDb(db);
+  invalidateMemoryCache('categories');
   return updated;
 }
 
@@ -745,6 +851,7 @@ export async function deleteCategory(id: string): Promise<boolean> {
     }
     const { error } = await query;
     if (error) throw new Error(`Failed to delete category: ${error.message}`);
+    invalidateMemoryCache('categories');
     return true;
   }
 
@@ -753,6 +860,7 @@ export async function deleteCategory(id: string): Promise<boolean> {
   if (idx === -1) return false;
   db.categories.splice(idx, 1);
   saveDb(db);
+  invalidateMemoryCache('categories');
   return true;
 }
 
@@ -761,6 +869,13 @@ export async function deleteCategory(id: string): Promise<boolean> {
 // =============================================================
 
 export async function getProjects(options?: { publishedOnly?: boolean; featuredOnly?: boolean }): Promise<Project[]> {
+  const cacheKey = JSON.stringify(options || {});
+  const now = Date.now();
+  const cached = memoryCache.projects.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('projects').select('*').order('sort_order', { ascending: true });
@@ -774,7 +889,9 @@ export async function getProjects(options?: { publishedOnly?: boolean; featuredO
 
     const { data, error } = await query;
     if (error) throw new Error(`Failed to load projects: ${error.message}`);
-    return (data || []).map(mapSupabaseProject);
+    const result = (data || []).map(mapSupabaseProject);
+    memoryCache.projects.set(cacheKey, { data: result, timestamp: now });
+    return result;
   }
 
   const db = getDb();
@@ -785,12 +902,21 @@ export async function getProjects(options?: { publishedOnly?: boolean; featuredO
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const now = Date.now();
+  const cached = memoryCache.projectByIdOrSlug.get(slug);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).maybeSingle();
     if (error) throw new Error(error.message);
     if (!data) return null;
-    return mapSupabaseProject(data);
+    const res = mapSupabaseProject(data);
+    memoryCache.projectByIdOrSlug.set(slug, { data: res, timestamp: now });
+    if (res.id) memoryCache.projectByIdOrSlug.set(res.id, { data: res, timestamp: now });
+    return res;
   }
 
   const db = getDb();
@@ -798,6 +924,12 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
+  const now = Date.now();
+  const cached = memoryCache.projectByIdOrSlug.get(id);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('projects').select('*');
@@ -809,7 +941,10 @@ export async function getProjectById(id: string): Promise<Project | null> {
     const { data, error } = await query.maybeSingle();
     if (error) throw new Error(error.message);
     if (!data) return null;
-    return mapSupabaseProject(data);
+    const res = mapSupabaseProject(data);
+    memoryCache.projectByIdOrSlug.set(id, { data: res, timestamp: now });
+    if (res.slug) memoryCache.projectByIdOrSlug.set(res.slug, { data: res, timestamp: now });
+    return res;
   }
 
   const db = getDb();
@@ -844,6 +979,7 @@ export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'up
       .single();
 
     if (error || !inserted) throw new Error(`Failed to create project: ${error?.message}`);
+    invalidateMemoryCache('projects');
     return mapSupabaseProject(inserted);
   }
 
@@ -856,6 +992,7 @@ export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'up
   };
   db.projects.push(newProj);
   saveDb(db);
+  invalidateMemoryCache('projects');
   return newProj;
 }
 
@@ -889,6 +1026,7 @@ export async function updateProject(id: string, partial: Partial<Project>): Prom
     const { data, error } = await query.select().maybeSingle();
     if (error) throw new Error(`Failed to update project: ${error.message}`);
     if (!data) return null;
+    invalidateMemoryCache('projects');
     return mapSupabaseProject(data);
   }
 
@@ -899,6 +1037,7 @@ export async function updateProject(id: string, partial: Partial<Project>): Prom
   const updated: Project = { ...existing, ...partial, id: existing.id, updatedAt: new Date().toISOString() };
   db.projects[idx] = updated;
   saveDb(db);
+  invalidateMemoryCache('projects');
   return updated;
 }
 
@@ -913,6 +1052,7 @@ export async function deleteProject(id: string): Promise<boolean> {
     }
     const { error } = await query;
     if (error) throw new Error(`Failed to delete project: ${error.message}`);
+    invalidateMemoryCache('projects');
     return true;
   }
 
@@ -921,6 +1061,7 @@ export async function deleteProject(id: string): Promise<boolean> {
   if (idx === -1) return false;
   db.projects.splice(idx, 1);
   saveDb(db);
+  invalidateMemoryCache('projects');
   return true;
 }
 
@@ -929,6 +1070,13 @@ export async function deleteProject(id: string): Promise<boolean> {
 // =============================================================
 
 export async function getServices(publishedOnly = true): Promise<Service[]> {
+  const cacheKey = String(publishedOnly);
+  const now = Date.now();
+  const cached = memoryCache.services.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     let query = supabase.from('services').select('*').order('sort_order', { ascending: true });
@@ -936,7 +1084,9 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
 
     const { data, error } = await query;
     if (error) throw new Error(`Failed to load services: ${error.message}`);
-    return (data || []).map(mapSupabaseService);
+    const result = (data || []).map(mapSupabaseService);
+    memoryCache.services.set(cacheKey, { data: result, timestamp: now });
+    return result;
   }
 
   const db = getDb();
@@ -980,6 +1130,7 @@ export async function createService(data: Omit<Service, 'id' | 'createdAt' | 'up
       .single();
 
     if (error || !inserted) throw new Error(`Failed to create service: ${error?.message}`);
+    invalidateMemoryCache('services');
     return mapSupabaseService(inserted);
   }
 
@@ -992,6 +1143,7 @@ export async function createService(data: Omit<Service, 'id' | 'createdAt' | 'up
   };
   db.services.push(newSrv);
   saveDb(db);
+  invalidateMemoryCache('services');
   return newSrv;
 }
 
@@ -1019,6 +1171,7 @@ export async function updateService(id: string, partial: Partial<Service>): Prom
     const { data, error } = await query.select().maybeSingle();
     if (error) throw new Error(`Failed to update service: ${error.message}`);
     if (!data) return null;
+    invalidateMemoryCache('services');
     return mapSupabaseService(data);
   }
 
@@ -1029,6 +1182,7 @@ export async function updateService(id: string, partial: Partial<Service>): Prom
   const updated: Service = { ...existing, ...partial, id: existing.id, updatedAt: new Date().toISOString() };
   db.services[idx] = updated;
   saveDb(db);
+  invalidateMemoryCache('services');
   return updated;
 }
 
@@ -1043,6 +1197,7 @@ export async function deleteService(id: string): Promise<boolean> {
     }
     const { error } = await query;
     if (error) throw new Error(`Failed to delete service: ${error.message}`);
+    invalidateMemoryCache('services');
     return true;
   }
 
@@ -1051,6 +1206,7 @@ export async function deleteService(id: string): Promise<boolean> {
   if (idx === -1) return false;
   db.services.splice(idx, 1);
   saveDb(db);
+  invalidateMemoryCache('services');
   return true;
 }
 
@@ -1270,6 +1426,7 @@ export async function createOrderAtomic(orderData: {
       console.warn('Web push notice:', pushErr);
     }
 
+    invalidateMemoryCache('products');
     return { success: true, order: completedOrder };
   } catch (err: any) {
     console.error('Order creation error:', err.message);
@@ -2069,6 +2226,11 @@ export async function bootstrapInitialEmployee(): Promise<void> {
 // =============================================================
 
 export async function getSiteSettings(): Promise<SiteSettings> {
+  const now = Date.now();
+  if (memoryCache.settings && now - memoryCache.settings.timestamp < CACHE_TTL_MS) {
+    return memoryCache.settings.data;
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { data, error } = await supabase.from('site_settings').select('*').eq('key', 'general').maybeSingle();
@@ -2077,9 +2239,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       throw new Error(`Failed to fetch site settings: ${error.message}`);
     }
 
+    let result = initialSiteSettings;
     if (data && data.value) {
       const v = data.value;
-      return {
+      result = {
         ...initialSiteSettings,
         ...v,
         brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
@@ -2125,7 +2288,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         updatedAt: data.updated_at || new Date().toISOString(),
       };
     }
-    return initialSiteSettings;
+    memoryCache.settings = { data: result, timestamp: now };
+    return result;
   }
 
   const db = getDb();
@@ -2156,12 +2320,14 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
       throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
     }
 
+    invalidateMemoryCache('settings');
     return merged;
   }
 
   const db = getDb();
   db.siteSettings = { ...db.siteSettings, ...partial };
   saveDb(db);
+  invalidateMemoryCache('settings');
   return db.siteSettings;
 }
 

@@ -136,10 +136,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-canvas flex items-center justify-center">
+      <div className="min-h-screen bg-[#120E0B] text-[#FCFAF6] flex items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="w-8 h-8 border-2 border-espresso border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="font-serif text-lg text-espresso font-light">Authenticating Studio Admin...</p>
+          <div className="w-8 h-8 border-2 border-champagne border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="font-serif text-lg text-champagne font-light tracking-wide">Authenticating Studio Admin...</p>
         </div>
       </div>
     );
@@ -169,23 +169,23 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen bg-canvas flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#120E0B] text-[#FCFAF6] flex flex-col md:flex-row antialiased">
       {/* Mobile Admin Header */}
-      <div className="md:hidden bg-espresso text-surface p-4 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-sm overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+      <div className="md:hidden bg-[#0D0A08] text-[#FCFAF6] p-4 flex items-center justify-between sticky top-0 z-50 border-b border-[#281F19]">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-sm overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40">
             <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
           </div>
-          <span className="font-serif text-base tracking-wider">BALAJI ADMIN</span>
+          <span className="font-serif text-base tracking-wider text-[#FCFAF6]">BALAJI ADMIN</span>
           <span
-            className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-bold ${
-              isOwner ? 'bg-champagne/20 text-champagne' : 'bg-surface/20 text-surface'
+            className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-bold rounded-xs ${
+              isOwner ? 'bg-champagne/20 text-champagne border border-champagne/30' : 'bg-white/10 text-white/90 border border-white/15'
             }`}
           >
             {isOwner ? 'OWNER' : 'EMPLOYEE'}
           </span>
         </div>
-        <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="p-1">
+        <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="p-1 text-[#FCFAF6]/80 hover:text-[#FCFAF6]">
           {mobileNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -194,16 +194,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <aside
         className={`${
           mobileNavOpen ? 'block' : 'hidden'
-        } md:block w-full md:w-64 bg-espresso text-surface flex-shrink-0 flex flex-col border-r border-espresso-light z-40 fixed md:sticky top-0 h-screen overflow-y-auto`}
+        } md:block w-full md:w-64 bg-[#0D0A08] text-[#FCFAF6] flex-shrink-0 flex flex-col border-r border-[#281F19] z-40 fixed md:sticky top-0 h-screen overflow-y-auto`}
       >
         {/* Brand Header */}
-        <div className="p-6 border-b border-atelier-dark space-y-1">
+        <div className="p-6 border-b border-[#281F19] space-y-1.5 bg-[#0D0A08]">
           <Link href="/admin" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+            <div className="w-9 h-9 rounded-lg overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40 group-hover:border-champagne transition-colors">
               <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col">
-              <span className="font-serif text-sm tracking-widest text-surface block font-light leading-tight">
+              <span className="font-serif text-sm tracking-widest text-[#FCFAF6] block font-light leading-tight">
                 BALAJI ARCHITECT
               </span>
               <span className="text-[8px] uppercase tracking-widest text-champagne font-medium mt-0.5">
@@ -211,14 +211,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </span>
             </div>
           </Link>
-          <div className="flex items-center gap-1.5 pt-2 text-[10px] text-green-400">
+          <div className="flex items-center gap-1.5 pt-1.5 text-[10px] text-emerald-400">
             <Radio className="w-3 h-3 animate-pulse" />
             <span>Realtime Pipeline Active</span>
           </div>
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-3.5 space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
             const Icon = item.icon;
@@ -227,10 +227,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileNavOpen(false)}
-                className={`flex items-center gap-3 px-3.5 py-2.5 text-xs tracking-wider rounded-none transition-colors font-medium ${
+                className={`flex items-center gap-3 px-3.5 py-2.5 text-xs tracking-wider rounded-sm transition-all font-medium ${
                   isActive
-                    ? 'bg-champagne/15 text-champagne border-l-2 border-champagne'
-                    : 'text-surface/70 hover:text-surface hover:bg-espresso-light'
+                    ? 'bg-champagne/15 text-champagne border-l-2 border-champagne shadow-[inset_0_0_12px_rgba(197,168,128,0.06)]'
+                    : 'text-[#C7BEB2] hover:text-[#FCFAF6] hover:bg-[#1A1411]'
                 }`}
               >
                 <Icon className="w-4 h-4 flex-shrink-0" />
@@ -241,11 +241,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* Push Notification & User Status */}
-        <div className="p-4 border-t border-atelier-dark space-y-3 text-xs">
+        <div className="p-4 border-t border-[#281F19] space-y-3 text-xs bg-[#0D0A08]">
           {pushStatus !== 'granted' && (
             <button
               onClick={requestPushPermission}
-              className="w-full py-2 px-3 bg-champagne/10 text-champagne border border-champagne/30 text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-champagne/20 transition-colors"
+              className="w-full py-2 px-3 bg-champagne/10 text-champagne border border-champagne/30 text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-champagne/20 transition-colors rounded-sm"
             >
               <Bell className="w-3.5 h-3.5" /> Enable Push Alerts
             </button>
@@ -253,32 +253,32 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center justify-between pt-1">
             <div className="truncate">
-              <span className="font-medium text-surface block text-xs truncate">{admin.name}</span>
-              <span className="text-[10px] text-surface/50 truncate block">{admin.email}</span>
+              <span className="font-medium text-[#FCFAF6] block text-xs truncate">{admin.name}</span>
+              <span className="text-[10px] text-[#A89F91] truncate block">{admin.email}</span>
               <div className="flex items-center gap-1.5 mt-1">
                 <span
-                  className={`inline-flex items-center px-1.5 py-0.5 text-[8px] uppercase tracking-wider font-semibold ${
+                  className={`inline-flex items-center px-1.5 py-0.5 text-[8px] uppercase tracking-wider font-semibold rounded-2xs ${
                     isOwner
                       ? 'bg-champagne/20 text-champagne border border-champagne/40'
-                      : 'bg-surface/10 text-surface/80 border border-surface/20'
+                      : 'bg-white/10 text-white/80 border border-white/15'
                   }`}
                 >
                   {isOwner ? 'OWNER' : 'EMPLOYEE'}
                 </span>
-                <span className="text-[9px] text-green-400">● Active</span>
+                <span className="text-[9px] text-emerald-400">● Active</span>
               </div>
             </div>
             <button
               onClick={() => logout()}
-              className="p-1.5 text-surface/60 hover:text-red-400 transition-colors"
+              className="p-2 text-[#A89F91] hover:text-red-400 hover:bg-[#1A1411] rounded-sm transition-colors"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="pt-2 border-t border-atelier-dark/60 flex items-center justify-between text-[10px] text-surface/40">
-            <Link href="/" target="_blank" className="hover:text-surface flex items-center gap-1">
+          <div className="pt-2 border-t border-[#281F19] flex items-center justify-between text-[10px] text-[#7E7469]">
+            <Link href="/" target="_blank" className="hover:text-champagne transition-colors flex items-center gap-1">
               <span>View Public Studio</span> <ExternalLink className="w-3 h-3" />
             </Link>
             <span>v1.0 Production</span>
@@ -287,7 +287,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-7xl overflow-x-hidden">
+      <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-7xl overflow-x-hidden bg-[#120E0B]">
         {children}
       </main>
     </div>

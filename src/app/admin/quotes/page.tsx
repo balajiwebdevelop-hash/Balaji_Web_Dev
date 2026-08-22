@@ -69,24 +69,24 @@ export default function AdminQuotesPage() {
   return (
     <AdminLayout>
       <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Inquiries & Estimation</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Architectural Quotes</h1>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Inquiries & Estimation</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Quotes</h1>
           </div>
           <button
             onClick={loadQuotes}
-            className="p-2.5 bg-surface border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider flex items-center gap-1.5 self-start"
+            className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 self-start rounded-xs transition-colors shadow-xs"
           >
-            <RefreshCw className="w-3.5 h-3.5" /> Sync Quotes
+            <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Sync Quotes
           </button>
         </div>
 
-        <div className="bg-surface border border-atelier overflow-hidden">
+        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-espresso border-collapse">
+            <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
               <thead>
-                <tr className="bg-canvas border-b border-atelier text-[10px] uppercase tracking-widest text-warmgray font-medium">
+                <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
                   <th className="p-4">Quote Ref</th>
                   <th className="p-4">Client Entity</th>
                   <th className="p-4">Project Typology</th>
@@ -96,38 +96,38 @@ export default function AdminQuotesPage() {
                   <th className="p-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-atelier/60">
+              <tbody className="divide-y divide-[#281F19]">
                 {loading ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-warmgray">
+                    <td colSpan={7} className="p-8 text-center text-[#A89F91]">
                       Loading quote inbox...
                     </td>
                   </tr>
                 ) : quotes.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-warmgray">
+                    <td colSpan={7} className="p-8 text-center text-[#7E7469]">
                       No quote requests in record.
                     </td>
                   </tr>
                 ) : (
                   quotes.map((q) => (
-                    <tr key={q.id} className="hover:bg-canvas/50 transition-colors">
-                      <td className="p-4 font-mono font-medium text-espresso">{q.quoteNumber}</td>
+                    <tr key={q.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="p-4 font-mono font-medium text-[#FCFAF6]">{q.quoteNumber}</td>
                       <td className="p-4">
-                        <span className="font-medium text-espresso block">{q.customerName}</span>
-                        <span className="text-[10px] text-warmgray">{q.customerEmail}</span>
+                        <span className="font-medium text-[#FCFAF6] block">{q.customerName}</span>
+                        <span className="text-[10px] text-[#A89F91]">{q.customerEmail}</span>
                       </td>
-                      <td className="p-4 font-serif text-sm">{q.projectType}</td>
-                      <td className="p-4 text-warmgray">{q.projectLocation}</td>
-                      <td className="p-4 text-timber font-medium">{q.budgetRange}</td>
+                      <td className="p-4 font-serif text-sm text-[#D8CEBF]">{q.projectType}</td>
+                      <td className="p-4 text-[#A89F91]">{q.projectLocation}</td>
+                      <td className="p-4 text-champagne font-medium">{q.budgetRange}</td>
                       <td className="p-4">
                         <span
-                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-medium border ${
+                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-medium border rounded-2xs ${
                             q.status === 'Approved' || q.status === 'Converted_To_Order'
-                              ? 'bg-green-50 text-green-800 border-green-200'
+                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
                               : q.status === 'Quotation_Sent'
-                              ? 'bg-blue-50 text-blue-800 border-blue-200'
-                              : 'bg-amber-50 text-amber-800 border-amber-200'
+                              ? 'bg-blue-950/40 text-blue-300 border-blue-800/50'
+                              : 'bg-amber-950/40 text-amber-300 border-amber-800/50'
                           }`}
                         >
                           {q.status.replace(/_/g, ' ')}
@@ -136,7 +136,7 @@ export default function AdminQuotesPage() {
                       <td className="p-4 text-right">
                         <button
                           onClick={() => openQuoteModal(q)}
-                          className="p-1.5 bg-canvas border border-atelier hover:border-bronze text-espresso"
+                          className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
                           title="Review & Price Quote"
                         >
                           <Eye className="w-3.5 h-3.5" />
@@ -153,73 +153,73 @@ export default function AdminQuotesPage() {
 
       {/* Quote Review Drawer / Modal */}
       {selectedQuote && (
-        <div className="fixed inset-0 z-50 bg-espresso/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-2xl bg-surface border border-atelier p-6 sm:p-8 space-y-6 shadow-2xl my-8">
-            <div className="flex justify-between items-start border-b border-atelier pb-4">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-start border-b border-[#281F19] pb-4">
               <div>
-                <span className="text-[10px] uppercase tracking-widest text-bronze font-medium">Estimate Dossier</span>
-                <h2 className="font-serif text-2xl text-espresso font-normal">
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">Estimate Dossier</span>
+                <h2 className="font-serif text-2xl text-[#FCFAF6] font-normal">
                   Quote #{selectedQuote.quoteNumber}
                 </h2>
-                <p className="text-xs text-warmgray">Received on {new Date(selectedQuote.createdAt).toLocaleString('en-IN')}</p>
+                <p className="text-xs text-[#A89F91]">Received on {new Date(selectedQuote.createdAt).toLocaleString('en-IN')}</p>
               </div>
-              <button onClick={() => setSelectedQuote(null)} className="p-1.5 text-warmgray hover:text-espresso">
+              <button onClick={() => setSelectedQuote(null)} className="p-1.5 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 p-4 bg-canvas border border-atelier text-xs">
+            <div className="grid grid-cols-2 gap-4 p-4 bg-[#14100D] border border-[#332821] text-xs rounded-xs">
               <div>
-                <span className="text-[10px] uppercase tracking-wider text-warmgray font-medium block">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
                   Client Details
                 </span>
-                <p className="font-medium text-espresso">{selectedQuote.customerName}</p>
-                <p className="text-warmgray">{selectedQuote.customerEmail}</p>
-                <p className="text-warmgray">{selectedQuote.customerPhone}</p>
+                <p className="font-medium text-[#FCFAF6]">{selectedQuote.customerName}</p>
+                <p className="text-[#A89F91]">{selectedQuote.customerEmail}</p>
+                <p className="text-[#A89F91]">{selectedQuote.customerPhone}</p>
               </div>
               <div>
-                <span className="text-[10px] uppercase tracking-wider text-warmgray font-medium block">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
                   Project Scope
                 </span>
-                <p className="text-espresso font-medium">{selectedQuote.projectType}</p>
-                <p className="text-warmgray">Site: {selectedQuote.projectLocation}</p>
-                <p className="text-warmgray">Timeline: {selectedQuote.estimatedTimeline}</p>
+                <p className="text-[#FCFAF6] font-medium">{selectedQuote.projectType}</p>
+                <p className="text-[#A89F91]">Site: {selectedQuote.projectLocation}</p>
+                <p className="text-[#A89F91]">Timeline: {selectedQuote.estimatedTimeline}</p>
               </div>
             </div>
 
             {/* Line Items */}
             <div className="space-y-3">
-              <h3 className="text-xs uppercase tracking-wider text-espresso font-medium">
+              <h3 className="text-xs uppercase tracking-wider text-champagne font-medium">
                 Materials & Sizing Requested ({selectedQuote.items.length})
               </h3>
-              <div className="border border-atelier divide-y divide-atelier/60 text-xs">
+              <div className="border border-[#332821] divide-y divide-[#281F19] text-xs rounded-xs">
                 {selectedQuote.items.map((item, idx) => (
-                  <div key={idx} className="p-3 space-y-1">
+                  <div key={idx} className="p-3 space-y-1 bg-[#16110E]">
                     <div className="flex justify-between">
-                      <span className="font-serif text-sm font-medium text-espresso">{item.productName}</span>
-                      <span className="font-mono text-timber">{item.quantity} {item.unit}</span>
+                      <span className="font-serif text-sm font-medium text-[#FCFAF6]">{item.productName}</span>
+                      <span className="font-mono text-champagne">{item.quantity} {item.unit}</span>
                     </div>
-                    {item.dimensions && <p className="text-[11px] text-warmgray">Dimensions: {item.dimensions}</p>}
-                    {item.notes && <p className="text-[11px] text-warmgray italic">&ldquo;{item.notes}&rdquo;</p>}
+                    {item.dimensions && <p className="text-[11px] text-[#A89F91]">Dimensions: {item.dimensions}</p>}
+                    {item.notes && <p className="text-[11px] text-[#A89F91] italic">&ldquo;{item.notes}&rdquo;</p>}
                   </div>
                 ))}
               </div>
             </div>
 
             {selectedQuote.notes && (
-              <div className="p-3 bg-canvas border border-atelier text-xs space-y-1">
-                <span className="text-[10px] uppercase tracking-wider text-warmgray font-medium block">
+              <div className="p-3 bg-[#14100D] border border-[#332821] text-xs space-y-1 rounded-xs">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
                   Client Design Notes:
                 </span>
-                <p className="text-warmgray leading-relaxed">{selectedQuote.notes}</p>
+                <p className="text-[#A89F91] leading-relaxed">{selectedQuote.notes}</p>
               </div>
             )}
 
             {/* Estimation Action Controls */}
-            <div className="space-y-4 pt-2 border-t border-atelier text-xs">
+            <div className="space-y-4 pt-2 border-t border-[#281F19] text-xs">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium block">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium block">
                     Calculated Quotation Amount (₹)
                   </label>
                   <input
@@ -227,19 +227,19 @@ export default function AdminQuotesPage() {
                     placeholder="e.g. 450000"
                     value={quotedAmountInput}
                     onChange={(e) => setQuotedAmountInput(e.target.value ? Number(e.target.value) : '')}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs font-serif text-timber text-base font-medium"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs font-serif text-champagne text-base font-medium focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium block">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium block">
                     Update Quote Workflow Status
                   </label>
                   <select
                     value={selectedQuote.status}
                     onChange={(e) => handleUpdateQuote(e.target.value as QuoteStatus)}
                     disabled={updating}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs font-medium"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
                   >
                     <option value="Pending">Pending Review</option>
                     <option value="Under_Review">Under Technical Review</option>
@@ -252,7 +252,7 @@ export default function AdminQuotesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium block">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">
                   Studio Internal Notes & Quarry Coordination
                 </label>
                 <textarea
@@ -260,7 +260,7 @@ export default function AdminQuotesPage() {
                   value={adminNotesInput}
                   onChange={(e) => setAdminNotesInput(e.target.value)}
                   placeholder="e.g. Quarry block #42 reserved in Verona. 3 week shipping timeline."
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
@@ -269,7 +269,7 @@ export default function AdminQuotesPage() {
                   type="button"
                   onClick={() => handleUpdateQuote(selectedQuote.status)}
                   disabled={updating}
-                  className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
                 >
                   {updating ? 'Saving...' : 'Save Estimate & Notes'}
                 </button>

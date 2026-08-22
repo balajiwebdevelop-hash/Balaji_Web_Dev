@@ -243,37 +243,37 @@ export default function AdminProductsPage() {
     <AdminLayout>
       <div className="space-y-8">
         {/* Top Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Catalog Management</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Products & Materials</h1>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Catalog Management</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Products & Materials</h1>
           </div>
           <button
             onClick={openCreateModal}
-            className="px-5 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium"
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
           >
             <Plus className="w-4 h-4" /> Add New Material
           </button>
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-surface border border-atelier p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#1D1714] border border-[#332821] p-4 rounded-xs shadow-xs">
           <div className="sm:col-span-2 relative">
             <input
               type="text"
               placeholder="Search by material name, SKU, or finish..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full p-2.5 pl-9 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+              className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
             />
-            <Search className="w-4 h-4 text-warmgray absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
           </div>
 
           <div>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full p-2.5 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+              className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
             >
               <option value="">All Categories ({categories.length})</option>
               {categories.map((c) => (
@@ -286,11 +286,11 @@ export default function AdminProductsPage() {
         </div>
 
         {/* Products Table */}
-        <div className="bg-surface border border-atelier overflow-hidden">
+        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-espresso border-collapse">
+            <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
               <thead>
-                <tr className="bg-canvas border-b border-atelier text-[10px] uppercase tracking-widest text-warmgray font-medium">
+                <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
                   <th className="p-4">Material / Item</th>
                   <th className="p-4">SKU</th>
                   <th className="p-4">Category</th>
@@ -301,65 +301,65 @@ export default function AdminProductsPage() {
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-atelier/60">
+              <tbody className="divide-y divide-[#281F19]">
                 {loading ? (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center text-warmgray">
+                    <td colSpan={8} className="p-8 text-center text-[#A89F91]">
                       Loading catalog materials...
                     </td>
                   </tr>
                 ) : filteredProducts.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center text-warmgray">
+                    <td colSpan={8} className="p-8 text-center text-[#7E7469]">
                       No materials matching your criteria.
                     </td>
                   </tr>
                 ) : (
                   filteredProducts.map((p) => (
-                    <tr key={p.id} className="hover:bg-canvas/50 transition-colors">
+                    <tr key={p.id} className="hover:bg-[#251E1A]/60 transition-colors">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-10 h-10 bg-canvas flex-shrink-0 overflow-hidden border border-atelier">
+                          <div className="relative w-10 h-10 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
                             {p.images[0] && (
                               <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
                             )}
                           </div>
                           <div>
-                            <span className="font-serif text-sm font-medium text-espresso block">{p.name}</span>
-                            <span className="text-[10px] text-warmgray">{p.brand}</span>
+                            <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>
+                            <span className="text-[10px] text-[#A89F91]">{p.brand}</span>
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 font-mono text-[11px] text-warmgray">{p.sku}</td>
-                      <td className="p-4">{p.categoryName || 'General'}</td>
-                      <td className="p-4 font-medium text-timber">
+                      <td className="p-4 font-mono text-[11px] text-[#A89F91]">{p.sku}</td>
+                      <td className="p-4 text-[#D8CEBF]">{p.categoryName || 'General'}</td>
+                      <td className="p-4 font-medium text-champagne">
                         ₹{(p.salePrice || p.price).toLocaleString('en-IN')}{' '}
-                        <span className="text-[10px] text-warmgray font-light">/ {p.unit}</span>
+                        <span className="text-[10px] text-[#A89F91] font-light">/ {p.unit}</span>
                       </td>
                       <td className="p-4">
                         <span
                           className={`font-medium ${
-                            p.stock <= p.moq ? 'text-red-700 font-bold' : 'text-espresso'
+                            p.stock <= p.moq ? 'text-red-400 font-bold' : 'text-[#FCFAF6]'
                           }`}
                         >
                           {p.stock} {p.unit}
                         </span>
                       </td>
                       <td className="p-4">
-                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 bg-canvas border border-atelier">
+                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 bg-[#14100D] border border-[#332821] text-[#C7BEB2] rounded-2xs">
                           {p.purchaseMode}
                         </span>
                       </td>
                       <td className="p-4">
                         <button
                           onClick={() => handleTogglePublish(p)}
-                          className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border ${
+                          className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
                             p.published
-                              ? 'bg-green-50 text-green-800 border-green-200'
-                              : 'bg-warmgray/10 text-warmgray border-warmgray/30'
+                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/60'
+                              : 'bg-white/5 text-[#A89F91] border-[#382D25] hover:bg-white/10'
                           }`}
                         >
-                          {p.published ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                          {p.published ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
                           <span>{p.published ? 'Live' : 'Hidden'}</span>
                         </button>
                       </td>
@@ -367,14 +367,14 @@ export default function AdminProductsPage() {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEditModal(p)}
-                            className="p-1.5 bg-canvas border border-atelier hover:border-bronze text-espresso"
+                            className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
                             title="Edit Material"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDelete(p.id)}
-                            className="p-1.5 bg-canvas border border-atelier hover:text-red-700 text-warmgray"
+                            className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] rounded-xs transition-colors"
                             title="Delete Material"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -392,54 +392,54 @@ export default function AdminProductsPage() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-espresso/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-3xl bg-surface border border-atelier p-6 sm:p-8 space-y-6 shadow-2xl my-8">
-            <div className="flex justify-between items-center border-b border-atelier pb-4">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
               <div>
-                <span className="text-[10px] uppercase tracking-widest text-bronze font-medium">Product Matrix</span>
-                <h2 className="font-serif text-2xl text-espresso">
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">Product Matrix</span>
+                <h2 className="font-serif text-2xl text-[#FCFAF6]">
                   {editingProduct ? `Edit "${editingProduct.name}"` : 'Add New Material'}
                 </h2>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="p-1 text-warmgray hover:text-espresso">
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs">{formError}</div>
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
             )}
 
             <form onSubmit={handleSaveProduct} className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Material Name *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Material Name *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">SKU Code *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">SKU Code *</label>
                   <input
                     type="text"
                     required
                     value={sku}
                     onChange={(e) => setSku(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier font-mono"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] font-mono text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Category *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Category *</label>
                   <select
                     value={categoryId}
                     onChange={(e) => setCategoryId(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   >
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -450,22 +450,22 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Subcategory / Series</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Subcategory / Series</label>
                   <input
                     type="text"
                     value={subcategory}
                     onChange={(e) => setSubcategory(e.target.value)}
                     placeholder="e.g. Honed Travertine"
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Unit of Sale *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Unit of Sale *</label>
                   <select
                     value={unit}
                     onChange={(e) => setUnit(e.target.value as UnitType)}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   >
                     <option>sq ft</option>
                     <option>sq m</option>
@@ -480,53 +480,53 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Standard Price (₹) *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard Price (₹) *</label>
                   <input
                     type="number"
                     required
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Sale Price (₹ Optional)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Sale Price (₹ Optional)</label>
                   <input
                     type="number"
                     value={salePrice || ''}
                     onChange={(e) => setSalePrice(e.target.value ? Number(e.target.value) : undefined)}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Stock On Hand *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Stock On Hand *</label>
                   <input
                     type="number"
                     required
                     value={stock}
                     onChange={(e) => setStock(Number(e.target.value))}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Minimum Order Qty (MOQ)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Minimum Order Qty (MOQ)</label>
                   <input
                     type="number"
                     value={moq}
                     onChange={(e) => setMoq(Number(e.target.value))}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Purchase Mode</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Purchase Mode</label>
                   <select
                     value={purchaseMode}
                     onChange={(e) => setPurchaseMode(e.target.value as PurchaseMode)}
-                    className="w-full p-2.5 bg-canvas border border-atelier"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   >
                     <option value="BUY_NOW">BUY_NOW (Instant Checkout)</option>
                     <option value="REQUEST_QUOTE">REQUEST_QUOTE (Quote Only)</option>
@@ -537,17 +537,17 @@ export default function AdminProductsPage() {
               </div>
 
               <div className="space-y-1 text-xs">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Material Description</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Material Description</label>
                 <textarea
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
               {/* Device Image Uploader */}
-              <div className="border-t border-atelier pt-4">
+              <div className="border-t border-[#281F19] pt-4">
                 <ImageUploader
                   bucket="products"
                   images={images}
@@ -557,39 +557,39 @@ export default function AdminProductsPage() {
                 />
               </div>
 
-              <div className="flex items-center gap-6 border-t border-atelier pt-4 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer">
+              <div className="flex items-center gap-6 border-t border-[#281F19] pt-4 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
                   <input
                     type="checkbox"
                     checked={published}
                     onChange={(e) => setPublished(e.target.checked)}
-                    className="accent-espresso"
+                    className="accent-champagne"
                   />
                   <span>Published on Storefront</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
                   <input
                     type="checkbox"
                     checked={isFeatured}
                     onChange={(e) => setIsFeatured(e.target.checked)}
-                    className="accent-espresso"
+                    className="accent-champagne"
                   />
                   <span>Feature on Homepage</span>
                 </label>
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-atelier">
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2.5 border border-atelier text-xs uppercase tracking-widest text-warmgray hover:text-espresso"
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
-                  className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
                 >
                   {formLoading ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
                 </button>

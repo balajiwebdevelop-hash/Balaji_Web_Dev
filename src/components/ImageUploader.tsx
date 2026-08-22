@@ -112,7 +112,7 @@ export function ImageUploader({
   return (
     <div className="space-y-3">
       {label && (
-        <label className="text-xs uppercase tracking-wider text-warmgray font-medium block">
+        <label className="text-xs uppercase tracking-wider text-champagne/90 font-medium block">
           {label}
         </label>
       )}
@@ -124,10 +124,10 @@ export function ImageUploader({
         onDragOver={handleDrag}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`border-2 border-dashed transition-all p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2 ${
+        className={`border-2 border-dashed transition-all p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2 rounded-sm ${
           dragActive
-            ? 'border-bronze bg-bronze/5'
-            : 'border-atelier hover:border-bronze bg-canvas/60 hover:bg-canvas'
+            ? 'border-champagne bg-champagne/10'
+            : 'border-[#332821] hover:border-champagne/60 bg-[#16110E] hover:bg-[#1A1411]'
         }`}
       >
         <input
@@ -141,21 +141,21 @@ export function ImageUploader({
 
         {uploading ? (
           <div className="flex flex-col items-center gap-2 py-2">
-            <Loader2 className="w-7 h-7 text-bronze animate-spin" />
-            <span className="text-xs text-espresso font-medium">
+            <Loader2 className="w-7 h-7 text-champagne animate-spin" />
+            <span className="text-xs text-champagne font-medium">
               Uploading high-resolution image to storage...
             </span>
           </div>
         ) : (
           <>
-            <div className="w-10 h-10 rounded-full bg-surface border border-atelier flex items-center justify-center text-bronze shadow-2xs">
+            <div className="w-10 h-10 rounded-full bg-[#201814] border border-[#3A2E25] flex items-center justify-center text-champagne shadow-xs">
               <Upload className="w-5 h-5 stroke-[1.5]" />
             </div>
             <div className="space-y-0.5">
-              <p className="text-xs font-medium text-espresso">
+              <p className="text-xs font-medium text-[#FCFAF6]">
                 Click to browse device or drag and drop photos here
               </p>
-              <p className="text-[10px] text-warmgray">
+              <p className="text-[10px] text-[#A89F91]">
                 Supports JPG, PNG, WebP, AVIF up to 10MB each
               </p>
             </div>
@@ -164,7 +164,7 @@ export function ImageUploader({
       </div>
 
       {error && (
-        <p className="text-xs text-red-600 bg-red-50 p-2 border border-red-200">{error}</p>
+        <p className="text-xs text-red-300 bg-red-950/40 p-2.5 border border-red-800/50 rounded-xs">{error}</p>
       )}
 
       {/* Image Preview Grid */}
@@ -173,7 +173,7 @@ export function ImageUploader({
           {images.map((url, idx) => (
             <div
               key={idx}
-              className="relative aspect-square bg-canvas border border-atelier overflow-hidden group shadow-2xs"
+              className="relative aspect-square bg-[#16110E] border border-[#332821] overflow-hidden group rounded-xs shadow-xs"
             >
               <Image src={url} alt={`Upload preview ${idx + 1}`} fill className="object-cover" />
               <button
@@ -182,13 +182,13 @@ export function ImageUploader({
                   e.stopPropagation();
                   removeImage(idx);
                 }}
-                className="absolute top-1 right-1 bg-espresso/90 text-surface p-1 rounded-full opacity-80 hover:opacity-100 hover:bg-red-700 transition-all shadow-xs"
+                className="absolute top-1 right-1 bg-black/80 text-white p-1 rounded-full opacity-80 hover:opacity-100 hover:bg-red-700 transition-all shadow-xs"
                 title="Remove photo"
               >
                 <X className="w-3 h-3" />
               </button>
               {idx === 0 && (
-                <span className="absolute bottom-1 left-1 bg-espresso/80 text-surface text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-mono">
+                <span className="absolute bottom-1 left-1 bg-black/80 text-champagne text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-mono border border-champagne/30 rounded-2xs">
                   Primary
                 </span>
               )}

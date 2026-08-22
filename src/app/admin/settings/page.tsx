@@ -253,10 +253,10 @@ export default function AdminSettingsPage() {
   if (!isOwner) {
     return (
       <AdminLayout>
-        <div className="bg-red-50 border border-red-200 p-8 text-center space-y-4 max-w-lg mx-auto mt-12">
-          <ShieldAlert className="w-12 h-12 text-red-600 mx-auto" />
-          <h2 className="font-serif text-2xl text-red-900">Access Restricted</h2>
-          <p className="text-xs text-red-700 leading-relaxed">
+        <div className="bg-red-950/40 border border-red-800/50 p-8 text-center space-y-4 max-w-lg mx-auto mt-12 rounded-sm">
+          <ShieldAlert className="w-12 h-12 text-red-400 mx-auto" />
+          <h2 className="font-serif text-2xl text-red-300">Access Restricted</h2>
+          <p className="text-xs text-red-200/80 leading-relaxed">
             Studio Settings & Global Configuration is strictly restricted to the Studio Owner. If you require changes to branding, payment, or studio configuration, please contact Vikas Sir (Principal Architect).
           </p>
         </div>
@@ -267,9 +267,9 @@ export default function AdminSettingsPage() {
   if (loading || !settings) {
     return (
       <AdminLayout>
-        <div className="p-12 text-center text-warmgray flex flex-col items-center justify-center gap-3">
-          <RefreshCw className="w-6 h-6 animate-spin text-bronze" />
-          <span className="text-xs uppercase tracking-widest">Loading studio configuration & audit trail...</span>
+        <div className="p-12 text-center text-[#A89F91] flex flex-col items-center justify-center gap-3">
+          <RefreshCw className="w-6 h-6 animate-spin text-champagne" />
+          <span className="text-xs uppercase tracking-widest text-champagne">Loading studio configuration & audit trail...</span>
         </div>
       </AdminLayout>
     );
@@ -298,22 +298,22 @@ export default function AdminSettingsPage() {
     <AdminLayout>
       <div className="space-y-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Full CMS & Operations</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Studio Settings & Page Controls</h1>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Full CMS & Operations</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Studio Settings & Page Controls</h1>
           </div>
           <div className="flex items-center gap-3 self-start sm:self-auto">
             <button
               onClick={loadSettingsAndLogs}
-              className="p-2.5 bg-surface border border-atelier hover:border-bronze text-espresso text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer rounded-xs shadow-xs"
             >
-              <RefreshCw className="w-3.5 h-3.5" /> Reload Config
+              <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Reload Config
             </button>
             <button
               onClick={handleSaveSettings}
               disabled={saving}
-              className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer"
+              className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer transition-all rounded-xs shadow-xs"
             >
               {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               {saving ? 'Saving...' : 'Save All Changes'}
@@ -323,109 +323,109 @@ export default function AdminSettingsPage() {
 
         {/* Global Feedback Notifications */}
         {savedSuccess && (
-          <div className="p-4 bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center gap-2">
-            <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="p-4 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 rounded-xs animate-fade-in">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
             <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to Supabase.</span>
           </div>
         )}
 
         {saveError && (
-          <div className="p-4 bg-rose-50 border border-rose-300 text-rose-900 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+          <div className="p-4 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             <span className="font-medium">{saveError}</span>
           </div>
         )}
 
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-atelier pb-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-[#281F19] pb-2">
           <button
             type="button"
             onClick={() => setActiveTab('homepage')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'homepage'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <LayoutTemplate className="w-3.5 h-3.5 text-bronze" />
+            <LayoutTemplate className="w-3.5 h-3.5" />
             Homepage & Hero Control
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('identity')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'identity'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <Building2 className="w-3.5 h-3.5 text-bronze" />
+            <Building2 className="w-3.5 h-3.5" />
             Brand Logo & Identity
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('payment')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'payment'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <QrCode className="w-3.5 h-3.5 text-bronze" />
+            <QrCode className="w-3.5 h-3.5" />
             Balaji PG / QR Gateway
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('fiscal')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'fiscal'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <Truck className="w-3.5 h-3.5 text-bronze" />
+            <Truck className="w-3.5 h-3.5" />
             Tax, GST & Freight
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('announcements')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'announcements'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <Megaphone className="w-3.5 h-3.5 text-bronze" />
+            <Megaphone className="w-3.5 h-3.5" />
             Announcement Bar & Social
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('push')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'push'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <Bell className="w-3.5 h-3.5 text-bronze" />
+            <Bell className="w-3.5 h-3.5" />
             Push Notifications
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('audit')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
               activeTab === 'audit'
-                ? 'bg-espresso text-surface border border-espresso'
-                : 'bg-surface text-warmgray hover:text-espresso border border-atelier'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
             }`}
           >
-            <Shield className="w-3.5 h-3.5 text-bronze" />
+            <Shield className="w-3.5 h-3.5" />
             Security Audit Trail
           </button>
         </div>
@@ -436,7 +436,7 @@ export default function AdminSettingsPage() {
           {activeTab === 'homepage' && (
             <div className="space-y-8">
               {/* Hero Live Preview Card */}
-              <div className="relative rounded-sm overflow-hidden border border-atelier bg-espresso text-surface p-8 sm:p-12 text-center space-y-4">
+              <div className="relative rounded-sm overflow-hidden border border-[#332821] bg-[#16110E] text-[#FCFAF6] p-8 sm:p-12 text-center space-y-4 shadow-md">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-30"
                   style={{
@@ -450,52 +450,52 @@ export default function AdminSettingsPage() {
                   <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">
                     {home.heroEyebrow || 'Architecture • Interior Studio • Material Curation'}
                   </span>
-                  <h1 className="font-serif text-2xl sm:text-4xl text-surface font-light leading-tight">
+                  <h1 className="font-serif text-2xl sm:text-4xl text-[#FCFAF6] font-light leading-tight">
                     {home.heroHeadingLine1 || 'INTERIORS.'} <br />
                     {home.heroHeadingLine2 || 'ARCHITECTURE.'} <br />
                     {home.heroHeadingLine3 || 'MATERIALS.'}
                   </h1>
-                  <p className="text-xs text-surface/80 max-w-lg mx-auto line-clamp-2">
+                  <p className="text-xs text-[#E5DCD0] max-w-lg mx-auto line-clamp-2">
                     {home.heroDescription ||
                       'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.'}
                   </p>
                   <div className="flex items-center justify-center gap-3 pt-2">
-                    <span className="px-4 py-2 bg-surface text-espresso text-[10px] uppercase tracking-widest font-medium">
+                    <span className="px-4 py-2 bg-champagne text-[#100C0A] text-[10px] uppercase tracking-widest font-medium rounded-2xs">
                       {home.heroPrimaryBtnText || 'Explore Projects'} &rarr;
                     </span>
-                    <span className="px-4 py-2 border border-surface/40 text-surface text-[10px] uppercase tracking-widest font-medium">
+                    <span className="px-4 py-2 border border-champagne/50 text-champagne text-[10px] uppercase tracking-widest font-medium rounded-2xs">
                       {home.heroSecondaryBtnText || 'Explore Materials'}
                     </span>
                   </div>
                 </div>
-                <div className="absolute top-3 right-3 text-[10px] bg-canvas/80 text-espresso px-2 py-1 uppercase tracking-widest border border-atelier">
+                <div className="absolute top-3 right-3 text-[10px] bg-[#100C0A]/90 text-champagne px-2 py-1 uppercase tracking-widest border border-champagne/30 rounded-2xs font-mono">
                   Live Preview
                 </div>
               </div>
 
               {/* Hero Section Edit Controls */}
-              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-                <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                  <LayoutTemplate className="w-4 h-4 text-bronze" />
-                  <h2 className="font-serif text-xl text-espresso">Hero Section Typography & Media</h2>
+              <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+                <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                  <LayoutTemplate className="w-4 h-4 text-champagne" />
+                  <h2 className="font-serif text-xl text-[#FCFAF6]">Hero Section Typography & Media</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                   <div className="space-y-1 sm:col-span-2 lg:col-span-3">
-                    <label className="uppercase tracking-wider text-warmgray font-medium flex items-center gap-1.5">
-                      <ImageIcon className="w-3.5 h-3.5 text-bronze" /> Hero Background Image URL
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-champagne" /> Hero Background Image URL
                     </label>
                     <input
                       type="text"
                       value={home.heroImageUrl || ''}
                       onChange={(e) => updateHomepage('heroImageUrl', e.target.value)}
                       placeholder="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-[11px]"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden font-mono text-[11px] rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1 sm:col-span-2 lg:col-span-3">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">
                       Hero Subtitle / Eyebrow Header
                     </label>
                     <input
@@ -503,45 +503,45 @@ export default function AdminSettingsPage() {
                       value={home.heroEyebrow || ''}
                       onChange={(e) => updateHomepage('heroEyebrow', e.target.value)}
                       placeholder="Architecture • Interior Studio • Material Curation"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 1</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 1</label>
                     <input
                       type="text"
                       value={home.heroHeadingLine1 || ''}
                       onChange={(e) => updateHomepage('heroHeadingLine1', e.target.value)}
                       placeholder="INTERIORS."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 2</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 2</label>
                     <input
                       type="text"
                       value={home.heroHeadingLine2 || ''}
                       onChange={(e) => updateHomepage('heroHeadingLine2', e.target.value)}
                       placeholder="ARCHITECTURE."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Hero Heading — Line 3</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 3</label>
                     <input
                       type="text"
                       value={home.heroHeadingLine3 || ''}
                       onChange={(e) => updateHomepage('heroHeadingLine3', e.target.value)}
                       placeholder="MATERIALS."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1 sm:col-span-2 lg:col-span-3">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">
                       Hero Narrative Description
                     </label>
                     <textarea
@@ -549,105 +549,105 @@ export default function AdminSettingsPage() {
                       value={home.heroDescription || ''}
                       onChange={(e) => updateHomepage('heroDescription', e.target.value)}
                       placeholder="Crafted spaces and considered materials for timeless living..."
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden resize-none"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden resize-none rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Primary Button Text</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Primary Button Text</label>
                     <input
                       type="text"
                       value={home.heroPrimaryBtnText || ''}
                       onChange={(e) => updateHomepage('heroPrimaryBtnText', e.target.value)}
                       placeholder="Explore Projects"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Primary Button Link</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Primary Button Link</label>
                     <input
                       type="text"
                       value={home.heroPrimaryBtnLink || ''}
                       onChange={(e) => updateHomepage('heroPrimaryBtnLink', e.target.value)}
                       placeholder="/projects"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Secondary Button Text</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Secondary Button Text</label>
                     <input
                       type="text"
                       value={home.heroSecondaryBtnText || ''}
                       onChange={(e) => updateHomepage('heroSecondaryBtnText', e.target.value)}
                       placeholder="Explore Materials"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Secondary Button Link</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Secondary Button Link</label>
                     <input
                       type="text"
                       value={home.heroSecondaryBtnLink || ''}
                       onChange={(e) => updateHomepage('heroSecondaryBtnLink', e.target.value)}
                       placeholder="/materials"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Bottom Trust Banner Badges */}
-              <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-                <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                  <Sparkles className="w-4 h-4 text-bronze" />
-                  <h2 className="font-serif text-xl text-espresso">Hero Bottom Trust Badges (4 Items)</h2>
+              <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+                <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                  <Sparkles className="w-4 h-4 text-champagne" />
+                  <h2 className="font-serif text-xl text-[#FCFAF6]">Hero Bottom Trust Badges (4 Items)</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 1 (Rating / Trust)</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 1 (Rating / Trust)</label>
                     <input
                       type="text"
                       value={home.trustBadge1 || ''}
                       onChange={(e) => updateHomepage('trustBadge1', e.target.value)}
                       placeholder="★ 5.0 (22 Google Reviews)"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 2 (Location)</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 2 (Location)</label>
                     <input
                       type="text"
                       value={home.trustBadge2 || ''}
                       onChange={(e) => updateHomepage('trustBadge2', e.target.value)}
                       placeholder="Guwahati Studio Office"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 3 (Practice Model)</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 3 (Practice Model)</label>
                     <input
                       type="text"
                       value={home.trustBadge3 || ''}
                       onChange={(e) => updateHomepage('trustBadge3', e.target.value)}
                       placeholder="Turnkey Architecture"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Badge 4 (Logistics)</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 4 (Logistics)</label>
                     <input
                       type="text"
                       value={home.trustBadge4 || ''}
                       onChange={(e) => updateHomepage('trustBadge4', e.target.value)}
                       placeholder="Pan-India Material Logistics"
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
                 </div>
@@ -657,16 +657,16 @@ export default function AdminSettingsPage() {
 
           {/* TAB 2: BRAND LOGO & IDENTITY */}
           {activeTab === 'identity' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
-              <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                <Building2 className="w-4 h-4 text-bronze" />
-                <h2 className="font-serif text-xl text-espresso">Header Branding Typography & Studio Profile</h2>
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Building2 className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Header Branding Typography & Studio Profile</h2>
               </div>
 
               {/* Live Header Logo Preview */}
-              <div className="p-6 bg-canvas border border-atelier flex flex-col items-center justify-center text-center space-y-2">
+              <div className="p-6 bg-[#14100D] border border-[#332821] flex flex-col items-center justify-center text-center space-y-2 rounded-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#100C0A] shadow-md flex-shrink-0 border border-champagne/50">
                     <img
                       src={settings.logoUrl || '/logo.png'}
                       alt="Brand Logo"
@@ -674,142 +674,142 @@ export default function AdminSettingsPage() {
                     />
                   </div>
                   <div className="flex flex-col text-left">
-                    <span className="font-serif text-xl tracking-widest text-espresso font-normal leading-tight">
+                    <span className="font-serif text-xl tracking-widest text-[#FCFAF6] font-normal leading-tight">
                       {settings.brandName || 'BALAJI ARCHITECT & INTERIORS'}
                     </span>
-                    <span className="text-[10px] uppercase tracking-widest text-warmgray font-medium mt-0.5">
+                    <span className="text-[10px] uppercase tracking-widest text-champagne font-medium mt-0.5">
                       {settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS'}
                     </span>
                   </div>
                 </div>
-                <span className="text-[9px] uppercase tracking-wider text-bronze pt-1">Live Header Brand & Logo Preview</span>
+                <span className="text-[9px] uppercase tracking-wider text-champagne/80 pt-1 font-mono">Live Header Brand & Logo Preview</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Logo Image Path / URL</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Logo Image Path / URL</label>
                   <input
                     type="text"
                     value={settings.logoUrl || '/logo.png'}
                     onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-mono text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-mono text-xs rounded-xs"
                     placeholder="/logo.png"
                   />
-                  <span className="text-[10px] text-warmgray">
+                  <span className="text-[10px] text-[#A89F91]">
                     Master high-resolution brand logo & iOS app icon (stored in public/logo.png).
                   </span>
                 </div>
 
                 <div className="space-y-1 sm:col-span-2 lg:col-span-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Name (Header Title)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Name (Header Title)</label>
                   <input
                     type="text"
                     value={settings.brandName || ''}
                     onChange={(e) => setSettings({ ...settings, brandName: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-serif text-sm tracking-wider"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-serif text-sm tracking-wider rounded-xs"
                     placeholder="BALAJI ARCHITECT & INTERIORS"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2 lg:col-span-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Brand Subtitle (Header Sub-text)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Subtitle (Header Sub-text)</label>
                   <input
                     type="text"
                     value={settings.brandSubtitle || ''}
                     onChange={(e) => setSettings({ ...settings, brandSubtitle: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden uppercase tracking-widest text-[11px]"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden uppercase tracking-widest text-[11px] rounded-xs"
                     placeholder="ARCHITECTURE • INTERIORS • MATERIALS"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Principal Architect Name</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Principal Architect Name</label>
                   <input
                     type="text"
                     value={settings.architectName || ''}
                     onChange={(e) => setSettings({ ...settings, architectName: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     placeholder="Vikas Sir (Principal Architect)"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Established Year</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Established Year</label>
                   <input
                     type="text"
                     value={settings.establishedYear || '2014'}
                     onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Tagline / Atelier Philosophy</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Tagline / Atelier Philosophy</label>
                   <input
                     type="text"
                     value={settings.tagline || ''}
                     onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Google Rating / Trust Metric</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Google Rating / Trust Metric</label>
                   <input
                     type="text"
                     value={settings.googleRating || '★ 5.0 (22 Google Reviews)'}
                     onChange={(e) => setSettings({ ...settings, googleRating: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Official Studio Email</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Official Studio Email</label>
                   <input
                     type="email"
                     value={settings.contactEmail || ''}
                     onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Direct Telephone</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Direct Telephone</label>
                   <input
                     type="text"
                     value={settings.contactPhone || ''}
                     onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">WhatsApp Direct Line</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">WhatsApp Direct Line</label>
                   <input
                     type="text"
                     value={settings.whatsappNumber || '+91 70029 48484'}
                     onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Physical Studio Address</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Physical Studio Address</label>
                   <input
                     type="text"
                     value={settings.studioAddress || ''}
                     onChange={(e) => setSettings({ ...settings, studioAddress: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Operating Hours</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Operating Hours</label>
                   <input
                     type="text"
                     value={settings.businessHours || 'Mon - Sat: 10:00 AM - 7:00 PM (IST)'}
                     onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
               </div>
@@ -818,21 +818,21 @@ export default function AdminSettingsPage() {
 
           {/* TAB 3: BALAJI PG / PAYMENT GATEWAY (DYNAMIC QR PAYMENT) */}
           {activeTab === 'payment' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
-              <div className="flex items-center justify-between border-b border-atelier pb-4">
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
                 <div className="flex items-center gap-2">
-                  <QrCode className="w-5 h-5 text-bronze" />
+                  <QrCode className="w-5 h-5 text-champagne" />
                   <div>
-                    <h2 className="font-serif text-2xl text-espresso">Balaji PG • Dynamic QR Payment Gateway</h2>
-                    <span className="text-[11px] text-warmgray">Real-Time UPI Gateway Configuration</span>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">Balaji PG • Dynamic QR Payment Gateway</h2>
+                    <span className="text-[11px] text-[#A89F91]">Real-Time UPI Gateway Configuration</span>
                   </div>
                 </div>
-                <label className="flex items-center gap-2 text-xs uppercase tracking-wider font-medium text-espresso cursor-pointer">
+                <label className="flex items-center gap-2 text-xs uppercase tracking-wider font-medium text-[#FCFAF6] cursor-pointer">
                   <input
                     type="checkbox"
                     checked={pg.enabled ?? true}
                     onChange={(e) => updatePaymentGateway('enabled', e.target.checked)}
-                    className="w-4 h-4 accent-bronze"
+                    className="w-4 h-4 accent-champagne"
                   />
                   <span>Gateway Active</span>
                 </label>
@@ -841,29 +841,29 @@ export default function AdminSettingsPage() {
               {/* Gateway Parameters */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Gateway Brand Name</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Gateway Brand Name</label>
                   <input
                     type="text"
                     value={pg.gatewayName || 'Balaji PG'}
                     onChange={(e) => updatePaymentGateway('gatewayName', e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-medium"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-medium rounded-xs"
                     placeholder="Balaji PG"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Payment Method Name</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Payment Method Name</label>
                   <input
                     type="text"
                     value={pg.methodName || 'Balaji QR Payment'}
                     onChange={(e) => updatePaymentGateway('methodName', e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     placeholder="Balaji QR Payment"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium text-bronze">
+                  <label className="uppercase tracking-wider text-champagne font-medium">
                     Primary Payee UPI ID (Settlement Account) *
                   </label>
                   <input
@@ -871,125 +871,125 @@ export default function AdminSettingsPage() {
                     required
                     value={pg.upiId || '6000149918@fam'}
                     onChange={(e) => updatePaymentGateway('upiId', e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-bronze focus:border-bronze focus:outline-hidden font-mono text-xs font-semibold text-espresso"
+                    className="w-full p-2.5 bg-[#14100D] border border-champagne/50 focus:border-champagne focus:outline-hidden font-mono text-xs font-semibold text-champagne rounded-xs"
                     placeholder="6000149918@fam"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Payee Merchant / Studio Name</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Payee Merchant / Studio Name</label>
                   <input
                     type="text"
                     value={pg.merchantName || 'Balaji Architect & Interiors'}
                     onChange={(e) => updatePaymentGateway('merchantName', e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden font-medium"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-medium rounded-xs"
                     placeholder="Balaji Architect & Interiors"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">QR Auto-Expiry Duration (Minutes)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">QR Auto-Expiry Duration (Minutes)</label>
                   <input
                     type="number"
                     value={pg.qrExpiryMinutes || 10}
                     onChange={(e) => updatePaymentGateway('qrExpiryMinutes', Number(e.target.value))}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1 sm:col-span-2 lg:col-span-3">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
                     Customer Step-by-Step Payment Instructions
                   </label>
                   <textarea
                     rows={4}
                     value={pg.instructions || ''}
                     onChange={(e) => updatePaymentGateway('instructions', e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden text-xs leading-relaxed"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden text-xs leading-relaxed rounded-xs"
                     placeholder="1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay)..."
                   />
                 </div>
               </div>
 
               {/* Supported UPI Apps Control */}
-              <div className="pt-6 border-t border-atelier space-y-4">
-                <span className="text-xs uppercase tracking-widest text-espresso font-medium block">
+              <div className="pt-6 border-t border-[#281F19] space-y-4">
+                <span className="text-xs uppercase tracking-widest text-[#FCFAF6] font-medium block">
                   Active UPI Application Badges on Checkout:
                 </span>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enableGPay ?? true}
                       onChange={(e) => updatePaymentGateway('enableGPay', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">Google Pay</span>
+                    <span className="font-medium text-[#FCFAF6]">Google Pay</span>
                   </label>
 
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enablePhonePe ?? true}
                       onChange={(e) => updatePaymentGateway('enablePhonePe', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">PhonePe</span>
+                    <span className="font-medium text-[#FCFAF6]">PhonePe</span>
                   </label>
 
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enablePaytm ?? true}
                       onChange={(e) => updatePaymentGateway('enablePaytm', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">Paytm UPI</span>
+                    <span className="font-medium text-[#FCFAF6]">Paytm UPI</span>
                   </label>
 
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enableBhim ?? true}
                       onChange={(e) => updatePaymentGateway('enableBhim', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">BHIM UPI</span>
+                    <span className="font-medium text-[#FCFAF6]">BHIM UPI</span>
                   </label>
 
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enableCred ?? true}
                       onChange={(e) => updatePaymentGateway('enableCred', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">CRED UPI</span>
+                    <span className="font-medium text-[#FCFAF6]">CRED UPI</span>
                   </label>
 
-                  <label className="p-3 bg-canvas border border-atelier flex items-center gap-2.5 cursor-pointer">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
                     <input
                       type="checkbox"
                       checked={pg.enableAmazonPay ?? true}
                       onChange={(e) => updatePaymentGateway('enableAmazonPay', e.target.checked)}
-                      className="w-3.5 h-3.5 accent-bronze"
+                      className="w-3.5 h-3.5 accent-champagne"
                     />
-                    <span className="font-medium text-espresso">Amazon Pay</span>
+                    <span className="font-medium text-[#FCFAF6]">Amazon Pay</span>
                   </label>
                 </div>
               </div>
 
               {/* UTR Verification Toggle */}
-              <div className="pt-4 border-t border-atelier flex items-center gap-3 text-xs">
+              <div className="pt-4 border-t border-[#281F19] flex items-center gap-3 text-xs">
                 <input
                   type="checkbox"
                   id="requireUtr"
                   checked={pg.requireUtr ?? true}
                   onChange={(e) => updatePaymentGateway('requireUtr', e.target.checked)}
-                  className="w-4 h-4 accent-bronze cursor-pointer"
+                  className="w-4 h-4 accent-champagne cursor-pointer"
                 />
-                <label htmlFor="requireUtr" className="cursor-pointer text-espresso font-medium">
+                <label htmlFor="requireUtr" className="cursor-pointer text-[#FCFAF6] font-medium">
                   Require customer to enter 12-digit UPI Reference / UTR Number before order placement
                 </label>
               </div>
@@ -998,71 +998,71 @@ export default function AdminSettingsPage() {
 
           {/* TAB 4: FISCAL, GST & FREIGHT */}
           {activeTab === 'fiscal' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
-              <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                <Truck className="w-4 h-4 text-bronze" />
-                <h2 className="font-serif text-xl text-espresso">Fiscal, GST & Freight Logistics</h2>
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Truck className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Fiscal, GST & Freight Logistics</h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Standard GST Tax Rate (%)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard GST Tax Rate (%)</label>
                   <input
                     type="number"
                     value={settings.taxRatePercent !== undefined ? settings.taxRatePercent : 18}
                     onChange={(e) => setSettings({ ...settings, taxRatePercent: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Official GSTIN Number</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Official GSTIN Number</label>
                   <input
                     type="text"
                     value={settings.gstinNumber || '18AAECB4848F1ZX'}
                     onChange={(e) => setSettings({ ...settings, gstinNumber: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
                     placeholder="18AAECB4848F1ZX"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Standard Freight Fee (₹)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard Freight Fee (₹)</label>
                   <input
                     type="number"
                     value={settings.standardShippingFee !== undefined ? settings.standardShippingFee : 1500}
                     onChange={(e) => setSettings({ ...settings, standardShippingFee: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Complimentary Freight Threshold (₹)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Complimentary Freight Threshold (₹)</label>
                   <input
                     type="number"
                     value={settings.freeShippingThreshold !== undefined ? settings.freeShippingThreshold : 50000}
                     onChange={(e) => setSettings({ ...settings, freeShippingThreshold: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Currency Symbol</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Currency Symbol</label>
                   <input
                     type="text"
                     value={settings.currencySymbol || '₹'}
                     onChange={(e) => setSettings({ ...settings, currencySymbol: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Currency Code</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Currency Code</label>
                   <input
                     type="text"
                     value={settings.currency || 'INR'}
                     onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                    className="w-full p-2.5 bg-canvas border border-atelier font-mono focus:border-bronze focus:outline-hidden"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
               </div>
@@ -1071,10 +1071,10 @@ export default function AdminSettingsPage() {
 
           {/* TAB 5: ANNOUNCEMENTS & SOCIAL */}
           {activeTab === 'announcements' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-8">
-              <div className="flex items-center gap-2 border-b border-atelier pb-3">
-                <Megaphone className="w-4 h-4 text-bronze" />
-                <h2 className="font-serif text-xl text-espresso">Global Announcement Banner & Socials</h2>
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Megaphone className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Global Announcement Banner & Socials</h2>
               </div>
 
               <div className="space-y-6 text-xs">
@@ -1093,16 +1093,16 @@ export default function AdminSettingsPage() {
                         },
                       })
                     }
-                    className="w-4 h-4 accent-bronze cursor-pointer"
+                    className="w-4 h-4 accent-champagne cursor-pointer"
                   />
-                  <label htmlFor="announcementToggle" className="cursor-pointer uppercase tracking-wider text-espresso font-medium">
+                  <label htmlFor="announcementToggle" className="cursor-pointer uppercase tracking-wider text-[#FCFAF6] font-medium">
                     Display Announcement Header Bar on Website Top
                   </label>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Announcement Message</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Announcement Message</label>
                     <input
                       type="text"
                       value={settings.announcementBanner?.text || ''}
@@ -1116,12 +1116,12 @@ export default function AdminSettingsPage() {
                           },
                         })
                       }
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Call-to-Action Link</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Call-to-Action Link</label>
                     <input
                       type="text"
                       value={settings.announcementBanner?.linkUrl || '/quote'}
@@ -1135,49 +1135,49 @@ export default function AdminSettingsPage() {
                           },
                         })
                       }
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-atelier grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="pt-6 border-t border-[#281F19] grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Instagram Atelier URL</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Instagram Atelier URL</label>
                     <input
                       type="text"
                       value={settings.socialInstagram || ''}
                       onChange={(e) => setSettings({ ...settings, socialInstagram: e.target.value })}
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Pinterest Portfolio URL</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Pinterest Portfolio URL</label>
                     <input
                       type="text"
                       value={settings.socialPinterest || ''}
                       onChange={(e) => setSettings({ ...settings, socialPinterest: e.target.value })}
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">LinkedIn Practice URL</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">LinkedIn Practice URL</label>
                     <input
                       type="text"
                       value={settings.socialLinkedin || ''}
                       onChange={(e) => setSettings({ ...settings, socialLinkedin: e.target.value })}
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="uppercase tracking-wider text-warmgray font-medium">Facebook Page URL</label>
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Facebook Page URL</label>
                     <input
                       type="text"
                       value={settings.socialFacebook || 'https://facebook.com/balajiarchitects'}
                       onChange={(e) => setSettings({ ...settings, socialFacebook: e.target.value })}
-                      className="w-full p-2.5 bg-canvas border border-atelier focus:border-bronze focus:outline-hidden"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
                 </div>
@@ -1187,23 +1187,23 @@ export default function AdminSettingsPage() {
 
           {/* TAB 6: WEB PUSH NOTIFICATIONS */}
           {activeTab === 'push' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-              <div className="flex items-center justify-between border-b border-atelier pb-4">
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
                 <div className="flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-bronze" />
-                  <h2 className="font-serif text-2xl text-espresso">Web Push Dispatch System</h2>
+                  <Bell className="w-5 h-5 text-champagne" />
+                  <h2 className="font-serif text-2xl text-[#FCFAF6]">Web Push Dispatch System</h2>
                 </div>
                 {browserPerm === 'granted' ? (
-                  <span className="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 font-medium flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Alerts Active on this Device
+                  <span className="text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-800/50 px-2.5 py-1 font-medium flex items-center gap-1.5 rounded-2xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Alerts Active on this Device
                   </span>
                 ) : (
-                  <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 font-medium">
+                  <span className="text-[11px] bg-amber-950/40 text-amber-300 border border-amber-800/50 px-2.5 py-1 font-medium rounded-2xs">
                     {browserPerm === 'denied' ? 'Notifications Blocked in Browser' : 'Registration Pending'}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-warmgray leading-relaxed max-w-2xl">
+              <p className="text-xs text-[#A89F91] leading-relaxed max-w-2xl">
                 When a customer places an order or submits an architectural quote, the server dispatches a VAPID web push directly to all registered administrative browsers.
               </p>
               <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -1211,47 +1211,47 @@ export default function AdminSettingsPage() {
                   type="button"
                   onClick={handleSendTestPush}
                   disabled={testPushing}
-                  className="px-6 py-2.5 btn-luxury-dark text-xs uppercase tracking-wider font-medium flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-wider font-medium flex items-center gap-2 cursor-pointer transition-all rounded-xs shadow-xs"
                 >
                   <Bell className="w-3.5 h-3.5" /> {testPushing ? 'Registering & Sending...' : 'Dispatch Test Notification'}
                 </button>
-                {pushResult && <span className="text-xs text-bronze font-medium">{pushResult}</span>}
+                {pushResult && <span className="text-xs text-champagne font-medium">{pushResult}</span>}
               </div>
             </div>
           )}
 
           {/* TAB 7: SECURITY AUDIT LOG */}
           {activeTab === 'audit' && (
-            <div className="bg-surface border border-atelier p-6 sm:p-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-4">
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-4">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-bronze" />
+                  <Shield className="w-5 h-5 text-champagne" />
                   <div>
-                    <h2 className="font-serif text-2xl text-espresso">Security Audit Log</h2>
-                    <span className="text-[11px] text-warmgray">Immutable Traceability & Action Records</span>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">Security Audit Log</h2>
+                    <span className="text-[11px] text-[#A89F91]">Immutable Traceability & Action Records</span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Search */}
                   <div className="relative w-full sm:w-64">
-                    <Search className="w-3.5 h-3.5 text-warmgray absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Search className="w-3.5 h-3.5 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       placeholder="Search logs by action, operator, details..."
                       value={auditSearch}
                       onChange={(e) => setAuditSearch(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                     />
                   </div>
 
                   {/* Entity Filter */}
                   <div className="flex items-center gap-1.5 text-xs">
-                    <Filter className="w-3.5 h-3.5 text-warmgray" />
+                    <Filter className="w-3.5 h-3.5 text-champagne/60" />
                     <select
                       value={entityFilter}
                       onChange={(e) => setEntityFilter(e.target.value)}
-                      className="p-2 bg-canvas border border-atelier text-xs focus:border-bronze focus:outline-hidden"
+                      className="p-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                     >
                       <option value="ALL">All Entities</option>
                       <option value="Order">Orders</option>
@@ -1267,10 +1267,10 @@ export default function AdminSettingsPage() {
               </div>
 
               {/* Audit Table */}
-              <div className="overflow-x-auto max-h-[480px] overflow-y-auto border border-atelier">
+              <div className="overflow-x-auto max-h-[480px] overflow-y-auto border border-[#281F19] rounded-xs">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="sticky top-0 bg-canvas z-10">
-                    <tr className="border-b border-atelier text-[10px] uppercase tracking-widest text-warmgray">
+                  <thead className="sticky top-0 bg-[#16110E] z-10">
+                    <tr className="border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
                       <th className="p-3">Timestamp (IST)</th>
                       <th className="p-3">Operator</th>
                       <th className="p-3">Action</th>
@@ -1278,31 +1278,31 @@ export default function AdminSettingsPage() {
                       <th className="p-3">Details</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-atelier/60 font-mono text-[11px]">
+                  <tbody className="divide-y divide-[#281F19] font-mono text-[11px]">
                     {filteredLogs.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="p-8 text-center text-warmgray font-sans">
+                        <td colSpan={5} className="p-8 text-center text-[#7E7469] font-sans">
                           No audit records found matching the current filters.
                         </td>
                       </tr>
                     ) : (
                       filteredLogs.map((log) => (
-                        <tr key={log.id} className="hover:bg-canvas/50 transition-colors">
-                          <td className="p-3 text-warmgray whitespace-nowrap">
+                        <tr key={log.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                          <td className="p-3 text-[#A89F91] whitespace-nowrap">
                             {new Date(log.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                           </td>
-                          <td className="p-3 text-espresso whitespace-nowrap font-medium">{log.adminEmail}</td>
+                          <td className="p-3 text-[#FCFAF6] whitespace-nowrap font-medium">{log.adminEmail}</td>
                           <td className="p-3">
-                            <span className="inline-block px-2 py-0.5 bg-canvas border border-atelier text-timber font-medium text-[10px] uppercase tracking-wider">
+                            <span className="inline-block px-2 py-0.5 bg-[#14100D] border border-[#382D25] text-champagne font-medium text-[10px] uppercase tracking-wider rounded-2xs">
                               {log.action}
                             </span>
                           </td>
-                          <td className="p-3 text-warmgray">{log.entity}</td>
-                          <td className="p-3 text-warmgray font-sans text-xs max-w-md break-words">
+                          <td className="p-3 text-[#D8CEBF]">{log.entity}</td>
+                          <td className="p-3 text-[#A89F91] font-sans text-xs max-w-md break-words">
                             {log.details ? (
-                              <span className="text-espresso/80">{JSON.stringify(log.details)}</span>
+                              <span className="text-[#ECE5DC]">{JSON.stringify(log.details)}</span>
                             ) : (
-                              <span className="text-warmgray/60">—</span>
+                              <span className="text-[#7E7469]">—</span>
                             )}
                           </td>
                         </tr>
@@ -1315,14 +1315,14 @@ export default function AdminSettingsPage() {
           )}
 
           {/* Bottom Fixed Action Bar */}
-          <div className="p-4 bg-surface border border-atelier flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-xs text-warmgray">
+          <div className="p-4 bg-[#1D1714] border border-[#332821] flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xs shadow-xs">
+            <span className="text-xs text-[#A89F91]">
               Changes update Supabase PostgreSQL immediately upon saving and take effect live across all pages.
             </span>
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer shrink-0"
+              className="px-8 py-3 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer shrink-0 transition-all rounded-xs shadow-xs"
             >
               {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               {saving ? 'Persisting to Database...' : 'Save All Changes'}

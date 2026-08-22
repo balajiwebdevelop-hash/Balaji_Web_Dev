@@ -121,14 +121,14 @@ export default function AdminCategoriesPage() {
   return (
     <AdminLayout>
       <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Structure</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Material Categories</h1>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Structure</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Material Categories</h1>
           </div>
           <button
             onClick={openCreateModal}
-            className="px-5 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium"
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
           >
             <Plus className="w-4 h-4" /> Create Category
           </button>
@@ -138,34 +138,34 @@ export default function AdminCategoriesPage() {
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="bg-surface border border-atelier p-5 space-y-4 flex flex-col justify-between"
+              className="bg-[#1D1714] border border-[#332821] p-5 space-y-4 flex flex-col justify-between rounded-xs shadow-xs"
             >
               <div className="space-y-3">
-                <div className="relative aspect-[16/9] bg-canvas overflow-hidden border border-atelier">
+                <div className="relative aspect-[16/9] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
                   {cat.imageUrl && (
                     <Image src={cat.imageUrl} alt={cat.name} fill className="object-cover" />
                   )}
-                  <span className="absolute top-2 right-2 px-2 py-0.5 bg-espresso text-surface text-[10px] uppercase font-mono">
+                  <span className="absolute top-2 right-2 px-2 py-0.5 bg-black/80 text-champagne text-[10px] uppercase font-mono border border-champagne/30 rounded-2xs">
                     Order: {cat.sortOrder}
                   </span>
                 </div>
 
                 <div>
                   <div className="flex justify-between items-start">
-                    <h3 className="font-serif text-xl text-espresso font-medium">{cat.name}</h3>
-                    <span className="text-xs text-bronze font-medium">{cat.productCount || 0} Materials</span>
+                    <h3 className="font-serif text-xl text-[#FCFAF6] font-medium">{cat.name}</h3>
+                    <span className="text-xs text-champagne font-medium">{cat.productCount || 0} Materials</span>
                   </div>
-                  <p className="text-[11px] font-mono text-warmgray mt-0.5">/category/{cat.slug}</p>
+                  <p className="text-[11px] font-mono text-champagne/70 mt-0.5">/category/{cat.slug}</p>
                   {cat.description && (
-                    <p className="text-xs text-warmgray font-light mt-2 line-clamp-2">{cat.description}</p>
+                    <p className="text-xs text-[#A89F91] font-light mt-2 line-clamp-2">{cat.description}</p>
                   )}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-atelier flex items-center justify-between">
+              <div className="pt-3 border-t border-[#281F19] flex items-center justify-between">
                 <span
-                  className={`text-[10px] uppercase tracking-wider px-2 py-0.5 ${
-                    cat.isActive ? 'bg-green-100 text-green-800' : 'bg-warmgray/20 text-warmgray'
+                  className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-2xs font-medium ${
+                    cat.isActive ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50' : 'bg-white/5 text-[#A89F91] border border-[#382D25]'
                   }`}
                 >
                   {cat.isActive ? 'Active' : 'Disabled'}
@@ -174,14 +174,14 @@ export default function AdminCategoriesPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => openEditModal(cat)}
-                    className="p-1.5 bg-canvas border border-atelier hover:border-bronze text-espresso text-xs"
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] text-xs rounded-xs transition-colors"
                     title="Edit"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
-                    className="p-1.5 bg-canvas border border-atelier hover:text-red-700 text-warmgray text-xs"
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] text-xs rounded-xs transition-colors"
                     title="Delete"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -195,45 +195,45 @@ export default function AdminCategoriesPage() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-espresso/80 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-surface border border-atelier p-6 sm:p-8 space-y-6 shadow-2xl">
-            <div className="flex justify-between items-center border-b border-atelier pb-4">
-              <h2 className="font-serif text-2xl text-espresso">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">
                 {editingCategory ? 'Edit Category' : 'New Category'}
               </h2>
-              <button onClick={() => setIsModalOpen(false)} className="p-1 text-warmgray hover:text-espresso">
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs">{formError}</div>
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
             )}
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Category Title *</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Category Title *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Slug URL (Optional)</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Slug URL (Optional)</label>
                 <input
                   type="text"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
                   placeholder="e.g. natural-stone-marble"
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs font-mono"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
-              <div className="border-t border-atelier pt-3">
+              <div className="border-t border-[#281F19] pt-3">
                 <ImageUploader
                   bucket="products"
                   images={imageUrl ? [imageUrl] : []}
@@ -245,12 +245,12 @@ export default function AdminCategoriesPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Sort Order</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Sort Order</label>
                   <input
                     type="number"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(Number(e.target.value))}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
@@ -260,36 +260,36 @@ export default function AdminCategoriesPage() {
                     id="isActive"
                     checked={isActive}
                     onChange={(e) => setIsActive(e.target.checked)}
-                    className="accent-espresso"
+                    className="accent-champagne"
                   />
-                  <label htmlFor="isActive" className="uppercase tracking-wider text-espresso font-medium cursor-pointer">
+                  <label htmlFor="isActive" className="uppercase tracking-wider text-[#FCFAF6] font-medium cursor-pointer">
                     Active in Navbar
                   </label>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Description</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Description</label>
                 <textarea
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-atelier">
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2.5 border border-atelier text-xs uppercase tracking-widest text-warmgray"
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
-                  className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
                 >
                   {formLoading ? 'Saving...' : editingCategory ? 'Update Category' : 'Create Category'}
                 </button>

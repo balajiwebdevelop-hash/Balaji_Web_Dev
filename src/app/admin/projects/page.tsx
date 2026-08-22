@@ -179,14 +179,14 @@ export default function AdminProjectsPage() {
   return (
     <AdminLayout>
       <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-atelier pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-bronze font-medium">Monographs</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-espresso font-light">Architectural Projects</h1>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Monographs</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Projects</h1>
           </div>
           <button
             onClick={openCreateModal}
-            className="px-5 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest flex items-center gap-2 font-medium"
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
           >
             <Plus className="w-4 h-4" /> Add Project Case Study
           </button>
@@ -196,49 +196,49 @@ export default function AdminProjectsPage() {
           {projects.map((proj) => (
             <div
               key={proj.id}
-              className="bg-surface border border-atelier p-5 space-y-4 flex flex-col justify-between"
+              className="bg-[#1D1714] border border-[#332821] p-5 space-y-4 flex flex-col justify-between rounded-xs shadow-xs"
             >
               <div className="space-y-3">
-                <div className="relative aspect-[16/10] bg-canvas overflow-hidden border border-atelier">
+                <div className="relative aspect-[16/10] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
                   <Image src={proj.heroImage} alt={proj.title} fill className="object-cover" />
-                  <span className="absolute top-2 left-2 px-2 py-0.5 bg-espresso text-surface text-[10px] uppercase tracking-wider font-medium">
+                  <span className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 text-champagne text-[10px] uppercase tracking-wider font-medium border border-champagne/30 rounded-2xs">
                     {proj.projectType}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="font-serif text-xl text-espresso font-medium">{proj.title}</h3>
-                  <p className="text-xs text-warmgray mt-0.5">
+                  <h3 className="font-serif text-xl text-[#FCFAF6] font-medium">{proj.title}</h3>
+                  <p className="text-xs text-champagne/80 mt-0.5">
                     {proj.location} • {proj.year} • {proj.area}
                   </p>
-                  <p className="text-xs text-warmgray font-light mt-2 line-clamp-2">{proj.shortDescription}</p>
+                  <p className="text-xs text-[#A89F91] font-light mt-2 line-clamp-2">{proj.shortDescription}</p>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-atelier flex items-center justify-between">
+              <div className="pt-3 border-t border-[#281F19] flex items-center justify-between">
                 <button
                   onClick={() => handleTogglePublish(proj)}
-                  className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border ${
+                  className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
                     proj.isPublished
-                      ? 'bg-green-50 text-green-800 border-green-200'
-                      : 'bg-warmgray/10 text-warmgray border-warmgray/30'
+                      ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/60'
+                      : 'bg-white/5 text-[#A89F91] border-[#382D25] hover:bg-white/10'
                   }`}
                 >
-                  {proj.isPublished ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                  {proj.isPublished ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
                   <span>{proj.isPublished ? 'Live' : 'Draft'}</span>
                 </button>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => openEditModal(proj)}
-                    className="p-1.5 bg-canvas border border-atelier hover:border-bronze text-espresso text-xs"
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] text-xs rounded-xs transition-colors"
                     title="Edit"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(proj.id)}
-                    className="p-1.5 bg-canvas border border-atelier hover:text-red-700 text-warmgray text-xs"
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] text-xs rounded-xs transition-colors"
                     title="Delete"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -252,40 +252,40 @@ export default function AdminProjectsPage() {
 
       {/* Project Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-espresso/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="w-full max-w-3xl bg-surface border border-atelier p-6 sm:p-8 space-y-6 shadow-2xl my-8">
-            <div className="flex justify-between items-center border-b border-atelier pb-4">
-              <h2 className="font-serif text-2xl text-espresso">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">
                 {editingProject ? `Edit "${editingProject.title}"` : 'New Architectural Case Study'}
               </h2>
-              <button onClick={() => setIsModalOpen(false)} className="p-1 text-warmgray hover:text-espresso">
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs">{formError}</div>
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
             )}
 
             <form onSubmit={handleSave} className="space-y-4 text-xs max-h-[70vh] overflow-y-auto pr-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Project Title *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Project Title *</label>
                   <input
                     type="text"
                     required
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Typology *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Typology *</label>
                   <select
                     value={projectType}
                     onChange={(e) => setProjectType(e.target.value as ProjectType)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   >
                     <option>Residential Interiors</option>
                     <option>Architecture & Villa</option>
@@ -297,79 +297,79 @@ export default function AdminProjectsPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Site Location</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Site Location</label>
                   <input
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Year Completed</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Year Completed</label>
                   <input
                     type="text"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Built Area (sq ft)</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Built Area (sq ft)</label>
                   <input
                     type="text"
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="uppercase tracking-wider text-warmgray font-medium">Hero Image URL *</label>
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Image URL *</label>
                   <input
                     type="url"
                     required
                     value={heroImage}
                     onChange={(e) => setHeroImage(e.target.value)}
-                    className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Short Monograph Synopsis</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Short Monograph Synopsis</label>
                 <textarea
                   rows={2}
                   value={shortDescription}
                   onChange={(e) => setShortDescription(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Full Architectural Narrative</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Full Architectural Narrative</label>
                 <textarea
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="uppercase tracking-wider text-warmgray font-medium">Design Approach & Material Integration</label>
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Design Approach & Material Integration</label>
                 <textarea
                   rows={3}
                   value={designApproach}
                   onChange={(e) => setDesignApproach(e.target.value)}
-                  className="w-full p-2.5 bg-canvas border border-atelier text-xs"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
                 />
               </div>
 
               {/* Hero Image Uploader */}
-              <div className="border-t border-atelier pt-3">
+              <div className="border-t border-[#281F19] pt-3">
                 <ImageUploader
                   bucket="projects"
                   images={heroImage ? [heroImage] : []}
@@ -380,7 +380,7 @@ export default function AdminProjectsPage() {
               </div>
 
               {/* Gallery Plates Uploader */}
-              <div className="border-t border-atelier pt-3">
+              <div className="border-t border-[#281F19] pt-3">
                 <ImageUploader
                   bucket="projects"
                   images={gallery}
@@ -390,39 +390,39 @@ export default function AdminProjectsPage() {
                 />
               </div>
 
-              <div className="flex items-center gap-6 border-t border-atelier pt-4">
-                <label className="flex items-center gap-2 cursor-pointer">
+              <div className="flex items-center gap-6 border-t border-[#281F19] pt-4 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
                   <input
                     type="checkbox"
                     checked={isPublished}
                     onChange={(e) => setIsPublished(e.target.checked)}
-                    className="accent-espresso"
+                    className="accent-champagne"
                   />
                   <span>Published in Portfolio</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
                   <input
                     type="checkbox"
                     checked={isFeatured}
                     onChange={(e) => setIsFeatured(e.target.checked)}
-                    className="accent-espresso"
+                    className="accent-champagne"
                   />
                   <span>Feature on Homepage</span>
                 </label>
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-atelier">
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2.5 border border-atelier text-xs uppercase tracking-widest text-warmgray"
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formLoading}
-                  className="px-8 py-2.5 btn-luxury-dark text-xs uppercase tracking-widest font-medium"
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
                 >
                   {formLoading ? 'Saving...' : 'Save Case Study'}
                 </button>

@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
       items: body.items,
       paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
       notes: body.notes,
+      idempotencyKey: body.idempotencyKey,
     });
 
     if (!result.success || !result.order) {

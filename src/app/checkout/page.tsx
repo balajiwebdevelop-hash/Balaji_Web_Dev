@@ -58,13 +58,14 @@ export default function CheckoutPage() {
   const [notes, setNotes] = useState('');
   const [utrNumber, setUtrNumber] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
+  const [idempotencyKey] = useState(() => `chk-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`);
 
   // Security Countdown Timer (10:00 Minutes)
   const [timeLeft, setTimeLeft] = useState(600);
 
   useEffect(() => {
     // Load live site settings for payment gateway configuration
-    fetch('/api/admin/settings', { cache: 'no-store' })
+    fetch('/api/settings', { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.settings) {
@@ -191,6 +192,7 @@ export default function CheckoutPage() {
         })),
         paymentMethod: 'Balaji QR Payment (Balaji PG)',
         notes: orderNotesWithUtr,
+        idempotencyKey,
       };
 
       const res = await fetch('/api/orders', {

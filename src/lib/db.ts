@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import {
   AdminUser,
   AdminRole,
@@ -1234,7 +1235,7 @@ export async function createOrderAtomic(orderData: {
   if (!isSupabaseConfigured()) {
     // Isolated unit test execution
     const db = getDb();
-    const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+    const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
     const newOrder: Order = {
       id: `ord-${Date.now()}`,
       orderNumber,
@@ -1348,7 +1349,7 @@ export async function createOrderAtomic(orderData: {
     const tax = Math.round(calculatedSubtotal * taxRate);
     const shippingFee = calculatedSubtotal >= freeShippingThreshold ? 0 : standardShippingFee;
     const totalAmount = calculatedSubtotal + tax + shippingFee;
-    const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+    const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
 
     const combinedNotes = [
       orderData.notes || '',
@@ -1581,6 +1582,21 @@ export async function updateOrderStatus(
       throw new Error(`Failed to update order status: ${error.message}`);
     }
     if (!data) return null;
+
+    if (orderStatus && orderStatus !== currentOrder.orderStatus) {
+      try {
+        await supabase.from('order_status_history').insert({
+          order_id: data.id,
+          from_status: currentOrder.orderStatus,
+          to_status: orderStatus,
+          actor_email: options?.actorEmail || 'system',
+          note: options?.note || null,
+        });
+      } catch (histErr) {
+        console.warn('order_status_history record notice:', histErr);
+      }
+    }
+
     return mapSupabaseOrder(data);
   }
 
@@ -1617,7 +1633,7 @@ export async function createQuote(quoteData: {
     notes?: string;
   }[];
 }): Promise<Quote> {
-  const quoteNumber = `QT-${new Date().getFullYear()}-${Date.now().toString().slice(-5)}`;
+  const quoteNumber = `QT-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString('hex').toUpperCase()}`;
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -2356,10 +2372,34 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return db.siteSettings;
 }
 
-export async function getPublicSiteSettings(): Promise<Omit<SiteSettings, 'paymentGateway' | 'gstinNumber'>> {
+export async function getPublicSiteSettings(): Promise<Partial<SiteSettings>> {
   const full = await getSiteSettings();
-  const { paymentGateway, gstinNumber, ...publicFields } = full;
-  return publicFields;
+  return {
+    brandName: full.brandName,
+    brandSubtitle: full.brandSubtitle,
+    logoUrl: full.logoUrl,
+    tagline: full.tagline,
+    architectName: full.architectName,
+    establishedYear: full.establishedYear,
+    googleRating: full.googleRating,
+    contactEmail: full.contactEmail,
+    contactPhone: full.contactPhone,
+    whatsappNumber: full.whatsappNumber,
+    businessHours: full.businessHours,
+    studioAddress: full.studioAddress,
+    city: full.city,
+    state: full.state,
+    country: full.country,
+    pincode: full.pincode,
+    currency: full.currency,
+    currencySymbol: full.currencySymbol,
+    socialInstagram: full.socialInstagram,
+    socialPinterest: full.socialPinterest,
+    socialLinkedin: full.socialLinkedin,
+    socialFacebook: full.socialFacebook,
+    announcementBanner: full.announcementBanner,
+    homepage: full.homepage,
+  };
 }
 
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {

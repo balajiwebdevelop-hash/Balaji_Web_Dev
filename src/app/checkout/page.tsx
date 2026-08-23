@@ -59,6 +59,7 @@ export default function CheckoutPage() {
   const [utrNumber, setUtrNumber] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [idempotencyKey] = useState(() => `chk-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`);
+  const [orderRefNote] = useState(() => `BALAJI-ORDER-${Math.floor(100000 + Math.random() * 900000)}`);
 
   // Security Countdown Timer (10:00 Minutes)
   const [timeLeft, setTimeLeft] = useState(600);
@@ -118,7 +119,6 @@ export default function CheckoutPage() {
   const merchantName = pg.merchantName || 'Balaji Architect & Interiors';
 
   // Dynamic UPI Payload for QR code and Intent
-  const orderRefNote = `BALAJI-ORDER-${Math.floor(100000 + Math.random() * 900000)}`;
   const upiIntentUri = `upi://pay?pa=${activeUpiId}&pn=${encodeURIComponent(merchantName)}&am=${total}&cu=INR&tn=${encodeURIComponent(orderRefNote)}`;
   
   // Luxury High-Resolution Dynamic QR Code URL
@@ -133,7 +133,7 @@ export default function CheckoutPage() {
   };
 
   // Step 1 -> Step 2 transition
-  const handleProceedToPayment = (e: React.FormEvent) => {
+  const handleProceedToPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setOrderError(null);
 
@@ -145,6 +145,19 @@ export default function CheckoutPage() {
     if (!address.addressLine1 || !address.city || !address.state || !address.pincode) {
       setOrderError('Please enter a complete site delivery address with City, State, and Pincode.');
       return;
+    }
+
+    // Refresh live settings directly from server so latest UPI ID is guaranteed active
+    try {
+      const res = await fetch('/api/settings', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.settings) {
+          setSettings(data.settings);
+        }
+      }
+    } catch (e) {
+      console.warn('Real-time settings refresh notice:', e);
     }
 
     setCheckoutStep('payment');

@@ -2506,6 +2506,10 @@ export async function getPublicSiteSettings(): Promise<Partial<SiteSettings>> {
     socialFacebook: full.socialFacebook,
     announcementBanner: full.announcementBanner,
     homepage: full.homepage,
+    paymentGateway: full.paymentGateway,
+    taxRatePercent: full.taxRatePercent,
+    freeShippingThreshold: full.freeShippingThreshold,
+    standardShippingFee: full.standardShippingFee,
   };
 }
 

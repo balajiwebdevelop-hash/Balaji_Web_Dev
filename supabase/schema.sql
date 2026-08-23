@@ -440,3 +440,281 @@ BEGIN
     WHERE id = p_product_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 3. ATOMIC ORDER CREATION (Single Database Transaction)
+CREATE OR REPLACE FUNCTION create_order_atomic(p_order_data JSONB)
+RETURNS JSONB AS $$
+DECLARE
+    v_idempotency_key TEXT;
+    v_existing_order JSONB;
+    v_order_id UUID;
+    v_order_number TEXT;
+    v_subtotal NUMERIC := 0;
+    v_tax_rate NUMERIC := 0.18;
+    v_tax NUMERIC := 0;
+    v_shipping_fee NUMERIC := 1500;
+    v_free_shipping_threshold NUMERIC := 50000;
+    v_total_amount NUMERIC := 0;
+    v_item JSONB;
+    v_product RECORD;
+    v_item_price NUMERIC;
+    v_item_subtotal NUMERIC;
+    v_created_order JSONB;
+BEGIN
+    -- 1. Check Idempotency Key
+    v_idempotency_key := p_order_data->>'idempotencyKey';
+    IF v_idempotency_key IS NOT NULL AND v_idempotency_key <> '' THEN
+        SELECT jsonb_build_object(
+            'id', o.id,
+            'order_number', o.order_number,
+            'total_amount', o.total_amount,
+            'order_status', o.order_status,
+            'payment_status', o.payment_status,
+            'idempotency_key', o.idempotency_key,
+            'created_at', o.created_at,
+            'items', COALESCE(jsonb_agg(to_jsonb(oi)), '[]'::jsonb)
+        ) INTO v_existing_order
+        FROM orders o
+        LEFT JOIN order_items oi ON oi.order_id = o.id
+        WHERE o.idempotency_key = v_idempotency_key
+        GROUP BY o.id;
+
+        IF v_existing_order IS NOT NULL THEN
+            RETURN v_existing_order;
+        END IF;
+    END IF;
+
+    -- 2. Validate Items, Published State, and Reserve Stock Atomically
+    FOR v_item IN SELECT * FROM jsonb_array_elements(p_order_data->'items')
+    LOOP
+        SELECT * INTO v_product
+        FROM products
+        WHERE id = (v_item->>'productId')::UUID
+        FOR UPDATE;
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Product with ID % not found', (v_item->>'productId');
+        END IF;
+
+        IF NOT v_product.published THEN
+            RAISE EXCEPTION 'Product "%" is currently not available for purchase', v_product.name;
+        END IF;
+
+        IF v_product.stock < (v_item->>'quantity')::INT THEN
+            RAISE EXCEPTION 'Insufficient stock for "%". Available: %, Requested: %', 
+                v_product.name, v_product.stock, (v_item->>'quantity')::INT;
+        END IF;
+
+        -- Decrement stock atomically
+        UPDATE products
+        SET stock = stock - (v_item->>'quantity')::INT,
+            updated_at = NOW()
+        WHERE id = v_product.id;
+
+        -- Authoritative price calculation
+        v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
+        v_subtotal := v_subtotal + v_item_subtotal;
+    END LOOP;
+
+    -- 3. Calculate Taxes and Shipping
+    v_tax := ROUND(v_subtotal * v_tax_rate);
+    IF v_subtotal >= v_free_shipping_threshold THEN
+        v_shipping_fee := 0;
+    END IF;
+    v_total_amount := v_subtotal + v_tax + v_shipping_fee;
+
+    -- 4. Generate Collision-Safe Order Number
+    v_order_number := 'BAL-' || UPPER(TO_HEX(EXTRACT(EPOCH FROM NOW())::BIGINT)) || '-' || UPPER(SUBSTRING(MD5(RANDOM()::TEXT) FROM 1 FOR 6));
+
+    -- 5. Insert Order Record
+    INSERT INTO orders (
+        order_number,
+        customer_name,
+        customer_email,
+        customer_phone,
+        shipping_address,
+        billing_address,
+        subtotal,
+        tax,
+        shipping_fee,
+        discount,
+        total_amount,
+        order_status,
+        payment_status,
+        payment_method,
+        notes,
+        idempotency_key,
+        created_at,
+        updated_at
+    ) VALUES (
+        v_order_number,
+        p_order_data->>'customerName',
+        p_order_data->>'customerEmail',
+        p_order_data->>'customerPhone',
+        p_order_data->'shippingAddress',
+        COALESCE(p_order_data->'billingAddress', p_order_data->'shippingAddress'),
+        v_subtotal,
+        v_tax,
+        v_shipping_fee,
+        0,
+        v_total_amount,
+        'Confirmed',
+        'Submitted',
+        COALESCE(p_order_data->>'paymentMethod', 'Balaji QR Payment (Balaji PG)'),
+        COALESCE(p_order_data->>'notes', ''),
+        v_idempotency_key,
+        NOW(),
+        NOW()
+    ) RETURNING id INTO v_order_id;
+
+    -- 6. Insert Order Items
+    FOR v_item IN SELECT * FROM jsonb_array_elements(p_order_data->'items')
+    LOOP
+        SELECT * INTO v_product FROM products WHERE id = (v_item->>'productId')::UUID;
+        v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
+
+        INSERT INTO order_items (
+            order_id,
+            product_id,
+            variant_id,
+            product_name,
+            product_sku,
+            unit,
+            unit_price,
+            quantity,
+            subtotal,
+            image_url,
+            selected_color,
+            selected_finish
+        ) VALUES (
+            v_order_id,
+            v_product.id,
+            CASE WHEN (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN (v_item->>'variantId')::UUID ELSE NULL END,
+            v_product.name,
+            v_product.sku,
+            v_product.unit,
+            v_item_price,
+            (v_item->>'quantity')::INT,
+            v_item_subtotal,
+            CASE WHEN jsonb_array_length(to_jsonb(v_product.images)) > 0 THEN v_product.images[1] ELSE '' END,
+            COALESCE(v_item->>'selectedColor', v_product.color),
+            COALESCE(v_item->>'selectedFinish', v_product.finish)
+        );
+    END LOOP;
+
+    -- 7. Upsert Customer Record
+    INSERT INTO customers (email, full_name, phone, is_guest, created_at, updated_at)
+    VALUES (
+        LOWER(TRIM(p_order_data->>'customerEmail')),
+        p_order_data->>'customerName',
+        p_order_data->>'customerPhone',
+        FALSE,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (email) DO UPDATE
+    SET full_name = EXCLUDED.full_name,
+        phone = COALESCE(customers.phone, EXCLUDED.phone),
+        updated_at = NOW();
+
+    -- 8. Return Full Order with Items
+    SELECT jsonb_build_object(
+        'id', o.id,
+        'order_number', o.order_number,
+        'customer_name', o.customer_name,
+        'customer_email', o.customer_email,
+        'customer_phone', o.customer_phone,
+        'shipping_address', o.shipping_address,
+        'billing_address', o.billing_address,
+        'subtotal', o.subtotal,
+        'tax', o.tax,
+        'shipping_fee', o.shipping_fee,
+        'discount', o.discount,
+        'total_amount', o.total_amount,
+        'order_status', o.order_status,
+        'payment_status', o.payment_status,
+        'payment_method', o.payment_method,
+        'notes', o.notes,
+        'idempotency_key', o.idempotency_key,
+        'created_at', o.created_at,
+        'updated_at', o.updated_at,
+        'items', COALESCE(jsonb_agg(to_jsonb(oi)), '[]'::jsonb)
+    ) INTO v_created_order
+    FROM orders o
+    LEFT JOIN order_items oi ON oi.order_id = o.id
+    WHERE o.id = v_order_id
+    GROUP BY o.id;
+
+    RETURN v_created_order;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 4. ATOMIC ORDER CANCELLATION & INVENTORY RESTORATION
+CREATE OR REPLACE FUNCTION cancel_order_atomic(
+    p_order_id UUID,
+    p_actor_email TEXT DEFAULT 'system',
+    p_note TEXT DEFAULT 'Order cancelled'
+)
+RETURNS JSONB AS $$
+DECLARE
+    v_order RECORD;
+    v_item RECORD;
+    v_updated_order JSONB;
+BEGIN
+    SELECT * INTO v_order
+    FROM orders
+    WHERE id = p_order_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Order with ID % not found', p_order_id;
+    END IF;
+
+    -- If already cancelled, do not restore stock again
+    IF v_order.order_status = 'Cancelled' THEN
+        SELECT to_jsonb(o) INTO v_updated_order FROM orders o WHERE o.id = p_order_id;
+        RETURN v_updated_order;
+    END IF;
+
+    -- Only restore stock if cancelling prior to dispatch/delivery
+    IF v_order.order_status IN ('Pending', 'Confirmed', 'Processing') THEN
+        FOR v_item IN SELECT * FROM order_items WHERE order_id = p_order_id
+        LOOP
+            IF v_item.product_id IS NOT NULL THEN
+                UPDATE products
+                SET stock = stock + v_item.quantity,
+                    updated_at = NOW()
+                WHERE id = v_item.product_id;
+            END IF;
+        END LOOP;
+    END IF;
+
+    -- Update order status
+    UPDATE orders
+    SET order_status = 'Cancelled',
+        updated_at = NOW()
+    WHERE id = p_order_id;
+
+    -- Record status history atomically
+    INSERT INTO order_status_history (
+        order_id,
+        from_status,
+        to_status,
+        actor_email,
+        note,
+        created_at
+    ) VALUES (
+        p_order_id,
+        v_order.order_status,
+        'Cancelled',
+        p_actor_email,
+        p_note,
+        NOW()
+    );
+
+    SELECT to_jsonb(o) INTO v_updated_order FROM orders o WHERE o.id = p_order_id;
+    RETURN v_updated_order;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

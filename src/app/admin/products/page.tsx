@@ -285,8 +285,87 @@ export default function AdminProductsPage() {
           </div>
         </div>
 
-        {/* Products Table */}
-        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+        {/* Mobile Material Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading catalog materials...
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No materials matching your criteria.
+            </div>
+          ) : (
+            filteredProducts.map((p) => (
+              <div
+                key={p.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="relative w-12 h-12 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
+                    {p.images[0] && (
+                      <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="font-serif text-sm font-medium text-[#FCFAF6] block truncate">{p.name}</span>
+                    <span className="text-[10px] text-[#A89F91] font-mono">{p.sku} • {p.categoryName || 'General'}</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="font-serif text-sm font-semibold text-champagne block">
+                      ₹{(p.salePrice || p.price).toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-[9px] text-[#7E7469]">/ {p.unit}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-[#201712]">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[#8E8275]">Stock:</span>
+                    <span
+                      className={`text-xs font-semibold ${
+                        p.stock <= p.moq ? 'text-red-400 font-bold' : 'text-[#FCFAF6]'
+                      }`}
+                    >
+                      {p.stock} {p.unit}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleTogglePublish(p)}
+                      className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
+                        p.published
+                          ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
+                          : 'bg-white/5 text-[#A89F91] border-[#382D25]'
+                      }`}
+                    >
+                      {p.published ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
+                      <span>{p.published ? 'Live' : 'Hidden'}</span>
+                    </button>
+                    <button
+                      onClick={() => openEditModal(p)}
+                      className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                      title="Edit Material"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(p.id)}
+                      className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] rounded-xs transition-colors"
+                      title="Delete Material"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Products Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
               <thead>

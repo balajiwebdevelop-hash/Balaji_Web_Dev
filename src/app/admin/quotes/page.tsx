@@ -82,7 +82,67 @@ export default function AdminQuotesPage() {
           </button>
         </div>
 
-        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+        {/* Mobile Quote Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading quote inbox...
+            </div>
+          ) : quotes.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No quote requests in record.
+            </div>
+          ) : (
+            quotes.map((q) => (
+              <div
+                key={q.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-mono font-semibold text-xs text-[#FCFAF6] block">{q.quoteNumber}</span>
+                    <span className="text-[10px] text-[#7E7469]">{q.projectLocation}</span>
+                  </div>
+                  <span
+                    className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium border rounded-2xs ${
+                      q.status === 'Approved' || q.status === 'Converted_To_Order'
+                        ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
+                        : q.status === 'Quotation_Sent'
+                        ? 'bg-blue-950/50 text-blue-300 border-blue-800/50'
+                        : 'bg-amber-950/50 text-amber-300 border-amber-800/50'
+                    }`}
+                  >
+                    {q.status.replace(/_/g, ' ')}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                  <div className="truncate">
+                    <span className="font-medium text-[#FCFAF6] block truncate">{q.customerName}</span>
+                    <span className="text-[10px] text-[#8E8275]">{q.projectType} • {q.items.length} items</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="text-[10px] text-[#7E7469] block">Budget</span>
+                    <span className="text-xs font-semibold text-champagne block">{q.budgetRange}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-[#201712] flex justify-end">
+                  <button
+                    onClick={() => openQuoteModal(q)}
+                    className="w-full py-2 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-champagne" />
+                    <span>Review & Estimate</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Quotes Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
               <thead>

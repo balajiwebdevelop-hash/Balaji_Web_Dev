@@ -340,12 +340,12 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-[#281F19] pb-2">
+        {/* Navigation Tabs (Smooth touch scrollable on phone) */}
+        <div className="flex items-center gap-2 border-b border-[#281F19] pb-3 overflow-x-auto flex-nowrap sm:flex-wrap no-scrollbar">
           <button
             type="button"
             onClick={() => setActiveTab('homepage')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'homepage'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -358,7 +358,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('identity')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'identity'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -371,7 +371,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('payment')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'payment'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -384,7 +384,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('fiscal')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'fiscal'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -397,7 +397,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('announcements')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'announcements'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -410,7 +410,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('push')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'push'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
@@ -423,7 +423,7 @@ export default function AdminSettingsPage() {
           <button
             type="button"
             onClick={() => setActiveTab('audit')}
-            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
               activeTab === 'audit'
                 ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
                 : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'

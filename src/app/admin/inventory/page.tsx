@@ -118,8 +118,108 @@ export default function AdminInventoryPage() {
           </label>
         </div>
 
-        {/* Table */}
-        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+        {/* Mobile Inventory Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading inventory records...
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No material records found.
+            </div>
+          ) : (
+            filtered.map((p) => {
+              const currentInputStock =
+                stockChanges[p.id] !== undefined ? stockChanges[p.id] : p.stock;
+              const isModified = stockChanges[p.id] !== undefined && stockChanges[p.id] !== p.stock;
+              const isLow = p.stock <= p.moq;
+
+              return (
+                <div
+                  key={p.id}
+                  className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>
+                      <span className="text-[10px] font-mono text-[#A89F91]">SKU: {p.sku} • {p.categoryName || 'General'}</span>
+                    </div>
+                    <span
+                      className={`text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-2xs border ${
+                        isLow
+                          ? 'bg-red-950/40 text-red-300 border-red-800/50'
+                          : 'bg-[#1A1410] text-[#A89F91] border-[#332821]'
+                      }`}
+                    >
+                      {isLow ? 'Low Stock' : 'In Stock'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                    <div>
+                      <span className="text-[10px] text-[#8E8275] block">Current Stock</span>
+                      <span className="font-medium text-[#FCFAF6] text-xs">
+                        {p.stock} {p.unit} <span className="text-[10px] text-[#7E7469]">(MOQ: {p.moq})</span>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleStockInputChange(p.id, Math.max(0, currentInputStock - 1))}
+                        className="w-8 h-8 bg-[#1F1814] border border-[#382D25] text-[#FCFAF6] hover:border-champagne rounded-xs flex items-center justify-center font-bold text-sm"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        min="0"
+                        value={currentInputStock}
+                        onChange={(e) => handleStockInputChange(p.id, Number(e.target.value))}
+                        className="w-16 h-8 text-center bg-[#14100D] border border-[#382D25] text-xs text-champagne font-semibold focus:border-champagne focus:outline-hidden rounded-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleStockInputChange(p.id, currentInputStock + 1)}
+                        className="w-8 h-8 bg-[#1F1814] border border-[#382D25] text-[#FCFAF6] hover:border-champagne rounded-xs flex items-center justify-center font-bold text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-[#201712]">
+                    <button
+                      onClick={() => handleSaveStock(p)}
+                      disabled={savingId === p.id || !isModified}
+                      className={`w-full py-2 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-1.5 rounded-xs transition-all ${
+                        saveSuccessId === p.id
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : isModified
+                          ? 'bg-champagne text-[#100C0A] hover:bg-[#DAC19E] cursor-pointer shadow-xs'
+                          : 'opacity-40 bg-[#14100D] text-[#7E7469] cursor-not-allowed border border-[#332821]'
+                      }`}
+                    >
+                      {saveSuccessId === p.id ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" /> Saved Successfully
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-3.5 h-3.5" /> Save Stock Update
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
             <thead>
               <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">

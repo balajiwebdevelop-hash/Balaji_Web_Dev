@@ -187,8 +187,90 @@ function AdminOrdersContent() {
           </div>
         </div>
 
-        {/* Orders Table */}
-        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+        {/* Mobile Phone Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading incoming order logs...
+            </div>
+          ) : filteredOrders.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No order records matching filter.
+            </div>
+          ) : (
+            filteredOrders.map((ord) => (
+              <div
+                key={ord.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-mono font-semibold text-xs text-[#FCFAF6] block">{ord.orderNumber}</span>
+                    <span className="text-[10px] text-[#7E7469]">
+                      {new Date(ord.createdAt).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold border rounded-2xs ${
+                        ord.paymentStatus === 'Paid'
+                          ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
+                          : 'bg-amber-950/50 text-amber-300 border-amber-800/50'
+                      }`}
+                    >
+                      {ord.paymentStatus}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                  <div className="truncate">
+                    <span className="font-medium text-[#FCFAF6] block truncate">{ord.customerName}</span>
+                    <span className="text-[10px] text-[#8E8275]">{ord.items.length} material items</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="font-serif text-sm font-semibold text-champagne block">
+                      ₹{ord.totalAmount.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#201712]">
+                  <div className="flex-1">
+                    <select
+                      value={ord.orderStatus}
+                      onChange={(e) => handleUpdateStatus(ord.id, e.target.value as OrderStatus)}
+                      disabled={updatingId === ord.id}
+                      className="w-full p-2 bg-[#1A1410] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Packed">Packed</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                  <button
+                    onClick={() => setSelectedOrder(ord)}
+                    className="px-3 py-2 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center gap-1.5 transition-colors flex-shrink-0"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-champagne" />
+                    <span>Slip</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Orders Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
               <thead>

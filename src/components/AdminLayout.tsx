@@ -38,7 +38,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { admin, loading, logout } = useAdminAuth();
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileNotifOpen, setMobileNotifOpen] = useState(false);
+  const [mobileQuickOpen, setMobileQuickOpen] = useState(false);
   const [pushStatus, setPushStatus] = useState<string>('default');
 
   // Global Search Palette State
@@ -327,41 +329,59 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[#0E0B09] text-[#FCFAF6] flex flex-col md:flex-row antialiased selection:bg-champagne/30 selection:text-champagne">
-      {/* Mobile Top Header */}
-      <div className="md:hidden bg-[#0A0706] text-[#FCFAF6] p-4 flex items-center justify-between sticky top-0 z-50 border-b border-[#241C16]">
-        <div className="flex items-center gap-2.5">
+      {/* ========================================================================= */}
+      {/* 1. MOBILE TOP APP BAR (< md ONLY)                                         */}
+      {/* ========================================================================= */}
+      <div className="md:hidden bg-[#0A0706] text-[#FCFAF6] px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-[#241C16] shadow-md">
+        <Link href="/admin" className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-sm overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40">
             <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
           </div>
-          <span className="font-serif text-sm tracking-wider text-[#FCFAF6]">BALAJI ATELIER</span>
-          <span
-            className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 font-bold rounded-2xs ${
-              isOwner ? 'bg-champagne/20 text-champagne border border-champagne/30' : 'bg-white/10 text-white/90 border border-white/15'
-            }`}
-          >
-            {isOwner ? 'OWNER' : 'EMPLOYEE'}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
+          <div className="flex flex-col">
+            <span className="font-serif text-sm tracking-wider text-[#FCFAF6] font-medium leading-none">BALAJI ATELIER</span>
+            <span className="text-[8px] uppercase tracking-widest text-champagne font-mono mt-0.5">Admin Command</span>
+          </div>
+        </Link>
+
+        <div className="flex items-center gap-1.5">
+          {/* Quick Search */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="p-1.5 text-[#A89F91] hover:text-[#FCFAF6]"
-            aria-label="Search"
+            className="p-2 text-[#A89F91] hover:text-champagne hover:bg-[#140F0C] rounded-xs transition-colors"
+            aria-label="Global Search"
           >
-            <Search className="w-5 h-5" />
+            <Search className="w-4 h-4" />
           </button>
-          <button onClick={() => setMobileNavOpen(!mobileNavOpen)} className="p-1 text-[#FCFAF6]/80 hover:text-[#FCFAF6]">
-            {mobileNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+
+          {/* Quick Action (+) */}
+          <button
+            onClick={() => setMobileQuickOpen(true)}
+            className="p-2 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] rounded-xs shadow-xs transition-all flex items-center justify-center"
+            aria-label="Quick Action"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+          </button>
+
+          {/* Mobile Notifications Bell */}
+          <button
+            onClick={() => setMobileNotifOpen(true)}
+            className="relative p-2 text-[#A89F91] hover:text-champagne hover:bg-[#140F0C] rounded-xs transition-colors"
+            aria-label="Notifications"
+          >
+            <Bell className="w-4 h-4" />
+            {notifCounts.recentActivity > 0 && (
+              <span className="absolute top-1 right-1 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center animate-pulse">
+                {notifCounts.recentActivity}
+              </span>
+            )}
           </button>
         </div>
       </div>
 
-      {/* Sidebar Navigation */}
-      <aside
-        className={`${
-          mobileNavOpen ? 'block' : 'hidden'
-        } md:block w-full md:w-64 bg-[#0A0706] text-[#FCFAF6] flex-shrink-0 flex flex-col border-r border-[#241C16] z-40 fixed md:sticky top-0 h-screen overflow-y-auto`}
-      >
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP SIDEBAR (md:block ONLY - 100% UNTOUCHED PC NAVIGATION)          */}
+      {/* ========================================================================= */}
+      <aside className="hidden md:flex w-64 bg-[#0A0706] text-[#FCFAF6] flex-shrink-0 flex-col border-r border-[#241C16] z-40 sticky top-0 h-screen overflow-y-auto">
         {/* Brand Header */}
         <div className="p-5 border-b border-[#241C16] space-y-1.5 bg-[#0A0706]">
           <Link href="/admin" className="flex items-center gap-3 group">
@@ -401,7 +421,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => setMobileNavOpen(false)}
                       className={`flex items-center justify-between px-3 py-2 text-xs tracking-wider rounded-xs transition-all font-medium ${
                         isActive
                           ? 'bg-champagne/15 text-champagne border-l-2 border-champagne shadow-[inset_0_0_12px_rgba(197,168,128,0.06)] font-semibold'
@@ -460,7 +479,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      {/* Main Command Workspace */}
+      {/* ========================================================================= */}
+      {/* 3. MAIN WORKSPACE & DESKTOP HEADER                                         */}
+      {/* ========================================================================= */}
       <div className="flex-1 flex flex-col min-w-0 bg-[#0E0B09]">
         {/* Top Command Bar (Desktop & Tablet) */}
         <header className="hidden md:flex items-center justify-between px-8 py-3.5 bg-[#0A0706] border-b border-[#241C16] sticky top-0 z-30">
@@ -657,11 +678,439 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        {/* Content Body */}
-        <main className="flex-1 p-4 sm:p-8 lg:p-10 max-w-7xl w-full mx-auto overflow-x-hidden">
+        {/* Content Body with mobile safe padding */}
+        <main className="flex-1 p-3.5 sm:p-6 md:p-8 lg:p-10 max-w-7xl w-full mx-auto overflow-x-hidden pb-24 md:pb-10">
           {children}
         </main>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 4. MOBILE NATIVE BOTTOM NAVIGATION BAR (< md ONLY)                        */}
+      {/* ========================================================================= */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0A0706]/98 backdrop-blur-xl border-t border-[#241C16] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+        {/* Tab 1: Command Center / Overview */}
+        <Link
+          href="/admin"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname === '/admin' ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <LayoutDashboard className={`w-4 h-4 ${pathname === '/admin' ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {pathname === '/admin' && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Overview</span>
+        </Link>
+
+        {/* Tab 2: Orders */}
+        <Link
+          href="/admin/orders"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/orders') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <ShoppingBag className={`w-4 h-4 ${pathname.startsWith('/admin/orders') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {notifCounts.pendingOrders > 0 && (
+              <span className="absolute -top-1 -right-2 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                {notifCounts.pendingOrders}
+              </span>
+            )}
+            {pathname.startsWith('/admin/orders') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Orders</span>
+        </Link>
+
+        {/* Tab 3: Materials & Products */}
+        <Link
+          href="/admin/products"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/products') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <Package className={`w-4 h-4 ${pathname.startsWith('/admin/products') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {pathname.startsWith('/admin/products') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Materials</span>
+        </Link>
+
+        {/* Tab 4: Quotes */}
+        <Link
+          href="/admin/quotes"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/quotes') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <FileText className={`w-4 h-4 ${pathname.startsWith('/admin/quotes') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {notifCounts.pendingQuotes > 0 && (
+              <span className="absolute -top-1 -right-2 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                {notifCounts.pendingQuotes}
+              </span>
+            )}
+            {pathname.startsWith('/admin/quotes') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Quotes</span>
+        </Link>
+
+        {/* Tab 5: Studio Hub / Menu Drawer Trigger */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            mobileMenuOpen ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <Menu className="w-4 h-4 stroke-[1.8]" />
+            {notifCounts.lowStock > 0 && (
+              <span className="absolute -top-0.5 -right-1 w-2 h-2 bg-amber-400 rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Hub</span>
+        </button>
+      </nav>
+
+      {/* ========================================================================= */}
+      {/* 5. MOBILE SLIDE-OVER STUDIO HUB DRAWER (< md ONLY)                        */}
+      {/* ========================================================================= */}
+      {mobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl max-h-[85vh] overflow-y-auto p-5 space-y-5 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Grab Handle */}
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+
+            {/* User Profile Header */}
+            <div className="flex items-center justify-between p-3 bg-[#140F0C] border border-[#241C16] rounded-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-champagne/20 text-champagne border border-champagne/40 flex items-center justify-center font-serif text-sm font-semibold">
+                  {admin.name.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-[#FCFAF6]">{admin.name}</h4>
+                  <span className="text-[10px] text-champagne uppercase tracking-wider font-mono">
+                    {isOwner ? 'Principal Architect' : 'Operations Staff'}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => logout()}
+                className="px-2.5 py-1 text-[10px] uppercase font-semibold text-red-400 bg-red-950/40 border border-red-800/40 rounded-2xs hover:bg-red-900/60 transition-colors flex items-center gap-1"
+              >
+                <LogOut className="w-3 h-3" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+
+            {/* Quick Actions 2x2 Grid */}
+            <div className="space-y-1.5">
+              <span className="text-[9px] uppercase tracking-widest text-[#7E7469] font-semibold block px-1">
+                Quick Shortcuts
+              </span>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <Link
+                  href="/admin/products"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Package className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Add Material</span>
+                </Link>
+                <Link
+                  href="/admin/projects"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Building2 className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Add Project</span>
+                </Link>
+                <Link
+                  href="/admin/inventory"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Boxes className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Update Stock</span>
+                </Link>
+                <Link
+                  href="/admin/quotes"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <FileText className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Review Quotes</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Categorized Full Studio Menu */}
+            <div className="space-y-4">
+              {navGroups.map((grp) => (
+                <div key={grp.group} className="space-y-1.5">
+                  <span className="text-[9px] uppercase tracking-widest text-[#7E7469] font-semibold block px-1">
+                    {grp.group}
+                  </span>
+                  <div className="grid grid-cols-1 gap-1">
+                    {grp.items.map((item) => {
+                      const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`flex items-center justify-between p-3 rounded-xs text-xs tracking-wider transition-colors ${
+                            isActive
+                              ? 'bg-champagne/15 text-champagne border border-champagne/30 font-semibold'
+                              : 'bg-[#140F0C] border border-[#241C16] text-[#B5ABA0] hover:text-[#FCFAF6]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <Icon className={`w-4 h-4 ${isActive ? 'text-champagne' : 'text-[#8E8275]'}`} />
+                            <span className="text-[12px]">{item.label}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="px-2 py-0.5 bg-champagne text-[#100C0A] text-[9px] font-bold rounded-2xs">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Realtime Push Notification Status Bar */}
+            <div className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <Radio className={`w-3.5 h-3.5 ${pushStatus === 'granted' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'}`} />
+                <span className="text-[11px] text-[#A89F91]">
+                  {pushStatus === 'granted' ? 'Push Alerts Active' : 'Push Alerts Disabled'}
+                </span>
+              </div>
+              {pushStatus !== 'granted' ? (
+                <button
+                  onClick={handleRequestPushPermission}
+                  className="px-2.5 py-1 bg-champagne text-[#100C0A] text-[10px] font-semibold uppercase rounded-2xs"
+                >
+                  Enable
+                </button>
+              ) : (
+                <button
+                  onClick={async () => {
+                    try {
+                      const res = await fetch('/api/admin/notifications/test', { method: 'POST' });
+                      const d = await res.json();
+                      alert(d.message || 'Test notification sent.');
+                    } catch (e: any) {
+                      alert(e.message || 'Failed to dispatch test notification.');
+                    }
+                  }}
+                  className="text-[10px] text-champagne underline"
+                >
+                  Test Alert
+                </button>
+              )}
+            </div>
+
+            {/* Public Studio Link & Dismiss */}
+            <div className="flex items-center justify-between pt-2 border-t border-[#241C16]">
+              <Link
+                href="/"
+                target="_blank"
+                className="text-xs text-champagne hover:underline flex items-center gap-1.5"
+              >
+                <span>View Public Studio</span> <ExternalLink className="w-3 h-3" />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-1.5 bg-[#1C1612] text-[#A89F91] hover:text-[#FCFAF6] text-xs rounded-xs"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 6. MOBILE NOTIFICATION DRAWER (< md ONLY)                                 */}
+      {/* ========================================================================= */}
+      {mobileNotifOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileNotifOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl max-h-[80vh] overflow-y-auto p-5 space-y-4 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <span className="font-serif text-base text-[#FCFAF6]">Live Activity Feed</span>
+              <span className="text-[10px] text-champagne uppercase font-mono">Realtime Stream</span>
+            </div>
+
+            <div className="space-y-2.5 max-h-72 overflow-y-auto">
+              {notifCounts.pendingOrders > 0 && (
+                <Link
+                  href="/admin/orders"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-champagne text-xs">New Orders Received</span>
+                    <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                      {notifCounts.pendingOrders}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Action required for client dispatch.</p>
+                </Link>
+              )}
+
+              {notifCounts.pendingQuotes > 0 && (
+                <Link
+                  href="/admin/quotes"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-champagne text-xs">Architectural Quotes Pending</span>
+                    <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                      {notifCounts.pendingQuotes}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Review estimation dossiers & inquiries.</p>
+                </Link>
+              )}
+
+              {notifCounts.lowStock > 0 && (
+                <Link
+                  href="/admin/inventory"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-amber-400 text-xs">Low Stock Alert</span>
+                    <span className="px-1.5 py-0.2 bg-amber-950/60 text-amber-400 border border-amber-800/40 text-[9px] rounded-2xs font-bold">
+                      {notifCounts.lowStock}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Materials requiring inventory replenishment.</p>
+                </Link>
+              )}
+
+              {notifCounts.recentActivity === 0 && (
+                <div className="p-6 text-center text-[#7E7469] space-y-2">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto" />
+                  <p className="text-xs">All studio pipelines are up to date.</p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => setMobileNotifOpen(false)}
+              className="w-full py-2 bg-[#140F0C] border border-[#241C16] text-[#A89F91] text-xs rounded-xs"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 7. MOBILE QUICK ACTION DRAWER (< md ONLY)                                 */}
+      {/* ========================================================================= */}
+      {mobileQuickOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileQuickOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl p-5 space-y-4 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <span className="font-serif text-base text-[#FCFAF6]">Quick Operations</span>
+              <span className="text-[10px] text-champagne uppercase font-mono">Create & Manage</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2 text-xs">
+              <Link
+                href="/admin/products"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Package className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Add New Material</span>
+                  <span className="text-[10px] text-[#8E8275]">Catalog item, finish, price modifier</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/projects"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Building2 className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Add Architectural Project</span>
+                  <span className="text-[10px] text-[#8E8275]">Publish portfolio commission & blueprints</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/inventory"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Boxes className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Update Inventory Stock</span>
+                  <span className="text-[10px] text-[#8E8275]">Adjust warehouse stock & reserve counts</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/quotes"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <FileText className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Review Quotations</span>
+                  <span className="text-[10px] text-[#8E8275]">Client estimation dossiers & inquiries</span>
+                </div>
+              </Link>
+            </div>
+
+            <button
+              onClick={() => setMobileQuickOpen(false)}
+              className="w-full py-2 bg-[#140F0C] border border-[#241C16] text-[#A89F91] text-xs rounded-xs"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Global Search Palette Modal (Ctrl+K) */}
       {searchOpen && (

@@ -197,19 +197,37 @@ export default function AdminSettingsPage() {
           }
         }
 
-        const reg = await navigator.serviceWorker.ready;
-        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        // Register service worker if not already registered
+        let reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) {
+          reg = await navigator.serviceWorker.register('/sw.js');
+        }
+
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        if (!vapidKey) {
+          try {
+            const keyRes = await fetch('/api/notifications/subscribe');
+            if (keyRes.ok) {
+              const keyData = await keyRes.json();
+              vapidKey = keyData.vapidPublicKey;
+            }
+          } catch (e) {
+            console.warn('Failed to fetch VAPID key from API:', e);
+          }
+        }
+
         if (!vapidKey) {
           setPushResult('VAPID public key not configured in environment.');
           setTestPushing(false);
           return;
         }
+
         const convertedKey = urlBase64ToUint8Array(vapidKey);
         let sub = await reg.pushManager.getSubscription();
         if (!sub) {
           sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: convertedKey,
+            applicationServerKey: convertedKey as any,
           });
         }
         if (sub) {

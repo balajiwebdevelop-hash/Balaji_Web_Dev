@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { createOrderAtomic, getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
+import { sendNewOrderPush } from '@/lib/push';
 
 export async function GET(req: NextRequest) {
   try {
@@ -79,6 +80,13 @@ export async function POST(req: NextRequest) {
       revalidatePath('/shop');
     } catch (revErr) {
       console.warn('Revalidation notice:', revErr);
+    }
+
+    // Trigger Realtime Web Push Notification to Admin devices
+    if (result.order) {
+      sendNewOrderPush(result.order).catch((pushErr) => {
+        console.warn('Order push notification dispatch notice:', pushErr);
+      });
     }
 
     return NextResponse.json({ success: true, order: result.order });

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createQuote, getQuotes, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
+import { sendNewQuotePush } from '@/lib/push';
 
 export async function GET(req: NextRequest) {
   try {
@@ -47,6 +48,11 @@ export async function POST(req: NextRequest) {
       entity: 'Quote',
       entityId: newQuote.id,
       details: { quoteNumber: newQuote.quoteNumber, customer: newQuote.customerName },
+    });
+
+    // Trigger Realtime Web Push Notification for Admin devices
+    sendNewQuotePush(newQuote).catch((pushErr) => {
+      console.warn('Quote push notification dispatch notice:', pushErr);
     });
 
     return NextResponse.json({ success: true, quote: newQuote });

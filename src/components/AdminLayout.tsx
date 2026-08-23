@@ -32,7 +32,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
-import { urlBase64ToUint8Array } from '@/lib/push';
+import { urlBase64ToUint8Array } from '@/lib/push-client';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -112,6 +112,96 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
     return () => clearTimeout(delayDebounce);
   }, [searchQuery]);
+
+  // Register Service Worker and initialize Push Notification state
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then(async (reg) => {
+        if ('Notification' in window) {
+          setPushStatus(Notification.permission);
+          if (Notification.permission === 'granted') {
+            try {
+              let sub = await reg.pushManager.getSubscription();
+              if (!sub) {
+                let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+                if (!vapidKey) {
+                  const keyRes = await fetch('/api/notifications/subscribe');
+                  if (keyRes.ok) {
+                    const keyData = await keyRes.json();
+                    vapidKey = keyData.vapidPublicKey;
+                  }
+                }
+                if (vapidKey) {
+                  sub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapidKey) as any,
+                  });
+                }
+              }
+              if (sub) {
+                await fetch('/api/notifications/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ subscription: sub }),
+                });
+              }
+            } catch (subErr) {
+              console.warn('Auto push subscription notice:', subErr);
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn('Service Worker registration notice:', err);
+      });
+  }, [admin]);
+
+  const handleRequestPushPermission = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) {
+      alert('Push notifications are not supported in this browser environment.');
+      return;
+    }
+
+    try {
+      const perm = await Notification.requestPermission();
+      setPushStatus(perm);
+      if (perm === 'granted') {
+        let reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) {
+          reg = await navigator.serviceWorker.register('/sw.js');
+        }
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        if (!vapidKey) {
+          const keyRes = await fetch('/api/notifications/subscribe');
+          if (keyRes.ok) {
+            const keyData = await keyRes.json();
+            vapidKey = keyData.vapidPublicKey;
+          }
+        }
+        if (vapidKey) {
+          const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(vapidKey) as any,
+          });
+          if (sub) {
+            await fetch('/api/notifications/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ subscription: sub }),
+            });
+            alert('Push notifications successfully enabled on this device.');
+          }
+        }
+      } else {
+        alert('Notification permission was not granted. Please allow notifications in your browser settings.');
+      }
+    } catch (e: any) {
+      alert(`Error enabling notifications: ${e.message}`);
+    }
+  };
 
   // Load notification badge counts
   useEffect(() => {
@@ -527,6 +617,38 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                         <CheckCircle2 className="w-5 h-5 text-emerald-400 mx-auto" />
                         <p className="text-xs">All studio pipelines are up to date.</p>
                       </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2.5 border-t border-[#241C16] flex items-center justify-between text-[11px]">
+                    <div className="flex items-center gap-1.5">
+                      <Radio className={`w-3 h-3 ${pushStatus === 'granted' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'}`} />
+                      <span className="text-[#A89F91]">
+                        {pushStatus === 'granted' ? 'Push Alerts Active' : 'Push Inactive'}
+                      </span>
+                    </div>
+                    {pushStatus !== 'granted' ? (
+                      <button
+                        onClick={handleRequestPushPermission}
+                        className="px-2 py-1 bg-champagne/20 text-champagne hover:bg-champagne/30 rounded-2xs font-medium text-[10px] transition-colors"
+                      >
+                        Enable Alerts
+                      </button>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const res = await fetch('/api/admin/notifications/test', { method: 'POST' });
+                            const d = await res.json();
+                            alert(d.message || 'Test notification sent.');
+                          } catch (e: any) {
+                            alert(e.message || 'Failed to dispatch test notification.');
+                          }
+                        }}
+                        className="text-[10px] text-[#A89F91] hover:text-champagne underline"
+                      >
+                        Send Test Push
+                      </button>
                     )}
                   </div>
                 </div>

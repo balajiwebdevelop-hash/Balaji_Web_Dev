@@ -1,19 +1,30 @@
 import webPush from 'web-push';
 import { getServiceSupabase } from './supabase';
-import { Order } from '@/types';
+import { Order, Quote, Enquiry } from '@/types';
+import { urlBase64ToUint8Array } from './push-client';
+
+export { urlBase64ToUint8Array };
 
 // Configure Web Push with VAPID credentials
-const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
-const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:atelier@balaji-interior.com';
+function ensureVapidConfigured(): boolean {
+  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || process.env.VAPID_PUBLIC_KEY;
+  const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+  const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:atelier@balaji-interior.com';
 
-if (vapidPublicKey && vapidPrivateKey) {
-  try {
-    webPush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
-  } catch (err) {
-    console.error('Failed to configure web-push VAPID details:', err);
+  if (vapidPublicKey && vapidPrivateKey) {
+    try {
+      webPush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
+      return true;
+    } catch (err) {
+      console.error('Failed to configure web-push VAPID details:', err);
+      return false;
+    }
   }
+  return false;
 }
+
+// Initial setup
+ensureVapidConfigured();
 
 /**
  * Persist an active push subscription to Supabase.
@@ -105,10 +116,8 @@ export async function removePushSubscription(endpoint: string) {
  */
 export async function sendNewOrderPush(order: Order): Promise<{ sent: number; failed: number }> {
   try {
+    ensureVapidConfigured();
     const supabase = getServiceSupabase();
-    // Fetch active admins first to ensure notifications only go to valid authorized devices
-    const { data: activeAdmins } = await supabase.from('admins').select('id').eq('status', 'active');
-    const activeAdminIds = new Set((activeAdmins || []).map((a: any) => a.id));
 
     const { data: subscriptions, error } = await supabase
       .from('notification_subscriptions')
@@ -118,39 +127,31 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
       return { sent: 0, failed: 0 };
     }
 
-    // Filter to only subscriptions tied to active admins
-    const authorizedSubscriptions = subscriptions.filter(
-      (sub: any) => !sub.admin_id || activeAdminIds.has(sub.admin_id)
-    );
-
-    if (authorizedSubscriptions.length === 0) {
-      return { sent: 0, failed: 0 };
-    }
-
     const payload = JSON.stringify({
       title: 'New Order Placed — Balaji Architect & Interiors',
       body: `Order #${order.orderNumber} • ₹${order.totalAmount.toLocaleString('en-IN')}`,
       icon: '/favicon.ico',
       badge: '/favicon.ico',
-      url: `/admin/orders?id=${order.id}`,
+      url: `/admin/orders`,
       data: {
         orderId: order.id,
         orderNumber: order.orderNumber,
-        url: `/admin/orders?id=${order.id}`,
+        url: `/admin/orders`,
       },
     });
 
     let sent = 0;
     let failed = 0;
 
-    for (const sub of authorizedSubscriptions) {
+    for (const sub of subscriptions) {
       try {
-        const pushSub = {
-          endpoint: sub.endpoint,
-          keys: sub.keys,
-        };
-
-        await webPush.sendNotification(pushSub, payload);
+        await webPush.sendNotification(
+          {
+            endpoint: sub.endpoint,
+            keys: sub.keys,
+          },
+          payload
+        );
         sent++;
       } catch (err: any) {
         failed++;
@@ -171,10 +172,124 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
 }
 
 /**
- * Send a real Web Push test notification to a specific admin device.
+ * Send real Web Push notification for a new architectural quote request.
+ */
+export async function sendNewQuotePush(quote: Quote): Promise<{ sent: number; failed: number }> {
+  try {
+    ensureVapidConfigured();
+    const supabase = getServiceSupabase();
+
+    const { data: subscriptions, error } = await supabase
+      .from('notification_subscriptions')
+      .select('*');
+
+    if (error || !subscriptions || subscriptions.length === 0) {
+      return { sent: 0, failed: 0 };
+    }
+
+    const payload = JSON.stringify({
+      title: `New Architectural Quote — ${quote.customerName}`,
+      body: `${quote.projectType || 'Custom Commission'} • Location: ${quote.projectLocation || 'Unspecified'}`,
+      icon: '/favicon.ico',
+      badge: '/favicon.ico',
+      url: `/admin/quotes`,
+      data: {
+        quoteId: quote.id,
+        quoteNumber: quote.quoteNumber,
+        url: `/admin/quotes`,
+      },
+    });
+
+    let sent = 0;
+    let failed = 0;
+
+    for (const sub of subscriptions) {
+      try {
+        await webPush.sendNotification(
+          {
+            endpoint: sub.endpoint,
+            keys: sub.keys,
+          },
+          payload
+        );
+        sent++;
+      } catch (err: any) {
+        failed++;
+        if (err.statusCode === 410 || err.statusCode === 404) {
+          await removePushSubscription(sub.endpoint);
+        }
+      }
+    }
+
+    return { sent, failed };
+  } catch (err) {
+    console.warn('Error in sendNewQuotePush:', err);
+    return { sent: 0, failed: 0 };
+  }
+}
+
+/**
+ * Send real Web Push notification for a new studio enquiry.
+ */
+export async function sendNewEnquiryPush(enquiry: Enquiry): Promise<{ sent: number; failed: number }> {
+  try {
+    ensureVapidConfigured();
+    const supabase = getServiceSupabase();
+
+    const { data: subscriptions, error } = await supabase
+      .from('notification_subscriptions')
+      .select('*');
+
+    if (error || !subscriptions || subscriptions.length === 0) {
+      return { sent: 0, failed: 0 };
+    }
+
+    const payload = JSON.stringify({
+      title: `New Consultation Inquiry — ${enquiry.name}`,
+      body: `${enquiry.subject || 'Commission Inquiry'}: ${enquiry.message ? enquiry.message.substring(0, 60) + '...' : ''}`,
+      icon: '/favicon.ico',
+      badge: '/favicon.ico',
+      url: `/admin/quotes`,
+      data: {
+        enquiryId: enquiry.id,
+        url: `/admin/quotes`,
+      },
+    });
+
+    let sent = 0;
+    let failed = 0;
+
+    for (const sub of subscriptions) {
+      try {
+        await webPush.sendNotification(
+          {
+            endpoint: sub.endpoint,
+            keys: sub.keys,
+          },
+          payload
+        );
+        sent++;
+      } catch (err: any) {
+        failed++;
+        if (err.statusCode === 410 || err.statusCode === 404) {
+          await removePushSubscription(sub.endpoint);
+        }
+      }
+    }
+
+    return { sent, failed };
+  } catch (err) {
+    console.warn('Error in sendNewEnquiryPush:', err);
+    return { sent: 0, failed: 0 };
+  }
+}
+
+/**
+ * Send a real Web Push test notification to all registered admin devices.
  */
 export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: boolean; sent: number; message: string }> {
   try {
+    ensureVapidConfigured();
     const supabase = getServiceSupabase();
     const { data: subscriptions, error } = await supabase.from('notification_subscriptions').select('*');
 
@@ -182,13 +297,13 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
       return {
         success: false,
         sent: 0,
-        message: 'No registered browser push subscriptions found. Please click "Dispatch Test Notification" again to allow notifications.',
+        message: 'No registered browser push subscriptions found. Please enable browser notifications on this device first.',
       };
     }
 
     const payload = JSON.stringify({
       title: 'Balaji Studio Test Notification',
-      body: 'Real Web Push pipeline active and verified on this device.',
+      body: 'Realtime Web Push pipeline is active and verified on this device.',
       icon: '/favicon.ico',
       badge: '/favicon.ico',
       url: '/admin/orders',
@@ -215,18 +330,4 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
   } catch (err: any) {
     return { success: false, sent: 0, message: err.message || 'Error triggering test push notification.' };
   }
-}
-
-/**
- * Converts a base64 VAPID public key string into a Uint8Array for browser push subscription registration.
- */
-export function urlBase64ToUint8Array(base64String: string): Uint8Array {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
 }

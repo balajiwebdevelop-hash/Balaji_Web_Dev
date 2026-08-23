@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createEnquiry, getEnquiries, addAuditLog } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
+import { sendNewEnquiryPush } from '@/lib/push';
 
 export async function GET(req: NextRequest) {
   try {
@@ -35,6 +36,11 @@ export async function POST(req: NextRequest) {
       subject: body.subject || 'Studio Consultation',
       message: body.message,
       source: body.source || 'Contact Form',
+    });
+
+    // Trigger Realtime Web Push Notification for Admin devices
+    sendNewEnquiryPush(newEnquiry).catch((pushErr) => {
+      console.warn('Enquiry push notification dispatch notice:', pushErr);
     });
 
     return NextResponse.json({ success: true, enquiry: newEnquiry });

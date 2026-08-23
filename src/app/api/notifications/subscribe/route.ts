@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
 import { savePushSubscription } from '@/lib/push';
 
+export async function GET() {
+  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || process.env.VAPID_PUBLIC_KEY || '';
+  return NextResponse.json({
+    success: true,
+    vapidPublicKey,
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const authResult = await requireAuthenticatedAdmin(req);

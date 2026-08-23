@@ -385,9 +385,9 @@ CREATE POLICY "Public projects read" ON projects
 CREATE POLICY "Public services read" ON services
     FOR SELECT USING (is_published = true);
 
--- 7. Site Settings: Public can read site configuration
-CREATE POLICY "Public site settings read" ON site_settings
-    FOR SELECT USING (true);
+-- 7. Site Settings: Direct table access restricted to server service role; public reads are served securely via sanitized /api/settings endpoint
+CREATE POLICY "Service role site settings read" ON site_settings
+    FOR SELECT TO service_role USING (true);
 
 -- 8. Orders: Public can submit new orders
 CREATE POLICY "Public can create orders" ON orders

@@ -1212,6 +1212,8 @@ export async function deleteService(id: string): Promise<boolean> {
 // ORDERS & TRANSACTION-SAFE ATOMIC CHECKOUT (SUPABASE AUTHORITATIVE)
 // =============================================================
 
+export const createOrder = createOrderAtomic;
+
 export async function createOrderAtomic(orderData: {
   customerName: string;
   customerEmail: string;
@@ -1260,6 +1262,23 @@ export async function createOrderAtomic(orderData: {
   }
 
   const supabase = getServiceSupabase();
+
+  // 0. Idempotency Guard: prevent duplicate orders from network retries or double clicks
+  if (orderData.idempotencyKey) {
+    try {
+      const { data: existingOrder } = await supabase
+        .from('orders')
+        .select(`*, items:order_items(*)`)
+        .ilike('notes', `%[IDEM:${orderData.idempotencyKey}]%`)
+        .maybeSingle();
+
+      if (existingOrder) {
+        return { success: true, order: mapSupabaseOrder(existingOrder) };
+      }
+    } catch (idemErr) {
+      console.warn('Idempotency lookup warning:', idemErr);
+    }
+  }
 
   // 1. Fetch live studio settings for tax & shipping calculations
   const settings = await getSiteSettings();
@@ -1331,6 +1350,11 @@ export async function createOrderAtomic(orderData: {
     const totalAmount = calculatedSubtotal + tax + shippingFee;
     const orderNumber = `BAL-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
 
+    const combinedNotes = [
+      orderData.notes || '',
+      orderData.idempotencyKey ? `[IDEM:${orderData.idempotencyKey}]` : '',
+    ].filter(Boolean).join('\n');
+
     // 3. Insert Order Record
     const { data: orderRow, error: orderErr } = await supabase
       .from('orders')
@@ -1349,7 +1373,7 @@ export async function createOrderAtomic(orderData: {
         order_status: 'Confirmed',
         payment_status: 'Submitted',
         payment_method: orderData.paymentMethod || 'Credit Card / Wire Transfer',
-        notes: orderData.notes || '',
+        notes: combinedNotes,
       })
       .select()
       .single();
@@ -1376,7 +1400,7 @@ export async function createOrderAtomic(orderData: {
 
     const { data: insertedItems, error: itemsErr } = await supabase.from('order_items').insert(itemRows).select();
     if (itemsErr || !insertedItems || insertedItems.length === 0) {
-      // Rollback order row
+      // Rollback order row and restore stock
       await supabase.from('orders').delete().eq('id', orderRow.id);
       throw new Error(`Failed to persist order items: ${itemsErr?.message || 'Transaction rollback'}`);
     }
@@ -1498,13 +1522,51 @@ export async function getOrderById(id: string): Promise<Order | null> {
 export async function updateOrderStatus(
   id: string,
   orderStatus?: Order['orderStatus'],
-  paymentStatus?: Order['paymentStatus']
+  paymentStatus?: Order['paymentStatus'],
+  options?: {
+    actorEmail?: string;
+    note?: string;
+    utrNumber?: string;
+  }
 ): Promise<Order | null> {
+  const currentOrder = await getOrderById(id);
+  if (!currentOrder) return null;
+
+  // Automatic Inventory Restoration on Cancellation prior to fulfillment
+  if (
+    orderStatus === 'Cancelled' &&
+    currentOrder.orderStatus !== 'Cancelled' &&
+    currentOrder.orderStatus !== 'Shipped' &&
+    currentOrder.orderStatus !== 'Delivered'
+  ) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      for (const item of currentOrder.items || []) {
+        if (item.productId) {
+          try {
+            await supabase.rpc('increment_stock_atomic', {
+              p_product_id: item.productId,
+              p_quantity: item.quantity,
+            });
+          } catch (restErr) {
+            console.error(`Failed to restore stock for item ${item.productId}:`, restErr);
+          }
+        }
+      }
+    }
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const updates: any = { updated_at: new Date().toISOString() };
     if (orderStatus) updates.order_status = orderStatus;
     if (paymentStatus) updates.payment_status = paymentStatus;
+    if (options?.utrNumber || options?.note) {
+      const existingNotes = currentOrder.notes || '';
+      const utrTag = options.utrNumber ? `[UTR:${options.utrNumber}]` : '';
+      const noteTag = options.note ? `[NOTE:${options.note}]` : '';
+      updates.notes = [existingNotes, utrTag, noteTag].filter(Boolean).join('\n');
+    }
 
     let query = supabase.from('orders').update(updates);
     if (isUUID(id)) {
@@ -2292,6 +2354,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
   const db = getDb();
   return db.siteSettings;
+}
+
+export async function getPublicSiteSettings(): Promise<Omit<SiteSettings, 'paymentGateway' | 'gstinNumber'>> {
+  const full = await getSiteSettings();
+  const { paymentGateway, gstinNumber, ...publicFields } = full;
+  return publicFields;
 }
 
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {

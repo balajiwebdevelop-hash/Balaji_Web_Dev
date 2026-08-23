@@ -106,11 +106,24 @@ export async function removePushSubscription(endpoint: string) {
 export async function sendNewOrderPush(order: Order): Promise<{ sent: number; failed: number }> {
   try {
     const supabase = getServiceSupabase();
+    // Fetch active admins first to ensure notifications only go to valid authorized devices
+    const { data: activeAdmins } = await supabase.from('admins').select('id').eq('status', 'active');
+    const activeAdminIds = new Set((activeAdmins || []).map((a: any) => a.id));
+
     const { data: subscriptions, error } = await supabase
       .from('notification_subscriptions')
       .select('*');
 
     if (error || !subscriptions || subscriptions.length === 0) {
+      return { sent: 0, failed: 0 };
+    }
+
+    // Filter to only subscriptions tied to active admins
+    const authorizedSubscriptions = subscriptions.filter(
+      (sub: any) => !sub.admin_id || activeAdminIds.has(sub.admin_id)
+    );
+
+    if (authorizedSubscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -130,7 +143,7 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
     let sent = 0;
     let failed = 0;
 
-    for (const sub of subscriptions) {
+    for (const sub of authorizedSubscriptions) {
       try {
         const pushSub = {
           endpoint: sub.endpoint,

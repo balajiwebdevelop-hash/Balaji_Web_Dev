@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { getServiceSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { getProducts, getOrders, getQuotes, getProjects, getServices, getCustomers, getEnquiries } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -16,16 +17,6 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const [products, orders, quotes, projects, services, customers, enquiries] = await Promise.all([
-      getProducts().catch(() => []),
-      getOrders().catch(() => []),
-      getQuotes().catch(() => []),
-      getProjects().catch(() => []),
-      getServices(false).catch(() => []),
-      getCustomers().catch(() => []),
-      getEnquiries().catch(() => []),
-    ]);
-
     const results: Array<{
       id: string;
       title: string;
@@ -35,111 +26,105 @@ export async function GET(req: NextRequest) {
       badge?: string;
     }> = [];
 
-    // 1. Products / Materials
-    for (const p of products) {
-      if (
-        p.name.toLowerCase().includes(query) ||
-        (p.sku && p.sku.toLowerCase().includes(query)) ||
-        (p.material && p.material.toLowerCase().includes(query)) ||
-        (p.brand && p.brand.toLowerCase().includes(query))
-      ) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const pattern = `%${query}%`;
+
+      const [prodRes, ordRes, qtRes, custRes, projRes, enqRes] = await Promise.all([
+        supabase
+          .from('products')
+          .select('id, name, sku, price, unit, stock')
+          .or(`name.ilike.${pattern},sku.ilike.${pattern},material.ilike.${pattern},brand.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('orders')
+          .select('id, order_number, customer_name, total_amount, order_status')
+          .or(`order_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},customer_phone.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('quotes')
+          .select('id, quote_number, customer_name, project_type, project_location, status')
+          .or(`quote_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},project_type.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('customers')
+          .select('id, full_name, email, phone')
+          .or(`full_name.ilike.${pattern},email.ilike.${pattern},phone.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('projects')
+          .select('id, title, project_type, location, year, is_published')
+          .or(`title.ilike.${pattern},location.ilike.${pattern},project_type.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('enquiries')
+          .select('id, name, email, subject, status')
+          .or(`name.ilike.${pattern},email.ilike.${pattern},subject.ilike.${pattern}`)
+          .limit(5),
+      ]);
+
+      // Map Products
+      (prodRes.data || []).forEach((p: any) => {
         results.push({
           id: p.id,
           title: p.name,
-          subtitle: `SKU: ${p.sku} • ₹${p.price.toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
+          subtitle: `SKU: ${p.sku} • ₹${Number(p.price).toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
           type: 'product',
           href: `/admin/products?highlight=${p.id}`,
           badge: `${p.stock} in stock`,
         });
-        if (results.length >= 25) break;
-      }
-    }
+      });
 
-    // 2. Orders
-    for (const o of orders) {
-      if (
-        o.orderNumber.toLowerCase().includes(query) ||
-        o.customerName.toLowerCase().includes(query) ||
-        o.customerEmail.toLowerCase().includes(query) ||
-        o.customerPhone.includes(query)
-      ) {
+      // Map Orders
+      (ordRes.data || []).forEach((o: any) => {
         results.push({
           id: o.id,
-          title: `Order #${o.orderNumber}`,
-          subtitle: `${o.customerName} • ₹${o.totalAmount.toLocaleString('en-IN')} • ${o.orderStatus}`,
+          title: `Order #${o.order_number}`,
+          subtitle: `${o.customer_name} • ₹${Number(o.total_amount).toLocaleString('en-IN')} • ${o.order_status}`,
           type: 'order',
           href: `/admin/orders?orderId=${o.id}`,
-          badge: o.orderStatus,
+          badge: o.order_status,
         });
-        if (results.length >= 25) break;
-      }
-    }
+      });
 
-    // 3. Quotes
-    for (const q of quotes) {
-      if (
-        (q.quoteNumber && q.quoteNumber.toLowerCase().includes(query)) ||
-        q.customerName.toLowerCase().includes(query) ||
-        q.customerEmail.toLowerCase().includes(query) ||
-        (q.projectType && q.projectType.toLowerCase().includes(query))
-      ) {
+      // Map Quotes
+      (qtRes.data || []).forEach((q: any) => {
         results.push({
           id: q.id,
-          title: `Quote #${q.quoteNumber || 'QT'} — ${q.customerName}`,
-          subtitle: `${q.projectType || 'Architecture'} • ${q.projectLocation || 'Guwahati'} • ${q.status}`,
+          title: `Quote #${q.quote_number || 'QT'} — ${q.customer_name}`,
+          subtitle: `${q.project_type || 'Architecture'} • ${q.project_location || 'Guwahati'} • ${q.status}`,
           type: 'quote',
           href: `/admin/quotes?quoteId=${q.id}`,
           badge: q.status,
         });
-        if (results.length >= 25) break;
-      }
-    }
+      });
 
-    // 4. Customers
-    for (const c of customers) {
-      if (
-        c.fullName.toLowerCase().includes(query) ||
-        c.email.toLowerCase().includes(query) ||
-        (c.phone && c.phone.includes(query))
-      ) {
+      // Map Customers
+      (custRes.data || []).forEach((c: any) => {
         results.push({
           id: c.id,
-          title: c.fullName,
+          title: c.full_name,
           subtitle: `${c.email} • ${c.phone || 'No phone'}`,
           type: 'customer',
           href: `/admin/customers?search=${encodeURIComponent(c.email)}`,
           badge: 'Client',
         });
-        if (results.length >= 25) break;
-      }
-    }
+      });
 
-    // 5. Projects
-    for (const pr of projects) {
-      if (
-        pr.title.toLowerCase().includes(query) ||
-        pr.location.toLowerCase().includes(query) ||
-        pr.projectType.toLowerCase().includes(query)
-      ) {
+      // Map Projects
+      (projRes.data || []).forEach((pr: any) => {
         results.push({
           id: pr.id,
           title: pr.title,
-          subtitle: `${pr.projectType} • ${pr.location} (${pr.year})`,
+          subtitle: `${pr.project_type} • ${pr.location} (${pr.year})`,
           type: 'project',
           href: `/admin/projects?projectId=${pr.id}`,
-          badge: pr.isPublished ? 'Published' : 'Draft',
+          badge: pr.is_published ? 'Published' : 'Draft',
         });
-        if (results.length >= 25) break;
-      }
-    }
+      });
 
-    // 6. Enquiries
-    for (const e of enquiries) {
-      if (
-        e.name.toLowerCase().includes(query) ||
-        e.email.toLowerCase().includes(query) ||
-        e.subject.toLowerCase().includes(query)
-      ) {
+      // Map Enquiries
+      (enqRes.data || []).forEach((e: any) => {
         results.push({
           id: e.id,
           title: `Enquiry: ${e.name}`,
@@ -148,12 +133,37 @@ export async function GET(req: NextRequest) {
           href: `/admin/quotes`,
           badge: e.status,
         });
-        if (results.length >= 25) break;
+      });
+
+      return NextResponse.json({ success: true, results: results.slice(0, 20) });
+    }
+
+    // JSON / Memory Fallback
+    const [products, orders, quotes, projects, customers, enquiries] = await Promise.all([
+      getProducts().catch(() => []),
+      getOrders().catch(() => []),
+      getQuotes().catch(() => []),
+      getProjects().catch(() => []),
+      getCustomers().catch(() => []),
+      getEnquiries().catch(() => []),
+    ]);
+
+    for (const p of products) {
+      if (p.name.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query)) {
+        results.push({
+          id: p.id,
+          title: p.name,
+          subtitle: `SKU: ${p.sku} • ₹${p.price.toLocaleString('en-IN')}/${p.unit}`,
+          type: 'product',
+          href: `/admin/products?highlight=${p.id}`,
+          badge: `${p.stock} in stock`,
+        });
       }
     }
 
     return NextResponse.json({ success: true, results: results.slice(0, 20) });
   } catch (err: any) {
+    console.error('Search query error:', err);
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
   }
 }

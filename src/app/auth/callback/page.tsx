@@ -48,18 +48,15 @@ export default function AuthCallbackPage() {
     async function processServerSession(user: any) {
       try {
         setStatusText('Authorizing Studio Access...');
-        const email = user.email;
-        const name = user.user_metadata?.full_name || user.user_metadata?.name || email?.split('@')[0];
-        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+        const { data: sessionData } = await supabase.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
 
-        // Call authoritative server-side role resolution endpoint
+        // Call authoritative server-side cryptographic role resolution endpoint
         const res = await fetch('/api/auth/callback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email,
-            name,
-            avatarUrl,
+            accessToken,
             provider: 'google',
           }),
         });

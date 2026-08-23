@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyAdminToken } from '@/lib/auth';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
 import { savePushSubscription } from '@/lib/push';
 
 export async function POST(req: NextRequest) {
   try {
-    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
-    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-    const token = cookieToken || authHeader;
-    const admin = token ? verifyAdminToken(token) : null;
-
-    if (!admin) {
-      return NextResponse.json({ success: false, error: 'Unauthorized admin session' }, { status: 401 });
+    const authResult = await requireAuthenticatedAdmin(req);
+    if ('response' in authResult) {
+      return authResult.response;
     }
+    const admin = authResult.admin;
 
     const { subscription } = await req.json();
     if (!subscription || !subscription.endpoint || !subscription.keys) {

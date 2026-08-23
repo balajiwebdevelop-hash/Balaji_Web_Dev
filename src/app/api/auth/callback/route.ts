@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServiceSupabase } from '@/lib/supabase';
 import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
 import { signAdminToken, signCustomerToken } from '@/lib/auth';
 
@@ -7,18 +8,68 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { email, name, avatarUrl, provider = 'google' } = body;
+    const { accessToken, token, code, provider = 'google' } = body;
 
-    if (!email || typeof email !== 'string') {
-      return NextResponse.json({ success: false, error: 'Valid email identity required' }, { status: 400 });
+    const authToken = accessToken || token;
+
+    // ============================================================
+    // CRITICAL SECURITY RULE: INDEPENDENT CRYPTOGRAPHIC VERIFICATION
+    // The server MUST verify the token with Supabase Auth.
+    // Client-provided email strings in request body are NEVER trusted.
+    // ============================================================
+    let verifiedEmail: string | null = null;
+    let verifiedName: string | null = null;
+
+    const supabase = getServiceSupabase();
+
+    if (authToken && typeof authToken === 'string') {
+      const { data: userData, error: userError } = await supabase.auth.getUser(authToken);
+      if (userError || !userData?.user) {
+        return NextResponse.json(
+          { success: false, error: 'Cryptographic authentication verification failed. Invalid or expired token.' },
+          { status: 401 }
+        );
+      }
+      verifiedEmail = userData.user.email?.trim().toLowerCase() || null;
+      verifiedName =
+        userData.user.user_metadata?.full_name ||
+        userData.user.user_metadata?.name ||
+        verifiedEmail?.split('@')[0] ||
+        'User';
+    } else if (code && typeof code === 'string') {
+      const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+      if (sessionError || !sessionData?.user) {
+        return NextResponse.json(
+          { success: false, error: 'Failed to exchange authorization code for verified session.' },
+          { status: 401 }
+        );
+      }
+      verifiedEmail = sessionData.user.email?.trim().toLowerCase() || null;
+      verifiedName =
+        sessionData.user.user_metadata?.full_name ||
+        sessionData.user.user_metadata?.name ||
+        verifiedEmail?.split('@')[0] ||
+        'User';
+    } else {
+      return NextResponse.json(
+        { success: false, error: 'Supabase OAuth access token or authorization code required for verification.' },
+        { status: 401 }
+      );
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    if (!verifiedEmail) {
+      return NextResponse.json(
+        { success: false, error: 'No verified email associated with authenticated account.' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = verifiedEmail.trim().toLowerCase();
 
     // ============================================================
     // CRITICAL SECURITY RULE: AUTHORITATIVE ROLE RESOLUTION
     // A Google email MUST NEVER automatically become admin unless
-    // an active, valid record already exists in the `admins` table.
+    // an active, valid record already exists in the authoritative `admins` table.
     // ============================================================
     const existingAdmin = await getAdminByEmail(normalizedEmail);
 
@@ -51,7 +102,7 @@ export async function POST(req: NextRequest) {
         action: auditAction,
         entity: 'Auth',
         entityId: existingAdmin.id,
-        details: { role: existingAdmin.role, provider: 'google' },
+        details: { role: existingAdmin.role, provider: 'google', verified: true },
       });
 
       const response = NextResponse.json({
@@ -79,11 +130,11 @@ export async function POST(req: NextRequest) {
     }
 
     // ============================================================
-    // STANDARD CUSTOMER ACCOUNT (Google User)
+    // STANDARD CUSTOMER ACCOUNT (Verified Google User)
     // ============================================================
     const customer = await upsertCustomer({
       email: normalizedEmail,
-      fullName: name || normalizedEmail.split('@')[0],
+      fullName: verifiedName || normalizedEmail.split('@')[0],
       isGuest: false,
     });
 
@@ -112,11 +163,12 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24 * 30,
     });
 
     return response;
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: 'Authentication failed. Please try again.' }, { status: 500 });
+    console.error('Cryptographic auth callback error:', err);
+    return NextResponse.json({ success: false, error: 'Authentication verification failed.' }, { status: 500 });
   }
 }

@@ -8,6 +8,13 @@ export const supabase =
     ? createClient(supabaseUrl, supabaseAnonKey)
     : (null as any);
 
+export function isSupabaseConfigured(): boolean {
+  return Boolean(
+    (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) &&
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
+
 export function getServiceSupabase() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceKey) {

@@ -21,20 +21,41 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if ('response' in auth) return auth.response;
 
   try {
-    const { orderStatus, paymentStatus } = await req.json();
-    const updated = await updateOrderStatus(params.id, orderStatus, paymentStatus);
+    const body = await req.json();
+    const { orderStatus, paymentStatus, action, utrNumber, note } = body;
+
+    let targetPaymentStatus = paymentStatus;
+    let targetOrderStatus = orderStatus;
+
+    if (action === 'VERIFY_PAYMENT') {
+      targetPaymentStatus = 'Paid';
+    }
+
+    const updated = await updateOrderStatus(params.id, targetOrderStatus, targetPaymentStatus, {
+      actorEmail: auth.admin.email,
+      note,
+      utrNumber,
+    });
 
     if (!updated) {
       return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 });
     }
 
+    const auditAction = action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
+
     await addAuditLog({
       adminId: auth.admin.id,
       adminEmail: auth.admin.email,
-      action: 'ORDER_STATUS_UPDATED',
+      action: auditAction,
       entity: 'Order',
       entityId: params.id,
-      details: { orderStatus, paymentStatus },
+      details: {
+        orderStatus: targetOrderStatus,
+        paymentStatus: targetPaymentStatus,
+        utrNumber,
+        verifiedBy: auth.admin.email,
+        note,
+      },
     });
 
     return NextResponse.json({ success: true, order: updated });

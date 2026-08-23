@@ -63,7 +63,14 @@ export function signAdminToken(payload: AdminTokenPayload): string {
  */
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
   try {
-    return jwt.verify(token, getJwtSecret()) as AdminTokenPayload;
+    const decoded = jwt.verify(token, getJwtSecret()) as any;
+    if (
+      decoded &&
+      (decoded.role === 'owner' || decoded.role === 'employee' || decoded.role === 'super_admin')
+    ) {
+      return decoded as AdminTokenPayload;
+    }
+    return null;
   } catch {
     return null;
   }

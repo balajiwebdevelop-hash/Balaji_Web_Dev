@@ -1264,20 +1264,34 @@ export async function createOrderAtomic(orderData: {
 
   const supabase = getServiceSupabase();
 
-  // 0. Database Idempotency Check: strictly query orders.idempotency_key
+  // 0. Database Idempotency Check: query orders.idempotency_key (with notes fallback if column unmigrated)
   if (orderData.idempotencyKey) {
     try {
-      const { data: existingOrder } = await supabase
+      const { data: existingOrder, error: idemColErr } = await supabase
         .from('orders')
         .select(`*, items:order_items(*)`)
         .eq('idempotency_key', orderData.idempotencyKey)
         .maybeSingle();
 
-      if (existingOrder) {
+      if (!idemColErr && existingOrder) {
         return { success: true, order: mapSupabaseOrder(existingOrder) };
       }
-    } catch (idemErr) {
-      console.warn('Idempotency lookup notice:', idemErr);
+    } catch {
+      // Ignore
+    }
+
+    try {
+      const { data: existingByNotes } = await supabase
+        .from('orders')
+        .select(`*, items:order_items(*)`)
+        .ilike('notes', `%[IDEM:${orderData.idempotencyKey}]%`)
+        .maybeSingle();
+
+      if (existingByNotes) {
+        return { success: true, order: mapSupabaseOrder(existingByNotes) };
+      }
+    } catch (err2) {
+      console.warn('Idempotency lookup notice:', err2);
     }
   }
 
@@ -1297,33 +1311,245 @@ export async function createOrderAtomic(orderData: {
       },
     });
 
-    if (rpcError) {
-      console.error('Database create_order_atomic RPC error:', rpcError);
+    if (!rpcError && rpcOrder) {
+      invalidateMemoryCache('products');
       return {
-        success: false,
-        error: rpcError.message || 'Checkout is temporarily unavailable. Please try again.',
+        success: true,
+        order: mapSupabaseOrder(rpcOrder),
       };
     }
 
-    if (!rpcOrder) {
+    if (rpcError && rpcError.code !== 'PGRST202' && !rpcError.message?.includes('schema cache') && !rpcError.message?.includes('create_order_atomic')) {
+      console.error('Database create_order_atomic RPC error:', rpcError);
       return {
         success: false,
-        error: 'Checkout is temporarily unavailable. Please try again.',
+        error: rpcError.message || 'Failed to place order due to inventory or database conflict.',
       };
+    }
+  } catch (err: any) {
+    console.warn('create_order_atomic RPC notice:', err?.message);
+  }
+
+  // 2. Direct atomic reservation path if RPC is not yet registered in remote database
+  const settings = await getSiteSettings();
+  const taxRate = (settings.taxRatePercent || 18) / 100;
+  const freeShippingThreshold = settings.freeShippingThreshold || 50000;
+  const standardShippingFee = settings.standardShippingFee || 1500;
+
+  const validatedItems: any[] = [];
+  let calculatedSubtotal = 0;
+  const decrementedItems: { productId: string; quantity: number }[] = [];
+
+  try {
+    for (const item of orderData.items) {
+      const product = await getProductById(item.productId);
+      if (!product) {
+        throw new Error(`Material/Product with ID "${item.productId}" not found.`);
+      }
+
+      if (!product.published) {
+        throw new Error(`"${product.name}" is currently not available for purchase.`);
+      }
+
+      if (product.stock < item.quantity) {
+        throw new Error(`Insufficient stock for "${product.name}". Available: ${product.stock} ${product.unit}, Requested: ${item.quantity} ${product.unit}.`);
+      }
+
+      const { data: decSuccess, error: rpcErr } = await supabase.rpc('decrement_stock_atomic', {
+        p_product_id: product.id,
+        p_quantity: item.quantity,
+      });
+
+      if (rpcErr || decSuccess === false) {
+        throw new Error(`Insufficient stock or inventory lock conflict for "${product.name}".`);
+      }
+
+      decrementedItems.push({ productId: product.id, quantity: item.quantity });
+
+      let unitPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
+
+      if (item.variantId && product.variants) {
+        const variant = product.variants.find((v) => v.id === item.variantId);
+        if (variant) {
+          unitPrice += variant.priceModifier || 0;
+        }
+      }
+
+      const itemSubtotal = unitPrice * item.quantity;
+      calculatedSubtotal += itemSubtotal;
+
+      validatedItems.push({
+        productId: product.id,
+        variantId: item.variantId || null,
+        productName: product.name,
+        productSku: product.sku,
+        unit: product.unit,
+        unitPrice,
+        quantity: item.quantity,
+        subtotal: itemSubtotal,
+        imageUrl: product.images[0] || '',
+        selectedColor: item.selectedColor || product.color,
+        selectedFinish: item.selectedFinish || product.finish,
+      });
+    }
+
+    const tax = Math.round(calculatedSubtotal * taxRate);
+    const shippingFee = calculatedSubtotal >= freeShippingThreshold ? 0 : standardShippingFee;
+    const totalAmount = calculatedSubtotal + tax + shippingFee;
+    const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+
+    const combinedNotes = [
+      orderData.notes || '',
+      orderData.idempotencyKey ? `[IDEM:${orderData.idempotencyKey}]` : '',
+    ].filter(Boolean).join('\n');
+
+    let orderRow: any = null;
+    let orderErr: any = null;
+
+    const resWithKey = await supabase
+      .from('orders')
+      .insert({
+        order_number: orderNumber,
+        customer_name: orderData.customerName,
+        customer_email: orderData.customerEmail,
+        customer_phone: orderData.customerPhone,
+        shipping_address: orderData.shippingAddress,
+        billing_address: orderData.billingAddress || orderData.shippingAddress,
+        subtotal: calculatedSubtotal,
+        tax,
+        shipping_fee: shippingFee,
+        discount: 0,
+        total_amount: totalAmount,
+        order_status: 'Confirmed',
+        payment_status: 'Submitted',
+        payment_method: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+        notes: combinedNotes,
+        idempotency_key: orderData.idempotencyKey || null,
+      })
+      .select()
+      .maybeSingle();
+
+    if (resWithKey.error && resWithKey.error.message?.includes('idempotency_key')) {
+      const resWithoutKey = await supabase
+        .from('orders')
+        .insert({
+          order_number: orderNumber,
+          customer_name: orderData.customerName,
+          customer_email: orderData.customerEmail,
+          customer_phone: orderData.customerPhone,
+          shipping_address: orderData.shippingAddress,
+          billing_address: orderData.billingAddress || orderData.shippingAddress,
+          subtotal: calculatedSubtotal,
+          tax,
+          shipping_fee: shippingFee,
+          discount: 0,
+          total_amount: totalAmount,
+          order_status: 'Confirmed',
+          payment_status: 'Submitted',
+          payment_method: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+          notes: combinedNotes,
+        })
+        .select()
+        .maybeSingle();
+
+      orderRow = resWithoutKey.data;
+      orderErr = resWithoutKey.error;
+    } else {
+      orderRow = resWithKey.data;
+      orderErr = resWithKey.error;
+    }
+
+    if (orderErr || !orderRow) {
+      throw new Error(`Failed to persist order: ${orderErr?.message || 'Database error'}`);
+    }
+
+    const itemRows = validatedItems.map((it) => ({
+      order_id: orderRow.id,
+      product_id: it.productId,
+      variant_id: it.variantId,
+      product_name: it.productName,
+      product_sku: it.productSku,
+      unit: it.unit,
+      unit_price: it.unitPrice,
+      quantity: it.quantity,
+      subtotal: it.subtotal,
+      image_url: it.imageUrl,
+      selected_color: it.selectedColor,
+      selected_finish: it.selectedFinish,
+    }));
+
+    const { data: insertedItems, error: itemsErr } = await supabase.from('order_items').insert(itemRows).select();
+    if (itemsErr || !insertedItems || insertedItems.length === 0) {
+      await supabase.from('orders').delete().eq('id', orderRow.id);
+      throw new Error(`Failed to persist order items: ${itemsErr?.message || 'Transaction rollback'}`);
+    }
+
+    // Auto-link/upsert customer record
+    try {
+      await supabase.from('customers').upsert(
+        {
+          email: orderData.customerEmail.toLowerCase().trim(),
+          name: orderData.customerName.trim(),
+          phone: orderData.customerPhone.trim(),
+          address: typeof orderData.shippingAddress === 'string' ? orderData.shippingAddress : JSON.stringify(orderData.shippingAddress),
+        },
+        { onConflict: 'email' }
+      );
+    } catch (custErr) {
+      console.warn('Customer upsert notice:', custErr);
     }
 
     invalidateMemoryCache('products');
 
-    return {
-      success: true,
-      order: mapSupabaseOrder(rpcOrder),
+    const completedOrder: Order = {
+      id: orderRow.id,
+      orderNumber: orderRow.order_number,
+      customerName: orderRow.customer_name,
+      customerEmail: orderRow.customer_email,
+      customerPhone: orderRow.customer_phone,
+      shippingAddress: orderRow.shipping_address,
+      billingAddress: orderRow.billing_address,
+      items: insertedItems.map((it: any) => ({
+        id: it.id,
+        orderId: it.order_id,
+        productId: it.product_id,
+        variantId: it.variant_id,
+        productName: it.product_name,
+        productSku: it.product_sku,
+        unit: it.unit,
+        unitPrice: Number(it.unit_price),
+        quantity: Number(it.quantity),
+        subtotal: Number(it.subtotal),
+        imageUrl: it.image_url,
+        selectedColor: it.selected_color,
+        selectedFinish: it.selected_finish,
+      })),
+      subtotal: Number(orderRow.subtotal),
+      tax: Number(orderRow.tax),
+      shippingFee: Number(orderRow.shipping_fee),
+      discount: Number(orderRow.discount || 0),
+      totalAmount: Number(orderRow.total_amount),
+      orderStatus: orderRow.order_status,
+      paymentStatus: orderRow.payment_status,
+      paymentMethod: orderRow.payment_method,
+      notes: orderRow.notes,
+      createdAt: orderRow.created_at,
+      updatedAt: orderRow.updated_at,
     };
+
+    return { success: true, order: completedOrder };
   } catch (err: any) {
-    console.error('createOrderAtomic error:', err);
-    return {
-      success: false,
-      error: err.message || 'Checkout is temporarily unavailable. Please try again.',
-    };
+    for (const dec of decrementedItems) {
+      try {
+        await supabase.rpc('increment_stock_atomic', {
+          p_product_id: dec.productId,
+          p_quantity: dec.quantity,
+        });
+      } catch (rollbackErr) {
+        console.error(`Failed to rollback stock for product ${dec.productId}:`, rollbackErr);
+      }
+    }
+    return { success: false, error: err.message || 'Failed to complete order checkout.' };
   }
 }
 

@@ -44,7 +44,16 @@ export default function EmployeeManagementPage() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<'employee'>('employee');
   const [status, setStatus] = useState<'active' | 'disabled'>('active');
-  const [tempPassword, setTempPassword] = useState('employee@123');
+  const generateSecurePassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+    let generated = '';
+    for (let i = 0; i < 10; i++) {
+      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return generated;
+  };
+
+  const [tempPassword, setTempPassword] = useState(generateSecurePassword);
   const [newPassword, setNewPassword] = useState('');
 
   // Status feedback
@@ -82,18 +91,13 @@ export default function EmployeeManagementPage() {
     setName('');
     setEmail('');
     setRole('employee');
-    setTempPassword('employee@123');
+    setTempPassword(generateSecurePassword());
     setFormError(null);
     setIsAddModalOpen(true);
   };
 
   const handleGeneratePassword = () => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-    let generated = '';
-    for (let i = 0; i < 10; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    setTempPassword(generated);
+    setTempPassword(generateSecurePassword());
   };
 
   const handleCreateEmployee = async (e: React.FormEvent) => {
@@ -198,7 +202,7 @@ export default function EmployeeManagementPage() {
 
   const handleOpenResetPassword = (emp: AdminUser) => {
     setSelectedEmployee(emp);
-    setNewPassword('employee@123');
+    setNewPassword(generateSecurePassword());
     setFormError(null);
     setIsResetPasswordModalOpen(true);
   };

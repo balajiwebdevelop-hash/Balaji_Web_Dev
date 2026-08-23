@@ -457,6 +457,7 @@ DECLARE
     v_total_amount NUMERIC := 0;
     v_item JSONB;
     v_product RECORD;
+    v_variant RECORD;
     v_item_price NUMERIC;
     v_item_subtotal NUMERIC;
     v_created_order JSONB;
@@ -467,11 +468,23 @@ BEGIN
         SELECT jsonb_build_object(
             'id', o.id,
             'order_number', o.order_number,
+            'customer_name', o.customer_name,
+            'customer_email', o.customer_email,
+            'customer_phone', o.customer_phone,
+            'shipping_address', o.shipping_address,
+            'billing_address', o.billing_address,
+            'subtotal', o.subtotal,
+            'tax', o.tax,
+            'shipping_fee', o.shipping_fee,
+            'discount', o.discount,
             'total_amount', o.total_amount,
             'order_status', o.order_status,
             'payment_status', o.payment_status,
+            'payment_method', o.payment_method,
+            'notes', o.notes,
             'idempotency_key', o.idempotency_key,
             'created_at', o.created_at,
+            'updated_at', o.updated_at,
             'items', COALESCE(jsonb_agg(to_jsonb(oi)), '[]'::jsonb)
         ) INTO v_existing_order
         FROM orders o
@@ -505,7 +518,27 @@ BEGIN
                 v_product.name, v_product.stock, (v_item->>'quantity')::INT;
         END IF;
 
-        -- Decrement stock atomically
+        -- Check Variant if provided
+        IF (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN
+            SELECT * INTO v_variant
+            FROM product_variants
+            WHERE id = (v_item->>'variantId')::UUID
+            FOR UPDATE;
+
+            IF FOUND THEN
+                IF v_variant.stock IS NOT NULL AND v_variant.stock > 0 AND v_variant.stock < (v_item->>'quantity')::INT THEN
+                    RAISE EXCEPTION 'Insufficient variant stock for "% - %". Available: %, Requested: %',
+                        v_product.name, v_variant.name, v_variant.stock, (v_item->>'quantity')::INT;
+                END IF;
+                IF v_variant.stock IS NOT NULL AND v_variant.stock >= (v_item->>'quantity')::INT THEN
+                    UPDATE product_variants
+                    SET stock = stock - (v_item->>'quantity')::INT
+                    WHERE id = v_variant.id;
+                END IF;
+            END IF;
+        END IF;
+
+        -- Decrement product stock atomically
         UPDATE products
         SET stock = stock - (v_item->>'quantity')::INT,
             updated_at = NOW()
@@ -513,6 +546,9 @@ BEGIN
 
         -- Authoritative price calculation
         v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        IF v_variant.id IS NOT NULL AND v_variant.price_modifier IS NOT NULL THEN
+            v_item_price := v_item_price + v_variant.price_modifier;
+        END IF;
         v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
         v_subtotal := v_subtotal + v_item_subtotal;
     END LOOP;
@@ -573,6 +609,12 @@ BEGIN
     LOOP
         SELECT * INTO v_product FROM products WHERE id = (v_item->>'productId')::UUID;
         v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        IF (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN
+            SELECT * INTO v_variant FROM product_variants WHERE id = (v_item->>'variantId')::UUID;
+            IF FOUND AND v_variant.price_modifier IS NOT NULL THEN
+                v_item_price := v_item_price + v_variant.price_modifier;
+            END IF;
+        END IF;
         v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
 
         INSERT INTO order_items (

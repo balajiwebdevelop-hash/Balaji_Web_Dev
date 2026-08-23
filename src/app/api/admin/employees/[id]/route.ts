@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { getAdminById, updateEmployeeAdmin, deleteEmployeeAdmin, resetEmployeePassword } from '@/lib/db';
 import { requireOwner } from '@/lib/auth';
 
@@ -34,7 +35,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     // Handle Password Reset by Owner
     if (action === 'reset_password' || newPassword) {
-      const resetPass = newPassword || 'employee@123';
+      const resetPass = newPassword || `Reset#${crypto.randomBytes(4).toString('hex')}!`;
       await resetEmployeePassword(params.id, resetPass, auth.admin);
       return NextResponse.json({
         success: true,

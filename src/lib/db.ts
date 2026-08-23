@@ -1264,24 +1264,72 @@ export async function createOrderAtomic(orderData: {
 
   const supabase = getServiceSupabase();
 
-  // 0. Idempotency Guard: prevent duplicate orders from network retries or double clicks
+  // 0. Database Idempotency Guard: prevent duplicate orders from network retries or double clicks
   if (orderData.idempotencyKey) {
     try {
       const { data: existingOrder } = await supabase
         .from('orders')
         .select(`*, items:order_items(*)`)
-        .ilike('notes', `%[IDEM:${orderData.idempotencyKey}]%`)
+        .eq('idempotency_key', orderData.idempotencyKey)
         .maybeSingle();
 
       if (existingOrder) {
         return { success: true, order: mapSupabaseOrder(existingOrder) };
+      }
+    } catch {
+      // Ignore and check notes fallback
+    }
+
+    try {
+      const { data: existingByNotes } = await supabase
+        .from('orders')
+        .select(`*, items:order_items(*)`)
+        .ilike('notes', `%[IDEM:${orderData.idempotencyKey}]%`)
+        .maybeSingle();
+
+      if (existingByNotes) {
+        return { success: true, order: mapSupabaseOrder(existingByNotes) };
       }
     } catch (idemErr) {
       console.warn('Idempotency lookup warning:', idemErr);
     }
   }
 
-  // 1. Fetch live studio settings for tax & shipping calculations
+  // 1. Authoritative Single-Transaction Database RPC
+  try {
+    const { data: rpcOrder, error: rpcError } = await supabase.rpc('create_order_atomic', {
+      p_order_data: {
+        customerName: orderData.customerName,
+        customerEmail: orderData.customerEmail,
+        customerPhone: orderData.customerPhone,
+        shippingAddress: orderData.shippingAddress,
+        billingAddress: orderData.billingAddress || orderData.shippingAddress,
+        items: orderData.items,
+        paymentMethod: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+        notes: orderData.notes || '',
+        idempotencyKey: orderData.idempotencyKey || null,
+      },
+    });
+
+    if (!rpcError && rpcOrder) {
+      return {
+        success: true,
+        order: mapSupabaseOrder(rpcOrder),
+      };
+    }
+
+    if (rpcError && rpcError.code !== 'PGRST202' && !rpcError.message?.includes('schema cache')) {
+      console.error('Database create_order_atomic RPC error:', rpcError);
+      return {
+        success: false,
+        error: rpcError.message || 'Failed to place order due to inventory or database conflict.',
+      };
+    }
+  } catch (err: any) {
+    console.warn('create_order_atomic RPC notice:', err?.message);
+  }
+
+  // 2. Direct transactional reservation fallback if RPC is pending remote schema cache reload
   const settings = await getSiteSettings();
   const taxRate = (settings.taxRatePercent || 18) / 100;
   const freeShippingThreshold = settings.freeShippingThreshold || 50000;
@@ -1292,7 +1340,6 @@ export async function createOrderAtomic(orderData: {
   const decrementedItems: { productId: string; quantity: number }[] = [];
 
   try {
-    // 2. Validate product availability and perform atomic stock reservations
     for (const item of orderData.items) {
       const product = await getProductById(item.productId);
       if (!product) {
@@ -1307,7 +1354,6 @@ export async function createOrderAtomic(orderData: {
         throw new Error(`Insufficient stock for "${product.name}". Available: ${product.stock} ${product.unit}, Requested: ${item.quantity} ${product.unit}.`);
       }
 
-      // Execute atomic decrement RPC
       const { data: decSuccess, error: rpcErr } = await supabase.rpc('decrement_stock_atomic', {
         p_product_id: product.id,
         p_quantity: item.quantity,
@@ -1356,8 +1402,10 @@ export async function createOrderAtomic(orderData: {
       orderData.idempotencyKey ? `[IDEM:${orderData.idempotencyKey}]` : '',
     ].filter(Boolean).join('\n');
 
-    // 3. Insert Order Record
-    const { data: orderRow, error: orderErr } = await supabase
+    let orderRow: any = null;
+    let orderErr: any = null;
+
+    const resWithKey = await supabase
       .from('orders')
       .insert({
         order_number: orderNumber,
@@ -1373,17 +1421,47 @@ export async function createOrderAtomic(orderData: {
         total_amount: totalAmount,
         order_status: 'Confirmed',
         payment_status: 'Submitted',
-        payment_method: orderData.paymentMethod || 'Credit Card / Wire Transfer',
+        payment_method: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
         notes: combinedNotes,
+        idempotency_key: orderData.idempotencyKey || null,
       })
       .select()
-      .single();
+      .maybeSingle();
+
+    if (resWithKey.error && resWithKey.error.message?.includes('idempotency_key')) {
+      const resWithoutKey = await supabase
+        .from('orders')
+        .insert({
+          order_number: orderNumber,
+          customer_name: orderData.customerName,
+          customer_email: orderData.customerEmail,
+          customer_phone: orderData.customerPhone,
+          shipping_address: orderData.shippingAddress,
+          billing_address: orderData.billingAddress || orderData.shippingAddress,
+          subtotal: calculatedSubtotal,
+          tax,
+          shipping_fee: shippingFee,
+          discount: 0,
+          total_amount: totalAmount,
+          order_status: 'Confirmed',
+          payment_status: 'Submitted',
+          payment_method: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+          notes: combinedNotes,
+        })
+        .select()
+        .maybeSingle();
+
+      orderRow = resWithoutKey.data;
+      orderErr = resWithoutKey.error;
+    } else {
+      orderRow = resWithKey.data;
+      orderErr = resWithKey.error;
+    }
 
     if (orderErr || !orderRow) {
       throw new Error(`Failed to persist order: ${orderErr?.message || 'Database error'}`);
     }
 
-    // 4. Insert Order Items (Transactional check)
     const itemRows = validatedItems.map((it) => ({
       order_id: orderRow.id,
       product_id: it.productId,
@@ -1401,7 +1479,6 @@ export async function createOrderAtomic(orderData: {
 
     const { data: insertedItems, error: itemsErr } = await supabase.from('order_items').insert(itemRows).select();
     if (itemsErr || !insertedItems || insertedItems.length === 0) {
-      // Rollback order row and restore stock
       await supabase.from('orders').delete().eq('id', orderRow.id);
       throw new Error(`Failed to persist order items: ${itemsErr?.message || 'Transaction rollback'}`);
     }
@@ -1442,19 +1519,8 @@ export async function createOrderAtomic(orderData: {
       updatedAt: orderRow.updated_at,
     };
 
-    // 5. Asynchronous Non-Blocking Web Push Dispatch
-    try {
-      await sendNewOrderPush(completedOrder);
-    } catch (pushErr) {
-      console.warn('Web push notice:', pushErr);
-    }
-
-    invalidateMemoryCache('products');
     return { success: true, order: completedOrder };
   } catch (err: any) {
-    console.error('Order creation error:', err.message);
-
-    // Roll back any successfully decremented inventory
     for (const dec of decrementedItems) {
       try {
         await supabase.rpc('increment_stock_atomic', {
@@ -1465,7 +1531,6 @@ export async function createOrderAtomic(orderData: {
         console.error(`Failed to rollback stock for product ${dec.productId}:`, rollbackErr);
       }
     }
-
     return { success: false, error: err.message || 'Failed to complete order checkout.' };
   }
 }
@@ -1533,32 +1598,55 @@ export async function updateOrderStatus(
   const currentOrder = await getOrderById(id);
   if (!currentOrder) return null;
 
-  // Automatic Inventory Restoration on Cancellation prior to fulfillment
-  if (
-    orderStatus === 'Cancelled' &&
-    currentOrder.orderStatus !== 'Cancelled' &&
-    currentOrder.orderStatus !== 'Shipped' &&
-    currentOrder.orderStatus !== 'Delivered'
-  ) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      for (const item of currentOrder.items || []) {
-        if (item.productId) {
-          try {
-            await supabase.rpc('increment_stock_atomic', {
-              p_product_id: item.productId,
-              p_quantity: item.quantity,
-            });
-          } catch (restErr) {
-            console.error(`Failed to restore stock for item ${item.productId}:`, restErr);
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    // If cancelling, execute the single-transaction cancellation RPC
+    if (orderStatus === 'Cancelled') {
+      try {
+        const { data: cancelledOrder, error: cancelErr } = await supabase.rpc('cancel_order_atomic', {
+          p_order_id: currentOrder.id,
+          p_actor_email: options?.actorEmail || 'system',
+          p_note: options?.note || 'Order cancelled',
+        });
+
+        if (!cancelErr && cancelledOrder) {
+          invalidateMemoryCache('products');
+          return mapSupabaseOrder(cancelledOrder);
+        }
+
+        if (cancelErr && cancelErr.code !== 'PGRST202' && !cancelErr.message?.includes('schema cache')) {
+          console.error('cancel_order_atomic error:', cancelErr);
+          throw new Error(`Failed to cancel order: ${cancelErr.message}`);
+        }
+      } catch (rpcErr: any) {
+        if (!rpcErr.message?.includes('schema cache') && !rpcErr.message?.includes('cancel_order_atomic')) {
+          console.error('cancel_order_atomic RPC execution error:', rpcErr);
+          throw rpcErr;
+        }
+      }
+
+      // Safe fallback inventory restoration if cancel_order_atomic RPC is pending remote reload
+      if (
+        currentOrder.orderStatus !== 'Cancelled' &&
+        currentOrder.orderStatus !== 'Shipped' &&
+        currentOrder.orderStatus !== 'Delivered'
+      ) {
+        for (const item of currentOrder.items || []) {
+          if (item.productId) {
+            try {
+              await supabase.rpc('increment_stock_atomic', {
+                p_product_id: item.productId,
+                p_quantity: item.quantity,
+              });
+            } catch (restErr) {
+              console.error(`Failed to restore stock for item ${item.productId}:`, restErr);
+            }
           }
         }
       }
     }
-  }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
     const updates: any = { updated_at: new Date().toISOString() };
     if (orderStatus) updates.order_status = orderStatus;
     if (paymentStatus) updates.payment_status = paymentStatus;
@@ -1950,7 +2038,7 @@ export async function createEmployeeAdmin(
     throw new Error('An account with this email address already exists');
   }
 
-  const tempPass = input.temporaryPassword || 'employee@123';
+  const tempPass = input.temporaryPassword || `Temp#${crypto.randomBytes(4).toString('hex')}!`;
   if (tempPass.length < 6) {
     throw new Error('Password must be at least 6 characters');
   }
@@ -2285,7 +2373,8 @@ export async function bootstrapInitialEmployee(): Promise<void> {
   if (!existing) {
     if (isSupabaseConfigured()) {
       const supabase = getServiceSupabase();
-      const hash = hashPassword('employee@123');
+      const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
+      const hash = hashPassword(initialTempPass);
       await supabase.from('admins').insert({
         email: 'employee@balaji.com',
         name: 'Balaji Studio Associate',

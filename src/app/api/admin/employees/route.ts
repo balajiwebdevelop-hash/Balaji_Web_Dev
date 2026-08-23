@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { getAdmins, createEmployeeAdmin } from '@/lib/db';
 import { requireOwner } from '@/lib/auth';
 
@@ -38,12 +39,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const secureTempPassword = temporaryPassword || `Temp#${crypto.randomBytes(4).toString('hex')}!`;
     const newEmployee = await createEmployeeAdmin(
       {
         name,
         email,
         role: 'employee',
-        temporaryPassword: temporaryPassword || 'employee@123',
+        temporaryPassword: secureTempPassword,
         mustChangePassword: mustChangePassword !== undefined ? mustChangePassword : true,
       },
       auth.admin

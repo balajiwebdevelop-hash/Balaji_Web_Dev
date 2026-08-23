@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
-import { savePushSubscription } from '@/lib/push';
+import { savePushSubscription, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push';
 
 export async function GET() {
-  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || process.env.VAPID_PUBLIC_KEY || '';
+  const vapidPublicKey =
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ||
+    process.env.VAPID_PUBLIC_KEY ||
+    DEFAULT_VAPID_PUBLIC_KEY;
   return NextResponse.json({
     success: true,
     vapidPublicKey,

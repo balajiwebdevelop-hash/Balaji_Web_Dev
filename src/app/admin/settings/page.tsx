@@ -30,17 +30,7 @@ import {
 import { AdminLayout } from '@/components/AdminLayout';
 import { SiteSettings, AuditLog, HomepageSettings, PaymentGatewaySettings } from '@/types';
 import { useAdminAuth } from '@/context/AdminAuthContext';
-
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
+import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
 
 export default function AdminSettingsPage() {
   const { admin } = useAdminAuth();
@@ -203,7 +193,7 @@ export default function AdminSettingsPage() {
           reg = await navigator.serviceWorker.register('/sw.js');
         }
 
-        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
         if (!vapidKey) {
           try {
             const keyRes = await fetch('/api/notifications/subscribe');
@@ -214,12 +204,6 @@ export default function AdminSettingsPage() {
           } catch (e) {
             console.warn('Failed to fetch VAPID key from API:', e);
           }
-        }
-
-        if (!vapidKey) {
-          setPushResult('VAPID public key not configured in environment.');
-          setTestPushing(false);
-          return;
         }
 
         const convertedKey = urlBase64ToUint8Array(vapidKey);

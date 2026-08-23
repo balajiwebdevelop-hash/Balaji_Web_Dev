@@ -32,7 +32,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
-import { urlBase64ToUint8Array } from '@/lib/push-client';
+import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -126,7 +126,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             try {
               let sub = await reg.pushManager.getSubscription();
               if (!sub) {
-                let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+                let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
                 if (!vapidKey) {
                   const keyRes = await fetch('/api/notifications/subscribe');
                   if (keyRes.ok) {
@@ -173,7 +173,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         if (!reg) {
           reg = await navigator.serviceWorker.register('/sw.js');
         }
-        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
         if (!vapidKey) {
           const keyRes = await fetch('/api/notifications/subscribe');
           if (keyRes.ok) {

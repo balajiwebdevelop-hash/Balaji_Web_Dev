@@ -210,6 +210,7 @@ export interface Order {
   transactionId?: string;
   utrNumber?: string;
   notes?: string;
+  idempotencyKey?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -386,3 +387,60 @@ export interface CartItem {
   quantity: number;
   unitPrice: number;
 }
+
+// =============================================================
+// DOMAIN DTOs & API CONTRACT TYPES
+// =============================================================
+
+export type PublicSiteSettings = Omit<SiteSettings, 'gstinNumber'>;
+
+export type StockAdjustmentReason =
+  | 'ORDER'
+  | 'RESTOCK'
+  | 'MANUAL_ADJUSTMENT'
+  | 'RETURN'
+  | 'DAMAGE'
+  | 'CORRECTION'
+  | 'OTHER';
+
+export interface StockAdjustmentRecord {
+  id?: string;
+  productId: string;
+  oldStock: number;
+  newStock: number;
+  reason: StockAdjustmentReason;
+  actor: string;
+  timestamp: string;
+}
+
+export interface CreateOrderInputDTO {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: Address;
+  billingAddress?: Address;
+  items: {
+    productId: string;
+    variantId?: string;
+    quantity: number;
+    selectedColor?: string;
+    selectedFinish?: string;
+  }[];
+  paymentMethod: string;
+  notes?: string;
+  idempotencyKey?: string;
+}
+
+export interface ApiResponseSuccess<T> {
+  success: true;
+  data?: T;
+  [key: string]: any;
+}
+
+export interface ApiResponseError {
+  success: false;
+  error: string;
+  code?: string;
+}
+
+export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;

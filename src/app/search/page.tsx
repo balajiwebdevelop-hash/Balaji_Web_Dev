@@ -10,20 +10,7 @@ export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
-
-  // Fetch projects once on mount for instant client-side matching
-  useEffect(() => {
-    fetch('/api/projects')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data?.projects) {
-          setAllProjects(data.projects);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -33,32 +20,22 @@ export default function SearchPage() {
       return;
     }
 
-    // Instant local filter on cached projects
-    const q = query.toLowerCase();
-    const matchedProjects = allProjects.filter(
-      (p: Project) =>
-        p.title.toLowerCase().includes(q) ||
-        p.location.toLowerCase().includes(q) ||
-        p.projectType.toLowerCase().includes(q) ||
-        p.shortDescription.toLowerCase().includes(q)
-    );
-    setProjects(matchedProjects);
-
     const abortController = new AbortController();
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const prodRes = await fetch(`/api/products?search=${encodeURIComponent(query)}`, {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
           signal: abortController.signal,
         });
 
         if (abortController.signal.aborted) return;
 
-        if (prodRes.ok) {
-          const prodData = await prodRes.json();
+        if (res.ok) {
+          const data = await res.json();
           if (!abortController.signal.aborted) {
-            setProducts(prodData.products || []);
+            setProducts(data.products || []);
+            setProjects(data.projects || []);
           }
         }
       } catch (err: any) {
@@ -76,7 +53,7 @@ export default function SearchPage() {
       clearTimeout(timer);
       abortController.abort();
     };
-  }, [query, allProjects]);
+  }, [query]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12 min-h-[70vh]">

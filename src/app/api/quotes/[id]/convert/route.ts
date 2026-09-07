@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuoteById, updateQuoteStatus, createOrder, addAuditLog } from '@/lib/db';
+import { getQuoteById, updateQuoteStatus, createOrderAtomic, addAuditLog } from '@/lib/db';
 import { requireOwnerOrEmployee } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
 
     // Create the order idempotently using quote reference
-    const orderResult = await createOrder({
+    const orderResult = await createOrderAtomic({
       customerName: quote.customerName,
       customerEmail: quote.customerEmail,
       customerPhone: quote.customerPhone,

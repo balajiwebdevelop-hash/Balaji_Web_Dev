@@ -1,26 +1,125 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
-import { getOrders, getQuotes, getProducts, getProjects, getEnquiries, getAuditLogs } from '@/lib/db';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+} from '@/server/db/client';
+import {
+  getOrders,
+  getQuotes,
+  getProducts,
+  getProjects,
+  getEnquiries,
+  getAuditLogs,
+} from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+
+const DASHBOARD_CACHE_TTL_MS = 30 * 1000; // 30 seconds
 
 export async function GET(req: NextRequest) {
   const auth = await requireAuthenticatedAdmin(req);
   if ('response' in auth) return auth.response;
 
   const timeRange = req.nextUrl.searchParams.get('timeRange') || '30D';
+  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+
+  // 1. Check in-memory dashboard cache
+  const cacheKey = `dashboard_${timeRange}`;
+  const now = Date.now();
+  const cached = memoryCache.dashboardAnalytics.get(cacheKey);
+  if (cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS && !forceRefresh) {
+    return NextResponse.json({
+      success: true,
+      data: cached.data,
+      cached: true,
+    });
+  }
 
   try {
-    const [orders, quotes, products, projects, enquiries, auditLogs] = await Promise.all([
-      getOrders().catch(() => []),
-      getQuotes().catch(() => []),
-      getProducts().catch(() => []),
-      getProjects().catch(() => []),
-      getEnquiries().catch(() => []),
-      getAuditLogs(6).catch(() => []),
-    ]);
+    let orders: any[] = [];
+    let quotes: any[] = [];
+    let products: any[] = [];
+    let activeProjectsCount = 0;
+    let enquiriesCount = 0;
+    let auditLogs: any[] = [];
 
-    const now = Date.now();
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+
+      // Query database with selective projections to minimize memory and network overhead
+      const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
+        await Promise.all([
+          supabase
+            .from('orders')
+            .select(
+              'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
+            )
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('quotes')
+            .select('id, status, total_quoted_amount'),
+          supabase
+            .from('products')
+            .select('id, price, stock, moq'),
+          supabase
+            .from('projects')
+            .select('id', { count: 'exact', head: true }),
+          supabase
+            .from('enquiries')
+            .select('id', { count: 'exact', head: true }),
+          getAuditLogs(6).catch(() => []),
+        ]);
+
+      orders = (ordersRes.data || []).map((o: any) => ({
+        id: o.id,
+        orderNumber: o.order_number,
+        customerName: o.customer_name,
+        totalAmount: Number(o.total_amount) || 0,
+        orderStatus: o.order_status,
+        paymentStatus: o.payment_status,
+        createdAt: o.created_at,
+        items: (o.items || []).map((it: any) => ({
+          productName: it.product_name || '',
+          subtotal: Number(it.subtotal) || 0,
+        })),
+      }));
+
+      quotes = (quotesRes.data || []).map((q: any) => ({
+        id: q.id,
+        status: q.status,
+        totalQuotedAmount: Number(q.total_quoted_amount) || 0,
+      }));
+
+      products = (productsRes.data || []).map((p: any) => ({
+        id: p.id,
+        price: Number(p.price) || 0,
+        stock: Number(p.stock) || 0,
+        moq: Number(p.moq) || 1,
+      }));
+
+      activeProjectsCount = projectsRes.count || 0;
+      enquiriesCount = enquiriesRes.count || 0;
+      auditLogs = logsRes;
+    } else {
+      const [allOrders, allQuotes, allProducts, allProjects, allEnquiries, allLogs] =
+        await Promise.all([
+          getOrders().catch(() => []),
+          getQuotes().catch(() => []),
+          getProducts().catch(() => []),
+          getProjects().catch(() => []),
+          getEnquiries().catch(() => []),
+          getAuditLogs(6).catch(() => []),
+        ]);
+
+      orders = allOrders;
+      quotes = allQuotes;
+      products = allProducts;
+      activeProjectsCount = allProjects.length;
+      enquiriesCount = allEnquiries.length;
+      auditLogs = allLogs;
+    }
 
     // Filter orders by time range
     const filteredOrders = orders.filter((o) => {
@@ -88,7 +187,7 @@ export async function GET(req: NextRequest) {
     // Category Sales Breakdown
     const catMap: { [key: string]: number } = {};
     orders.forEach((o) => {
-      (o.items || []).forEach((it) => {
+      (o.items || []).forEach((it: any) => {
         const cat = it.productName.includes('Marble') || it.productName.includes('Travertine')
           ? 'Natural Stone'
           : it.productName.includes('Veneer') || it.productName.includes('Oak')
@@ -119,29 +218,36 @@ export async function GET(req: NextRequest) {
       createdAt: o.createdAt,
     }));
 
+    const responseData = {
+      kpis: {
+        periodRevenue,
+        thisMonthRevenue,
+        periodOrdersCount: filteredOrders.length,
+        activeOrdersCount,
+        pendingQuotesCount,
+        totalQuotesCount: quotes.length,
+        totalQuotesValuation,
+        activeProjectsCount,
+        lowStockCount: lowStockProductsCount,
+        totalProductsCount: products.length,
+        totalInventoryValuation,
+        averageOrderValue,
+        enquiriesCount,
+      },
+      salesGraphData,
+      categoryBreakdown,
+      recentOrders,
+      recentActivity: auditLogs,
+    };
+
+    memoryCache.dashboardAnalytics.set(cacheKey, {
+      data: responseData,
+      timestamp: now,
+    });
+
     return NextResponse.json({
       success: true,
-      data: {
-        kpis: {
-          periodRevenue,
-          thisMonthRevenue,
-          periodOrdersCount: filteredOrders.length,
-          activeOrdersCount,
-          pendingQuotesCount,
-          totalQuotesCount: quotes.length,
-          totalQuotesValuation,
-          activeProjectsCount: projects.length,
-          lowStockCount: lowStockProductsCount,
-          totalProductsCount: products.length,
-          totalInventoryValuation,
-          averageOrderValue,
-          enquiriesCount: enquiries.length,
-        },
-        salesGraphData,
-        categoryBreakdown,
-        recentOrders,
-        recentActivity: auditLogs,
-      },
+      data: responseData,
     });
   } catch (err: any) {
     console.error('Dashboard analytics error:', err);

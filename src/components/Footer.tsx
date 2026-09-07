@@ -16,7 +16,7 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     setSecretClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        router.push('/admin');
+        window.location.href = '/admin/login';
         return 0;
       }
       setTimeout(() => setSecretClicks(0), 1200);

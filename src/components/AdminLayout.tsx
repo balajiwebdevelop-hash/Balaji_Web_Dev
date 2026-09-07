@@ -250,12 +250,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   // Route security checks
   useEffect(() => {
+    if (pathname === '/admin/login') return;
     if (!loading && !admin) {
-      router.replace('/studio');
+      router.replace('/admin/login');
     }
-  }, [admin, loading, router]);
+  }, [admin, loading, pathname, router]);
 
   useEffect(() => {
+    if (pathname === '/admin/login') return;
     if (!loading && admin && !isOwner) {
       if (pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/employees')) {
         router.replace('/admin');

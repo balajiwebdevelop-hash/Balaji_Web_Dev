@@ -35,10 +35,7 @@ export default function StudioAuthPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
-        setAuthMode('signin');
-        setEmail('vicks@balaji.com');
-        setPassword('admin123');
-        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+        window.location.href = '/admin/login';
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -51,10 +48,7 @@ export default function StudioAuthPage() {
     setEmblemClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        setAuthMode('signin');
-        setEmail('vicks@balaji.com');
-        setPassword('admin123');
-        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+        window.location.href = '/admin/login';
         return 0;
       }
       setTimeout(() => setEmblemClicks(0), 1200);

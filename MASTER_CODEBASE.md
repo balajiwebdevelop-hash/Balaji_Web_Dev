@@ -1,5 +1,5 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260907-213508)`  
+> **Version**: `MASTER_CODEBASE(20260907-214858)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
@@ -158,7 +158,7 @@
 ### `data/db.json`
 
 - **File**: `data/db.json`
-- **Size**: 49.2 KB (1218 lines)
+- **Size**: 49.5 KB (1267 lines)
 - **Language**: `json`
 
 ```json
@@ -270,7 +270,7 @@
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2380,
+      "stock": 2379,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -975,7 +975,56 @@
       "updatedAt": "2026-08-17T16:23:53.257Z"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "ord-1788797753955",
+      "orderNumber": "BAL-MTRFZWIR-3C555E",
+      "customerName": "Idempotency Tester",
+      "customerEmail": "idem@test.com",
+      "customerPhone": "+91 99999 11111",
+      "shippingAddress": {
+        "fullName": "Idem User",
+        "phone": "+91 99999 11111",
+        "addressLine1": "Test Avenue",
+        "city": "Delhi",
+        "state": "Delhi",
+        "pincode": "110001",
+        "country": "India"
+      },
+      "billingAddress": {
+        "fullName": "Idem User",
+        "phone": "+91 99999 11111",
+        "addressLine1": "Test Avenue",
+        "city": "Delhi",
+        "state": "Delhi",
+        "pincode": "110001",
+        "country": "India"
+      },
+      "items": [
+        {
+          "id": "item-1788797753955-482b7",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Balaji QR Payment (Balaji PG)",
+      "idempotencyKey": "idem-arch-test-1788797753954",
+      "createdAt": "2026-09-07T16:15:53.955Z",
+      "updatedAt": "2026-09-07T16:15:53.955Z"
+    }
+  ],
   "quotes": [
     {
       "id": "qt-1786986369348-tnbv",
@@ -4646,7 +4695,7 @@ export default function AdminLoginPage() {
       if (res.mustChangePassword) {
         setShowForcePasswordModal(true);
       } else {
-        router.push('/admin');
+        window.location.href = '/admin';
       }
     } else {
       setError(res.error || 'Invalid admin credentials');
@@ -4673,7 +4722,7 @@ export default function AdminLoginPage() {
     if (res.success) {
       setPasswordSuccess(true);
       setTimeout(() => {
-        router.push('/admin');
+        window.location.href = '/admin';
       }, 1500);
     } else {
       setError(res.error || 'Failed to update password');
@@ -16528,7 +16577,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 ### `src/app/studio/page.tsx`
 
 - **File**: `src/app/studio/page.tsx`
-- **Size**: 17.2 KB (433 lines)
+- **Size**: 16.9 KB (427 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -16569,10 +16618,7 @@ export default function StudioAuthPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
-        setAuthMode('signin');
-        setEmail('vicks@balaji.com');
-        setPassword('admin123');
-        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+        window.location.href = '/admin/login';
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -16585,10 +16631,7 @@ export default function StudioAuthPage() {
     setEmblemClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        setAuthMode('signin');
-        setEmail('vicks@balaji.com');
-        setPassword('admin123');
-        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+        window.location.href = '/admin/login';
         return 0;
       }
       setTimeout(() => setEmblemClicks(0), 1200);
@@ -17110,7 +17153,7 @@ export default function WishlistPage() {
 ### `src/components/AdminLayout.tsx`
 
 - **File**: `src/components/AdminLayout.tsx`
-- **Size**: 53.5 KB (1187 lines)
+- **Size**: 53.7 KB (1189 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -17366,12 +17409,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   // Route security checks
   useEffect(() => {
+    if (pathname === '/admin/login') return;
     if (!loading && !admin) {
-      router.replace('/studio');
+      router.replace('/admin/login');
     }
-  }, [admin, loading, router]);
+  }, [admin, loading, pathname, router]);
 
   useEffect(() => {
+    if (pathname === '/admin/login') return;
     if (!loading && admin && !isOwner) {
       if (pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/employees')) {
         router.replace('/admin');
@@ -18490,7 +18535,7 @@ export function CartDrawer() {
 ### `src/components/Footer.tsx`
 
 - **File**: `src/components/Footer.tsx`
-- **Size**: 9.2 KB (224 lines)
+- **Size**: 9.3 KB (224 lines)
 - **Language**: `tsx`
 
 ```tsx
@@ -18512,7 +18557,7 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     setSecretClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        router.push('/admin');
+        window.location.href = '/admin/login';
         return 0;
       }
       setTimeout(() => setSecretClicks(0), 1200);

@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
       if (res.mustChangePassword) {
         setShowForcePasswordModal(true);
       } else {
-        router.push('/admin');
+        window.location.href = '/admin';
       }
     } else {
       setError(res.error || 'Invalid admin credentials');
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
     if (res.success) {
       setPasswordSuccess(true);
       setTimeout(() => {
-        router.push('/admin');
+        window.location.href = '/admin';
       }, 1500);
     } else {
       setError(res.error || 'Failed to update password');

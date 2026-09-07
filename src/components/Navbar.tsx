@@ -163,10 +163,10 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             </button>
 
             <Link
-              href="/studio"
-              aria-label="Studio Access"
+              href="/admin/login"
+              aria-label="Admin Login"
               className="text-espresso/80 hover:text-bronze transition-colors p-1"
-              title="Studio Portal"
+              title="Admin Login"
             >
               <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </Link>
@@ -252,14 +252,24 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
               </a>
             </div>
 
-            <Link
-              href="/studio"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-xs uppercase tracking-widest text-warmgray hover:text-espresso transition-colors flex items-center gap-2 pt-4"
-            >
-              <User className="w-4 h-4 text-bronze" />
-              <span>Studio Access</span>
-            </Link>
+            <div className="pt-4 space-y-3 border-t border-atelier/50">
+              <Link
+                href="/admin/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-xs uppercase tracking-widest text-bronze hover:text-espresso transition-colors flex items-center gap-2 font-medium"
+              >
+                <Shield className="w-4 h-4 text-bronze" />
+                <span>Admin Login</span>
+              </Link>
+              <Link
+                href="/studio"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-xs uppercase tracking-widest text-warmgray hover:text-espresso transition-colors flex items-center gap-2"
+              >
+                <User className="w-4 h-4 text-warmgray" />
+                <span>Client / Studio Access</span>
+              </Link>
+            </div>
           </div>
 
           <div className="mt-auto pt-6 border-t border-atelier text-xs text-warmgray space-y-1.5">

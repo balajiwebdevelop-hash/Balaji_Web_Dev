@@ -50,11 +50,12 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      if (res.ok && data.success) {
-        setAdmin(data.admin);
+      const adminObj = data.admin || data.user;
+      if (res.ok && data.success && adminObj) {
+        setAdmin(adminObj);
         return {
           success: true,
-          mustChangePassword: data.admin.mustChangePassword,
+          mustChangePassword: Boolean(adminObj.mustChangePassword),
         };
       } else {
         return { success: false, error: data.error || 'Invalid credentials' };

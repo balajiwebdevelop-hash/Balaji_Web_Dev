@@ -49,18 +49,21 @@ export async function POST(req: NextRequest) {
         details: { role: admin.role, method: 'password', mustChangePassword: admin.mustChangePassword },
       });
 
+      const adminPayload = {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        status: admin.status,
+        mustChangePassword: Boolean(admin.mustChangePassword),
+      };
+
       const response = NextResponse.json({
         success: true,
         role: admin.role,
         redirectUrl: '/admin',
-        user: {
-          id: admin.id,
-          email: admin.email,
-          name: admin.name,
-          role: admin.role,
-          status: admin.status,
-          mustChangePassword: admin.mustChangePassword,
-        },
+        admin: adminPayload,
+        user: adminPayload,
       });
 
       response.cookies.set('balaji_admin_session', token, {

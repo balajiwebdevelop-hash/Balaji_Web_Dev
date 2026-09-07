@@ -1,14 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ArrowUpRight, Lock, Shield } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ArrowUpRight } from 'lucide-react';
 
 import { SiteSettings } from '@/types';
 
 export function Footer({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [secretClicks, setSecretClicks] = useState(0);
+
+  const handleSecretTrigger = () => {
+    setSecretClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 3) {
+        router.push('/admin');
+        return 0;
+      }
+      setTimeout(() => setSecretClicks(0), 1200);
+      return next;
+    });
+  };
 
   // Do not render public footer on admin pages
   if (pathname.startsWith('/admin')) {
@@ -102,9 +116,8 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
                 </Link>
               </li>
               <li>
-                <Link href="/admin/login" className="hover:text-champagne transition-colors flex items-center gap-1.5 text-champagne/90 font-medium pt-1">
-                  <Shield className="w-3 h-3 text-champagne" />
-                  <span>Admin Portal</span>
+                <Link href="/contact" className="hover:text-surface transition-colors">
+                  Client Consultation
                 </Link>
               </li>
             </ul>
@@ -189,17 +202,18 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-surface/40 font-light gap-4">
-          <p>© {new Date().getFullYear()} Balaji Architect & Interiors. All rights reserved.</p>
+          <p
+            onClick={handleSecretTrigger}
+            className="cursor-default select-none transition-colors"
+          >
+            © {new Date().getFullYear()} Balaji Architect & Interiors. All rights reserved.
+          </p>
           <div className="flex items-center space-x-6">
             <Link href="/about" className="hover:text-surface/70 transition-colors">
               Privacy Policy
             </Link>
             <Link href="/about" className="hover:text-surface/70 transition-colors">
               Terms of Supply
-            </Link>
-            <Link href="/admin/login" className="hover:text-champagne transition-colors flex items-center gap-1 text-champagne font-medium">
-              <Lock className="w-3 h-3 text-champagne" />
-              <span>Admin Login</span>
             </Link>
           </div>
         </div>

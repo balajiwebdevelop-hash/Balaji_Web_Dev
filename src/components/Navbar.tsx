@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Heart, ShoppingBag, Menu, X, Shield, User } from 'lucide-react';
+import { Search, Heart, ShoppingBag, Menu, X, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 
@@ -163,10 +163,10 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
             </button>
 
             <Link
-              href="/admin/login"
-              aria-label="Admin Login"
+              href="/studio"
+              aria-label="Client Account"
               className="text-espresso/80 hover:text-bronze transition-colors p-1"
-              title="Admin Login"
+              title="Client Account"
             >
               <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </Link>
@@ -254,20 +254,12 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
 
             <div className="pt-4 space-y-3 border-t border-atelier/50">
               <Link
-                href="/admin/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-xs uppercase tracking-widest text-bronze hover:text-espresso transition-colors flex items-center gap-2 font-medium"
-              >
-                <Shield className="w-4 h-4 text-bronze" />
-                <span>Admin Login</span>
-              </Link>
-              <Link
                 href="/studio"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-xs uppercase tracking-widest text-warmgray hover:text-espresso transition-colors flex items-center gap-2"
+                className="text-xs uppercase tracking-widest text-espresso hover:text-bronze transition-colors flex items-center gap-2 font-medium"
               >
-                <User className="w-4 h-4 text-warmgray" />
-                <span>Client / Studio Access</span>
+                <User className="w-4 h-4 text-bronze" />
+                <span>Client Account & Studio</span>
               </Link>
             </div>
           </div>

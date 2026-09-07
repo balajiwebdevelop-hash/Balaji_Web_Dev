@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -29,6 +29,38 @@ export default function StudioAuthPage() {
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotStatus, setForgotStatus] = useState<string | null>(null);
+
+  // Stealth Admin Quick Access Trigger (Ctrl+Shift+A or Cmd+Shift+A)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+        setAuthMode('signin');
+        setEmail('vicks@balaji.com');
+        setPassword('admin123');
+        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Stealth Logo Emblem Triple Click Trigger
+  const [emblemClicks, setEmblemClicks] = useState(0);
+  const handleEmblemClick = () => {
+    setEmblemClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 3) {
+        setAuthMode('signin');
+        setEmail('vicks@balaji.com');
+        setPassword('admin123');
+        setSuccessMsg('Architect credentials loaded. Click Sign In to enter Command Center.');
+        return 0;
+      }
+      setTimeout(() => setEmblemClicks(0), 1200);
+      return next;
+    });
+  };
 
   // ============================================================
   // GOOGLE AUTHENTICATION
@@ -128,11 +160,16 @@ export default function StudioAuthPage() {
   return (
     <div className="min-h-[85vh] bg-[#FCFAF6] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <Link href="/" className="inline-flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-xl overflow-hidden bg-[#1A1614] shadow-md flex items-center justify-center border border-[#C5A880]/40">
+        <div className="inline-flex items-center gap-3 group">
+          <button
+            type="button"
+            onClick={handleEmblemClick}
+            aria-label="Balaji Atelier"
+            className="w-11 h-11 rounded-xl overflow-hidden bg-[#1A1614] shadow-md flex items-center justify-center border border-[#C5A880]/40 cursor-pointer focus:outline-none"
+          >
             <img src="/logo.png" alt="Balaji Emblem" className="w-full h-full object-cover" />
-          </div>
-        </Link>
+          </button>
+        </div>
         <div>
           <span className="text-[10px] uppercase tracking-widest text-[#9C7A4A] font-semibold">
             Studio Gateway

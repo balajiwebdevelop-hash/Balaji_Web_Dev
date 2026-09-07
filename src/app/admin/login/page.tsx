@@ -123,12 +123,9 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <label className="text-xs uppercase tracking-wider text-[#C5A880]/90 font-medium block">
-                Password
-              </label>
-              <span className="text-[11px] text-[#A89F91]">Default: admin123</span>
-            </div>
+            <label className="text-xs uppercase tracking-wider text-[#C5A880]/90 font-medium block">
+              Password
+            </label>
             <div className="relative">
               <input
                 type="password"

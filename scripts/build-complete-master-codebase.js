@@ -2,11 +2,25 @@ const fs = require('fs');
 const path = require('path');
 
 const rootDir = path.resolve(__dirname, '..');
-const outputFile = path.join(rootDir, 'MASTER_CODEBASE.md');
 
 const allowedExts = new Set(['.ts', '.tsx', '.js', '.jsx', '.json', '.sql', '.css', '.html', '.md']);
-const ignoreDirs = new Set(['node_modules', '.git', '.next', '.gemini', 'dist', 'build', 'out']);
-const ignoreFiles = new Set(['package-lock.json', 'MASTER_CODEBASE.md', 'build-complete-master-codebase.js', '.DS_Store']);
+const ignoreDirs = new Set(['node_modules', '.git', '.next', '.gemini', 'dist', 'build', 'out', 'scratch']);
+const ignoreFiles = new Set([
+  'package-lock.json',
+  'build-complete-master-codebase.js',
+  '.DS_Store',
+  'tsconfig.tsbuildinfo',
+]);
+
+function shouldIgnoreFile(fileName) {
+  if (ignoreFiles.has(fileName)) return true;
+  if (fileName.startsWith('MASTER_CODEBASE')) return true;
+  if (fileName.startsWith('codebase')) return true;
+  if (fileName.startsWith('.env')) return true;
+  if (fileName.endsWith('.log')) return true;
+  if (fileName.startsWith('test-device-')) return true;
+  return false;
+}
 
 function collectFiles(dir, acc = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -18,7 +32,7 @@ function collectFiles(dir, acc = []) {
       }
     } else if (entry.isFile()) {
       const ext = path.extname(entry.name);
-      if (allowedExts.has(ext) && !ignoreFiles.has(entry.name) && !entry.name.startsWith('test-device-')) {
+      if (allowedExts.has(ext) && !shouldIgnoreFile(entry.name)) {
         acc.push(fullPath);
       }
     }
@@ -51,8 +65,12 @@ function buildMasterCodebase() {
     return relA.localeCompare(relB);
   });
 
-  let output = `# BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
 
+  let output = `# BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
+> **Version**: \`MASTER_CODEBASE(${timestamp})\`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
@@ -93,8 +111,20 @@ function buildMasterCodebase() {
     output += '```\n\n---\n\n';
   });
 
-  fs.writeFileSync(outputFile, output, 'utf-8');
-  console.log(`Generated MASTER_CODEBASE.md with ${allFiles.length} files (${(fs.statSync(outputFile).size / 1024).toFixed(1)} KB)`);
+  // Write to codebase.md
+  const codebasePath = path.join(rootDir, 'codebase.md');
+  fs.writeFileSync(codebasePath, output, 'utf-8');
+  console.log(`Generated codebase.md with ${allFiles.length} files (${(fs.statSync(codebasePath).size / 1024).toFixed(1)} KB)`);
+
+  // Write to MASTER_CODEBASE.md
+  const masterCodebasePath = path.join(rootDir, 'MASTER_CODEBASE.md');
+  fs.writeFileSync(masterCodebasePath, output, 'utf-8');
+  console.log(`Generated MASTER_CODEBASE.md with ${allFiles.length} files (${(fs.statSync(masterCodebasePath).size / 1024).toFixed(1)} KB)`);
+
+  // Write to timestamped MASTER_CODEBASE(YYYYMMDD-HHmmss).md
+  const timestampedPath = path.join(rootDir, `MASTER_CODEBASE(${timestamp}).md`);
+  fs.writeFileSync(timestampedPath, output, 'utf-8');
+  console.log(`Generated ${path.basename(timestampedPath)} with ${allFiles.length} files (${(fs.statSync(timestampedPath).size / 1024).toFixed(1)} KB)`);
 }
 
 buildMasterCodebase();

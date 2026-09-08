@@ -1,151 +1,164 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260908-173716)`  
+> **Version**: `MASTER_CODEBASE(20260908-185540)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
 > **Direct Contact**: +91 70029 48484 | atelier@balaji-interior.com  
 > **Google Rating**: ★ 5.0 (22 Google Reviews)  
 > **Repository**: https://github.com/balajiwebdevelop-hash/Balaji_Web_Dev  
-> **Total Source Files Included**: 124
+> **Total Source Files Included**: 139
 
 ---
 
 ## INDEX OF ALL SOURCE FILES
 
 1. [`.eslintrc.json`](#-eslintrc-json)
-2. [`data/db.json`](#data-db-json)
-3. [`next-env.d.ts`](#next-env-d-ts)
-4. [`next.config.js`](#next-config-js)
-5. [`package.json`](#package-json)
-6. [`postcss.config.js`](#postcss-config-js)
-7. [`public/manifest.json`](#public-manifest-json)
-8. [`public/sw.js`](#public-sw-js)
-9. [`scripts/seed-supabase.ts`](#scripts-seed-supabase-ts)
-10. [`scripts/test-architecture-refactor.ts`](#scripts-test-architecture-refactor-ts)
-11. [`scripts/verify-production.ts`](#scripts-verify-production-ts)
-12. [`src/app/about/page.tsx`](#src-app-about-page-tsx)
-13. [`src/app/account/page.tsx`](#src-app-account-page-tsx)
-14. [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx)
-15. [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx)
-16. [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx)
-17. [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx)
-18. [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx)
-19. [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx)
-20. [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx)
-21. [`src/app/admin/page.tsx`](#src-app-admin-page-tsx)
-22. [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx)
-23. [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx)
-24. [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx)
-25. [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx)
-26. [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx)
-27. [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts)
-28. [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts)
-29. [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts)
-30. [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts)
-31. [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts)
-32. [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts)
-33. [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts)
-34. [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts)
-35. [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts)
-36. [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts)
-37. [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts)
-38. [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts)
-39. [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts)
-40. [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts)
-41. [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts)
-42. [`src/app/api/auth/register/route.ts`](#src-app-api-auth-register-route-ts)
-43. [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts)
-44. [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts)
-45. [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts)
-46. [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts)
-47. [`src/app/api/health/route.ts`](#src-app-api-health-route-ts)
-48. [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts)
-49. [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts)
-50. [`src/app/api/orders/customer/route.ts`](#src-app-api-orders-customer-route-ts)
-51. [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts)
-52. [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts)
-53. [`src/app/api/products/route.ts`](#src-app-api-products-route-ts)
-54. [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts)
-55. [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts)
-56. [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts)
-57. [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts)
-58. [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts)
-59. [`src/app/api/search/route.ts`](#src-app-api-search-route-ts)
-60. [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts)
-61. [`src/app/api/services/route.ts`](#src-app-api-services-route-ts)
-62. [`src/app/api/settings/route.ts`](#src-app-api-settings-route-ts)
-63. [`src/app/auth/callback/page.tsx`](#src-app-auth-callback-page-tsx)
-64. [`src/app/cart/page.tsx`](#src-app-cart-page-tsx)
-65. [`src/app/category/[slug]/page.tsx`](#src-app-category-slug-page-tsx)
-66. [`src/app/checkout/page.tsx`](#src-app-checkout-page-tsx)
-67. [`src/app/contact/page.tsx`](#src-app-contact-page-tsx)
-68. [`src/app/globals.css`](#src-app-globals-css)
-69. [`src/app/layout.tsx`](#src-app-layout-tsx)
-70. [`src/app/material/[slug]/page.tsx`](#src-app-material-slug-page-tsx)
-71. [`src/app/materials/page.tsx`](#src-app-materials-page-tsx)
-72. [`src/app/page.tsx`](#src-app-page-tsx)
-73. [`src/app/projects/[slug]/page.tsx`](#src-app-projects-slug-page-tsx)
-74. [`src/app/projects/page.tsx`](#src-app-projects-page-tsx)
-75. [`src/app/quote/page.tsx`](#src-app-quote-page-tsx)
-76. [`src/app/robots.ts`](#src-app-robots-ts)
-77. [`src/app/search/page.tsx`](#src-app-search-page-tsx)
-78. [`src/app/services/page.tsx`](#src-app-services-page-tsx)
-79. [`src/app/shop/page.tsx`](#src-app-shop-page-tsx)
-80. [`src/app/sitemap.ts`](#src-app-sitemap-ts)
-81. [`src/app/studio/page.tsx`](#src-app-studio-page-tsx)
-82. [`src/app/wishlist/page.tsx`](#src-app-wishlist-page-tsx)
-83. [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx)
-84. [`src/components/CartDrawer.tsx`](#src-components-cartdrawer-tsx)
-85. [`src/components/Footer.tsx`](#src-components-footer-tsx)
-86. [`src/components/ImageReveal.tsx`](#src-components-imagereveal-tsx)
-87. [`src/components/ImageUploader.tsx`](#src-components-imageuploader-tsx)
-88. [`src/components/MobileBottomNav.tsx`](#src-components-mobilebottomnav-tsx)
-89. [`src/components/Navbar.tsx`](#src-components-navbar-tsx)
-90. [`src/components/PageTransition.tsx`](#src-components-pagetransition-tsx)
-91. [`src/components/ProductDetailClient.tsx`](#src-components-productdetailclient-tsx)
-92. [`src/components/Reveal.tsx`](#src-components-reveal-tsx)
-93. [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx)
-94. [`src/context/CartContext.tsx`](#src-context-cartcontext-tsx)
-95. [`src/context/WishlistContext.tsx`](#src-context-wishlistcontext-tsx)
-96. [`src/lib/auth.ts`](#src-lib-auth-ts)
-97. [`src/lib/db.ts`](#src-lib-db-ts)
-98. [`src/lib/push-client.ts`](#src-lib-push-client-ts)
-99. [`src/lib/push.ts`](#src-lib-push-ts)
-100. [`src/lib/seedData.ts`](#src-lib-seeddata-ts)
-101. [`src/lib/supabase.ts`](#src-lib-supabase-ts)
-102. [`src/server/api/response.ts`](#src-server-api-response-ts)
-103. [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts)
-104. [`src/server/db/client.ts`](#src-server-db-client-ts)
-105. [`src/server/db/index.ts`](#src-server-db-index-ts)
-106. [`src/server/db/mappers.ts`](#src-server-db-mappers-ts)
-107. [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts)
-108. [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts)
-109. [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts)
-110. [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts)
-111. [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts)
-112. [`src/server/db/repositories/index.ts`](#src-server-db-repositories-index-ts)
-113. [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts)
-114. [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts)
-115. [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts)
-116. [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts)
-117. [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts)
-118. [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts)
-119. [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts)
-120. [`src/server/validation/index.ts`](#src-server-validation-index-ts)
-121. [`src/types/index.ts`](#src-types-index-ts)
-122. [`supabase/schema.sql`](#supabase-schema-sql)
-123. [`tailwind.config.js`](#tailwind-config-js)
-124. [`tsconfig.json`](#tsconfig-json)
+2. [`.gitignore`](#-gitignore)
+3. [`data/db.json`](#data-db-json)
+4. [`next-env.d.ts`](#next-env-d-ts)
+5. [`next.config.js`](#next-config-js)
+6. [`package.json`](#package-json)
+7. [`postcss.config.js`](#postcss-config-js)
+8. [`public/manifest.json`](#public-manifest-json)
+9. [`public/sw.js`](#public-sw-js)
+10. [`scripts/build-complete-master-codebase.js`](#scripts-build-complete-master-codebase-js)
+11. [`scripts/seed-supabase.ts`](#scripts-seed-supabase-ts)
+12. [`scripts/test-architecture-refactor.ts`](#scripts-test-architecture-refactor-ts)
+13. [`scripts/verify-production.ts`](#scripts-verify-production-ts)
+14. [`src/app/about/page.tsx`](#src-app-about-page-tsx)
+15. [`src/app/account/page.tsx`](#src-app-account-page-tsx)
+16. [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx)
+17. [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx)
+18. [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx)
+19. [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx)
+20. [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx)
+21. [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx)
+22. [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx)
+23. [`src/app/admin/page.tsx`](#src-app-admin-page-tsx)
+24. [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx)
+25. [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx)
+26. [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx)
+27. [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx)
+28. [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx)
+29. [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts)
+30. [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts)
+31. [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts)
+32. [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts)
+33. [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts)
+34. [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts)
+35. [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts)
+36. [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts)
+37. [`src/app/api/admin/summary/route.ts`](#src-app-api-admin-summary-route-ts)
+38. [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts)
+39. [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts)
+40. [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts)
+41. [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts)
+42. [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts)
+43. [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts)
+44. [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts)
+45. [`src/app/api/auth/register/route.ts`](#src-app-api-auth-register-route-ts)
+46. [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts)
+47. [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts)
+48. [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts)
+49. [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts)
+50. [`src/app/api/health/ready/route.ts`](#src-app-api-health-ready-route-ts)
+51. [`src/app/api/health/route.ts`](#src-app-api-health-route-ts)
+52. [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts)
+53. [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts)
+54. [`src/app/api/orders/customer/route.ts`](#src-app-api-orders-customer-route-ts)
+55. [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts)
+56. [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts)
+57. [`src/app/api/products/route.ts`](#src-app-api-products-route-ts)
+58. [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts)
+59. [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts)
+60. [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts)
+61. [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts)
+62. [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts)
+63. [`src/app/api/search/route.ts`](#src-app-api-search-route-ts)
+64. [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts)
+65. [`src/app/api/services/route.ts`](#src-app-api-services-route-ts)
+66. [`src/app/api/settings/route.ts`](#src-app-api-settings-route-ts)
+67. [`src/app/auth/callback/page.tsx`](#src-app-auth-callback-page-tsx)
+68. [`src/app/cart/page.tsx`](#src-app-cart-page-tsx)
+69. [`src/app/category/[slug]/page.tsx`](#src-app-category-slug-page-tsx)
+70. [`src/app/checkout/page.tsx`](#src-app-checkout-page-tsx)
+71. [`src/app/contact/page.tsx`](#src-app-contact-page-tsx)
+72. [`src/app/globals.css`](#src-app-globals-css)
+73. [`src/app/layout.tsx`](#src-app-layout-tsx)
+74. [`src/app/material/[slug]/page.tsx`](#src-app-material-slug-page-tsx)
+75. [`src/app/materials/page.tsx`](#src-app-materials-page-tsx)
+76. [`src/app/page.tsx`](#src-app-page-tsx)
+77. [`src/app/projects/[slug]/page.tsx`](#src-app-projects-slug-page-tsx)
+78. [`src/app/projects/page.tsx`](#src-app-projects-page-tsx)
+79. [`src/app/quote/page.tsx`](#src-app-quote-page-tsx)
+80. [`src/app/robots.ts`](#src-app-robots-ts)
+81. [`src/app/search/page.tsx`](#src-app-search-page-tsx)
+82. [`src/app/services/page.tsx`](#src-app-services-page-tsx)
+83. [`src/app/shop/page.tsx`](#src-app-shop-page-tsx)
+84. [`src/app/sitemap.ts`](#src-app-sitemap-ts)
+85. [`src/app/studio/page.tsx`](#src-app-studio-page-tsx)
+86. [`src/app/wishlist/page.tsx`](#src-app-wishlist-page-tsx)
+87. [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx)
+88. [`src/components/CartDrawer.tsx`](#src-components-cartdrawer-tsx)
+89. [`src/components/Footer.tsx`](#src-components-footer-tsx)
+90. [`src/components/ImageReveal.tsx`](#src-components-imagereveal-tsx)
+91. [`src/components/ImageUploader.tsx`](#src-components-imageuploader-tsx)
+92. [`src/components/MobileBottomNav.tsx`](#src-components-mobilebottomnav-tsx)
+93. [`src/components/Navbar.tsx`](#src-components-navbar-tsx)
+94. [`src/components/PageTransition.tsx`](#src-components-pagetransition-tsx)
+95. [`src/components/ProductDetailClient.tsx`](#src-components-productdetailclient-tsx)
+96. [`src/components/Reveal.tsx`](#src-components-reveal-tsx)
+97. [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx)
+98. [`src/context/CartContext.tsx`](#src-context-cartcontext-tsx)
+99. [`src/context/WishlistContext.tsx`](#src-context-wishlistcontext-tsx)
+100. [`src/lib/auth.ts`](#src-lib-auth-ts)
+101. [`src/lib/db.ts`](#src-lib-db-ts)
+102. [`src/lib/push-client.ts`](#src-lib-push-client-ts)
+103. [`src/lib/push.ts`](#src-lib-push-ts)
+104. [`src/lib/seedData.ts`](#src-lib-seeddata-ts)
+105. [`src/lib/supabase.ts`](#src-lib-supabase-ts)
+106. [`src/middleware.ts`](#src-middleware-ts)
+107. [`src/server/api/response.ts`](#src-server-api-response-ts)
+108. [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts)
+109. [`src/server/auth/tokens.ts`](#src-server-auth-tokens-ts)
+110. [`src/server/db/client.ts`](#src-server-db-client-ts)
+111. [`src/server/db/index.ts`](#src-server-db-index-ts)
+112. [`src/server/db/mappers.ts`](#src-server-db-mappers-ts)
+113. [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts)
+114. [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts)
+115. [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts)
+116. [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts)
+117. [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts)
+118. [`src/server/db/repositories/index.ts`](#src-server-db-repositories-index-ts)
+119. [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts)
+120. [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts)
+121. [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts)
+122. [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts)
+123. [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts)
+124. [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts)
+125. [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts)
+126. [`src/server/errors/index.ts`](#src-server-errors-index-ts)
+127. [`src/server/security/config.ts`](#src-server-security-config-ts)
+128. [`src/server/security/index.ts`](#src-server-security-index-ts)
+129. [`src/server/security/sanitization.ts`](#src-server-security-sanitization-ts)
+130. [`src/server/services/index.ts`](#src-server-services-index-ts)
+131. [`src/server/services/orderService.ts`](#src-server-services-orderservice-ts)
+132. [`src/server/services/quoteService.ts`](#src-server-services-quoteservice-ts)
+133. [`src/server/validation/index.ts`](#src-server-validation-index-ts)
+134. [`src/server/validation/schemas.ts`](#src-server-validation-schemas-ts)
+135. [`src/types/index.ts`](#src-types-index-ts)
+136. [`supabase/schema.sql`](#supabase-schema-sql)
+137. [`tailwind.config.js`](#tailwind-config-js)
+138. [`tsconfig.json`](#tsconfig-json)
+139. [`tsconfig.tsbuildinfo`](#tsconfig-tsbuildinfo)
 
 ---
 
 ## COMPLETE SOURCE CODE REPOSITORY
 
-### `.eslintrc.json`
+### <a id="-eslintrc-json"></a>`.eslintrc.json`
 
-- **File**: `.eslintrc.json`
-- **Size**: 0.0 KB (4 lines)
-- **Language**: `json`
+> **Lines**: 4 • **Size**: 0.0 KB
 
 ```json
 {
@@ -155,11 +168,55 @@
 
 ---
 
-### `data/db.json`
+### <a id="-gitignore"></a>`.gitignore`
 
-- **File**: `data/db.json`
-- **Size**: 48.8 KB (1244 lines)
-- **Language**: `json`
+> **Lines**: 38 • **Size**: 0.4 KB
+
+```text
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing & Coverage
+/coverage
+
+# Next.js Build Output
+/.next/
+/out/
+
+# Production Build
+/build
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# System & Editor files
+.DS_Store
+*.pem
+*.tsbuildinfo
+.vscode/
+.idea/
+.gemini/
+*.tmp
+```
+
+---
+
+### <a id="data-db-json"></a>`data/db.json`
+
+> **Lines**: 1459 • **Size**: 57.2 KB
 
 ```json
 {
@@ -272,7 +329,7 @@
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2380,
+      "stock": 2377,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -977,7 +1034,137 @@
       "updatedAt": "2026-08-17T16:23:53.257Z"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "ord-1788873109221",
+      "orderNumber": "BAL-MTSOV10L-B60303",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b96b1af2-4cd4-41b4-952c-d8114c209498",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873109220",
+      "createdAt": "2026-09-08T13:11:49.221Z",
+      "updatedAt": "2026-09-08T13:11:49.236Z"
+    },
+    {
+      "id": "ord-1788873049641",
+      "orderNumber": "BAL-MTSOTR1L-91B12A",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b0cf9806-5b24-4709-ac9a-4b61594efcc3",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873049641",
+      "createdAt": "2026-09-08T13:10:49.641Z",
+      "updatedAt": "2026-09-08T13:10:49.658Z"
+    },
+    {
+      "id": "ord-1788873014906",
+      "orderNumber": "BAL-MTSOT08Q-D28CFC",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "c1f13b51-dc90-4627-86fa-ba1b692a914f",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873014906",
+      "createdAt": "2026-09-08T13:10:14.906Z",
+      "updatedAt": "2026-09-08T13:10:14.906Z"
+    }
+  ],
   "quotes": [
     {
       "id": "qt-1786986369348-tnbv",
@@ -1174,10 +1361,16 @@
   ],
   "siteSettings": {
     "brandName": "Balaji Architect & Interior",
+    "brandSubtitle": "ARCHITECTURE • INTERIORS • MATERIALS",
     "tagline": "Crafted spaces, luxury architecture, and considered materials for timeless living.",
+    "architectName": "Vikas Sir (Principal Architect)",
+    "establishedYear": "2014",
+    "googleRating": "★ 5.0 (22 Google Reviews)",
     "logoUrl": "",
     "contactEmail": "atelier@balaji-interior.com",
     "contactPhone": "+91 70029 48484",
+    "whatsappNumber": "+91 70029 48484",
+    "businessHours": "Mon - Sat: 10:00 AM - 7:00 PM (IST)",
     "studioAddress": "Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali",
     "city": "Guwahati",
     "state": "Assam",
@@ -1188,17 +1381,96 @@
     "taxRatePercent": 18,
     "standardShippingFee": 1500,
     "freeShippingThreshold": 50000,
+    "gstinNumber": "18AAECB4848F1ZX",
+    "minOrderValue": 0,
     "socialInstagram": "https://instagram.com/balajiatelier",
     "socialPinterest": "https://pinterest.com/balajiatelier",
     "socialLinkedin": "https://linkedin.com/company/balaji-atelier",
+    "socialFacebook": "https://facebook.com/balajiarchitects",
     "announcementBanner": {
       "enabled": true,
       "text": "Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions",
       "linkUrl": "/quote"
+    },
+    "homepage": {
+      "heroEyebrow": "Architecture • Interior Studio • Material Curation",
+      "heroHeadingLine1": "BESPOKE ARCHITECTURE.",
+      "heroHeadingLine2": "ARCHITECTURE.",
+      "heroHeadingLine3": "MATERIALS.",
+      "heroDescription": "Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "heroPrimaryBtnText": "Explore Projects",
+      "heroPrimaryBtnLink": "/projects",
+      "heroSecondaryBtnText": "Explore Materials",
+      "heroSecondaryBtnLink": "/materials",
+      "trustBadge1": "★ 5.0 (22 Google Reviews)",
+      "trustBadge2": "Guwahati Studio Office",
+      "trustBadge3": "Turnkey Architecture",
+      "trustBadge4": "Pan-India Material Logistics",
+      "introEyebrow": "The Atelier Philosophy",
+      "introHeading": "Restraint is the ultimate form of luxury.",
+      "introParagraph1": "Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.",
+      "introParagraph2": "Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.",
+      "introImageUrl": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "stat1Value": "14+",
+      "stat1Label": "Years of Practice",
+      "stat2Value": "180+",
+      "stat2Label": "Projects Handed Over",
+      "stat3Value": "22+",
+      "stat3Label": "Global Quarry Partners",
+      "ctaHeading": "Commission an Architectural Dialogue",
+      "ctaDescription": "Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.",
+      "ctaBtnText": "Request Consultation & Quote",
+      "ctaBtnLink": "/quote",
+      "heroTitle": "Updated Test Title"
+    },
+    "paymentGateway": {
+      "enabled": true,
+      "gatewayName": "Balaji PG",
+      "methodName": "Balaji QR Payment",
+      "upiId": "6000149918@fam",
+      "merchantName": "Balaji Architect & Interiors",
+      "instructions": "1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee \"Balaji Architect & Interiors\" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.",
+      "qrExpiryMinutes": 10,
+      "enableGPay": true,
+      "enablePhonePe": true,
+      "enablePaytm": true,
+      "enableBhim": true,
+      "enableCred": true,
+      "enableAmazonPay": true,
+      "requireUtr": true
     }
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873109221",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "79448d74-d243-4035-9f11-81863ca49d67",
+      "createdAt": "2026-09-08T13:11:49.246Z"
+    },
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873049641",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "095e049a-c1f1-40d4-999b-7033464409b7",
+      "createdAt": "2026-09-08T13:10:49.675Z"
+    },
     {
       "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
       "adminEmail": "vicks@balaji.com",
@@ -1410,11 +1682,9 @@
 
 ---
 
-### `next-env.d.ts`
+### <a id="next-env-d-ts"></a>`next-env.d.ts`
 
-- **File**: `next-env.d.ts`
-- **Size**: 0.2 KB (6 lines)
-- **Language**: `typescript`
+> **Lines**: 6 • **Size**: 0.2 KB
 
 ```typescript
 /// <reference types="next" />
@@ -1426,11 +1696,9 @@
 
 ---
 
-### `next.config.js`
+### <a id="next-config-js"></a>`next.config.js`
 
-- **File**: `next.config.js`
-- **Size**: 0.5 KB (23 lines)
-- **Language**: `javascript`
+> **Lines**: 23 • **Size**: 0.5 KB
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -1459,11 +1727,9 @@ module.exports = nextConfig;
 
 ---
 
-### `package.json`
+### <a id="package-json"></a>`package.json`
 
-- **File**: `package.json`
-- **Size**: 0.9 KB (38 lines)
-- **Language**: `json`
+> **Lines**: 38 • **Size**: 0.9 KB
 
 ```json
 {
@@ -1507,11 +1773,9 @@ module.exports = nextConfig;
 
 ---
 
-### `postcss.config.js`
+### <a id="postcss-config-js"></a>`postcss.config.js`
 
-- **File**: `postcss.config.js`
-- **Size**: 0.1 KB (7 lines)
-- **Language**: `javascript`
+> **Lines**: 7 • **Size**: 0.1 KB
 
 ```javascript
 module.exports = {
@@ -1524,11 +1788,9 @@ module.exports = {
 
 ---
 
-### `public/manifest.json`
+### <a id="public-manifest-json"></a>`public/manifest.json`
 
-- **File**: `public/manifest.json`
-- **Size**: 1.2 KB (53 lines)
-- **Language**: `json`
+> **Lines**: 53 • **Size**: 1.2 KB
 
 ```json
 {
@@ -1587,11 +1849,9 @@ module.exports = {
 
 ---
 
-### `public/sw.js`
+### <a id="public-sw-js"></a>`public/sw.js`
 
-- **File**: `public/sw.js`
-- **Size**: 1.1 KB (36 lines)
-- **Language**: `javascript`
+> **Lines**: 36 • **Size**: 1.1 KB
 
 ```javascript
 // Balaji Architect & Interiors Service Worker - Realtime Order & Quote Notifications
@@ -1633,11 +1893,148 @@ self.addEventListener('notificationclick', function (event) {
 
 ---
 
-### `scripts/seed-supabase.ts`
+### <a id="scripts-build-complete-master-codebase-js"></a>`scripts/build-complete-master-codebase.js`
 
-- **File**: `scripts/seed-supabase.ts`
-- **Size**: 7.3 KB (203 lines)
-- **Language**: `typescript`
+> **Lines**: 131 • **Size**: 4.8 KB
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+
+const rootDir = path.resolve(__dirname, '..');
+
+const allowedExts = new Set(['.ts', '.tsx', '.js', '.jsx', '.json', '.sql', '.css', '.html', '.md']);
+const ignoreDirs = new Set(['node_modules', '.git', '.next', '.gemini', 'dist', 'build', 'out', 'scratch']);
+const ignoreFiles = new Set([
+  'package-lock.json',
+  'build-complete-master-codebase.js',
+  '.DS_Store',
+  'tsconfig.tsbuildinfo',
+]);
+
+function shouldIgnoreFile(fileName) {
+  if (ignoreFiles.has(fileName)) return true;
+  if (fileName.startsWith('MASTER_CODEBASE')) return true;
+  if (fileName.startsWith('codebase')) return true;
+  if (fileName.startsWith('.env')) return true;
+  if (fileName.endsWith('.log')) return true;
+  if (fileName.startsWith('test-device-')) return true;
+  return false;
+}
+
+function collectFiles(dir, acc = []) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (!ignoreDirs.has(entry.name)) {
+        collectFiles(fullPath, acc);
+      }
+    } else if (entry.isFile()) {
+      const ext = path.extname(entry.name);
+      if (allowedExts.has(ext) && !shouldIgnoreFile(entry.name)) {
+        acc.push(fullPath);
+      }
+    }
+  }
+  return acc;
+}
+
+function getLang(ext) {
+  switch (ext) {
+    case '.ts': return 'typescript';
+    case '.tsx': return 'tsx';
+    case '.js': return 'javascript';
+    case '.jsx': return 'jsx';
+    case '.json': return 'json';
+    case '.sql': return 'sql';
+    case '.css': return 'css';
+    case '.html': return 'html';
+    case '.md': return 'markdown';
+    default: return 'text';
+  }
+}
+
+function buildMasterCodebase() {
+  const allFiles = collectFiles(rootDir);
+
+  // Logical sorting order
+  allFiles.sort((a, b) => {
+    const relA = path.relative(rootDir, a).replace(/\\/g, '/');
+    const relB = path.relative(rootDir, b).replace(/\\/g, '/');
+    return relA.localeCompare(relB);
+  });
+
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+
+  let output = `# BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
+> **Version**: \`MASTER_CODEBASE(${timestamp})\`  
+> **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
+> **Brand**: BALAJI ARCHITECT & INTERIORS  
+> **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
+> **Direct Contact**: +91 70029 48484 | atelier@balaji-interior.com  
+> **Google Rating**: ★ 5.0 (22 Google Reviews)  
+> **Repository**: https://github.com/balajiwebdevelop-hash/Balaji_Web_Dev  
+> **Total Source Files Included**: ${allFiles.length}
+
+---
+
+## INDEX OF ALL SOURCE FILES
+
+`;
+
+  allFiles.forEach((file, idx) => {
+    const relPath = path.relative(rootDir, file).replace(/\\/g, '/');
+    const anchor = relPath.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    output += `${idx + 1}. [\`${relPath}\`](#${anchor})\n`;
+  });
+
+  output += `\n---\n\n## COMPLETE SOURCE CODE REPOSITORY\n\n`;
+
+  allFiles.forEach((file) => {
+    const relPath = path.relative(rootDir, file).replace(/\\/g, '/');
+    const content = fs.readFileSync(file, 'utf-8');
+    const ext = path.extname(file);
+    const lang = getLang(ext);
+    const lineCount = content.split('\n').length;
+    const sizeKb = (Buffer.byteLength(content, 'utf-8') / 1024).toFixed(1);
+
+    output += `### \`${relPath}\`\n\n`;
+    output += `- **File**: \`${relPath}\`\n`;
+    output += `- **Size**: ${sizeKb} KB (${lineCount} lines)\n`;
+    output += `- **Language**: \`${lang}\`\n\n`;
+    output += '```' + lang + '\n';
+    output += content;
+    if (!content.endsWith('\n')) output += '\n';
+    output += '```\n\n---\n\n';
+  });
+
+  // Write to codebase.md
+  const codebasePath = path.join(rootDir, 'codebase.md');
+  fs.writeFileSync(codebasePath, output, 'utf-8');
+  console.log(`Generated codebase.md with ${allFiles.length} files (${(fs.statSync(codebasePath).size / 1024).toFixed(1)} KB)`);
+
+  // Write to MASTER_CODEBASE.md
+  const masterCodebasePath = path.join(rootDir, 'MASTER_CODEBASE.md');
+  fs.writeFileSync(masterCodebasePath, output, 'utf-8');
+  console.log(`Generated MASTER_CODEBASE.md with ${allFiles.length} files (${(fs.statSync(masterCodebasePath).size / 1024).toFixed(1)} KB)`);
+
+  // Write to timestamped MASTER_CODEBASE(YYYYMMDD-HHmmss).md
+  const timestampedPath = path.join(rootDir, `MASTER_CODEBASE(${timestamp}).md`);
+  fs.writeFileSync(timestampedPath, output, 'utf-8');
+  console.log(`Generated ${path.basename(timestampedPath)} with ${allFiles.length} files (${(fs.statSync(timestampedPath).size / 1024).toFixed(1)} KB)`);
+}
+
+buildMasterCodebase();
+```
+
+---
+
+### <a id="scripts-seed-supabase-ts"></a>`scripts/seed-supabase.ts`
+
+> **Lines**: 203 • **Size**: 7.3 KB
 
 ```typescript
 import { createClient } from '@supabase/supabase-js';
@@ -1846,11 +2243,9 @@ runSeed();
 
 ---
 
-### `scripts/test-architecture-refactor.ts`
+### <a id="scripts-test-architecture-refactor-ts"></a>`scripts/test-architecture-refactor.ts`
 
-- **File**: `scripts/test-architecture-refactor.ts`
-- **Size**: 8.3 KB (236 lines)
-- **Language**: `typescript`
+> **Lines**: 236 • **Size**: 8.3 KB
 
 ```typescript
 import {
@@ -2092,11 +2487,9 @@ runArchitectureTests().catch((err) => {
 
 ---
 
-### `scripts/verify-production.ts`
+### <a id="scripts-verify-production-ts"></a>`scripts/verify-production.ts`
 
-- **File**: `scripts/verify-production.ts`
-- **Size**: 10.3 KB (291 lines)
-- **Language**: `typescript`
+> **Lines**: 291 • **Size**: 10.3 KB
 
 ```typescript
 import fs from 'fs';
@@ -2393,11 +2786,9 @@ runAllTests().catch((err) => {
 
 ---
 
-### `src/app/about/page.tsx`
+### <a id="src-app-about-page-tsx"></a>`src/app/about/page.tsx`
 
-- **File**: `src/app/about/page.tsx`
-- **Size**: 10.0 KB (210 lines)
-- **Language**: `tsx`
+> **Lines**: 210 • **Size**: 10.0 KB
 
 ```tsx
 import React from 'react';
@@ -2613,11 +3004,9 @@ export default function AboutPage() {
 
 ---
 
-### `src/app/account/page.tsx`
+### <a id="src-app-account-page-tsx"></a>`src/app/account/page.tsx`
 
-- **File**: `src/app/account/page.tsx`
-- **Size**: 10.3 KB (257 lines)
-- **Language**: `tsx`
+> **Lines**: 257 • **Size**: 10.3 KB
 
 ```tsx
 'use client';
@@ -2880,11 +3269,9 @@ export default function AccountPage() {
 
 ---
 
-### `src/app/admin/audit-logs/page.tsx`
+### <a id="src-app-admin-audit-logs-page-tsx"></a>`src/app/admin/audit-logs/page.tsx`
 
-- **File**: `src/app/admin/audit-logs/page.tsx`
-- **Size**: 5.9 KB (134 lines)
-- **Language**: `tsx`
+> **Lines**: 134 • **Size**: 5.9 KB
 
 ```tsx
 'use client';
@@ -3024,11 +3411,9 @@ export default function AdminAuditLogsPage() {
 
 ---
 
-### `src/app/admin/categories/page.tsx`
+### <a id="src-app-admin-categories-page-tsx"></a>`src/app/admin/categories/page.tsx`
 
-- **File**: `src/app/admin/categories/page.tsx`
-- **Size**: 12.3 KB (304 lines)
-- **Language**: `tsx`
+> **Lines**: 304 • **Size**: 12.3 KB
 
 ```tsx
 'use client';
@@ -3338,16 +3723,15 @@ export default function AdminCategoriesPage() {
 
 ---
 
-### `src/app/admin/customers/page.tsx`
+### <a id="src-app-admin-customers-page-tsx"></a>`src/app/admin/customers/page.tsx`
 
-- **File**: `src/app/admin/customers/page.tsx`
-- **Size**: 6.0 KB (156 lines)
-- **Language**: `tsx`
+> **Lines**: 174 • **Size**: 6.5 KB
 
 ```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Users, Search, ShoppingBag, Mail, Phone, MapPin } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order } from '@/types';
@@ -3362,10 +3746,19 @@ interface AggregatedCustomer {
   lastOrderDate: string;
 }
 
-export default function AdminCustomersPage() {
+function AdminCustomersContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams?.get('search') || searchParams?.get('id') || '';
+
   const [customers, setCustomers] = useState<AggregatedCustomer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialQuery);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setSearch(initialQuery);
+    }
+  }, [initialQuery]);
 
   useEffect(() => {
     async function loadCustomers() {
@@ -3500,15 +3893,21 @@ export default function AdminCustomersPage() {
     </AdminLayout>
   );
 }
+
+export default function AdminCustomersPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading client directory...</div>}>
+      <AdminCustomersContent />
+    </Suspense>
+  );
+}
 ```
 
 ---
 
-### `src/app/admin/employees/page.tsx`
+### <a id="src-app-admin-employees-page-tsx"></a>`src/app/admin/employees/page.tsx`
 
-- **File**: `src/app/admin/employees/page.tsx`
-- **Size**: 33.8 KB (780 lines)
-- **Language**: `tsx`
+> **Lines**: 781 • **Size**: 33.9 KB
 
 ```tsx
 'use client';
@@ -3559,11 +3958,12 @@ export default function EmployeeManagementPage() {
   const [status, setStatus] = useState<'active' | 'disabled'>('active');
   const generateSecurePassword = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-    let generated = '';
-    for (let i = 0; i < 10; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    if (typeof window !== 'undefined' && window.crypto) {
+      const array = new Uint32Array(12);
+      window.crypto.getRandomValues(array);
+      return Array.from(array, (x) => chars[x % chars.length]).join('');
     }
-    return generated;
+    return 'Balaji#Atelier2026!';
   };
 
   const [tempPassword, setTempPassword] = useState(generateSecurePassword);
@@ -4294,28 +4694,36 @@ export default function EmployeeManagementPage() {
 
 ---
 
-### `src/app/admin/inventory/page.tsx`
+### <a id="src-app-admin-inventory-page-tsx"></a>`src/app/admin/inventory/page.tsx`
 
-- **File**: `src/app/admin/inventory/page.tsx`
-- **Size**: 14.4 KB (318 lines)
-- **Language**: `tsx`
+> **Lines**: 353 • **Size**: 15.4 KB
 
 ```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Boxes, AlertTriangle, Check, Search, Save, RefreshCw } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Product } from '@/types';
 
-export default function AdminInventoryPage() {
+function AdminInventoryContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams?.get('search') || searchParams?.get('id') || '';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [stockChanges, setStockChanges] = useState<Record<string, number>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [saveSuccessId, setSaveSuccessId] = useState<string | null>(null);
   const [filterLowOnly, setFilterLowOnly] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearch(initialSearch);
+    }
+  }, [initialSearch]);
 
   const loadProducts = async () => {
     try {
@@ -4336,35 +4744,52 @@ export default function AdminInventoryPage() {
   }, []);
 
   const handleStockInputChange = (productId: string, val: number) => {
+    const sanitized = isNaN(val) ? 0 : Math.max(0, Math.floor(val));
     setStockChanges({
       ...stockChanges,
-      [productId]: val,
+      [productId]: sanitized,
     });
   };
 
   const handleSaveStock = async (product: Product) => {
-    const newStock = stockChanges[product.id] !== undefined ? stockChanges[product.id] : product.stock;
+    const rawStock = stockChanges[product.id] !== undefined ? stockChanges[product.id] : product.stock;
+    const numStock = Number(rawStock);
+
+    if (isNaN(numStock) || numStock < 0 || !Number.isInteger(numStock)) {
+      alert('Stock quantity must be a non-negative whole integer.');
+      return;
+    }
+
     setSavingId(product.id);
 
     try {
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stock: Number(newStock) }),
+        body: JSON.stringify({
+          stock: numStock,
+          expectedUpdatedAt: product.updatedAt,
+        }),
       });
 
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success && data.product) {
+      if (res.status === 409) {
+        alert(
+          'Concurrent Modification Detected: Another administrator updated this product while you were viewing it. Refreshing current inventory data...'
+        );
+        await loadProducts();
+        return;
+      }
+      if (res.ok && data.product) {
         setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);
         setTimeout(() => setSaveSuccessId(null), 2500);
-      } else if (res.ok) {
-        setProducts((prev) => prev.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
-        setSaveSuccessId(product.id);
-        setTimeout(() => setSaveSuccessId(null), 2500);
+      } else {
+        alert(`Failed to update stock: ${data.error || 'Server error'}`);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to update stock', e);
+      alert(`Network error updating stock: ${e.message}`);
     } finally {
       setSavingId(null);
     }
@@ -4618,15 +5043,21 @@ export default function AdminInventoryPage() {
     </AdminLayout>
   );
 }
+
+export default function AdminInventoryPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading inventory records...</div>}>
+      <AdminInventoryContent />
+    </Suspense>
+  );
+}
 ```
 
 ---
 
-### `src/app/admin/login/page.tsx`
+### <a id="src-app-admin-login-page-tsx"></a>`src/app/admin/login/page.tsx`
 
-- **File**: `src/app/admin/login/page.tsx`
-- **Size**: 9.8 KB (232 lines)
-- **Language**: `tsx`
+> **Lines**: 232 • **Size**: 9.8 KB
 
 ```tsx
 'use client';
@@ -4864,11 +5295,9 @@ export default function AdminLoginPage() {
 
 ---
 
-### `src/app/admin/orders/page.tsx`
+### <a id="src-app-admin-orders-page-tsx"></a>`src/app/admin/orders/page.tsx`
 
-- **File**: `src/app/admin/orders/page.tsx`
-- **Size**: 23.4 KB (519 lines)
-- **Language**: `tsx`
+> **Lines**: 544 • **Size**: 24.5 KB
 
 ```tsx
 'use client';
@@ -4939,8 +5368,33 @@ function AdminOrdersContent() {
           'postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           (payload: any) => {
-            // Immediately reload orders on any new order insertion or status update
-            loadOrders();
+            if (payload.eventType === 'UPDATE' && payload.new) {
+              const updatedRow = payload.new;
+              setOrders((prev) =>
+                prev.map((o) =>
+                  o.id === updatedRow.id
+                    ? {
+                        ...o,
+                        orderStatus: updatedRow.order_status || o.orderStatus,
+                        paymentStatus: updatedRow.payment_status || o.paymentStatus,
+                        updatedAt: updatedRow.updated_at || o.updatedAt,
+                      }
+                    : o
+                )
+              );
+              setSelectedOrder((prev: any) => {
+                if (!prev || prev.id !== updatedRow.id) return prev;
+                return {
+                  ...prev,
+                  orderStatus: updatedRow.order_status || prev.orderStatus,
+                  paymentStatus: updatedRow.payment_status || prev.paymentStatus,
+                  updatedAt: updatedRow.updated_at || prev.updatedAt,
+                };
+              });
+            } else {
+              // Immediately reload orders on new order insertion or other events
+              loadOrders();
+            }
 
             // If browser notifications are permitted, display order alert
             if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
@@ -5393,11 +5847,9 @@ export default function AdminOrdersPage() {
 
 ---
 
-### `src/app/admin/page.tsx`
+### <a id="src-app-admin-page-tsx"></a>`src/app/admin/page.tsx`
 
-- **File**: `src/app/admin/page.tsx`
-- **Size**: 22.5 KB (482 lines)
-- **Language**: `tsx`
+> **Lines**: 482 • **Size**: 22.5 KB
 
 ```tsx
 'use client';
@@ -5885,16 +6337,15 @@ export default function AdminDashboardPage() {
 
 ---
 
-### `src/app/admin/products/page.tsx`
+### <a id="src-app-admin-products-page-tsx"></a>`src/app/admin/products/page.tsx`
 
-- **File**: `src/app/admin/products/page.tsx`
-- **Size**: 29.4 KB (683 lines)
-- **Language**: `tsx`
+> **Lines**: 710 • **Size**: 30.2 KB
 
 ```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import {
   Plus,
@@ -5913,7 +6364,10 @@ import { AdminLayout } from '@/components/AdminLayout';
 import { ImageUploader } from '@/components/ImageUploader';
 import { Product, Category, UnitType, PurchaseMode } from '@/types';
 
-export default function AdminProductsPage() {
+function AdminProductsContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || searchParams?.get('highlight') || null;
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -5977,23 +6431,29 @@ export default function AdminProductsPage() {
   const openCreateModal = () => {
     setEditingProduct(null);
     setName('');
-    setSku(`MAT-${Math.floor(100 + Math.random() * 900)}`);
+    const randSuffix =
+      typeof window !== 'undefined' && window.crypto
+        ? Array.from(window.crypto.getRandomValues(new Uint8Array(2)), (b) => b.toString(16).padStart(2, '0'))
+            .join('')
+            .toUpperCase()
+        : '01';
+    setSku(`MAT-${randSuffix}`);
     setBrand('Balaji Architect & Interiors');
     setCategoryId(categories[0]?.id || '');
     setSubcategory('');
     setDescription('');
-    setPrice(850);
+    setPrice(0);
     setSalePrice(undefined);
     setUnit('sq ft');
-    setMoq(50);
-    setStock(500);
+    setMoq(1);
+    setStock(0);
     setPurchaseMode('BUY_NOW');
     setLeadTime('3-5 business days');
     setDimensions('');
     setThickness('');
     setMaterial('');
     setFinish('');
-    setImages(['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80']);
+    setImages([]);
     setPublished(true);
     setIsFeatured(false);
     setFormError(null);
@@ -6025,6 +6485,15 @@ export default function AdminProductsPage() {
     setFormError(null);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (highlightId && products.length > 0 && !isModalOpen) {
+      const match = products.find((p) => p.id === highlightId || p.sku === highlightId);
+      if (match) {
+        openEditModal(match);
+      }
+    }
+  }, [highlightId, products]);
 
   // Targeted Partial Update (Stock / Published toggle)
   const handleTogglePublish = async (p: Product) => {
@@ -6574,15 +7043,21 @@ export default function AdminProductsPage() {
     </AdminLayout>
   );
 }
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading materials catalog...</div>}>
+      <AdminProductsContent />
+    </Suspense>
+  );
+}
 ```
 
 ---
 
-### `src/app/admin/projects/page.tsx`
+### <a id="src-app-admin-projects-page-tsx"></a>`src/app/admin/projects/page.tsx`
 
-- **File**: `src/app/admin/projects/page.tsx`
-- **Size**: 17.9 KB (437 lines)
-- **Language**: `tsx`
+> **Lines**: 437 • **Size**: 17.9 KB
 
 ```tsx
 'use client';
@@ -7025,21 +7500,23 @@ export default function AdminProjectsPage() {
 
 ---
 
-### `src/app/admin/quotes/page.tsx`
+### <a id="src-app-admin-quotes-page-tsx"></a>`src/app/admin/quotes/page.tsx`
 
-- **File**: `src/app/admin/quotes/page.tsx`
-- **Size**: 16.2 KB (344 lines)
-- **Language**: `tsx`
+> **Lines**: 364 • **Size**: 16.9 KB
 
 ```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FileText, Eye, Check, X, RefreshCw, Send, DollarSign, Clock } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Quote, QuoteStatus } from '@/types';
 
-export default function AdminQuotesPage() {
+function AdminQuotesContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || null;
+
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
@@ -7047,12 +7524,26 @@ export default function AdminQuotesPage() {
   const [adminNotesInput, setAdminNotesInput] = useState('');
   const [updating, setUpdating] = useState(false);
 
+  const openQuoteModal = (q: Quote) => {
+    setSelectedQuote(q);
+    setQuotedAmountInput(q.totalQuotedAmount || '');
+    setAdminNotesInput(q.adminNotes || '');
+  };
+
   const loadQuotes = async () => {
     try {
       const res = await fetch('/api/quotes', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
-        setQuotes(d.quotes || []);
+        const qts: Quote[] = d.quotes || [];
+        setQuotes(qts);
+
+        if (highlightId) {
+          const match = qts.find((q) => q.id === highlightId || q.quoteNumber === highlightId);
+          if (match) {
+            openQuoteModal(match);
+          }
+        }
       }
     } catch (e) {
       console.error(e);
@@ -7063,13 +7554,7 @@ export default function AdminQuotesPage() {
 
   useEffect(() => {
     loadQuotes();
-  }, []);
-
-  const openQuoteModal = (q: Quote) => {
-    setSelectedQuote(q);
-    setQuotedAmountInput(q.totalQuotedAmount || '');
-    setAdminNotesInput(q.adminNotes || '');
-  };
+  }, [highlightId]);
 
   const handleUpdateQuote = async (status: QuoteStatus) => {
     if (!selectedQuote) return;
@@ -7375,15 +7860,21 @@ export default function AdminQuotesPage() {
     </AdminLayout>
   );
 }
+
+export default function AdminQuotesPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading quote dossiers...</div>}>
+      <AdminQuotesContent />
+    </Suspense>
+  );
+}
 ```
 
 ---
 
-### `src/app/admin/services/page.tsx`
+### <a id="src-app-admin-services-page-tsx"></a>`src/app/admin/services/page.tsx`
 
-- **File**: `src/app/admin/services/page.tsx`
-- **Size**: 13.7 KB (342 lines)
-- **Language**: `tsx`
+> **Lines**: 342 • **Size**: 13.7 KB
 
 ```tsx
 'use client';
@@ -7731,11 +8222,9 @@ export default function AdminServicesPage() {
 
 ---
 
-### `src/app/admin/settings/page.tsx`
+### <a id="src-app-admin-settings-page-tsx"></a>`src/app/admin/settings/page.tsx`
 
-- **File**: `src/app/admin/settings/page.tsx`
-- **Size**: 68.2 KB (1340 lines)
-- **Language**: `tsx`
+> **Lines**: 1340 • **Size**: 68.2 KB
 
 ```tsx
 'use client';
@@ -9081,11 +9570,9 @@ export default function AdminSettingsPage() {
 
 ---
 
-### `src/app/api/admin/analytics/dashboard/route.ts`
+### <a id="src-app-api-admin-analytics-dashboard-route-ts"></a>`src/app/api/admin/analytics/dashboard/route.ts`
 
-- **File**: `src/app/api/admin/analytics/dashboard/route.ts`
-- **Size**: 9.0 KB (268 lines)
-- **Language**: `typescript`
+> **Lines**: 280 • **Size**: 9.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9262,27 +9749,39 @@ export async function GET(req: NextRequest) {
     const totalInventoryValuation = products.reduce((sum, p) => sum + (p.price * p.stock || 0), 0);
     const averageOrderValue = filteredOrders.length > 0 ? Math.round(periodRevenue / filteredOrders.length) : 0;
 
-    // Monthly Sales Graph (Last 6 intervals)
+    // Monthly Sales Graph (Last 6 intervals, timezone and year-boundary accurate)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const buckets: { [key: string]: number } = {};
-    const d = new Date();
+    const nowRef = new Date();
+    const intervals: Array<{ key: string; label: string; year: number; month: number; val: number }> = [];
     for (let i = 5; i >= 0; i--) {
-      const monthIdx = (d.getMonth() - i + 12) % 12;
-      buckets[months[monthIdx]] = 0;
+      const date = new Date(nowRef.getFullYear(), nowRef.getMonth() - i, 1);
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      intervals.push({
+        key: `${y}-${m}`,
+        label: months[m],
+        year: y,
+        month: m,
+        val: 0,
+      });
     }
 
+    const intervalMap = new Map(intervals.map((it) => [it.key, it]));
+
     orders.forEach((o) => {
-      const ordMonth = months[new Date(o.createdAt).getMonth()];
-      if (buckets[ordMonth] !== undefined) {
-        buckets[ordMonth] += o.totalAmount || 0;
+      const od = new Date(o.createdAt);
+      const key = `${od.getFullYear()}-${od.getMonth()}`;
+      const item = intervalMap.get(key);
+      if (item) {
+        item.val += o.totalAmount || 0;
       }
     });
 
-    const maxVal = Math.max(...Object.values(buckets), 100000);
-    const salesGraphData = Object.entries(buckets).map(([label, val]) => ({
-      label,
-      val,
-      heightPercent: Math.max(12, Math.round((val / maxVal) * 100)),
+    const maxVal = Math.max(...intervals.map((it) => it.val), 100000);
+    const salesGraphData = intervals.map((it) => ({
+      label: it.label,
+      val: it.val,
+      heightPercent: Math.max(12, Math.round((it.val / maxVal) * 100)),
     }));
 
     // Category Sales Breakdown
@@ -9359,11 +9858,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/audit-logs/route.ts`
+### <a id="src-app-api-admin-audit-logs-route-ts"></a>`src/app/api/admin/audit-logs/route.ts`
 
-- **File**: `src/app/api/admin/audit-logs/route.ts`
-- **Size**: 1.4 KB (45 lines)
-- **Language**: `typescript`
+> **Lines**: 45 • **Size**: 1.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9414,11 +9911,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/employees/[id]/route.ts`
+### <a id="src-app-api-admin-employees-id-route-ts"></a>`src/app/api/admin/employees/[id]/route.ts`
 
-- **File**: `src/app/api/admin/employees/[id]/route.ts`
-- **Size**: 2.7 KB (82 lines)
-- **Language**: `typescript`
+> **Lines**: 82 • **Size**: 2.7 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9506,11 +10001,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### `src/app/api/admin/employees/route.ts`
+### <a id="src-app-api-admin-employees-route-ts"></a>`src/app/api/admin/employees/route.ts`
 
-- **File**: `src/app/api/admin/employees/route.ts`
-- **Size**: 2.0 KB (63 lines)
-- **Language**: `typescript`
+> **Lines**: 63 • **Size**: 2.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9579,11 +10072,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/export/route.ts`
+### <a id="src-app-api-admin-export-route-ts"></a>`src/app/api/admin/export/route.ts`
 
-- **File**: `src/app/api/admin/export/route.ts`
-- **Size**: 5.1 KB (125 lines)
-- **Language**: `typescript`
+> **Lines**: 125 • **Size**: 5.1 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9714,11 +10205,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/notifications/test/route.ts`
+### <a id="src-app-api-admin-notifications-test-route-ts"></a>`src/app/api/admin/notifications/test/route.ts`
 
-- **File**: `src/app/api/admin/notifications/test/route.ts`
-- **Size**: 0.5 KB (18 lines)
-- **Language**: `typescript`
+> **Lines**: 18 • **Size**: 0.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9742,11 +10231,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/search/route.ts`
+### <a id="src-app-api-admin-search-route-ts"></a>`src/app/api/admin/search/route.ts`
 
-- **File**: `src/app/api/admin/search/route.ts`
-- **Size**: 5.9 KB (170 lines)
-- **Language**: `typescript`
+> **Lines**: 236 • **Size**: 7.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9821,7 +10308,7 @@ export async function GET(req: NextRequest) {
           title: p.name,
           subtitle: `SKU: ${p.sku} • ₹${Number(p.price).toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
           type: 'product',
-          href: `/admin/products?highlight=${p.id}`,
+          href: `/admin/products?id=${p.id}`,
           badge: `${p.stock} in stock`,
         });
       });
@@ -9833,7 +10320,7 @@ export async function GET(req: NextRequest) {
           title: `Order #${o.order_number}`,
           subtitle: `${o.customer_name} • ₹${Number(o.total_amount).toLocaleString('en-IN')} • ${o.order_status}`,
           type: 'order',
-          href: `/admin/orders?orderId=${o.id}`,
+          href: `/admin/orders?id=${o.id}`,
           badge: o.order_status,
         });
       });
@@ -9845,7 +10332,7 @@ export async function GET(req: NextRequest) {
           title: `Quote #${q.quote_number || 'QT'} — ${q.customer_name}`,
           subtitle: `${q.project_type || 'Architecture'} • ${q.project_location || 'Guwahati'} • ${q.status}`,
           type: 'quote',
-          href: `/admin/quotes?quoteId=${q.id}`,
+          href: `/admin/quotes?id=${q.id}`,
           badge: q.status,
         });
       });
@@ -9857,7 +10344,7 @@ export async function GET(req: NextRequest) {
           title: c.full_name,
           subtitle: `${c.email} • ${c.phone || 'No phone'}`,
           type: 'customer',
-          href: `/admin/customers?search=${encodeURIComponent(c.email)}`,
+          href: `/admin/customers?id=${c.id}`,
           badge: 'Client',
         });
       });
@@ -9869,7 +10356,7 @@ export async function GET(req: NextRequest) {
           title: pr.title,
           subtitle: `${pr.project_type} • ${pr.location} (${pr.year})`,
           type: 'project',
-          href: `/admin/projects?projectId=${pr.id}`,
+          href: `/admin/projects?id=${pr.id}`,
           badge: pr.is_published ? 'Published' : 'Draft',
         });
       });
@@ -9906,8 +10393,74 @@ export async function GET(req: NextRequest) {
           title: p.name,
           subtitle: `SKU: ${p.sku} • ₹${p.price.toLocaleString('en-IN')}/${p.unit}`,
           type: 'product',
-          href: `/admin/products?highlight=${p.id}`,
+          href: `/admin/products?id=${p.id}`,
           badge: `${p.stock} in stock`,
+        });
+      }
+    }
+
+    for (const o of orders) {
+      if (
+        (o.orderNumber && o.orderNumber.toLowerCase().includes(query)) ||
+        (o.customerName && o.customerName.toLowerCase().includes(query)) ||
+        (o.customerEmail && o.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: o.id,
+          title: `Order #${o.orderNumber}`,
+          subtitle: `${o.customerName} • ₹${o.totalAmount.toLocaleString('en-IN')} • ${o.orderStatus}`,
+          type: 'order',
+          href: `/admin/orders?id=${o.id}`,
+          badge: o.orderStatus,
+        });
+      }
+    }
+
+    for (const q of quotes) {
+      if (
+        (q.quoteNumber && q.quoteNumber.toLowerCase().includes(query)) ||
+        (q.customerName && q.customerName.toLowerCase().includes(query)) ||
+        (q.customerEmail && q.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: q.id,
+          title: `Quote #${q.quoteNumber || 'QT'} — ${q.customerName}`,
+          subtitle: `${q.projectType || 'Architecture'} • ${q.status}`,
+          type: 'quote',
+          href: `/admin/quotes?id=${q.id}`,
+          badge: q.status,
+        });
+      }
+    }
+
+    for (const c of customers) {
+      if (
+        (c.fullName && c.fullName.toLowerCase().includes(query)) ||
+        (c.email && c.email.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: c.id,
+          title: c.fullName,
+          subtitle: `${c.email} • ${c.phone || 'No phone'}`,
+          type: 'customer',
+          href: `/admin/customers?id=${c.id}`,
+          badge: 'Client',
+        });
+      }
+    }
+
+    for (const pr of projects) {
+      if (
+        (pr.title && pr.title.toLowerCase().includes(query)) ||
+        (pr.location && pr.location.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: pr.id,
+          title: pr.title,
+          subtitle: `${pr.projectType} • ${pr.location}`,
+          type: 'project',
+          href: `/admin/projects?id=${pr.id}`,
+          badge: pr.isPublished ? 'Published' : 'Draft',
         });
       }
     }
@@ -9922,11 +10475,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/settings/route.ts`
+### <a id="src-app-api-admin-settings-route-ts"></a>`src/app/api/admin/settings/route.ts`
 
-- **File**: `src/app/api/admin/settings/route.ts`
-- **Size**: 2.3 KB (79 lines)
-- **Language**: `typescript`
+> **Lines**: 79 • **Size**: 2.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10011,11 +10562,116 @@ export async function PATCH(req: NextRequest) {
 
 ---
 
-### `src/app/api/admin/upload/route.ts`
+### <a id="src-app-api-admin-summary-route-ts"></a>`src/app/api/admin/summary/route.ts`
 
-- **File**: `src/app/api/admin/upload/route.ts`
-- **Size**: 5.7 KB (180 lines)
-- **Language**: `typescript`
+> **Lines**: 99 • **Size**: 2.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
+import { getOrders, getQuotes, getProducts } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+interface SummaryData {
+  pendingOrders: number;
+  pendingQuotes: number;
+  lowStock: number;
+  recentActivity: number;
+}
+
+let cachedSummary: { data: SummaryData; timestamp: number } | null = null;
+const SUMMARY_CACHE_TTL_MS = 15 * 1000; // 15 seconds
+
+export async function GET(req: NextRequest) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
+  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+  const now = Date.now();
+
+  if (!forceRefresh && cachedSummary && now - cachedSummary.timestamp < SUMMARY_CACHE_TTL_MS) {
+    return NextResponse.json({
+      success: true,
+      ...cachedSummary.data,
+      cached: true,
+    });
+  }
+
+  try {
+    let pendingOrders = 0;
+    let pendingQuotes = 0;
+    let lowStock = 0;
+
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+
+      const [ordRes, qtRes, prodRes] = await Promise.all([
+        supabase
+          .from('orders')
+          .select('id', { count: 'exact', head: true })
+          .in('order_status', ['Pending', 'Confirmed']),
+        supabase
+          .from('quotes')
+          .select('id', { count: 'exact', head: true })
+          .in('status', ['Pending', 'Under_Review']),
+        supabase
+          .from('products')
+          .select('stock, moq'),
+      ]);
+
+      pendingOrders = ordRes.count ?? 0;
+      pendingQuotes = qtRes.count ?? 0;
+
+      if (prodRes.data) {
+        lowStock = prodRes.data.filter(
+          (p: any) => (p.stock ?? 0) <= ((p.moq ?? 1) * 2) || (p.stock ?? 0) < 10
+        ).length;
+      }
+    } else {
+      const [orders, quotes, products] = await Promise.all([
+        getOrders().catch(() => []),
+        getQuotes().catch(() => []),
+        getProducts().catch(() => []),
+      ]);
+
+      pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+      pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
+      lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
+    }
+
+    const recentActivity = pendingOrders + pendingQuotes + lowStock;
+
+    const data: SummaryData = {
+      pendingOrders,
+      pendingQuotes,
+      lowStock,
+      recentActivity,
+    };
+
+    cachedSummary = { data, timestamp: now };
+
+    return NextResponse.json({
+      success: true,
+      ...data,
+      cached: false,
+    });
+  } catch (err: any) {
+    console.error('Failed to compute admin summary:', err);
+    return NextResponse.json(
+      { success: false, error: 'Failed to retrieve admin summary' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-upload-route-ts"></a>`src/app/api/admin/upload/route.ts`
+
+> **Lines**: 196 • **Size**: 6.1 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10025,6 +10681,7 @@ import { requireOwnerOrEmployee } from '@/lib/auth';
 import { getServiceSupabase, isSupabaseConfigured, isProduction } from '@/server/db/client';
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
+const ALLOWED_BUCKETS = new Set(['products', 'projects', 'brand', 'avatars']);
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',
   'image/png',
@@ -10040,10 +10697,24 @@ export const dynamic = 'force-dynamic';
 function validateImageMagicBytes(buffer: Buffer, extension: string): boolean {
   if (buffer.length < 4) return false;
 
-  // SVG inspection (text XML or <svg)
+  // SVG inspection (text XML or <svg) with security sanitization
   if (extension === '.svg') {
-    const textStart = buffer.slice(0, 100).toString('utf8').trim().toLowerCase();
-    return textStart.includes('<svg') || textStart.includes('<?xml');
+    const text = buffer.toString('utf8').toLowerCase();
+    const isSvg = text.includes('<svg') || text.includes('<?xml');
+    if (!isSvg) return false;
+
+    // Disallow executable script tags or malicious handlers
+    if (
+      text.includes('<script') ||
+      text.includes('onload=') ||
+      text.includes('onerror=') ||
+      text.includes('onclick=') ||
+      text.includes('javascript:') ||
+      text.includes('data:text/html')
+    ) {
+      return false;
+    }
+    return true;
   }
 
   // JPEG: FF D8 FF
@@ -10084,7 +10755,10 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
-    const bucket = (formData.get('bucket') as string) || 'products';
+    let bucket = (formData.get('bucket') as string) || 'products';
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      bucket = 'products';
+    }
 
     if (!file) {
       return NextResponse.json({ success: false, error: 'No image file provided' }, { status: 400 });
@@ -10119,7 +10793,7 @@ export async function POST(req: NextRequest) {
     // Validate actual file content header (magic bytes)
     if (!validateImageMagicBytes(buffer, extension)) {
       return NextResponse.json(
-        { success: false, error: 'File content does not match the specified image format header.' },
+        { success: false, error: 'File content does not match the specified image format header or contains unsafe payload.' },
         { status: 400 }
       );
     }
@@ -10131,8 +10805,6 @@ export async function POST(req: NextRequest) {
     if (isSupabaseConfigured()) {
       try {
         const supabase = getServiceSupabase();
-
-        await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
 
         const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
           contentType: file.type || 'image/jpeg',
@@ -10201,11 +10873,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/auth/callback/route.ts`
+### <a id="src-app-api-auth-callback-route-ts"></a>`src/app/api/auth/callback/route.ts`
 
-- **File**: `src/app/api/auth/callback/route.ts`
-- **Size**: 6.0 KB (179 lines)
-- **Language**: `typescript`
+> **Lines**: 179 • **Size**: 6.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10390,54 +11060,95 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/auth/change-password/route.ts`
+### <a id="src-app-api-auth-change-password-route-ts"></a>`src/app/api/auth/change-password/route.ts`
 
-- **File**: `src/app/api/auth/change-password/route.ts`
-- **Size**: 2.2 KB (69 lines)
-- **Language**: `typescript`
+> **Lines**: 116 • **Size**: 3.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail, updateAdminPassword, addAuditLog } from '@/lib/db';
-import { hashPassword, verifyAdminToken, verifyPassword, signAdminToken } from '@/lib/auth';
+import {
+  hashPassword,
+  verifyAdminToken,
+  verifyPassword,
+  signSessionToken,
+  isStrongPassword,
+  revokeAllSessionsForAdmin,
+} from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
     const token = req.cookies.get('balaji_admin_session')?.value;
     if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized. Active admin session required.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
     }
 
     const payload = verifyAdminToken(token);
     if (!payload) {
-      return NextResponse.json({ success: false, error: 'Session expired' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Session expired. Please sign in again.', code: 'SESSION_EXPIRED' },
+        { status: 401 }
+      );
     }
 
-    const { currentPassword, newPassword } = await req.json();
-    if (!newPassword || newPassword.length < 6) {
+    const { currentPassword, newPassword } = await req.json().catch(() => ({}));
+
+    // 1. Strong password policy validation
+    const policy = isStrongPassword(newPassword);
+    if (!policy.valid) {
       return NextResponse.json(
-        { success: false, error: 'New password must be at least 6 characters long' },
+        { success: false, error: policy.reason || 'Password does not meet security standards.', code: 'WEAK_PASSWORD' },
         { status: 400 }
       );
     }
 
     const admin = await getAdminByEmail(payload.email);
     if (!admin) {
-      return NextResponse.json({ success: false, error: 'Admin account not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Admin account not found.', code: 'ACCOUNT_NOT_FOUND' },
+        { status: 404 }
+      );
     }
 
-    // Verify current password if supplied
-    if (currentPassword) {
+    // 2. Current password check (Required unless in forced first-login change flow)
+    if (!admin.mustChangePassword) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          { success: false, error: 'Current password is required to update credentials.', code: 'MISSING_CURRENT_PASSWORD' },
+          { status: 400 }
+        );
+      }
       const isMatch = verifyPassword(currentPassword, admin.passwordHash);
       if (!isMatch) {
-        return NextResponse.json({ success: false, error: 'Current password incorrect' }, { status: 400 });
+        return NextResponse.json(
+          { success: false, error: 'Current password incorrect.', code: 'INVALID_CREDENTIALS' },
+          { status: 400 }
+        );
       }
     }
 
+    // 3. Invalidate old sessions and update hash
+    revokeAllSessionsForAdmin(admin.id);
     const newHash = hashPassword(newPassword);
     await updateAdminPassword(admin.id, newHash);
 
-    const updatedToken = signAdminToken({
+    // 4. Audit Log
+    await addAuditLog({
+      adminId: admin.id,
+      adminEmail: admin.email,
+      action: 'ADMIN_PASSWORD_CHANGED',
+      entity: 'Auth',
+      entityId: admin.id,
+      details: { forcedChange: Boolean(admin.mustChangePassword) },
+    });
+
+    // 5. Issue new session token
+    const updatedToken = signSessionToken({
       id: admin.id,
       email: admin.email,
       name: admin.name,
@@ -10447,7 +11158,7 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({
       success: true,
-      message: 'Password updated successfully. Bootstrap password has been permanently invalidated.',
+      message: 'Password updated successfully. All previous sessions have been invalidated.',
     });
 
     const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
@@ -10462,86 +11173,194 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+    console.error('[Change Password Error]', err);
+    return NextResponse.json(
+      { success: false, error: err.message || 'Server error updating password.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
   }
 }
 ```
 
 ---
 
-### `src/app/api/auth/forgot-password/route.ts`
+### <a id="src-app-api-auth-forgot-password-route-ts"></a>`src/app/api/auth/forgot-password/route.ts`
 
-- **File**: `src/app/api/auth/forgot-password/route.ts`
-- **Size**: 0.8 KB (22 lines)
-- **Language**: `typescript`
+> **Lines**: 72 • **Size**: 2.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { getAdminByEmail, addAuditLog } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+
+// Memory store for single-use password reset tokens (hashedToken -> { email, expiresAt })
+const resetTokenStore = new Map<string, { email: string; expiresAt: number; consumed: boolean }>();
+
+function verifyAndConsumeResetToken(rawToken: string): { valid: boolean; email?: string } {
+  const hashed = crypto.createHash('sha256').update(rawToken).digest('hex');
+  const record = resetTokenStore.get(hashed);
+  if (!record) return { valid: false };
+
+  if (record.consumed || Date.now() > record.expiresAt) {
+    resetTokenStore.delete(hashed);
+    return { valid: false };
+  }
+
+  record.consumed = true;
+  resetTokenStore.delete(hashed);
+  return { valid: true, email: record.email };
+}
 
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json().catch(() => ({}));
 
     if (!email || typeof email !== 'string') {
-      return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Email is required', code: 'MISSING_EMAIL' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const admin = await getAdminByEmail(normalizedEmail);
+
+    if (admin && admin.status !== 'disabled') {
+      // 1. Generate single-use random 32-byte cryptographic token
+      const rawToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+      const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour validity
+
+      // 2. Store hashed token with expiry
+      resetTokenStore.set(hashedToken, { email: normalizedEmail, expiresAt, consumed: false });
+
+      // 3. Security Audit Log
+      await addAuditLog({
+        adminId: admin.id,
+        adminEmail: admin.email,
+        action: 'PASSWORD_RESET_REQUESTED',
+        entity: 'Auth',
+        entityId: admin.id,
+        details: { expiresAt: new Date(expiresAt).toISOString() },
+      });
     }
 
     // Security practice: Never disclose whether an email exists or not to prevent user enumeration
     return NextResponse.json({
       success: true,
-      message: 'If an account exists with this email address, password reset instructions have been dispatched.',
+      message: 'If an administrative account exists with this email, password reset instructions have been recorded.',
     });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: 'Request could not be processed. Please try again.' }, { status: 500 });
+    console.error('[Forgot Password Error]', err);
+    return NextResponse.json(
+      { success: false, error: 'Request could not be processed. Please try again later.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
   }
 }
 ```
 
 ---
 
-### `src/app/api/auth/login/route.ts`
+### <a id="src-app-api-auth-login-route-ts"></a>`src/app/api/auth/login/route.ts`
 
-- **File**: `src/app/api/auth/login/route.ts`
-- **Size**: 3.7 KB (124 lines)
-- **Language**: `typescript`
+> **Lines**: 196 • **Size**: 5.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
-import { verifyPassword, signAdminToken, signCustomerToken } from '@/lib/auth';
+import { verifyPassword, signSessionToken, signCustomerToken } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
+// Memory-backed rate limiter for login protection: max 5 failed attempts per 15 minutes
+const loginAttempts = new Map<string, { count: number; firstAttempt: number }>();
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_WINDOW_MS = 15 * 60 * 1000;
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry) return false;
+
+  if (now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.delete(key);
+    return false;
+  }
+
+  return entry.count >= MAX_ATTEMPTS;
+}
+
+function recordFailedAttempt(key: string): void {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry || now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.set(key, { count: 1, firstAttempt: now });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function clearAttempts(key: string): void {
+  loginAttempts.delete(key);
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { email, password, isAdminLogin = false } = await req.json().catch(() => ({}));
 
     if (!email || !password) {
-      return NextResponse.json({ success: false, error: 'Email and password required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Email and password are required', code: 'MISSING_CREDENTIALS' },
+        { status: 400 }
+      );
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+    const rateLimitKey = `${clientIp}:${normalizedEmail}`;
 
-    // 1. Check if user is in Authoritative Admins Table
+    // 1. Check Rate Limiting
+    if (isRateLimited(rateLimitKey)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many failed login attempts. Account access is temporarily locked for 15 minutes.',
+          code: 'RATE_LIMITED',
+        },
+        { status: 429 }
+      );
+    }
+
+    // 2. Check if user is in Authoritative Admins Table
     const admin = await getAdminByEmail(normalizedEmail);
+
     if (admin) {
       if (admin.status === 'disabled') {
+        recordFailedAttempt(rateLimitKey);
         return NextResponse.json(
-          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
+          { success: false, error: 'Your administrative account has been deactivated. Please contact the studio owner.', code: 'ACCOUNT_DISABLED' },
           { status: 403 }
         );
       }
 
       const isMatch = verifyPassword(password, admin.passwordHash);
       if (!isMatch) {
-        return NextResponse.json({ success: false, error: 'Invalid email or password.' }, { status: 401 });
+        recordFailedAttempt(rateLimitKey);
+        return NextResponse.json(
+          { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+          { status: 401 }
+        );
       }
 
+      // Successful Admin Authentication
+      clearAttempts(rateLimitKey);
       await recordAdminLogin(admin.id);
 
-      const token = signAdminToken({
+      // Issue rotated, secure session token
+      const token = signSessionToken({
         id: admin.id,
         email: admin.email,
         name: admin.name,
@@ -10556,7 +11375,7 @@ export async function POST(req: NextRequest) {
         action: auditAction,
         entity: 'Auth',
         entityId: admin.id,
-        details: { role: admin.role, method: 'password', mustChangePassword: admin.mustChangePassword },
+        details: { role: admin.role, method: 'password', ip: clientIp },
       });
 
       const adminPayload = {
@@ -10564,7 +11383,7 @@ export async function POST(req: NextRequest) {
         email: admin.email,
         name: admin.name,
         role: admin.role,
-        status: admin.status,
+        status: admin.status || 'active',
         mustChangePassword: Boolean(admin.mustChangePassword),
       };
 
@@ -10589,7 +11408,17 @@ export async function POST(req: NextRequest) {
       return response;
     }
 
-    // 2. Standard Customer Authentication
+    // 3. If request came from admin portal (/admin/login or isAdminLogin), do NOT fall through to customer creation
+    const referer = req.headers.get('referer') || '';
+    if (isAdminLogin || referer.includes('/admin/login')) {
+      recordFailedAttempt(rateLimitKey);
+      return NextResponse.json(
+        { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+        { status: 401 }
+      );
+    }
+
+    // 4. Standard Customer Authentication (Public website only)
     const customer = await upsertCustomer({
       email: normalizedEmail,
       fullName: normalizedEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
@@ -10628,18 +11457,20 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: 'Authentication failed. Please try again.' }, { status: 500 });
+    console.error('[Login Exception]', err);
+    return NextResponse.json(
+      { success: false, error: 'Authentication service temporarily unavailable. Please retry.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
   }
 }
 ```
 
 ---
 
-### `src/app/api/auth/logout/route.ts`
+### <a id="src-app-api-auth-logout-route-ts"></a>`src/app/api/auth/logout/route.ts`
 
-- **File**: `src/app/api/auth/logout/route.ts`
-- **Size**: 0.3 KB (9 lines)
-- **Language**: `typescript`
+> **Lines**: 9 • **Size**: 0.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10654,11 +11485,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/auth/me/route.ts`
+### <a id="src-app-api-auth-me-route-ts"></a>`src/app/api/auth/me/route.ts`
 
-- **File**: `src/app/api/auth/me/route.ts`
-- **Size**: 1.9 KB (61 lines)
-- **Language**: `typescript`
+> **Lines**: 61 • **Size**: 1.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10725,11 +11554,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/auth/register/route.ts`
+### <a id="src-app-api-auth-register-route-ts"></a>`src/app/api/auth/register/route.ts`
 
-- **File**: `src/app/api/auth/register/route.ts`
-- **Size**: 1.8 KB (65 lines)
-- **Language**: `typescript`
+> **Lines**: 65 • **Size**: 1.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10800,11 +11627,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/categories/[id]/route.ts`
+### <a id="src-app-api-categories-id-route-ts"></a>`src/app/api/categories/[id]/route.ts`
 
-- **File**: `src/app/api/categories/[id]/route.ts`
-- **Size**: 2.8 KB (94 lines)
-- **Language**: `typescript`
+> **Lines**: 94 • **Size**: 2.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10904,11 +11729,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### `src/app/api/categories/route.ts`
+### <a id="src-app-api-categories-route-ts"></a>`src/app/api/categories/route.ts`
 
-- **File**: `src/app/api/categories/route.ts`
-- **Size**: 2.4 KB (79 lines)
-- **Language**: `typescript`
+> **Lines**: 79 • **Size**: 2.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10993,11 +11816,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/enquiries/[id]/route.ts`
+### <a id="src-app-api-enquiries-id-route-ts"></a>`src/app/api/enquiries/[id]/route.ts`
 
-- **File**: `src/app/api/enquiries/[id]/route.ts`
-- **Size**: 0.8 KB (24 lines)
-- **Language**: `typescript`
+> **Lines**: 24 • **Size**: 0.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11027,11 +11848,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 ---
 
-### `src/app/api/enquiries/route.ts`
+### <a id="src-app-api-enquiries-route-ts"></a>`src/app/api/enquiries/route.ts`
 
-- **File**: `src/app/api/enquiries/route.ts`
-- **Size**: 1.7 KB (51 lines)
-- **Language**: `typescript`
+> **Lines**: 51 • **Size**: 1.7 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11088,11 +11907,104 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/health/route.ts`
+### <a id="src-app-api-health-ready-route-ts"></a>`src/app/api/health/ready/route.ts`
 
-- **File**: `src/app/api/health/route.ts`
-- **Size**: 4.2 KB (118 lines)
-- **Language**: `typescript`
+> **Lines**: 87 • **Size**: 1.9 KB
+
+```typescript
+import { NextResponse } from 'next/server';
+import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET() {
+  const timestamp = new Date().toISOString();
+
+  if (!isSupabaseConfigured()) {
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        {
+          status: 'not_ready',
+          timestamp,
+          database: {
+            configured: false,
+            connected: false,
+            error: 'SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing in production environment.',
+          },
+        },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        status: 'ready',
+        timestamp,
+        mode: 'development_fallback',
+        database: {
+          configured: false,
+          connected: true,
+          provider: 'local_fixture',
+        },
+      },
+      { status: 200 }
+    );
+  }
+
+  try {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('site_settings').select('key').limit(1);
+
+    if (error) {
+      return NextResponse.json(
+        {
+          status: 'not_ready',
+          timestamp,
+          database: {
+            configured: true,
+            connected: false,
+            error: error.message,
+          },
+        },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        status: 'ready',
+        timestamp,
+        mode: 'production',
+        database: {
+          configured: true,
+          connected: true,
+          provider: 'supabase_postgres',
+        },
+      },
+      { status: 200 }
+    );
+  } catch (err: any) {
+    return NextResponse.json(
+      {
+        status: 'not_ready',
+        timestamp,
+        database: {
+          configured: true,
+          connected: false,
+          error: err.message || 'Unknown probe error',
+        },
+      },
+      { status: 503 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-health-route-ts"></a>`src/app/api/health/route.ts`
+
+> **Lines**: 118 • **Size**: 4.2 KB
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -11216,11 +12128,9 @@ export async function GET() {
 
 ---
 
-### `src/app/api/notifications/subscribe/route.ts`
+### <a id="src-app-api-notifications-subscribe-route-ts"></a>`src/app/api/notifications/subscribe/route.ts`
 
-- **File**: `src/app/api/notifications/subscribe/route.ts`
-- **Size**: 1.5 KB (47 lines)
-- **Language**: `typescript`
+> **Lines**: 47 • **Size**: 1.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11273,20 +12183,23 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/orders/[id]/route.ts`
+### <a id="src-app-api-orders-id-route-ts"></a>`src/app/api/orders/[id]/route.ts`
 
-- **File**: `src/app/api/orders/[id]/route.ts`
-- **Size**: 2.0 KB (66 lines)
-- **Language**: `typescript`
+> **Lines**: 46 • **Size**: 1.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrderById, updateOrderStatus, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { getOrderById } from '@/lib/db';
+import { requireAuthenticatedAdmin, requirePermission } from '@/lib/auth';
+import { OrderService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
   try {
     const order = await getOrderById(params.id);
     if (!order) {
@@ -11294,66 +12207,39 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
     return NextResponse.json({ success: true, order });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'orders.update_status');
   if ('response' in auth) return auth.response;
 
   try {
     const body = await req.json();
     const { orderStatus, paymentStatus, action, utrNumber, note } = body;
 
-    let targetPaymentStatus = paymentStatus;
-    let targetOrderStatus = orderStatus;
-
-    if (action === 'VERIFY_PAYMENT') {
-      targetPaymentStatus = 'Paid';
-    }
-
-    const updated = await updateOrderStatus(params.id, targetOrderStatus, targetPaymentStatus, {
-      actorEmail: auth.admin.email,
-      note,
+    const updated = await OrderService.updateOrderStatusAndPayment(params.id, {
+      orderStatus,
+      paymentStatus,
+      action,
       utrNumber,
-    });
-
-    if (!updated) {
-      return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 });
-    }
-
-    const auditAction = action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
-
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: auditAction,
-      entity: 'Order',
-      entityId: params.id,
-      details: {
-        orderStatus: targetOrderStatus,
-        paymentStatus: targetPaymentStatus,
-        utrNumber,
-        verifiedBy: auth.admin.email,
-        note,
-      },
+      note,
+      actor: { id: auth.admin.id, email: auth.admin.email },
     });
 
     return NextResponse.json({ success: true, order: updated });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/orders/customer/route.ts`
+### <a id="src-app-api-orders-customer-route-ts"></a>`src/app/api/orders/customer/route.ts`
 
-- **File**: `src/app/api/orders/customer/route.ts`
-- **Size**: 2.5 KB (78 lines)
-- **Language**: `typescript`
+> **Lines**: 78 • **Size**: 2.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11437,18 +12323,17 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/orders/route.ts`
+### <a id="src-app-api-orders-route-ts"></a>`src/app/api/orders/route.ts`
 
-- **File**: `src/app/api/orders/route.ts`
-- **Size**: 3.2 KB (97 lines)
-- **Language**: `typescript`
+> **Lines**: 65 • **Size**: 2.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { createOrderAtomic, getOrders } from '@/lib/db';
+import { getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
-import { sendNewOrderPush } from '@/lib/push';
+import { OrderService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
   try {
@@ -11471,7 +12356,7 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
@@ -11479,29 +12364,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
-      return NextResponse.json(
-        { success: false, error: 'Customer name, email, and phone are required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!body.shippingAddress || !body.shippingAddress.addressLine1) {
-      return NextResponse.json(
-        { success: false, error: 'Valid delivery address is required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!Array.isArray(body.items) || body.items.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'Order must contain at least one material/product.' },
-        { status: 400 }
-      );
-    }
-
-    // Process order with Server-Authoritative Price & Atomic Inventory Lock
-    const result = await createOrderAtomic({
+    const order = await OrderService.placeOrder({
       customerName: body.customerName,
       customerEmail: body.customerEmail,
       customerPhone: body.customerPhone,
@@ -11512,10 +12375,6 @@ export async function POST(req: NextRequest) {
       notes: body.notes,
       idempotencyKey: body.idempotencyKey,
     });
-
-    if (!result.success || !result.order) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 });
-    }
 
     // Invalidate customer-facing stock & product caches immediately
     try {
@@ -11528,33 +12387,26 @@ export async function POST(req: NextRequest) {
       console.warn('Revalidation notice:', revErr);
     }
 
-    // Trigger Realtime Web Push Notification to Admin devices
-    if (result.order) {
-      sendNewOrderPush(result.order).catch((pushErr) => {
-        console.warn('Order push notification dispatch notice:', pushErr);
-      });
-    }
-
-    return NextResponse.json({ success: true, order: result.order });
+    return NextResponse.json({ success: true, order });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/products/[id]/route.ts`
+### <a id="src-app-api-products-id-route-ts"></a>`src/app/api/products/[id]/route.ts`
 
-- **File**: `src/app/api/products/[id]/route.ts`
-- **Size**: 3.5 KB (115 lines)
-- **Language**: `typescript`
+> **Lines**: 118 • **Size**: 3.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProductById, updateProduct, deleteProduct, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission, requireAuthenticatedAdmin } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -11573,16 +12425,17 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.update');
   if ('response' in auth) return auth.response;
 
   try {
     const partialData = await req.json();
+    validateProductInput(partialData, true);
     const updated = await updateProduct(params.id, partialData);
 
     if (!updated) {
@@ -11619,12 +12472,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.delete');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11662,24 +12515,24 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/products/route.ts`
+### <a id="src-app-api-products-route-ts"></a>`src/app/api/products/route.ts`
 
-- **File**: `src/app/api/products/route.ts`
-- **Size**: 3.7 KB (115 lines)
-- **Language**: `typescript`
+> **Lines**: 119 • **Size**: 3.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProducts, createProduct, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -11709,12 +12562,12 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.create');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11725,6 +12578,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    validateProductInput(body, false);
 
     // Auto-generate slug if not provided
     const slug =
@@ -11787,18 +12642,16 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, product: newProduct });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/projects/[id]/route.ts`
+### <a id="src-app-api-projects-id-route-ts"></a>`src/app/api/projects/[id]/route.ts`
 
-- **File**: `src/app/api/projects/[id]/route.ts`
-- **Size**: 3.2 KB (109 lines)
-- **Language**: `typescript`
+> **Lines**: 109 • **Size**: 3.2 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11913,11 +12766,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### `src/app/api/projects/route.ts`
+### <a id="src-app-api-projects-route-ts"></a>`src/app/api/projects/route.ts`
 
-- **File**: `src/app/api/projects/route.ts`
-- **Size**: 2.9 KB (91 lines)
-- **Language**: `typescript`
+> **Lines**: 91 • **Size**: 2.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -12014,125 +12865,52 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/quotes/[id]/convert/route.ts`
+### <a id="src-app-api-quotes-id-convert-route-ts"></a>`src/app/api/quotes/[id]/convert/route.ts`
 
-- **File**: `src/app/api/quotes/[id]/convert/route.ts`
-- **Size**: 3.3 KB (99 lines)
-- **Language**: `typescript`
+> **Lines**: 28 • **Size**: 0.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuoteById, updateQuoteStatus, createOrderAtomic, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
+import { QuoteService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'quotes.convert');
   if ('response' in auth) return auth.response;
 
   try {
-    const quote = await getQuoteById(params.id);
-    if (!quote) {
-      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
-    }
-
-    if (quote.status === 'Converted_To_Order') {
-      return NextResponse.json(
-        { success: false, error: 'This quote has already been converted to an order.' },
-        { status: 409 }
-      );
-    }
-
-    // Map quote items to order items format
-    const orderItems = (quote.items || []).map((it) => ({
-      productId: it.productId || 'custom-material',
-      quantity: it.quantity || 1,
-      selectedColor: 'Custom Specification',
-      selectedFinish: 'Bespoke',
-    }));
-
-    if (orderItems.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'Cannot convert a quote with no specified material items.' },
-        { status: 400 }
-      );
-    }
-
-    // Create the order idempotently using quote reference
-    const orderResult = await createOrderAtomic({
-      customerName: quote.customerName,
-      customerEmail: quote.customerEmail,
-      customerPhone: quote.customerPhone,
-      shippingAddress: {
-        fullName: quote.customerName,
-        phone: quote.customerPhone,
-        addressLine1: quote.projectLocation || 'Assam, India',
-        city: 'Guwahati',
-        state: 'Assam',
-        pincode: '781040',
-        country: 'India',
-      },
-      items: orderItems,
-      paymentMethod: 'Architectural Contract / Wire Transfer',
-      notes: `Converted from Quotation Dossier #${quote.quoteNumber}. Project Type: ${quote.projectType}.`,
-      idempotencyKey: `quote-conv-${quote.id}`,
-    });
-
-    if (!orderResult.success || !orderResult.order) {
-      return NextResponse.json(
-        { success: false, error: orderResult.error || 'Failed to generate order from quotation.' },
-        { status: 500 }
-      );
-    }
-
-    // Update Quote status to Converted_To_Order
-    await updateQuoteStatus(
-      quote.id,
-      'Converted_To_Order',
-      quote.totalQuotedAmount,
-      `Converted to Order #${orderResult.order.orderNumber} by ${auth.admin.email}`
-    );
-
-    // Audit the conversion
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: 'QUOTE_CONVERTED_TO_ORDER',
-      entity: 'Quote',
-      entityId: quote.id,
-      details: {
-        quoteNumber: quote.quoteNumber,
-        orderId: orderResult.order.id,
-        orderNumber: orderResult.order.orderNumber,
-        totalAmount: orderResult.order.totalAmount,
-      },
+    const result = await QuoteService.convertQuoteToOrder(params.id, {
+      id: auth.admin.id,
+      email: auth.admin.email,
     });
 
     return NextResponse.json({
       success: true,
-      order: orderResult.order,
-      message: `Quote #${quote.quoteNumber} successfully converted to Order #${orderResult.order.orderNumber}`,
+      order: result.order,
+      message: `Quote #${result.quote.quoteNumber} successfully converted to Order #${result.order.orderNumber}`,
     });
   } catch (err: any) {
     console.error('Quote conversion error:', err);
-    return NextResponse.json({ success: false, error: err.message || 'Conversion failed.' }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/quotes/[id]/route.ts`
+### <a id="src-app-api-quotes-id-route-ts"></a>`src/app/api/quotes/[id]/route.ts`
 
-- **File**: `src/app/api/quotes/[id]/route.ts`
-- **Size**: 1.5 KB (45 lines)
-- **Language**: `typescript`
+> **Lines**: 39 • **Size**: 1.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuoteById, updateQuoteStatus, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { getQuoteById } from '@/lib/db';
+import { requirePermission } from '@/lib/auth';
+import { QuoteService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -12144,45 +12922,35 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
     return NextResponse.json({ success: true, quote });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'quotes.update');
   if ('response' in auth) return auth.response;
 
   try {
     const { status, totalQuotedAmount, adminNotes } = await req.json();
-    const updated = await updateQuoteStatus(params.id, status, totalQuotedAmount, adminNotes);
-
-    if (!updated) {
-      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
-    }
-
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: 'QUOTE_STATUS_UPDATED',
-      entity: 'Quote',
-      entityId: params.id,
-      details: { status, totalQuotedAmount },
+    const updated = await QuoteService.updateEstimation(params.id, {
+      status,
+      totalQuotedAmount,
+      adminNotes,
+      actor: { id: auth.admin.id, email: auth.admin.email },
     });
 
     return NextResponse.json({ success: true, quote: updated });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### `src/app/api/quotes/route.ts`
+### <a id="src-app-api-quotes-route-ts"></a>`src/app/api/quotes/route.ts`
 
-- **File**: `src/app/api/quotes/route.ts`
-- **Size**: 2.2 KB (63 lines)
-- **Language**: `typescript`
+> **Lines**: 63 • **Size**: 2.2 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -12251,11 +13019,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/search/route.ts`
+### <a id="src-app-api-search-route-ts"></a>`src/app/api/search/route.ts`
 
-- **File**: `src/app/api/search/route.ts`
-- **Size**: 1.4 KB (54 lines)
-- **Language**: `typescript`
+> **Lines**: 54 • **Size**: 1.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -12315,11 +13081,9 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### `src/app/api/services/[id]/route.ts`
+### <a id="src-app-api-services-id-route-ts"></a>`src/app/api/services/[id]/route.ts`
 
-- **File**: `src/app/api/services/[id]/route.ts`
-- **Size**: 2.5 KB (88 lines)
-- **Language**: `typescript`
+> **Lines**: 88 • **Size**: 2.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -12413,11 +13177,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### `src/app/api/services/route.ts`
+### <a id="src-app-api-services-route-ts"></a>`src/app/api/services/route.ts`
 
-- **File**: `src/app/api/services/route.ts`
-- **Size**: 2.3 KB (77 lines)
-- **Language**: `typescript`
+> **Lines**: 77 • **Size**: 2.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -12500,11 +13262,9 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### `src/app/api/settings/route.ts`
+### <a id="src-app-api-settings-route-ts"></a>`src/app/api/settings/route.ts`
 
-- **File**: `src/app/api/settings/route.ts`
-- **Size**: 0.6 KB (21 lines)
-- **Language**: `typescript`
+> **Lines**: 21 • **Size**: 0.6 KB
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -12531,11 +13291,9 @@ export async function GET() {
 
 ---
 
-### `src/app/auth/callback/page.tsx`
+### <a id="src-app-auth-callback-page-tsx"></a>`src/app/auth/callback/page.tsx`
 
-- **File**: `src/app/auth/callback/page.tsx`
-- **Size**: 4.4 KB (118 lines)
-- **Language**: `tsx`
+> **Lines**: 118 • **Size**: 4.4 KB
 
 ```tsx
 'use client';
@@ -12659,11 +13417,9 @@ export default function AuthCallbackPage() {
 
 ---
 
-### `src/app/cart/page.tsx`
+### <a id="src-app-cart-page-tsx"></a>`src/app/cart/page.tsx`
 
-- **File**: `src/app/cart/page.tsx`
-- **Size**: 8.7 KB (185 lines)
-- **Language**: `tsx`
+> **Lines**: 185 • **Size**: 8.7 KB
 
 ```tsx
 'use client';
@@ -12854,11 +13610,9 @@ export default function CartPage() {
 
 ---
 
-### `src/app/category/[slug]/page.tsx`
+### <a id="src-app-category-slug-page-tsx"></a>`src/app/category/[slug]/page.tsx`
 
-- **File**: `src/app/category/[slug]/page.tsx`
-- **Size**: 7.2 KB (162 lines)
-- **Language**: `tsx`
+> **Lines**: 162 • **Size**: 7.2 KB
 
 ```tsx
 import React from 'react';
@@ -13026,11 +13780,9 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 
 ---
 
-### `src/app/checkout/page.tsx`
+### <a id="src-app-checkout-page-tsx"></a>`src/app/checkout/page.tsx`
 
-- **File**: `src/app/checkout/page.tsx`
-- **Size**: 40.2 KB (877 lines)
-- **Language**: `tsx`
+> **Lines**: 889 • **Size**: 40.5 KB
 
 ```tsx
 'use client';
@@ -13093,8 +13845,20 @@ export default function CheckoutPage() {
   const [notes, setNotes] = useState('');
   const [utrNumber, setUtrNumber] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
-  const [idempotencyKey] = useState(() => `chk-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`);
-  const [orderRefNote] = useState(() => `BALAJI-ORDER-${Math.floor(100000 + Math.random() * 900000)}`);
+  const [idempotencyKey] = useState(() => {
+    if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
+      return `chk-${window.crypto.randomUUID()}`;
+    }
+    return `chk-${Date.now()}`;
+  });
+  const [orderRefNote] = useState(() => {
+    if (typeof window !== 'undefined' && window.crypto) {
+      const arr = new Uint32Array(1);
+      window.crypto.getRandomValues(arr);
+      return `BALAJI-ORDER-${100000 + (arr[0] % 900000)}`;
+    }
+    return `BALAJI-ORDER-${Date.now().toString().slice(-6)}`;
+  });
 
   // Security Countdown Timer (10:00 Minutes)
   const [timeLeft, setTimeLeft] = useState(600);
@@ -13913,11 +14677,9 @@ export default function CheckoutPage() {
 
 ---
 
-### `src/app/contact/page.tsx`
+### <a id="src-app-contact-page-tsx"></a>`src/app/contact/page.tsx`
 
-- **File**: `src/app/contact/page.tsx`
-- **Size**: 10.6 KB (244 lines)
-- **Language**: `tsx`
+> **Lines**: 244 • **Size**: 10.6 KB
 
 ```tsx
 'use client';
@@ -14167,11 +14929,9 @@ export default function ContactPage() {
 
 ---
 
-### `src/app/globals.css`
+### <a id="src-app-globals-css"></a>`src/app/globals.css`
 
-- **File**: `src/app/globals.css`
-- **Size**: 3.4 KB (180 lines)
-- **Language**: `css`
+> **Lines**: 180 • **Size**: 3.4 KB
 
 ```css
 @tailwind base;
@@ -14357,11 +15117,9 @@ body {
 
 ---
 
-### `src/app/layout.tsx`
+### <a id="src-app-layout-tsx"></a>`src/app/layout.tsx`
 
-- **File**: `src/app/layout.tsx`
-- **Size**: 4.8 KB (141 lines)
-- **Language**: `tsx`
+> **Lines**: 141 • **Size**: 4.8 KB
 
 ```tsx
 import type { Metadata, Viewport } from 'next';
@@ -14508,11 +15266,9 @@ export default async function RootLayout({
 
 ---
 
-### `src/app/material/[slug]/page.tsx`
+### <a id="src-app-material-slug-page-tsx"></a>`src/app/material/[slug]/page.tsx`
 
-- **File**: `src/app/material/[slug]/page.tsx`
-- **Size**: 1.6 KB (49 lines)
-- **Language**: `tsx`
+> **Lines**: 49 • **Size**: 1.6 KB
 
 ```tsx
 import React from 'react';
@@ -14567,11 +15323,9 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 
 ---
 
-### `src/app/materials/page.tsx`
+### <a id="src-app-materials-page-tsx"></a>`src/app/materials/page.tsx`
 
-- **File**: `src/app/materials/page.tsx`
-- **Size**: 8.0 KB (181 lines)
-- **Language**: `tsx`
+> **Lines**: 181 • **Size**: 8.0 KB
 
 ```tsx
 import React from 'react';
@@ -14758,11 +15512,9 @@ export default async function MaterialsPage({
 
 ---
 
-### `src/app/page.tsx`
+### <a id="src-app-page-tsx"></a>`src/app/page.tsx`
 
-- **File**: `src/app/page.tsx`
-- **Size**: 21.5 KB (402 lines)
-- **Language**: `tsx`
+> **Lines**: 402 • **Size**: 21.5 KB
 
 ```tsx
 import React from 'react';
@@ -15170,11 +15922,9 @@ export default async function HomePage() {
 
 ---
 
-### `src/app/projects/[slug]/page.tsx`
+### <a id="src-app-projects-slug-page-tsx"></a>`src/app/projects/[slug]/page.tsx`
 
-- **File**: `src/app/projects/[slug]/page.tsx`
-- **Size**: 9.7 KB (228 lines)
-- **Language**: `tsx`
+> **Lines**: 228 • **Size**: 9.7 KB
 
 ```tsx
 import React from 'react';
@@ -15408,11 +16158,9 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 
 ---
 
-### `src/app/projects/page.tsx`
+### <a id="src-app-projects-page-tsx"></a>`src/app/projects/page.tsx`
 
-- **File**: `src/app/projects/page.tsx`
-- **Size**: 5.3 KB (131 lines)
-- **Language**: `tsx`
+> **Lines**: 131 • **Size**: 5.3 KB
 
 ```tsx
 import React from 'react';
@@ -15549,11 +16297,9 @@ export default async function ProjectsPage({
 
 ---
 
-### `src/app/quote/page.tsx`
+### <a id="src-app-quote-page-tsx"></a>`src/app/quote/page.tsx`
 
-- **File**: `src/app/quote/page.tsx`
-- **Size**: 16.4 KB (428 lines)
-- **Language**: `tsx`
+> **Lines**: 428 • **Size**: 16.4 KB
 
 ```tsx
 'use client';
@@ -15987,11 +16733,9 @@ export default function QuotePage() {
 
 ---
 
-### `src/app/robots.ts`
+### <a id="src-app-robots-ts"></a>`src/app/robots.ts`
 
-- **File**: `src/app/robots.ts`
-- **Size**: 0.3 KB (15 lines)
-- **Language**: `typescript`
+> **Lines**: 15 • **Size**: 0.3 KB
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -16012,11 +16756,9 @@ export default function robots(): MetadataRoute.Robots {
 
 ---
 
-### `src/app/search/page.tsx`
+### <a id="src-app-search-page-tsx"></a>`src/app/search/page.tsx`
 
-- **File**: `src/app/search/page.tsx`
-- **Size**: 7.2 KB (183 lines)
-- **Language**: `tsx`
+> **Lines**: 183 • **Size**: 7.2 KB
 
 ```tsx
 'use client';
@@ -16205,11 +16947,9 @@ export default function SearchPage() {
 
 ---
 
-### `src/app/services/page.tsx`
+### <a id="src-app-services-page-tsx"></a>`src/app/services/page.tsx`
 
-- **File**: `src/app/services/page.tsx`
-- **Size**: 8.3 KB (183 lines)
-- **Language**: `tsx`
+> **Lines**: 183 • **Size**: 8.3 KB
 
 ```tsx
 import React from 'react';
@@ -16398,11 +17138,9 @@ export default async function ServicesPage() {
 
 ---
 
-### `src/app/shop/page.tsx`
+### <a id="src-app-shop-page-tsx"></a>`src/app/shop/page.tsx`
 
-- **File**: `src/app/shop/page.tsx`
-- **Size**: 4.9 KB (106 lines)
-- **Language**: `tsx`
+> **Lines**: 106 • **Size**: 4.9 KB
 
 ```tsx
 import React from 'react';
@@ -16514,11 +17252,9 @@ export default async function ShopPage() {
 
 ---
 
-### `src/app/sitemap.ts`
+### <a id="src-app-sitemap-ts"></a>`src/app/sitemap.ts`
 
-- **File**: `src/app/sitemap.ts`
-- **Size**: 2.0 KB (48 lines)
-- **Language**: `typescript`
+> **Lines**: 48 • **Size**: 2.0 KB
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -16572,11 +17308,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 ---
 
-### `src/app/studio/page.tsx`
+### <a id="src-app-studio-page-tsx"></a>`src/app/studio/page.tsx`
 
-- **File**: `src/app/studio/page.tsx`
-- **Size**: 16.9 KB (427 lines)
-- **Language**: `tsx`
+> **Lines**: 427 • **Size**: 16.9 KB
 
 ```tsx
 'use client';
@@ -17009,11 +17743,9 @@ export default function StudioAuthPage() {
 
 ---
 
-### `src/app/wishlist/page.tsx`
+### <a id="src-app-wishlist-page-tsx"></a>`src/app/wishlist/page.tsx`
 
-- **File**: `src/app/wishlist/page.tsx`
-- **Size**: 5.2 KB (129 lines)
-- **Language**: `tsx`
+> **Lines**: 129 • **Size**: 5.2 KB
 
 ```tsx
 'use client';
@@ -17148,11 +17880,9 @@ export default function WishlistPage() {
 
 ---
 
-### `src/components/AdminLayout.tsx`
+### <a id="src-components-adminlayout-tsx"></a>`src/components/AdminLayout.tsx`
 
-- **File**: `src/components/AdminLayout.tsx`
-- **Size**: 53.7 KB (1189 lines)
-- **Language**: `tsx`
+> **Lines**: 1178 • **Size**: 53.3 KB
 
 ```tsx
 'use client';
@@ -17248,28 +17978,36 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   }, [searchOpen]);
 
-  // Execute global search
+  // Execute global search with AbortController
   useEffect(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) {
       setSearchResults([]);
       return;
     }
+    const abortController = new AbortController();
     const delayDebounce = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(`/api/admin/search?q=${encodeURIComponent(searchQuery)}`);
+        const res = await fetch(`/api/admin/search?q=${encodeURIComponent(searchQuery)}`, {
+          signal: abortController.signal,
+        });
         if (res.ok) {
           const data = await res.json();
           setSearchResults(data.results || []);
         }
-      } catch (e) {
-        console.error('Search error:', e);
+      } catch (e: any) {
+        if (e.name !== 'AbortError') {
+          console.error('Search error:', e);
+        }
       } finally {
         setSearching(false);
       }
     }, 200);
 
-    return () => clearTimeout(delayDebounce);
+    return () => {
+      clearTimeout(delayDebounce);
+      abortController.abort();
+    };
   }, [searchQuery]);
 
   // Register Service Worker and initialize Push Notification state
@@ -17362,39 +18100,20 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Load notification badge counts
+  // Load notification badge counts via lightweight summary endpoint
   useEffect(() => {
     async function loadNotificationMetrics() {
       try {
-        const [ordRes, qtRes, prodRes] = await Promise.all([
-          fetch('/api/orders'),
-          fetch('/api/quotes'),
-          fetch('/api/products?all=true'),
-        ]);
-
-        let pOrders = 0;
-        let pQuotes = 0;
-        let lStock = 0;
-
-        if (ordRes.ok) {
-          const d = await ordRes.json();
-          pOrders = (d.orders || []).filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+        const res = await fetch('/api/admin/summary');
+        if (res.ok) {
+          const d = await res.json();
+          setNotifCounts({
+            pendingOrders: d.pendingOrders ?? 0,
+            pendingQuotes: d.pendingQuotes ?? 0,
+            lowStock: d.lowStock ?? 0,
+            recentActivity: d.recentActivity ?? 0,
+          });
         }
-        if (qtRes.ok) {
-          const d = await qtRes.json();
-          pQuotes = (d.quotes || []).filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
-        }
-        if (prodRes.ok) {
-          const d = await prodRes.json();
-          lStock = (d.products || []).filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
-        }
-
-        setNotifCounts({
-          pendingOrders: pOrders,
-          pendingQuotes: pQuotes,
-          lowStock: lStock,
-          recentActivity: pOrders + pQuotes + lStock,
-        });
       } catch (err) {
         console.warn('Notification counts load notice:', err);
       }
@@ -18347,11 +19066,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
 ---
 
-### `src/components/CartDrawer.tsx`
+### <a id="src-components-cartdrawer-tsx"></a>`src/components/CartDrawer.tsx`
 
-- **File**: `src/components/CartDrawer.tsx`
-- **Size**: 7.7 KB (173 lines)
-- **Language**: `tsx`
+> **Lines**: 173 • **Size**: 7.7 KB
 
 ```tsx
 'use client';
@@ -18530,11 +19247,9 @@ export function CartDrawer() {
 
 ---
 
-### `src/components/Footer.tsx`
+### <a id="src-components-footer-tsx"></a>`src/components/Footer.tsx`
 
-- **File**: `src/components/Footer.tsx`
-- **Size**: 9.3 KB (224 lines)
-- **Language**: `tsx`
+> **Lines**: 224 • **Size**: 9.3 KB
 
 ```tsx
 'use client';
@@ -18764,11 +19479,9 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
 
 ---
 
-### `src/components/ImageReveal.tsx`
+### <a id="src-components-imagereveal-tsx"></a>`src/components/ImageReveal.tsx`
 
-- **File**: `src/components/ImageReveal.tsx`
-- **Size**: 1.1 KB (53 lines)
-- **Language**: `tsx`
+> **Lines**: 53 • **Size**: 1.1 KB
 
 ```tsx
 'use client';
@@ -18827,11 +19540,9 @@ export function ImageReveal({
 
 ---
 
-### `src/components/ImageUploader.tsx`
+### <a id="src-components-imageuploader-tsx"></a>`src/components/ImageUploader.tsx`
 
-- **File**: `src/components/ImageUploader.tsx`
-- **Size**: 6.3 KB (202 lines)
-- **Language**: `tsx`
+> **Lines**: 202 • **Size**: 6.3 KB
 
 ```tsx
 'use client';
@@ -19039,11 +19750,9 @@ export function ImageUploader({
 
 ---
 
-### `src/components/MobileBottomNav.tsx`
+### <a id="src-components-mobilebottomnav-tsx"></a>`src/components/MobileBottomNav.tsx`
 
-- **File**: `src/components/MobileBottomNav.tsx`
-- **Size**: 5.5 KB (139 lines)
-- **Language**: `tsx`
+> **Lines**: 139 • **Size**: 5.5 KB
 
 ```tsx
 'use client';
@@ -19188,11 +19897,9 @@ export function MobileBottomNav() {
 
 ---
 
-### `src/components/Navbar.tsx`
+### <a id="src-components-navbar-tsx"></a>`src/components/Navbar.tsx`
 
-- **File**: `src/components/Navbar.tsx`
-- **Size**: 11.5 KB (278 lines)
-- **Language**: `tsx`
+> **Lines**: 278 • **Size**: 11.5 KB
 
 ```tsx
 'use client';
@@ -19476,11 +20183,9 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
 
 ---
 
-### `src/components/PageTransition.tsx`
+### <a id="src-components-pagetransition-tsx"></a>`src/components/PageTransition.tsx`
 
-- **File**: `src/components/PageTransition.tsx`
-- **Size**: 0.2 KB (12 lines)
-- **Language**: `tsx`
+> **Lines**: 12 • **Size**: 0.2 KB
 
 ```tsx
 'use client';
@@ -19498,11 +20203,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 
 ---
 
-### `src/components/ProductDetailClient.tsx`
+### <a id="src-components-productdetailclient-tsx"></a>`src/components/ProductDetailClient.tsx`
 
-- **File**: `src/components/ProductDetailClient.tsx`
-- **Size**: 18.2 KB (404 lines)
-- **Language**: `tsx`
+> **Lines**: 404 • **Size**: 18.2 KB
 
 ```tsx
 'use client';
@@ -19912,11 +20615,9 @@ export function ProductDetailClient({
 
 ---
 
-### `src/components/Reveal.tsx`
+### <a id="src-components-reveal-tsx"></a>`src/components/Reveal.tsx`
 
-- **File**: `src/components/Reveal.tsx`
-- **Size**: 0.3 KB (23 lines)
-- **Language**: `tsx`
+> **Lines**: 23 • **Size**: 0.3 KB
 
 ```tsx
 'use client';
@@ -19945,11 +20646,9 @@ export function Reveal({
 
 ---
 
-### `src/context/AdminAuthContext.tsx`
+### <a id="src-context-adminauthcontext-tsx"></a>`src/context/AdminAuthContext.tsx`
 
-- **File**: `src/context/AdminAuthContext.tsx`
-- **Size**: 3.4 KB (122 lines)
-- **Language**: `tsx`
+> **Lines**: 122 • **Size**: 3.4 KB
 
 ```tsx
 'use client';
@@ -20077,11 +20776,9 @@ export function useAdminAuth() {
 
 ---
 
-### `src/context/CartContext.tsx`
+### <a id="src-context-cartcontext-tsx"></a>`src/context/CartContext.tsx`
 
-- **File**: `src/context/CartContext.tsx`
-- **Size**: 4.3 KB (159 lines)
-- **Language**: `tsx`
+> **Lines**: 159 • **Size**: 4.3 KB
 
 ```tsx
 'use client';
@@ -20246,11 +20943,9 @@ export function useCart() {
 
 ---
 
-### `src/context/WishlistContext.tsx`
+### <a id="src-context-wishlistcontext-tsx"></a>`src/context/WishlistContext.tsx`
 
-- **File**: `src/context/WishlistContext.tsx`
-- **Size**: 2.1 KB (80 lines)
-- **Language**: `tsx`
+> **Lines**: 80 • **Size**: 2.1 KB
 
 ```tsx
 'use client';
@@ -20336,18 +21031,31 @@ export function useWishlist() {
 
 ---
 
-### `src/lib/auth.ts`
+### <a id="src-lib-auth-ts"></a>`src/lib/auth.ts`
 
-- **File**: `src/lib/auth.ts`
-- **Size**: 7.5 KB (281 lines)
-- **Language**: `typescript`
+> **Lines**: 276 • **Size**: 8.0 KB
 
 ```typescript
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail } from './db';
-import { AdminUser } from '@/types';
+import { AdminUser, AdminRole } from '@/types';
+import { Permission, hasPermission, isOwner } from '@/server/auth/rbac';
+import {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+  SessionTokenPayload,
+} from '@/server/auth/tokens';
+
+export {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+};
 
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
@@ -20375,7 +21083,7 @@ export function hashPassword(password: string): string {
 }
 
 /**
- * Verifies a plaintext password against a stored "salt:hash" string.
+ * Verifies a plaintext password against a stored "salt:hash" string using timing-safe comparison.
  */
 export function verifyPassword(password: string, storedHash: string): boolean {
   try {
@@ -20388,6 +21096,34 @@ export function verifyPassword(password: string, storedHash: string): boolean {
   }
 }
 
+/**
+ * Strong password policy validator:
+ * Minimum 8 characters, requires at least one letter and one number or special symbol.
+ */
+export function isStrongPassword(password: string): { valid: boolean; reason?: string } {
+  if (!password || typeof password !== 'string') {
+    return { valid: false, reason: 'Password is required' };
+  }
+  if (password.length < 8) {
+    return { valid: false, reason: 'Password must be at least 8 characters long' };
+  }
+  if (!/[a-zA-Z]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one letter' };
+  }
+  if (!/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one number or symbol' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Generates a cryptographically random, secure temporary password
+ */
+export function generateSecureTemporaryPassword(prefix = 'Balaji'): string {
+  const randomChars = crypto.randomBytes(6).toString('base64').replace(/[^a-zA-Z0-9]/g, 'X');
+  return `${prefix}#${randomChars}!`;
+}
+
 export interface AdminTokenPayload {
   id: string;
   email: string;
@@ -20397,28 +21133,36 @@ export interface AdminTokenPayload {
 }
 
 /**
- * Signs an admin JWT session token
+ * Signs an admin JWT session token (backward compatibility wrapper around signSessionToken)
  */
 export function signAdminToken(payload: AdminTokenPayload): string {
-  return jwt.sign(payload, getJwtSecret(), { expiresIn: '7d' });
+  return signSessionToken({
+    id: payload.id,
+    email: payload.email,
+    name: payload.name,
+    role: payload.role as AdminRole,
+    mustChangePassword: payload.mustChangePassword,
+  });
 }
 
 /**
- * Verifies and decodes an admin JWT token
+ * Verifies and decodes an admin JWT token, supporting all valid admin roles
  */
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
-  try {
-    const decoded = jwt.verify(token, getJwtSecret()) as any;
-    if (
-      decoded &&
-      (decoded.role === 'owner' || decoded.role === 'employee' || decoded.role === 'super_admin')
-    ) {
-      return decoded as AdminTokenPayload;
-    }
-    return null;
-  } catch {
-    return null;
+  const session = verifySessionToken(token);
+  if (!session) return null;
+
+  const validRoles: AdminRole[] = ['owner', 'super_admin', 'employee', 'editor', 'viewer'];
+  if (validRoles.includes(session.role)) {
+    return {
+      id: session.id,
+      email: session.email,
+      name: session.name,
+      role: session.role,
+      mustChangePassword: session.mustChangePassword,
+    };
   }
+  return null;
 }
 
 /**
@@ -20452,89 +21196,73 @@ export async function getAuthenticatedAdmin(req: NextRequest): Promise<AdminUser
 }
 
 /**
- * Enforces active admin session (Owner or Employee)
+ * Enforces active admin session (any authorized admin role)
  */
 export async function requireAuthenticatedAdmin(
   req: NextRequest
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  const token = getAdminTokenFromRequest(req);
-  if (!token) {
+  const admin = await getAuthenticatedAdmin(req);
+  if (!admin) {
     return {
       response: NextResponse.json(
-        { success: false, error: 'Authentication required. Please sign in to the studio portal.' },
+        { success: false, error: 'Authentication required. Please sign in to the studio portal.', code: 'UNAUTHORIZED' },
         { status: 401 }
       ),
     };
   }
-
-  const payload = verifyAdminToken(token);
-  if (!payload) {
-    return {
-      response: NextResponse.json(
-        { success: false, error: 'Invalid or expired session. Please sign in again.' },
-        { status: 401 }
-      ),
-    };
-  }
-
-  try {
-    const admin = await getAdminByEmail(payload.email);
-    if (!admin) {
-      return {
-        response: NextResponse.json(
-          { success: false, error: 'Admin account not found.' },
-          { status: 401 }
-        ),
-      };
-    }
-
-    if (admin.status === 'disabled') {
-      return {
-        response: NextResponse.json(
-          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
-          { status: 403 }
-        ),
-      };
-    }
-
-    const { passwordHash: _, ...safeAdmin } = admin;
-    return { admin: safeAdmin };
-  } catch (err: any) {
-    return {
-      response: NextResponse.json(
-        { success: false, error: err.message || 'Authorization failed' },
-        { status: 500 }
-      ),
-    };
-  }
+  return { admin };
 }
 
 /**
- * Enforces OWNER-ONLY privileges (403 for employee, 401 for unauthenticated)
+ * Enforces granular server-side RBAC permission
  */
-export async function requireOwner(
-  req: NextRequest
+export async function requirePermission(
+  req: NextRequest,
+  permission: Permission
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  const authResult = await requireAuthenticatedAdmin(req);
-  if ('response' in authResult) {
-    return authResult;
-  }
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
 
-  const { admin } = authResult;
-  if (admin.role !== 'owner' && admin.role !== 'super_admin') {
+  const allowed = hasPermission(auth.admin.role, permission);
+  if (!allowed) {
     return {
       response: NextResponse.json(
-        { success: false, error: 'Forbidden: Studio Owner privileges required.' },
+        {
+          success: false,
+          error: `Access Denied: Your account role (${auth.admin.role}) lacks the required '${permission}' permission.`,
+          code: 'FORBIDDEN',
+        },
         { status: 403 }
       ),
     };
   }
 
-  return { admin };
+  return { admin: auth.admin };
 }
 
 /**
- * Enforces Owner or Employee access for operational features
+ * Enforces Owner / Super Admin access only
+ */
+export async function requireOwner(
+  req: NextRequest
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!isOwner(auth.admin)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Only studio owners can perform this action.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
+}
+
+/**
+ * Backward compatibility alias for requireAuthenticatedAdmin
  */
 export async function requireOwnerOrEmployee(
   req: NextRequest
@@ -20542,96 +21270,54 @@ export async function requireOwnerOrEmployee(
   return requireAuthenticatedAdmin(req);
 }
 
-/**
- * Customer session payload
- */
-export interface CustomerTokenPayload {
-  id: string;
-  email: string;
-  name: string;
-  role: 'customer';
-  provider?: 'google' | 'email';
+export async function requireRole(
+  req: NextRequest,
+  allowedRoles: AdminRole[]
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!allowedRoles.includes(auth.admin.role)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Insufficient permissions.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
 }
 
-/**
- * Signs a customer JWT session token (30-day session)
- */
-export function signCustomerToken(payload: CustomerTokenPayload): string {
+// Customer Authentication Utilities
+export function getCustomerTokenFromRequest(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get('balaji_customer_token')?.value || req.cookies.get('balaji_token')?.value;
+  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+  return cookieToken || authHeader || null;
+}
+
+export function signCustomerToken(payload: { id: string; email: string; name: string; role: 'customer'; provider?: string }): string {
   return jwt.sign(payload, getJwtSecret(), { expiresIn: '30d' });
 }
 
-/**
- * Verifies and decodes a customer JWT token
- */
-export function verifyCustomerToken(token: string): CustomerTokenPayload | null {
+export function verifyCustomerToken(token: string): { id: string; email: string; name: string; role: string; provider?: string } | null {
   try {
     const decoded = jwt.verify(token, getJwtSecret()) as any;
-    if (decoded && (decoded.role === 'customer' || !decoded.role)) {
-      return {
-        id: decoded.id || '',
-        email: decoded.email,
-        name: decoded.name || 'Client',
-        role: 'customer',
-        provider: decoded.provider || 'email',
-      };
+    if (decoded && decoded.role === 'customer') {
+      return decoded;
     }
     return null;
   } catch {
     return null;
   }
 }
-
-/**
- * Extracts customer session token from cookie or header
- */
-export function getCustomerTokenFromRequest(req: NextRequest): string | null {
-  const cookieToken = req.cookies.get('balaji_customer_session')?.value;
-  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-  return cookieToken || authHeader || null;
-}
-
-/**
- * Authoritatively resolves user role from email against the database
- */
-export async function resolveAccountRole(email: string): Promise<{
-  role: 'owner' | 'employee' | 'customer';
-  adminUser?: AdminUser;
-  isDisabled?: boolean;
-}> {
-  const normalizedEmail = email.trim().toLowerCase();
-  try {
-    const admin = await getAdminByEmail(normalizedEmail);
-    if (admin) {
-      if (admin.status === 'disabled') {
-        return { role: 'customer', isDisabled: true };
-      }
-      const { passwordHash: _, ...safeAdmin } = admin;
-      const role = (admin.role === 'owner' || admin.role === 'super_admin') ? 'owner' : 'employee';
-      return { role, adminUser: safeAdmin };
-    }
-  } catch (err) {
-    console.error('Role resolution check notice:', err);
-  }
-  return { role: 'customer' };
-}
-
-/**
- * Enforces active admin verification
- */
-export async function requireActiveAdmin(
-  req: NextRequest
-): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  return requireAuthenticatedAdmin(req);
-}
 ```
 
 ---
 
-### `src/lib/db.ts`
+### <a id="src-lib-db-ts"></a>`src/lib/db.ts`
 
-- **File**: `src/lib/db.ts`
-- **Size**: 0.4 KB (13 lines)
-- **Language**: `typescript`
+> **Lines**: 13 • **Size**: 0.4 KB
 
 ```typescript
 /**
@@ -20650,11 +21336,9 @@ export * from '@/server/db';
 
 ---
 
-### `src/lib/push-client.ts`
+### <a id="src-lib-push-client-ts"></a>`src/lib/push-client.ts`
 
-- **File**: `src/lib/push-client.ts`
-- **Size**: 0.5 KB (14 lines)
-- **Language**: `typescript`
+> **Lines**: 14 • **Size**: 0.5 KB
 
 ```typescript
 export const DEFAULT_VAPID_PUBLIC_KEY =
@@ -20674,11 +21358,9 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 ---
 
-### `src/lib/push.ts`
+### <a id="src-lib-push-ts"></a>`src/lib/push.ts`
 
-- **File**: `src/lib/push.ts`
-- **Size**: 9.8 KB (339 lines)
-- **Language**: `typescript`
+> **Lines**: 339 • **Size**: 9.8 KB
 
 ```typescript
 import webPush from 'web-push';
@@ -21023,11 +21705,9 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
 
 ---
 
-### `src/lib/seedData.ts`
+### <a id="src-lib-seeddata-ts"></a>`src/lib/seedData.ts`
 
-- **File**: `src/lib/seedData.ts`
-- **Size**: 36.2 KB (838 lines)
-- **Language**: `typescript`
+> **Lines**: 838 • **Size**: 36.2 KB
 
 ```typescript
 import { hashPassword } from './auth';
@@ -21871,11 +22551,9 @@ export function getInitialAdminSeed() {
 
 ---
 
-### `src/lib/supabase.ts`
+### <a id="src-lib-supabase-ts"></a>`src/lib/supabase.ts`
 
-- **File**: `src/lib/supabase.ts`
-- **Size**: 1.0 KB (32 lines)
-- **Language**: `typescript`
+> **Lines**: 32 • **Size**: 1.0 KB
 
 ```typescript
 import { createClient } from '@supabase/supabase-js';
@@ -21913,11 +22591,129 @@ export function getServiceSupabase() {
 
 ---
 
-### `src/server/api/response.ts`
+### <a id="src-middleware-ts"></a>`src/middleware.ts`
 
-- **File**: `src/server/api/response.ts`
-- **Size**: 1.7 KB (71 lines)
-- **Language**: `typescript`
+> **Lines**: 112 • **Size**: 3.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+
+function decodeJwtPayload(token: string): any {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = Buffer.from(base64, 'base64').toString('utf8');
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+}
+
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // 1. Skip public auth routes and assets
+  if (
+    pathname === '/admin/login' ||
+    pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api/health') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/logo.png'
+  ) {
+    return NextResponse.next();
+  }
+
+  // 2. Protect Admin Studio UI pages (/admin/*)
+  if (pathname.startsWith('/admin')) {
+    const adminToken = req.cookies.get('balaji_admin_session')?.value;
+    if (!adminToken) {
+      const loginUrl = new URL('/admin/login', req.url);
+      loginUrl.searchParams.set('from', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    const payload = decodeJwtPayload(adminToken);
+    if (!payload || !payload.role || payload.role === 'customer') {
+      const loginUrl = new URL('/admin/login', req.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Check expiry if exp claim exists
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      const loginUrl = new URL('/admin/login', req.url);
+      loginUrl.searchParams.set('expired', 'true');
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Owner-only route protection at middleware boundary
+    if (pathname.startsWith('/admin/employees') || pathname.startsWith('/admin/settings')) {
+      const isOwner = payload.role === 'owner' || payload.role === 'super_admin';
+      if (!isOwner) {
+        return NextResponse.redirect(new URL('/admin', req.url));
+      }
+    }
+
+    return NextResponse.next();
+  }
+
+  // 3. Protect Admin API endpoints (/api/admin/*)
+  if (pathname.startsWith('/api/admin')) {
+    const adminToken =
+      req.cookies.get('balaji_admin_session')?.value ||
+      req.headers.get('authorization')?.replace('Bearer ', '');
+
+    if (!adminToken) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required for administrative access.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    const payload = decodeJwtPayload(adminToken);
+    if (!payload || !payload.role || payload.role === 'customer') {
+      return NextResponse.json(
+        { success: false, error: 'Invalid administrative session credentials.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      return NextResponse.json(
+        { success: false, error: 'Administrative session has expired. Please sign in again.', code: 'SESSION_EXPIRED' },
+        { status: 401 }
+      );
+    }
+
+    // Owner-only API route protection
+    if (pathname.startsWith('/api/admin/employees') || pathname.startsWith('/api/admin/settings')) {
+      const isOwner = payload.role === 'owner' || payload.role === 'super_admin';
+      if (!isOwner) {
+        return NextResponse.json(
+          { success: false, error: 'Access Denied: Only studio owners are permitted.', code: 'FORBIDDEN' },
+          { status: 403 }
+        );
+      }
+    }
+
+    return NextResponse.next();
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
+};
+```
+
+---
+
+### <a id="src-server-api-response-ts"></a>`src/server/api/response.ts`
+
+> **Lines**: 71 • **Size**: 1.7 KB
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -21994,76 +22790,243 @@ export function apiError(
 
 ---
 
-### `src/server/auth/rbac.ts`
+### <a id="src-server-auth-rbac-ts"></a>`src/server/auth/rbac.ts`
 
-- **File**: `src/server/auth/rbac.ts`
-- **Size**: 2.0 KB (81 lines)
-- **Language**: `typescript`
+> **Lines**: 274 • **Size**: 7.2 KB
 
 ```typescript
 import { AdminRole, AdminUser } from '@/types';
+import { ForbiddenError } from '../errors';
 
 // =============================================================
 // CENTRALIZED PERMISSIONS & ROLE-BASED ACCESS CONTROL (RBAC)
 // =============================================================
 
 export type Permission =
+  // Products
   | 'products.read'
-  | 'products.write'
-  | 'inventory.write'
+  | 'products.create'
+  | 'products.update'
+  | 'products.delete'
+  | 'products.publish'
+  | 'products.write' // backward-compat alias
+  // Categories
+  | 'categories.read'
+  | 'categories.create'
+  | 'categories.update'
+  | 'categories.delete'
+  // Inventory
+  | 'inventory.read'
+  | 'inventory.adjust'
+  | 'inventory.write' // backward-compat alias
+  // Orders
   | 'orders.read'
-  | 'orders.write'
+  | 'orders.update_status'
+  | 'orders.cancel'
+  | 'orders.export'
+  | 'orders.write' // backward-compat alias
+  // Quotes
   | 'quotes.read'
-  | 'quotes.write'
-  | 'projects.write'
-  | 'services.write'
+  | 'quotes.update'
+  | 'quotes.convert'
+  | 'quotes.write' // backward-compat alias
+  // Projects
+  | 'projects.read'
+  | 'projects.create'
+  | 'projects.update'
+  | 'projects.delete'
+  | 'projects.publish'
+  | 'projects.write' // backward-compat alias
+  // Services
+  | 'services.read'
+  | 'services.create'
+  | 'services.update'
+  | 'services.delete'
+  | 'services.write' // backward-compat alias
+  // Customers
   | 'customers.read'
-  | 'owner.settings'
-  | 'owner.payment'
-  | 'owner.employee_management'
-  | 'owner.audit_logs';
+  // Employees (Owner / Super Admin only)
+  | 'employees.read'
+  | 'employees.create'
+  | 'employees.update'
+  | 'employees.disable'
+  | 'employees.reset_password'
+  | 'employees.delete'
+  | 'employees.write'
+  | 'owner.employee_management' // backward-compat alias
+  // Settings & CMS (Owner / Super Admin only)
+  | 'settings.read'
+  | 'settings.write'
+  | 'owner.settings' // backward-compat alias
+  // Payments (Owner / Super Admin only)
+  | 'payments.read'
+  | 'payments.write'
+  | 'owner.payment' // backward-compat alias
+  // Audit Logs (Owner / Super Admin only)
+  | 'audit.read'
+  | 'audit.export'
+  | 'owner.audit_logs' // backward-compat alias
+  // Analytics
+  | 'analytics.read'
+  // Notifications
+  | 'notifications.manage';
 
 const ALL_PERMISSIONS: Permission[] = [
   'products.read',
+  'products.create',
+  'products.update',
+  'products.delete',
+  'products.publish',
   'products.write',
+  'categories.read',
+  'categories.create',
+  'categories.update',
+  'categories.delete',
+  'inventory.read',
+  'inventory.adjust',
   'inventory.write',
   'orders.read',
+  'orders.update_status',
+  'orders.cancel',
+  'orders.export',
   'orders.write',
   'quotes.read',
+  'quotes.update',
+  'quotes.convert',
   'quotes.write',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.delete',
+  'projects.publish',
   'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
+  'services.delete',
   'services.write',
   'customers.read',
-  'owner.settings',
-  'owner.payment',
+  'employees.read',
+  'employees.create',
+  'employees.update',
+  'employees.disable',
+  'employees.reset_password',
+  'employees.delete',
+  'employees.write',
   'owner.employee_management',
+  'settings.read',
+  'settings.write',
+  'owner.settings',
+  'payments.read',
+  'payments.write',
+  'owner.payment',
+  'audit.read',
+  'audit.export',
   'owner.audit_logs',
+  'analytics.read',
+  'notifications.manage',
 ];
 
 const EMPLOYEE_PERMISSIONS: Permission[] = [
   'products.read',
+  'products.create',
+  'products.update',
+  'products.publish',
   'products.write',
+  'categories.read',
+  'inventory.read',
+  'inventory.adjust',
   'inventory.write',
   'orders.read',
+  'orders.update_status',
+  'orders.cancel',
+  'orders.export',
   'orders.write',
   'quotes.read',
+  'quotes.update',
+  'quotes.convert',
   'quotes.write',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.publish',
   'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
   'services.write',
   'customers.read',
+  'analytics.read',
+];
+
+const EDITOR_PERMISSIONS: Permission[] = [
+  'products.read',
+  'products.create',
+  'products.update',
+  'products.publish',
+  'products.write',
+  'categories.read',
+  'categories.create',
+  'categories.update',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.publish',
+  'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
+  'services.write',
+];
+
+const VIEWER_PERMISSIONS: Permission[] = [
+  'products.read',
+  'categories.read',
+  'inventory.read',
+  'orders.read',
+  'quotes.read',
+  'projects.read',
+  'services.read',
+  'customers.read',
+  'analytics.read',
 ];
 
 export const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
   owner: ALL_PERMISSIONS,
   super_admin: ALL_PERMISSIONS,
   employee: EMPLOYEE_PERMISSIONS,
-  editor: EMPLOYEE_PERMISSIONS,
-  viewer: ['products.read', 'orders.read', 'quotes.read', 'customers.read'],
+  editor: EDITOR_PERMISSIONS,
+  viewer: VIEWER_PERMISSIONS,
 };
 
 export function hasPermission(role: AdminRole, permission: Permission): boolean {
   const permissions = ROLE_PERMISSIONS[role] || [];
-  return permissions.includes(permission);
+  if (permissions.includes(permission)) return true;
+
+  // Backward compatibility alias checks
+  if (permission === 'products.write') {
+    return permissions.includes('products.create') || permissions.includes('products.update');
+  }
+  if (permission === 'orders.write') {
+    return permissions.includes('orders.update_status') || permissions.includes('orders.cancel');
+  }
+  if (permission === 'quotes.write') {
+    return permissions.includes('quotes.update') || permissions.includes('quotes.convert');
+  }
+  if (permission === 'owner.settings') {
+    return permissions.includes('settings.write');
+  }
+  if (permission === 'owner.payment') {
+    return permissions.includes('payments.write');
+  }
+  if (permission === 'owner.employee_management') {
+    return permissions.includes('employees.create') || permissions.includes('employees.update');
+  }
+  if (permission === 'owner.audit_logs') {
+    return permissions.includes('audit.read');
+  }
+
+  return false;
 }
 
 export function isOwner(admin: AdminUser): boolean {
@@ -22071,25 +23034,165 @@ export function isOwner(admin: AdminUser): boolean {
 }
 
 export function canManageSettings(admin: AdminUser): boolean {
-  return hasPermission(admin.role, 'owner.settings');
+  return hasPermission(admin.role, 'settings.write');
 }
 
 export function canManageEmployees(admin: AdminUser): boolean {
-  return hasPermission(admin.role, 'owner.employee_management');
+  return hasPermission(admin.role, 'employees.create');
 }
 
 export function canManageOrders(admin: AdminUser): boolean {
-  return hasPermission(admin.role, 'orders.write');
+  return hasPermission(admin.role, 'orders.update_status');
+}
+
+/**
+ * Protects Owner / Super Admin accounts from self-deletion, disabling, or downgrade.
+ */
+export function protectOwnerFromModification(
+  target: { id: string; role: AdminRole; email: string },
+  actor: { id: string; role: AdminRole; email: string },
+  action: 'delete' | 'disable' | 'downgrade' | 'reset_password'
+): void {
+  // Prevent any modification of super_admin/owner by non-owners
+  if ((target.role === 'owner' || target.role === 'super_admin') && !isOwner(actor as any)) {
+    throw new ForbiddenError('Only studio owners can manage owner or super_admin accounts');
+  }
+
+  // Prevent self-deletion or self-disabling
+  if (target.id === actor.id && (action === 'delete' || action === 'disable')) {
+    throw new ForbiddenError('Safety Protection: Studio owners cannot self-delete or disable their own account');
+  }
+
+  // Prevent primary principal architect Vikas Sir from ever being deleted or disabled
+  if (target.email.toLowerCase().includes('vicks@balaji.com') && (action === 'delete' || action === 'disable')) {
+    throw new ForbiddenError('Immutable Protection: The primary principal architect account cannot be disabled or deleted');
+  }
 }
 ```
 
 ---
 
-### `src/server/db/client.ts`
+### <a id="src-server-auth-tokens-ts"></a>`src/server/auth/tokens.ts`
 
-- **File**: `src/server/db/client.ts`
-- **Size**: 7.9 KB (267 lines)
-- **Language**: `typescript`
+> **Lines**: 110 • **Size**: 3.0 KB
+
+```typescript
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { AdminRole } from '@/types';
+
+// In-memory revocation tracking: maps adminId -> timestamp of revocation
+// Any token issued BEFORE this timestamp is rejected
+const revokedBeforeMap = new Map<string, number>();
+
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Critical Security Error: Missing JWT_SECRET environment variable.');
+    }
+    return 'development_only_jwt_secret_do_not_use_in_production_key';
+  }
+  return secret;
+}
+
+export interface SessionTokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  mustChangePassword: boolean;
+  sessionId: string;
+  iat?: number;
+  exp?: number;
+}
+
+/**
+ * Signs an authoritative admin session token with cryptographic session ID
+ */
+export function signSessionToken(data: {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  mustChangePassword?: boolean;
+}): string {
+  const sessionId = crypto.randomBytes(16).toString('hex');
+  const payload: SessionTokenPayload = {
+    id: data.id,
+    email: data.email.toLowerCase().trim(),
+    name: data.name,
+    role: data.role,
+    mustChangePassword: Boolean(data.mustChangePassword),
+    sessionId,
+  };
+
+  return jwt.sign(payload, getJwtSecret(), {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+  });
+}
+
+/**
+ * Cryptographically verifies and validates session token, checking revocation
+ */
+export function verifySessionToken(token: string): SessionTokenPayload | null {
+  try {
+    const decoded = jwt.verify(token, getJwtSecret(), { algorithms: ['HS256'] }) as SessionTokenPayload;
+    if (!decoded || !decoded.id || !decoded.email || !decoded.role) {
+      return null;
+    }
+
+    // Check if session was revoked for this admin
+    const revokedTimestamp = revokedBeforeMap.get(decoded.id);
+    if (revokedTimestamp && decoded.iat && decoded.iat * 1000 < revokedTimestamp) {
+      return null; // Token was revoked
+    }
+
+    return decoded;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Revokes all active sessions for an admin (e.g. password reset, employee disabled, account deleted)
+ */
+export function revokeAllSessionsForAdmin(adminId: string): void {
+  revokedBeforeMap.set(adminId, Date.now());
+}
+
+/**
+ * Checks if a session issued at `iatSeconds` has been revoked
+ */
+export function isSessionRevoked(adminId: string, iatSeconds?: number): boolean {
+  const revokedTimestamp = revokedBeforeMap.get(adminId);
+  if (!revokedTimestamp || !iatSeconds) return false;
+  return iatSeconds * 1000 < revokedTimestamp;
+}
+
+/**
+ * Rotates a session token (issues a new sessionId while preserving identity)
+ */
+export function rotateSessionToken(token: string): string | null {
+  const current = verifySessionToken(token);
+  if (!current) return null;
+
+  return signSessionToken({
+    id: current.id,
+    email: current.email,
+    name: current.name,
+    role: current.role,
+    mustChangePassword: current.mustChangePassword,
+  });
+}
+```
+
+---
+
+### <a id="src-server-db-client-ts"></a>`src/server/db/client.ts`
+
+> **Lines**: 273 • **Size**: 8.1 KB
 
 ```typescript
 import fs from 'fs';
@@ -22115,6 +23218,7 @@ import {
   initialSiteSettings,
   getInitialAdminSeed,
 } from '@/lib/seedData';
+import { DatabaseUnavailableError } from '../errors';
 
 // =============================================================
 // DATABASE STATE & FIXTURE INTERFACES (DEVELOPMENT / TEST ONLY)
@@ -22348,6 +23452,11 @@ export function getDb(): DatabaseState {
 }
 
 export function saveDb(state: DatabaseState): void {
+  if (isProduction()) {
+    throw new DatabaseUnavailableError(
+      'Critical Safety Violation: Attempted to write to local db.json in production mode. Primary database connection is required.'
+    );
+  }
   dbCache = state;
   try {
     if (!fs.existsSync(DATA_DIR)) {
@@ -22362,11 +23471,9 @@ export function saveDb(state: DatabaseState): void {
 
 ---
 
-### `src/server/db/index.ts`
+### <a id="src-server-db-index-ts"></a>`src/server/db/index.ts`
 
-- **File**: `src/server/db/index.ts`
-- **Size**: 0.1 KB (5 lines)
-- **Language**: `typescript`
+> **Lines**: 5 • **Size**: 0.1 KB
 
 ```typescript
 export * from './client';
@@ -22377,11 +23484,9 @@ export * from './transactions/orders';
 
 ---
 
-### `src/server/db/mappers.ts`
+### <a id="src-server-db-mappers-ts"></a>`src/server/db/mappers.ts`
 
-- **File**: `src/server/db/mappers.ts`
-- **Size**: 7.1 KB (217 lines)
-- **Language**: `typescript`
+> **Lines**: 217 • **Size**: 7.1 KB
 
 ```typescript
 import {
@@ -22604,13 +23709,12 @@ export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
 
 ---
 
-### `src/server/db/repositories/audit.ts`
+### <a id="src-server-db-repositories-audit-ts"></a>`src/server/db/repositories/audit.ts`
 
-- **File**: `src/server/db/repositories/audit.ts`
-- **Size**: 2.3 KB (88 lines)
-- **Language**: `typescript`
+> **Lines**: 92 • **Size**: 2.5 KB
 
 ```typescript
+import crypto from 'crypto';
 import { AuditLog } from '@/types';
 import {
   isSupabaseConfigured,
@@ -22620,9 +23724,11 @@ import {
   getDb,
   saveDb,
 } from '../client';
+import { sanitizeAuditDetails } from '../../security/sanitization';
 
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   const now = new Date().toISOString();
+  const safeDetails = entry.details ? sanitizeAuditDetails(entry.details) : null;
 
   if (await isSupabaseAvailable()) {
     try {
@@ -22637,7 +23743,7 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
           action: entry.action,
           entity: entry.entity,
           entity_id: entry.entityId,
-          details: entry.details || null,
+          details: safeDetails,
           created_at: now,
         })
         .select()
@@ -22663,7 +23769,8 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
   const db = getDb();
   const log: AuditLog = {
     ...entry,
-    id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    details: safeDetails,
+    id: crypto.randomUUID(),
     createdAt: now,
   };
   db.auditLogs.unshift(log);
@@ -22702,11 +23809,9 @@ export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]>
 
 ---
 
-### `src/server/db/repositories/categories.ts`
+### <a id="src-server-db-repositories-categories-ts"></a>`src/server/db/repositories/categories.ts`
 
-- **File**: `src/server/db/repositories/categories.ts`
-- **Size**: 7.8 KB (256 lines)
-- **Language**: `typescript`
+> **Lines**: 273 • **Size**: 8.5 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -22721,6 +23826,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseCategory } from '../mappers';
+import { ConflictError } from '../../errors';
 
 export async function getCategories(): Promise<Category[]> {
   const now = Date.now();
@@ -22945,6 +24051,17 @@ export async function updateCategory(
 export async function deleteCategory(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+
+    // Prevent deletion if products depend on this category
+    const { count, error: countErr } = await supabase
+      .from('products')
+      .select('id', { count: 'exact', head: true })
+      .eq('category_id', id);
+
+    if (!countErr && (count || 0) > 0) {
+      throw new ConflictError(`Cannot delete category: There are ${count} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+    }
+
     const { error } = await supabase.from('categories').delete().eq('id', id);
     if (error) {
       console.error('Supabase deleteCategory error:', error);
@@ -22955,6 +24072,11 @@ export async function deleteCategory(id: string): Promise<boolean> {
   }
 
   const db = getDb();
+  const prodCount = db.products.filter((p) => p.categoryId === id).length;
+  if (prodCount > 0) {
+    throw new ConflictError(`Cannot delete category: There are ${prodCount} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+  }
+
   const initialLength = db.categories.length;
   db.categories = db.categories.filter((c) => c.id !== id);
   if (db.categories.length < initialLength) {
@@ -22968,11 +24090,9 @@ export async function deleteCategory(id: string): Promise<boolean> {
 
 ---
 
-### `src/server/db/repositories/customers.ts`
+### <a id="src-server-db-repositories-customers-ts"></a>`src/server/db/repositories/customers.ts`
 
-- **File**: `src/server/db/repositories/customers.ts`
-- **Size**: 4.4 KB (168 lines)
-- **Language**: `typescript`
+> **Lines**: 168 • **Size**: 4.4 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -23146,11 +24266,9 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
 
 ---
 
-### `src/server/db/repositories/employees.ts`
+### <a id="src-server-db-repositories-employees-ts"></a>`src/server/db/repositories/employees.ts`
 
-- **File**: `src/server/db/repositories/employees.ts`
-- **Size**: 10.5 KB (366 lines)
-- **Language**: `typescript`
+> **Lines**: 390 • **Size**: 11.2 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -23164,6 +24282,8 @@ import {
   saveDb,
 } from '../client';
 import { mapAdminUser } from '../mappers';
+import { protectOwnerFromModification } from '../../auth/rbac';
+import { revokeAllSessionsForAdmin } from '../../auth/tokens';
 
 export async function getAdmins(): Promise<AdminUser[]> {
   if (await isSupabaseAvailable()) {
@@ -23316,15 +24436,22 @@ export async function updateEmployeeAdmin(
     status?: 'active' | 'disabled';
     mustChangePassword?: boolean;
   },
-  actor?: { id: string; email: string }
+  actor?: { id: string; email: string; role?: any }
 ): Promise<AdminUser | null> {
   const current = await getAdminById(id);
   if (!current) return null;
 
-  if (current.role === 'owner' || current.role === 'super_admin') {
-    if (partialData.status === 'disabled') {
-      throw new Error('Cannot disable the master studio owner account.');
-    }
+  if (actor) {
+    protectOwnerFromModification(
+      current as any,
+      actor as any,
+      partialData.status === 'disabled' ? 'disable' : 'downgrade'
+    );
+  }
+
+  // If status is being disabled, immediately revoke all active sessions
+  if (partialData.status === 'disabled') {
+    revokeAllSessionsForAdmin(id);
   }
 
   const now = new Date().toISOString();
@@ -23366,14 +24493,17 @@ export async function updateEmployeeAdmin(
 
 export async function deleteEmployeeAdmin(
   id: string,
-  actor?: { id: string; email: string }
+  actor?: { id: string; email: string; role?: any }
 ): Promise<boolean> {
   const target = await getAdminById(id);
   if (!target) return false;
 
-  if (target.role === 'owner' || target.role === 'super_admin') {
-    throw new Error('Cannot delete the master studio owner account.');
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'delete');
   }
+
+  // Revoke any active sessions
+  revokeAllSessionsForAdmin(id);
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -23394,11 +24524,23 @@ export async function deleteEmployeeAdmin(
 
 export async function resetEmployeePassword(
   id: string,
-  temporaryPasswordHash: string,
-  actor?: { id: string; email: string }
+  temporaryPasswordOrHash: string,
+  actor?: { id: string; email: string; role?: any }
 ): Promise<boolean> {
   const target = await getAdminById(id);
   if (!target) return false;
+
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'reset_password');
+  }
+
+  // Derive PBKDF2 hash if plaintext was supplied
+  const derivedHash = temporaryPasswordOrHash.includes(':')
+    ? temporaryPasswordOrHash
+    : hashBootstrapPassword(temporaryPasswordOrHash);
+
+  // Revoke all previous active sessions
+  revokeAllSessionsForAdmin(id);
 
   const now = new Date().toISOString();
 
@@ -23407,7 +24549,7 @@ export async function resetEmployeePassword(
     const { error } = await supabase
       .from('admins')
       .update({
-        password_hash: temporaryPasswordHash,
+        password_hash: derivedHash,
         must_change_password: true,
         updated_at: now,
       })
@@ -23420,7 +24562,7 @@ export async function resetEmployeePassword(
   const db = getDb();
   const adm = db.admins.find((a) => a.id === id);
   if (adm) {
-    adm.passwordHash = temporaryPasswordHash;
+    adm.passwordHash = derivedHash;
     adm.mustChangePassword = true;
     adm.updatedAt = now;
     saveDb(db);
@@ -23522,11 +24664,9 @@ export async function bootstrapInitialEmployee(): Promise<void> {
 
 ---
 
-### `src/server/db/repositories/enquiries.ts`
+### <a id="src-server-db-repositories-enquiries-ts"></a>`src/server/db/repositories/enquiries.ts`
 
-- **File**: `src/server/db/repositories/enquiries.ts`
-- **Size**: 2.8 KB (108 lines)
-- **Language**: `typescript`
+> **Lines**: 108 • **Size**: 2.8 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -23640,11 +24780,9 @@ export async function updateEnquiryStatus(
 
 ---
 
-### `src/server/db/repositories/index.ts`
+### <a id="src-server-db-repositories-index-ts"></a>`src/server/db/repositories/index.ts`
 
-- **File**: `src/server/db/repositories/index.ts`
-- **Size**: 0.3 KB (12 lines)
-- **Language**: `typescript`
+> **Lines**: 12 • **Size**: 0.3 KB
 
 ```typescript
 export * from './products';
@@ -23662,11 +24800,9 @@ export * from './enquiries';
 
 ---
 
-### `src/server/db/repositories/orders.ts`
+### <a id="src-server-db-repositories-orders-ts"></a>`src/server/db/repositories/orders.ts`
 
-- **File**: `src/server/db/repositories/orders.ts`
-- **Size**: 7.7 KB (261 lines)
-- **Language**: `typescript`
+> **Lines**: 267 • **Size**: 7.9 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -23681,6 +24817,7 @@ import {
 } from '../client';
 import { mapSupabaseOrder } from '../mappers';
 import { cancelOrderAtomic } from '../transactions/orders';
+import { validateOrderStatusTransition } from '../../validation/schemas';
 
 export async function getOrders(options?: {
   limit?: number;
@@ -23785,6 +24922,11 @@ export async function updateOrderStatus(
 ): Promise<Order | null> {
   const currentOrder = await getOrderById(id);
   if (!currentOrder) return null;
+
+  // Enforce formal order state machine
+  if (orderStatus) {
+    validateOrderStatusTransition(currentOrder.orderStatus, orderStatus);
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -23933,11 +25075,9 @@ export async function createOrder(
 
 ---
 
-### `src/server/db/repositories/products.ts`
+### <a id="src-server-db-repositories-products-ts"></a>`src/server/db/repositories/products.ts`
 
-- **File**: `src/server/db/repositories/products.ts`
-- **Size**: 12.6 KB (373 lines)
-- **Language**: `typescript`
+> **Lines**: 451 • **Size**: 15.3 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -23952,6 +25092,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseProduct } from '../mappers';
+import { ConflictError, ValidationError } from '../../errors';
 
 export async function getProducts(options?: {
   categoryId?: string;
@@ -24151,10 +25292,42 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return product;
 }
 
+export async function getProductBySku(sku: string): Promise<Product | null> {
+  const normalized = sku.trim();
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .eq('sku', normalized)
+      .maybeSingle();
+
+    if (!error && data) {
+      return mapSupabaseProduct(data);
+    }
+  }
+
+  const db = getDb();
+  return db.products.find((p) => p.sku.toLowerCase() === normalized.toLowerCase()) || null;
+}
+
 export async function createProduct(
   data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<Product> {
   const now = new Date().toISOString();
+
+  // Enforce unique SKU
+  if (data.sku) {
+    const existing = await getProductBySku(data.sku);
+    if (existing) {
+      throw new ConflictError(`A product with SKU '${data.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock
+  if (data.stock !== undefined && (data.stock < 0 || isNaN(Number(data.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -24223,41 +25396,86 @@ export async function createProduct(
 
 export async function updateProduct(
   id: string,
-  partialData: Partial<Product>
+  partialData: Partial<Product> & { expectedUpdatedAt?: string }
 ): Promise<Product | null> {
   const now = new Date().toISOString();
+  const { expectedUpdatedAt, ...dataToUpdate } = (partialData || {}) as any;
+
+  // Optimistic Concurrency Control Check
+  if (expectedUpdatedAt) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const { data: current, error: fetchErr } = await supabase
+        .from('products')
+        .select('updated_at')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (fetchErr) {
+        throw new Error(`Database error verifying product concurrency: ${fetchErr.message}`);
+      }
+      if (!current) return null;
+      if (current.updated_at && expectedUpdatedAt !== current.updated_at) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    } else {
+      const db = getDb();
+      const current = db.products.find((p) => p.id === id);
+      if (!current) return null;
+      if (current.updatedAt && expectedUpdatedAt !== current.updatedAt) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    }
+  }
+
+  // Enforce unique SKU if modified
+  if (dataToUpdate.sku) {
+    const existing = await getProductBySku(dataToUpdate.sku);
+    if (existing && existing.id !== id) {
+      throw new ConflictError(`A product with SKU '${dataToUpdate.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock if modified
+  if (dataToUpdate.stock !== undefined && (dataToUpdate.stock < 0 || isNaN(Number(dataToUpdate.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
 
     const updates: any = { updated_at: now };
-    if (partialData.name !== undefined) updates.name = partialData.name;
-    if (partialData.slug !== undefined) updates.slug = partialData.slug;
-    if (partialData.sku !== undefined) updates.sku = partialData.sku;
-    if (partialData.brand !== undefined) updates.brand = partialData.brand;
-    if (partialData.categoryId !== undefined) updates.category_id = partialData.categoryId || null;
-    if (partialData.subcategory !== undefined) updates.subcategory = partialData.subcategory;
-    if (partialData.description !== undefined) updates.description = partialData.description;
-    if (partialData.price !== undefined) updates.price = partialData.price;
-    if (partialData.salePrice !== undefined) updates.sale_price = partialData.salePrice;
-    if (partialData.unit !== undefined) updates.unit = partialData.unit;
-    if (partialData.moq !== undefined) updates.moq = partialData.moq;
-    if (partialData.stock !== undefined) updates.stock = partialData.stock;
-    if (partialData.purchaseMode !== undefined) updates.purchase_mode = partialData.purchaseMode;
-    if (partialData.leadTime !== undefined) updates.lead_time = partialData.leadTime;
-    if (partialData.dimensions !== undefined) updates.dimensions = partialData.dimensions;
-    if (partialData.thickness !== undefined) updates.thickness = partialData.thickness;
-    if (partialData.material !== undefined) updates.material = partialData.material;
-    if (partialData.finish !== undefined) updates.finish = partialData.finish;
-    if (partialData.color !== undefined) updates.color = partialData.color;
-    if (partialData.images !== undefined) updates.images = partialData.images;
-    if (partialData.variants !== undefined) updates.variants = partialData.variants;
-    if (partialData.isFeatured !== undefined) updates.is_featured = partialData.isFeatured;
-    if (partialData.isNew !== undefined) updates.is_new = partialData.isNew;
-    if (partialData.isBestseller !== undefined) updates.is_bestseller = partialData.isBestseller;
-    if (partialData.published !== undefined) updates.published = partialData.published;
-    if (partialData.tags !== undefined) updates.tags = partialData.tags;
-    if (partialData.specifications !== undefined) updates.specifications = partialData.specifications;
+    if (dataToUpdate.name !== undefined) updates.name = dataToUpdate.name;
+    if (dataToUpdate.slug !== undefined) updates.slug = dataToUpdate.slug;
+    if (dataToUpdate.sku !== undefined) updates.sku = dataToUpdate.sku;
+    if (dataToUpdate.brand !== undefined) updates.brand = dataToUpdate.brand;
+    if (dataToUpdate.categoryId !== undefined) updates.category_id = dataToUpdate.categoryId || null;
+    if (dataToUpdate.subcategory !== undefined) updates.subcategory = dataToUpdate.subcategory;
+    if (dataToUpdate.description !== undefined) updates.description = dataToUpdate.description;
+    if (dataToUpdate.price !== undefined) updates.price = dataToUpdate.price;
+    if (dataToUpdate.salePrice !== undefined) updates.sale_price = dataToUpdate.salePrice;
+    if (dataToUpdate.unit !== undefined) updates.unit = dataToUpdate.unit;
+    if (dataToUpdate.moq !== undefined) updates.moq = dataToUpdate.moq;
+    if (dataToUpdate.stock !== undefined) updates.stock = dataToUpdate.stock;
+    if (dataToUpdate.purchaseMode !== undefined) updates.purchase_mode = dataToUpdate.purchaseMode;
+    if (dataToUpdate.leadTime !== undefined) updates.lead_time = dataToUpdate.leadTime;
+    if (dataToUpdate.dimensions !== undefined) updates.dimensions = dataToUpdate.dimensions;
+    if (dataToUpdate.thickness !== undefined) updates.thickness = dataToUpdate.thickness;
+    if (dataToUpdate.material !== undefined) updates.material = dataToUpdate.material;
+    if (dataToUpdate.finish !== undefined) updates.finish = dataToUpdate.finish;
+    if (dataToUpdate.color !== undefined) updates.color = dataToUpdate.color;
+    if (dataToUpdate.images !== undefined) updates.images = dataToUpdate.images;
+    if (dataToUpdate.variants !== undefined) updates.variants = dataToUpdate.variants;
+    if (dataToUpdate.isFeatured !== undefined) updates.is_featured = dataToUpdate.isFeatured;
+    if (dataToUpdate.isNew !== undefined) updates.is_new = dataToUpdate.isNew;
+    if (dataToUpdate.isBestseller !== undefined) updates.is_bestseller = dataToUpdate.isBestseller;
+    if (dataToUpdate.published !== undefined) updates.published = dataToUpdate.published;
+    if (dataToUpdate.tags !== undefined) updates.tags = dataToUpdate.tags;
+    if (dataToUpdate.specifications !== undefined) updates.specifications = dataToUpdate.specifications;
 
     const { data: updated, error } = await supabase
       .from('products')
@@ -24282,7 +25500,7 @@ export async function updateProduct(
 
   db.products[index] = {
     ...db.products[index],
-    ...partialData,
+    ...dataToUpdate,
     updatedAt: now,
   };
   saveDb(db);
@@ -24316,11 +25534,9 @@ export async function deleteProduct(id: string): Promise<boolean> {
 
 ---
 
-### `src/server/db/repositories/projects.ts`
+### <a id="src-server-db-repositories-projects-ts"></a>`src/server/db/repositories/projects.ts`
 
-- **File**: `src/server/db/repositories/projects.ts`
-- **Size**: 9.8 KB (297 lines)
-- **Language**: `typescript`
+> **Lines**: 297 • **Size**: 9.8 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -24623,11 +25839,9 @@ export async function deleteProject(id: string): Promise<boolean> {
 
 ---
 
-### `src/server/db/repositories/quotes.ts`
+### <a id="src-server-db-repositories-quotes-ts"></a>`src/server/db/repositories/quotes.ts`
 
-- **File**: `src/server/db/repositories/quotes.ts`
-- **Size**: 6.3 KB (211 lines)
-- **Language**: `typescript`
+> **Lines**: 211 • **Size**: 6.2 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -24709,9 +25923,9 @@ export async function createQuote(quoteData: {
   }
 
   const db = getDb();
-  const quoteId = `qt-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const quoteId = crypto.randomUUID();
   const quoteItems = (quoteData.items || []).map((it) => ({
-    id: `qti-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    id: crypto.randomUUID(),
     quoteId,
     productId: it.productId,
     productName: it.productName,
@@ -24844,11 +26058,9 @@ export async function updateQuoteStatus(
 
 ---
 
-### `src/server/db/repositories/services.ts`
+### <a id="src-server-db-repositories-services-ts"></a>`src/server/db/repositories/services.ts`
 
-- **File**: `src/server/db/repositories/services.ts`
-- **Size**: 5.4 KB (176 lines)
-- **Language**: `typescript`
+> **Lines**: 176 • **Size**: 5.4 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -25030,15 +26242,14 @@ export async function deleteService(id: string): Promise<boolean> {
 
 ---
 
-### `src/server/db/repositories/settings.ts`
+### <a id="src-server-db-repositories-settings-ts"></a>`src/server/db/repositories/settings.ts`
 
-- **File**: `src/server/db/repositories/settings.ts`
-- **Size**: 7.0 KB (186 lines)
-- **Language**: `typescript`
+> **Lines**: 221 • **Size**: 8.0 KB
 
 ```typescript
 import { SiteSettings, PublicSiteSettings } from '@/types';
 import { initialSiteSettings } from '@/lib/seedData';
+import { validatePaymentSettings } from '../../validation/schemas';
 import {
   isSupabaseConfigured,
   getServiceSupabase,
@@ -25188,11 +26399,43 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
   };
 }
 
+function mergeSiteSettings(current: SiteSettings, partial: Partial<SiteSettings>): SiteSettings {
+  return {
+    ...current,
+    ...partial,
+    announcementBanner:
+      partial.announcementBanner !== undefined
+        ? {
+            ...(current.announcementBanner || { enabled: true, text: '', linkUrl: '/quote' }),
+            ...partial.announcementBanner,
+          }
+        : current.announcementBanner,
+    homepage:
+      partial.homepage !== undefined
+        ? {
+            ...(current.homepage || {}),
+            ...partial.homepage,
+          }
+        : current.homepage,
+    paymentGateway:
+      partial.paymentGateway !== undefined
+        ? {
+            ...(current.paymentGateway || {}),
+            ...partial.paymentGateway,
+          }
+        : current.paymentGateway,
+  };
+}
+
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
+  if (partial.paymentGateway) {
+    validatePaymentSettings(partial.paymentGateway);
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const current = await getSiteSettings();
-    const merged = { ...current, ...partial };
+    const merged = mergeSiteSettings(current, partial);
 
     const { data, error } = await supabase
       .from('site_settings')
@@ -25217,7 +26460,9 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   }
 
   const db = getDb();
-  db.siteSettings = { ...db.siteSettings, ...partial };
+  const current = await getSiteSettings();
+  const merged = mergeSiteSettings(current, partial);
+  db.siteSettings = merged;
   saveDb(db);
   invalidateMemoryCache('settings');
   return db.siteSettings;
@@ -25226,11 +26471,9 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
 
 ---
 
-### `src/server/db/transactions/orders.ts`
+### <a id="src-server-db-transactions-orders-ts"></a>`src/server/db/transactions/orders.ts`
 
-- **File**: `src/server/db/transactions/orders.ts`
-- **Size**: 7.1 KB (237 lines)
-- **Language**: `typescript`
+> **Lines**: 237 • **Size**: 7.0 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -25309,7 +26552,7 @@ export async function createOrderAtomic(
       const itemSubtotal = unitPrice * item.quantity;
       subtotal += itemSubtotal;
       orderItems.push({
-        id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        id: crypto.randomUUID(),
         productId: product.id,
         productName: product.name,
         sku: product.sku,
@@ -25473,11 +26716,566 @@ export async function cancelOrderAtomic(
 
 ---
 
-### `src/server/validation/index.ts`
+### <a id="src-server-errors-index-ts"></a>`src/server/errors/index.ts`
 
-- **File**: `src/server/validation/index.ts`
-- **Size**: 6.4 KB (174 lines)
-- **Language**: `typescript`
+> **Lines**: 102 • **Size**: 2.9 KB
+
+```typescript
+import { NextResponse } from 'next/server';
+
+export class AppError extends Error {
+  public readonly statusCode: number;
+  public readonly code: string;
+  public readonly details?: any;
+
+  constructor(message: string, statusCode = 500, code = 'INTERNAL_ERROR', details?: any) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    this.details = details;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(message = 'Authentication required to access this atelier resource', details?: any) {
+    super(message, 401, 'UNAUTHORIZED', details);
+  }
+}
+
+export class ForbiddenError extends AppError {
+  constructor(message = 'You do not have the required administrative permissions for this action', details?: any) {
+    super(message, 403, 'FORBIDDEN', details);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(entity = 'Resource', details?: any) {
+    super(`${entity} not found`, 404, 'NOT_FOUND', details);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message: string, details?: any) {
+    super(message, 409, 'CONFLICT', details);
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message: string, details?: any) {
+    super(message, 422, 'VALIDATION_ERROR', details);
+  }
+}
+
+export class RateLimitError extends AppError {
+  constructor(message = 'Too many requests. Please try again later.', details?: any) {
+    super(message, 429, 'RATE_LIMITED', details);
+  }
+}
+
+export class DatabaseUnavailableError extends AppError {
+  constructor(message = 'The primary database service is temporarily unavailable. Please retry shortly.', details?: any) {
+    super(message, 503, 'DATABASE_UNAVAILABLE', details);
+  }
+}
+
+export interface StandardErrorResponse {
+  success: false;
+  error: string;
+  code: string;
+  statusCode: number;
+  requestId?: string;
+  details?: any;
+}
+
+export function formatErrorResponse(err: unknown, requestId?: string): NextResponse<StandardErrorResponse> {
+  if (err instanceof AppError) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: err.message,
+        code: err.code,
+        statusCode: err.statusCode,
+        requestId,
+        ...(err.details ? { details: err.details } : {}),
+      },
+      { status: err.statusCode }
+    );
+  }
+
+  const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+  console.error('[Unhandled Server Error]', { requestId, error: err });
+
+  // In production, do not leak raw SQL / internal error stack
+  const isProd = process.env.NODE_ENV === 'production';
+  const safeMessage = isProd ? 'An unexpected server error occurred. Please contact studio administration.' : message;
+
+  return NextResponse.json(
+    {
+      success: false,
+      error: safeMessage,
+      code: 'INTERNAL_SERVER_ERROR',
+      statusCode: 500,
+      requestId,
+    },
+    { status: 500 }
+  );
+}
+```
+
+---
+
+### <a id="src-server-security-config-ts"></a>`src/server/security/config.ts`
+
+> **Lines**: 48 • **Size**: 1.2 KB
+
+```typescript
+import { isProduction } from '../db/client';
+import { AppError } from '../errors';
+
+export interface ProductionConfigStatus {
+  valid: boolean;
+  isProduction: boolean;
+  issues: string[];
+}
+
+/**
+ * Validates critical production configuration at runtime.
+ * Throws AppError in production if critical secrets or variables are missing.
+ */
+export function validateProductionConfig(): ProductionConfigStatus {
+  const isProd = isProduction();
+  const issues: string[] = [];
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  if (!supabaseUrl) {
+    issues.push('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL');
+  }
+
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseServiceKey) {
+    issues.push('Missing SUPABASE_SERVICE_ROLE_KEY');
+  }
+
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    issues.push('Missing JWT_SECRET');
+  }
+
+  if (isProd && issues.length > 0) {
+    throw new AppError(
+      `Critical Production Security Error: Incomplete configuration. Issues: ${issues.join(', ')}`,
+      500,
+      'CRITICAL_CONFIG_ERROR',
+      { issues }
+    );
+  }
+
+  return {
+    valid: issues.length === 0,
+    isProduction: isProd,
+    issues,
+  };
+}
+```
+
+---
+
+### <a id="src-server-security-index-ts"></a>`src/server/security/index.ts`
+
+> **Lines**: 3 • **Size**: 0.1 KB
+
+```typescript
+export * from './config';
+export * from './sanitization';
+```
+
+---
+
+### <a id="src-server-security-sanitization-ts"></a>`src/server/security/sanitization.ts`
+
+> **Lines**: 84 • **Size**: 1.9 KB
+
+```typescript
+/**
+ * Security & Sanitization Utilities for Balaji Atelier
+ */
+
+const REDACTED_KEYS = new Set([
+  'password',
+  'passwordhash',
+  'password_hash',
+  'token',
+  'sessiontoken',
+  'session_token',
+  'jwt',
+  'secret',
+  'jwtsecret',
+  'jwt_secret',
+  'key',
+  'vapidprivatekey',
+  'vapid_private_key',
+  'service_role_key',
+  'servicerolekey',
+]);
+
+/**
+ * Recursively sanitizes data before writing to audit logs or public responses,
+ * scrubbing any credentials, tokens, or private secrets.
+ */
+export function sanitizeAuditDetails(data: any, depth = 0): any {
+  if (depth > 5 || data === null || data === undefined) return data;
+
+  if (typeof data !== 'object') {
+    return data;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map((item) => sanitizeAuditDetails(item, depth + 1));
+  }
+
+  const sanitized: Record<string, any> = {};
+  for (const [key, value] of Object.entries(data)) {
+    const lowerKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (REDACTED_KEYS.has(lowerKey)) {
+      sanitized[key] = '[REDACTED]';
+    } else if (typeof value === 'object' && value !== null) {
+      sanitized[key] = sanitizeAuditDetails(value, depth + 1);
+    } else {
+      sanitized[key] = value;
+    }
+  }
+
+  return sanitized;
+}
+
+/**
+ * Inspects SVG string content to ensure no executable script tags, event handlers,
+ * or unsafe protocols are embedded.
+ */
+export function isSafeSvg(content: string): boolean {
+  if (!content || typeof content !== 'string') return false;
+  const lower = content.toLowerCase();
+
+  const isSvg = lower.includes('<svg') || lower.includes('<?xml');
+  if (!isSvg) return false;
+
+  const dangerousPatterns = [
+    '<script',
+    'onload=',
+    'onerror=',
+    'onclick=',
+    'onmouseover=',
+    'onfocus=',
+    'javascript:',
+    'data:text/html',
+    'xlink:href="javascript',
+  ];
+
+  for (const pattern of dangerousPatterns) {
+    if (lower.includes(pattern)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+```
+
+---
+
+### <a id="src-server-services-index-ts"></a>`src/server/services/index.ts`
+
+> **Lines**: 3 • **Size**: 0.1 KB
+
+```typescript
+export * from './orderService';
+export * from './quoteService';
+```
+
+---
+
+### <a id="src-server-services-orderservice-ts"></a>`src/server/services/orderService.ts`
+
+> **Lines**: 129 • **Size**: 3.9 KB
+
+```typescript
+import { Order, OrderStatus, PaymentStatus } from '@/types';
+import { createOrderAtomic, CreateOrderData } from '../db/transactions/orders';
+import { getOrderById, updateOrderStatus } from '../db/repositories/orders';
+import { addAuditLog } from '../db/repositories/audit';
+import { validateOrderStatusTransition } from '../validation/schemas';
+import { ValidationError, NotFoundError } from '../errors';
+import { sendNewOrderPush } from '@/lib/push';
+
+export interface ActorContext {
+  id: string;
+  email: string;
+}
+
+export class OrderService {
+  /**
+   * Domain-level order placement.
+   * Validates customer, address, and items, executes atomic reservation/creation,
+   * dispatches background push notifications, and records audit if actor is provided.
+   */
+  static async placeOrder(
+    data: CreateOrderData,
+    actor?: ActorContext
+  ): Promise<Order> {
+    if (!data.customerName || !data.customerEmail || !data.customerPhone) {
+      throw new ValidationError('Customer name, email, and phone are required.');
+    }
+
+    if (!data.shippingAddress || !data.shippingAddress.addressLine1) {
+      throw new ValidationError('Valid delivery address is required.');
+    }
+
+    if (!Array.isArray(data.items) || data.items.length === 0) {
+      throw new ValidationError('Order must contain at least one material/product.');
+    }
+
+    const result = await createOrderAtomic(data);
+
+    if (!result.success || !result.order) {
+      throw new Error(result.error || 'Failed to generate order.');
+    }
+
+    const order = result.order;
+
+    // Trigger realtime push notifications asynchronously
+    sendNewOrderPush(order).catch((pushErr) => {
+      console.warn('Order push notification dispatch notice:', pushErr);
+    });
+
+    if (actor) {
+      await addAuditLog({
+        adminId: actor.id,
+        adminEmail: actor.email,
+        action: 'ORDER_CREATED',
+        entity: 'Order',
+        entityId: order.id,
+        details: {
+          orderNumber: order.orderNumber,
+          totalAmount: order.totalAmount,
+          customerEmail: order.customerEmail,
+        },
+      });
+    }
+
+    return order;
+  }
+
+  /**
+   * Domain-level status transition and payment verification.
+   * Enforces transition state machine, persistence, and immutable audit trails.
+   */
+  static async updateOrderStatusAndPayment(
+    orderId: string,
+    params: {
+      orderStatus?: OrderStatus;
+      paymentStatus?: PaymentStatus;
+      action?: string;
+      utrNumber?: string;
+      note?: string;
+      actor: ActorContext;
+    }
+  ): Promise<Order> {
+    const existing = await getOrderById(orderId);
+    if (!existing) {
+      throw new NotFoundError(`Order ${orderId} not found`);
+    }
+
+    let targetPaymentStatus = params.paymentStatus || existing.paymentStatus;
+    const currentStatus = existing.orderStatus || (existing as any).status;
+    let targetOrderStatus = params.orderStatus || currentStatus;
+
+    if (params.action === 'VERIFY_PAYMENT') {
+      targetPaymentStatus = 'Paid';
+    }
+
+    if (params.orderStatus && params.orderStatus !== currentStatus) {
+      validateOrderStatusTransition(currentStatus, params.orderStatus);
+    }
+
+    const updated = await updateOrderStatus(orderId, targetOrderStatus, targetPaymentStatus, {
+      actorEmail: params.actor.email,
+      note: params.note,
+      utrNumber: params.utrNumber,
+    });
+
+    if (!updated) {
+      throw new NotFoundError(`Order ${orderId} could not be updated`);
+    }
+
+    const auditAction = params.action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
+
+    await addAuditLog({
+      adminId: params.actor.id,
+      adminEmail: params.actor.email,
+      action: auditAction,
+      entity: 'Order',
+      entityId: orderId,
+      details: {
+        orderStatus: targetOrderStatus,
+        paymentStatus: targetPaymentStatus,
+        utrNumber: params.utrNumber,
+        verifiedBy: params.actor.email,
+        note: params.note,
+      },
+    });
+
+    return updated;
+  }
+}
+```
+
+---
+
+### <a id="src-server-services-quoteservice-ts"></a>`src/server/services/quoteService.ts`
+
+> **Lines**: 132 • **Size**: 3.8 KB
+
+```typescript
+import { Quote, QuoteStatus, Order } from '@/types';
+import { getQuoteById, updateQuoteStatus } from '../db/repositories/quotes';
+import { createOrderAtomic } from '../db/transactions/orders';
+import { addAuditLog } from '../db/repositories/audit';
+import { NotFoundError, ConflictError, ValidationError } from '../errors';
+
+import { ActorContext } from './orderService';
+
+export class QuoteService {
+  /**
+   * Converts an existing quotation into an atelier-grade order atomically.
+   */
+  static async convertQuoteToOrder(
+    quoteId: string,
+    actor: ActorContext
+  ): Promise<{ order: Order; quote: Quote }> {
+    const quote = await getQuoteById(quoteId);
+    if (!quote) {
+      throw new NotFoundError(`Quote ${quoteId} not found`);
+    }
+
+    if (quote.status === 'Converted_To_Order') {
+      throw new ConflictError('This quote has already been converted to an order.');
+    }
+
+    const orderItems = (quote.items || []).map((it) => ({
+      productId: it.productId || 'custom-material',
+      quantity: it.quantity || 1,
+      selectedColor: 'Custom Specification',
+      selectedFinish: 'Bespoke',
+    }));
+
+    if (orderItems.length === 0) {
+      throw new ValidationError('Cannot convert a quote with no specified material items.');
+    }
+
+    const orderResult = await createOrderAtomic({
+      customerName: quote.customerName,
+      customerEmail: quote.customerEmail,
+      customerPhone: quote.customerPhone,
+      shippingAddress: {
+        fullName: quote.customerName,
+        phone: quote.customerPhone,
+        addressLine1: quote.projectLocation || 'Assam, India',
+        city: 'Guwahati',
+        state: 'Assam',
+        pincode: '781040',
+        country: 'India',
+      },
+      items: orderItems,
+      paymentMethod: 'Architectural Contract / Wire Transfer',
+      notes: `Converted from Quotation Dossier #${quote.quoteNumber}. Project Type: ${quote.projectType}.`,
+      idempotencyKey: `quote-conv-${quote.id}`,
+    });
+
+    if (!orderResult.success || !orderResult.order) {
+      throw new Error(orderResult.error || 'Failed to generate order from quotation.');
+    }
+
+    const updatedQuote = await updateQuoteStatus(
+      quote.id,
+      'Converted_To_Order',
+      quote.totalQuotedAmount,
+      `Converted to Order #${orderResult.order.orderNumber} by ${actor.email}`
+    );
+
+    await addAuditLog({
+      adminId: actor.id,
+      adminEmail: actor.email,
+      action: 'QUOTE_CONVERTED_TO_ORDER',
+      entity: 'Quote',
+      entityId: quote.id,
+      details: {
+        quoteNumber: quote.quoteNumber,
+        orderId: orderResult.order.id,
+        orderNumber: orderResult.order.orderNumber,
+        totalAmount: orderResult.order.totalAmount,
+      },
+    });
+
+    return {
+      order: orderResult.order,
+      quote: updatedQuote || quote,
+    };
+  }
+
+  /**
+   * Reviews or updates pricing estimation for a quotation.
+   */
+  static async updateEstimation(
+    quoteId: string,
+    params: {
+      status: QuoteStatus;
+      totalQuotedAmount?: number;
+      adminNotes?: string;
+      actor: ActorContext;
+    }
+  ): Promise<Quote> {
+    const existing = await getQuoteById(quoteId);
+    if (!existing) {
+      throw new NotFoundError(`Quote ${quoteId} not found`);
+    }
+
+    const updated = await updateQuoteStatus(
+      quoteId,
+      params.status,
+      params.totalQuotedAmount,
+      params.adminNotes
+    );
+
+    if (!updated) {
+      throw new NotFoundError(`Quote ${quoteId} could not be updated`);
+    }
+
+    await addAuditLog({
+      adminId: params.actor.id,
+      adminEmail: params.actor.email,
+      action: 'QUOTE_STATUS_UPDATED',
+      entity: 'Quote',
+      entityId: quoteId,
+      details: {
+        quoteNumber: updated.quoteNumber,
+        status: params.status,
+        totalQuotedAmount: params.totalQuotedAmount,
+        adminNotes: params.adminNotes,
+      },
+    });
+
+    return updated;
+  }
+}
+```
+
+---
+
+### <a id="src-server-validation-index-ts"></a>`src/server/validation/index.ts`
+
+> **Lines**: 174 • **Size**: 6.4 KB
 
 ```typescript
 import { CreateOrderInputDTO, UnitType } from '@/types';
@@ -25657,11 +27455,129 @@ export function validateEnquiryInput(body: any): ValidationResult<any> {
 
 ---
 
-### `src/types/index.ts`
+### <a id="src-server-validation-schemas-ts"></a>`src/server/validation/schemas.ts`
 
-- **File**: `src/types/index.ts`
-- **Size**: 9.1 KB (447 lines)
-- **Language**: `typescript`
+> **Lines**: 112 • **Size**: 3.9 KB
+
+```typescript
+import { ValidationError } from '../errors';
+import { OrderStatus, PaymentStatus, UnitType, PurchaseMode, AdminRole } from '@/types';
+
+export function validateProductInput(data: any, isUpdate = false): void {
+  if (!isUpdate || data.name !== undefined) {
+    if (!data.name || typeof data.name !== 'string' || data.name.trim().length < 2) {
+      throw new ValidationError('Product name must be at least 2 characters long');
+    }
+  }
+
+  if (!isUpdate || data.sku !== undefined) {
+    if (!data.sku || typeof data.sku !== 'string' || !/^[A-Za-z0-9-_]+$/.test(data.sku.trim())) {
+      throw new ValidationError('SKU must contain only letters, numbers, hyphens, and underscores');
+    }
+  }
+
+  if (data.price !== undefined) {
+    const p = Number(data.price);
+    if (isNaN(p) || p < 0) {
+      throw new ValidationError('Product price must be a non-negative number');
+    }
+  }
+
+  if (data.salePrice !== undefined && data.salePrice !== null) {
+    const sp = Number(data.salePrice);
+    if (isNaN(sp) || sp < 0) {
+      throw new ValidationError('Sale price must be a non-negative number');
+    }
+  }
+
+  if (data.stock !== undefined) {
+    const s = Number(data.stock);
+    if (isNaN(s) || s < 0 || !Number.isInteger(s)) {
+      throw new ValidationError('Stock quantity must be a non-negative integer');
+    }
+  }
+
+  if (data.moq !== undefined) {
+    const m = Number(data.moq);
+    if (isNaN(m) || m < 1 || !Number.isInteger(m)) {
+      throw new ValidationError('Minimum order quantity (MOQ) must be at least 1');
+    }
+  }
+
+  if (data.purchaseMode !== undefined) {
+    const validModes: PurchaseMode[] = ['BUY_NOW', 'REQUEST_QUOTE', 'BOTH', 'UNAVAILABLE'];
+    if (!validModes.includes(data.purchaseMode)) {
+      throw new ValidationError(`Invalid purchase mode. Must be one of: ${validModes.join(', ')}`);
+    }
+  }
+}
+
+export function validateOrderStatusTransition(currentStatus: OrderStatus, newStatus: OrderStatus): void {
+  const allowedTransitions: Record<OrderStatus, OrderStatus[]> = {
+    Pending: ['Confirmed', 'Cancelled'],
+    Confirmed: ['Processing', 'Cancelled'],
+    Processing: ['Packed', 'Cancelled'],
+    Packed: ['Shipped', 'Cancelled'],
+    Shipped: ['Delivered', 'Cancelled'],
+    Delivered: [], // Final state
+    Cancelled: [], // Final state
+  };
+
+  if (currentStatus === newStatus) return;
+
+  const validNext = allowedTransitions[currentStatus] || [];
+  if (!validNext.includes(newStatus)) {
+    throw new ValidationError(
+      `Illegal order status transition: Cannot change status from '${currentStatus}' to '${newStatus}'.`
+    );
+  }
+}
+
+export function validatePaymentSettings(payment: any): void {
+  if (!payment || typeof payment !== 'object') return;
+
+  if (payment.upiId && typeof payment.upiId === 'string') {
+    const trimmed = payment.upiId.trim();
+    if (!/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(trimmed)) {
+      throw new ValidationError('Invalid UPI ID format. Expected format: username@bank');
+    }
+  }
+
+  if (payment.qrExpiryMinutes !== undefined) {
+    const m = Number(payment.qrExpiryMinutes);
+    if (isNaN(m) || m < 1 || m > 1440) {
+      throw new ValidationError('QR expiry minutes must be between 1 and 1440 (24 hours)');
+    }
+  }
+}
+
+export function validateEmployeeInput(data: any, isUpdate = false): void {
+  if (!isUpdate || data.email !== undefined) {
+    if (!data.email || typeof data.email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      throw new ValidationError('A valid email address is required for the employee');
+    }
+  }
+
+  if (!isUpdate || data.name !== undefined) {
+    if (!data.name || typeof data.name !== 'string' || data.name.trim().length < 2) {
+      throw new ValidationError('Employee name must be at least 2 characters long');
+    }
+  }
+
+  if (data.role !== undefined) {
+    const validRoles: AdminRole[] = ['employee', 'editor', 'viewer'];
+    if (!validRoles.includes(data.role)) {
+      throw new ValidationError(`Assigned role must be one of: ${validRoles.join(', ')}`);
+    }
+  }
+}
+```
+
+---
+
+### <a id="src-types-index-ts"></a>`src/types/index.ts`
+
+> **Lines**: 447 • **Size**: 9.1 KB
 
 ```typescript
 export type UnitType =
@@ -26114,11 +28030,9 @@ export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
 
 ---
 
-### `supabase/schema.sql`
+### <a id="supabase-schema-sql"></a>`supabase/schema.sql`
 
-- **File**: `supabase/schema.sql`
-- **Size**: 26.9 KB (763 lines)
-- **Language**: `sql`
+> **Lines**: 763 • **Size**: 26.9 KB
 
 ```sql
 -- ============================================================
@@ -26887,11 +28801,9 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
-### `tailwind.config.js`
+### <a id="tailwind-config-js"></a>`tailwind.config.js`
 
-- **File**: `tailwind.config.js`
-- **Size**: 2.3 KB (83 lines)
-- **Language**: `javascript`
+> **Lines**: 83 • **Size**: 2.3 KB
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -26980,11 +28892,9 @@ module.exports = {
 
 ---
 
-### `tsconfig.json`
+### <a id="tsconfig-json"></a>`tsconfig.json`
 
-- **File**: `tsconfig.json`
-- **Size**: 0.6 KB (27 lines)
-- **Language**: `json`
+> **Lines**: 27 • **Size**: 0.6 KB
 
 ```json
 {
@@ -27013,6 +28923,16 @@ module.exports = {
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
+```
+
+---
+
+### <a id="tsconfig-tsbuildinfo"></a>`tsconfig.tsbuildinfo`
+
+> **Lines**: 1 • **Size**: 111.1 KB
+
+```text
+{"fileNames":["./node_modules/typescript/lib/lib.es5.d.ts","./node_modules/typescript/lib/lib.es2015.d.ts","./node_modules/typescript/lib/lib.es2016.d.ts","./node_modules/typescript/lib/lib.es2017.d.ts","./node_modules/typescript/lib/lib.es2018.d.ts","./node_modules/typescript/lib/lib.es2019.d.ts","./node_modules/typescript/lib/lib.es2020.d.ts","./node_modules/typescript/lib/lib.es2021.d.ts","./node_modules/typescript/lib/lib.es2022.d.ts","./node_modules/typescript/lib/lib.es2023.d.ts","./node_modules/typescript/lib/lib.es2024.d.ts","./node_modules/typescript/lib/lib.esnext.d.ts","./node_modules/typescript/lib/lib.dom.d.ts","./node_modules/typescript/lib/lib.dom.iterable.d.ts","./node_modules/typescript/lib/lib.es2015.core.d.ts","./node_modules/typescript/lib/lib.es2015.collection.d.ts","./node_modules/typescript/lib/lib.es2015.generator.d.ts","./node_modules/typescript/lib/lib.es2015.iterable.d.ts","./node_modules/typescript/lib/lib.es2015.promise.d.ts","./node_modules/typescript/lib/lib.es2015.proxy.d.ts","./node_modules/typescript/lib/lib.es2015.reflect.d.ts","./node_modules/typescript/lib/lib.es2015.symbol.d.ts","./node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts","./node_modules/typescript/lib/lib.es2016.array.include.d.ts","./node_modules/typescript/lib/lib.es2016.intl.d.ts","./node_modules/typescript/lib/lib.es2017.arraybuffer.d.ts","./node_modules/typescript/lib/lib.es2017.date.d.ts","./node_modules/typescript/lib/lib.es2017.object.d.ts","./node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts","./node_modules/typescript/lib/lib.es2017.string.d.ts","./node_modules/typescript/lib/lib.es2017.intl.d.ts","./node_modules/typescript/lib/lib.es2017.typedarrays.d.ts","./node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts","./node_modules/typescript/lib/lib.es2018.asynciterable.d.ts","./node_modules/typescript/lib/lib.es2018.intl.d.ts","./node_modules/typescript/lib/lib.es2018.promise.d.ts","./node_modules/typescript/lib/lib.es2018.regexp.d.ts","./node_modules/typescript/lib/lib.es2019.array.d.ts","./node_modules/typescript/lib/lib.es2019.object.d.ts","./node_modules/typescript/lib/lib.es2019.string.d.ts","./node_modules/typescript/lib/lib.es2019.symbol.d.ts","./node_modules/typescript/lib/lib.es2019.intl.d.ts","./node_modules/typescript/lib/lib.es2020.bigint.d.ts","./node_modules/typescript/lib/lib.es2020.date.d.ts","./node_modules/typescript/lib/lib.es2020.promise.d.ts","./node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts","./node_modules/typescript/lib/lib.es2020.string.d.ts","./node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts","./node_modules/typescript/lib/lib.es2020.intl.d.ts","./node_modules/typescript/lib/lib.es2020.number.d.ts","./node_modules/typescript/lib/lib.es2021.promise.d.ts","./node_modules/typescript/lib/lib.es2021.string.d.ts","./node_modules/typescript/lib/lib.es2021.weakref.d.ts","./node_modules/typescript/lib/lib.es2021.intl.d.ts","./node_modules/typescript/lib/lib.es2022.array.d.ts","./node_modules/typescript/lib/lib.es2022.error.d.ts","./node_modules/typescript/lib/lib.es2022.intl.d.ts","./node_modules/typescript/lib/lib.es2022.object.d.ts","./node_modules/typescript/lib/lib.es2022.string.d.ts","./node_modules/typescript/lib/lib.es2022.regexp.d.ts","./node_modules/typescript/lib/lib.es2023.array.d.ts","./node_modules/typescript/lib/lib.es2023.collection.d.ts","./node_modules/typescript/lib/lib.es2023.intl.d.ts","./node_modules/typescript/lib/lib.es2024.arraybuffer.d.ts","./node_modules/typescript/lib/lib.es2024.collection.d.ts","./node_modules/typescript/lib/lib.es2024.object.d.ts","./node_modules/typescript/lib/lib.es2024.promise.d.ts","./node_modules/typescript/lib/lib.es2024.regexp.d.ts","./node_modules/typescript/lib/lib.es2024.sharedmemory.d.ts","./node_modules/typescript/lib/lib.es2024.string.d.ts","./node_modules/typescript/lib/lib.esnext.array.d.ts","./node_modules/typescript/lib/lib.esnext.collection.d.ts","./node_modules/typescript/lib/lib.esnext.intl.d.ts","./node_modules/typescript/lib/lib.esnext.disposable.d.ts","./node_modules/typescript/lib/lib.esnext.promise.d.ts","./node_modules/typescript/lib/lib.esnext.decorators.d.ts","./node_modules/typescript/lib/lib.esnext.iterator.d.ts","./node_modules/typescript/lib/lib.esnext.float16.d.ts","./node_modules/typescript/lib/lib.esnext.error.d.ts","./node_modules/typescript/lib/lib.esnext.sharedmemory.d.ts","./node_modules/typescript/lib/lib.decorators.d.ts","./node_modules/typescript/lib/lib.decorators.legacy.d.ts","./node_modules/next/dist/styled-jsx/types/css.d.ts","./node_modules/@types/react/global.d.ts","./node_modules/csstype/index.d.ts","./node_modules/@types/prop-types/index.d.ts","./node_modules/@types/react/index.d.ts","./node_modules/next/dist/styled-jsx/types/index.d.ts","./node_modules/next/dist/styled-jsx/types/macro.d.ts","./node_modules/next/dist/styled-jsx/types/style.d.ts","./node_modules/next/dist/styled-jsx/types/global.d.ts","./node_modules/next/dist/shared/lib/amp.d.ts","./node_modules/next/amp.d.ts","./node_modules/@types/node/compatibility/disposable.d.ts","./node_modules/@types/node/compatibility/indexable.d.ts","./node_modules/@types/node/compatibility/iterators.d.ts","./node_modules/@types/node/compatibility/index.d.ts","./node_modules/@types/node/globals.typedarray.d.ts","./node_modules/@types/node/buffer.buffer.d.ts","./node_modules/@types/node/globals.d.ts","./node_modules/@types/node/web-globals/abortcontroller.d.ts","./node_modules/@types/node/web-globals/domexception.d.ts","./node_modules/@types/node/web-globals/events.d.ts","./node_modules/undici-types/header.d.ts","./node_modules/undici-types/readable.d.ts","./node_modules/undici-types/file.d.ts","./node_modules/undici-types/fetch.d.ts","./node_modules/undici-types/formdata.d.ts","./node_modules/undici-types/connector.d.ts","./node_modules/undici-types/client.d.ts","./node_modules/undici-types/errors.d.ts","./node_modules/undici-types/dispatcher.d.ts","./node_modules/undici-types/global-dispatcher.d.ts","./node_modules/undici-types/global-origin.d.ts","./node_modules/undici-types/pool-stats.d.ts","./node_modules/undici-types/pool.d.ts","./node_modules/undici-types/handlers.d.ts","./node_modules/undici-types/balanced-pool.d.ts","./node_modules/undici-types/agent.d.ts","./node_modules/undici-types/mock-interceptor.d.ts","./node_modules/undici-types/mock-agent.d.ts","./node_modules/undici-types/mock-client.d.ts","./node_modules/undici-types/mock-pool.d.ts","./node_modules/undici-types/mock-errors.d.ts","./node_modules/undici-types/proxy-agent.d.ts","./node_modules/undici-types/env-http-proxy-agent.d.ts","./node_modules/undici-types/retry-handler.d.ts","./node_modules/undici-types/retry-agent.d.ts","./node_modules/undici-types/api.d.ts","./node_modules/undici-types/interceptors.d.ts","./node_modules/undici-types/util.d.ts","./node_modules/undici-types/cookies.d.ts","./node_modules/undici-types/patch.d.ts","./node_modules/undici-types/websocket.d.ts","./node_modules/undici-types/eventsource.d.ts","./node_modules/undici-types/filereader.d.ts","./node_modules/undici-types/diagnostics-channel.d.ts","./node_modules/undici-types/content-type.d.ts","./node_modules/undici-types/cache.d.ts","./node_modules/undici-types/index.d.ts","./node_modules/@types/node/web-globals/fetch.d.ts","./node_modules/@types/node/assert.d.ts","./node_modules/@types/node/assert/strict.d.ts","./node_modules/@types/node/async_hooks.d.ts","./node_modules/@types/node/buffer.d.ts","./node_modules/@types/node/child_process.d.ts","./node_modules/@types/node/cluster.d.ts","./node_modules/@types/node/console.d.ts","./node_modules/@types/node/constants.d.ts","./node_modules/@types/node/crypto.d.ts","./node_modules/@types/node/dgram.d.ts","./node_modules/@types/node/diagnostics_channel.d.ts","./node_modules/@types/node/dns.d.ts","./node_modules/@types/node/dns/promises.d.ts","./node_modules/@types/node/domain.d.ts","./node_modules/@types/node/events.d.ts","./node_modules/@types/node/fs.d.ts","./node_modules/@types/node/fs/promises.d.ts","./node_modules/@types/node/http.d.ts","./node_modules/@types/node/http2.d.ts","./node_modules/@types/node/https.d.ts","./node_modules/@types/node/inspector.generated.d.ts","./node_modules/@types/node/module.d.ts","./node_modules/@types/node/net.d.ts","./node_modules/@types/node/os.d.ts","./node_modules/@types/node/path.d.ts","./node_modules/@types/node/perf_hooks.d.ts","./node_modules/@types/node/process.d.ts","./node_modules/@types/node/punycode.d.ts","./node_modules/@types/node/querystring.d.ts","./node_modules/@types/node/readline.d.ts","./node_modules/@types/node/readline/promises.d.ts","./node_modules/@types/node/repl.d.ts","./node_modules/@types/node/sea.d.ts","./node_modules/@types/node/stream.d.ts","./node_modules/@types/node/stream/promises.d.ts","./node_modules/@types/node/stream/consumers.d.ts","./node_modules/@types/node/stream/web.d.ts","./node_modules/@types/node/string_decoder.d.ts","./node_modules/@types/node/test.d.ts","./node_modules/@types/node/timers.d.ts","./node_modules/@types/node/timers/promises.d.ts","./node_modules/@types/node/tls.d.ts","./node_modules/@types/node/trace_events.d.ts","./node_modules/@types/node/tty.d.ts","./node_modules/@types/node/url.d.ts","./node_modules/@types/node/util.d.ts","./node_modules/@types/node/v8.d.ts","./node_modules/@types/node/vm.d.ts","./node_modules/@types/node/wasi.d.ts","./node_modules/@types/node/worker_threads.d.ts","./node_modules/@types/node/zlib.d.ts","./node_modules/@types/node/index.d.ts","./node_modules/next/dist/server/get-page-files.d.ts","./node_modules/@types/react/canary.d.ts","./node_modules/@types/react/experimental.d.ts","./node_modules/@types/react-dom/index.d.ts","./node_modules/@types/react-dom/canary.d.ts","./node_modules/@types/react-dom/experimental.d.ts","./node_modules/next/dist/compiled/webpack/webpack.d.ts","./node_modules/next/dist/server/config.d.ts","./node_modules/next/dist/lib/load-custom-routes.d.ts","./node_modules/next/dist/shared/lib/image-config.d.ts","./node_modules/next/dist/build/webpack/plugins/subresource-integrity-plugin.d.ts","./node_modules/next/dist/server/body-streams.d.ts","./node_modules/next/dist/server/future/route-kind.d.ts","./node_modules/next/dist/server/future/route-definitions/route-definition.d.ts","./node_modules/next/dist/server/future/route-matches/route-match.d.ts","./node_modules/next/dist/client/components/app-router-headers.d.ts","./node_modules/next/dist/server/request-meta.d.ts","./node_modules/next/dist/server/lib/revalidate.d.ts","./node_modules/next/dist/server/config-shared.d.ts","./node_modules/next/dist/server/base-http/index.d.ts","./node_modules/next/dist/server/api-utils/index.d.ts","./node_modules/next/dist/server/node-environment.d.ts","./node_modules/next/dist/server/require-hook.d.ts","./node_modules/next/dist/server/node-polyfill-crypto.d.ts","./node_modules/next/dist/lib/page-types.d.ts","./node_modules/next/dist/build/analysis/get-page-static-info.d.ts","./node_modules/next/dist/build/webpack/loaders/get-module-build-info.d.ts","./node_modules/next/dist/build/webpack/plugins/middleware-plugin.d.ts","./node_modules/next/dist/server/render-result.d.ts","./node_modules/next/dist/server/future/helpers/i18n-provider.d.ts","./node_modules/next/dist/server/web/next-url.d.ts","./node_modules/next/dist/compiled/@edge-runtime/cookies/index.d.ts","./node_modules/next/dist/server/web/spec-extension/cookies.d.ts","./node_modules/next/dist/server/web/spec-extension/request.d.ts","./node_modules/next/dist/server/web/spec-extension/fetch-event.d.ts","./node_modules/next/dist/server/web/spec-extension/response.d.ts","./node_modules/next/dist/server/web/types.d.ts","./node_modules/next/dist/lib/setup-exception-listeners.d.ts","./node_modules/next/dist/lib/constants.d.ts","./node_modules/next/dist/build/index.d.ts","./node_modules/next/dist/build/webpack/plugins/pages-manifest-plugin.d.ts","./node_modules/next/dist/shared/lib/router/utils/route-regex.d.ts","./node_modules/next/dist/shared/lib/router/utils/route-matcher.d.ts","./node_modules/next/dist/shared/lib/router/utils/parse-url.d.ts","./node_modules/next/dist/server/base-http/node.d.ts","./node_modules/next/dist/server/font-utils.d.ts","./node_modules/next/dist/build/webpack/plugins/flight-manifest-plugin.d.ts","./node_modules/next/dist/server/future/route-modules/route-module.d.ts","./node_modules/next/dist/shared/lib/deep-readonly.d.ts","./node_modules/next/dist/server/load-components.d.ts","./node_modules/next/dist/shared/lib/router/utils/middleware-route-matcher.d.ts","./node_modules/next/dist/build/webpack/plugins/next-font-manifest-plugin.d.ts","./node_modules/next/dist/server/future/route-definitions/locale-route-definition.d.ts","./node_modules/next/dist/server/future/route-definitions/pages-route-definition.d.ts","./node_modules/next/dist/shared/lib/mitt.d.ts","./node_modules/next/dist/client/with-router.d.ts","./node_modules/next/dist/client/router.d.ts","./node_modules/next/dist/client/route-loader.d.ts","./node_modules/next/dist/client/page-loader.d.ts","./node_modules/next/dist/shared/lib/bloom-filter.d.ts","./node_modules/next/dist/shared/lib/router/router.d.ts","./node_modules/next/dist/shared/lib/router-context.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/loadable-context.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/loadable.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/image-config-context.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/hooks-client-context.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.d.ts","./node_modules/next/dist/server/future/route-definitions/app-page-route-definition.d.ts","./node_modules/next/dist/shared/lib/modern-browserslist-target.d.ts","./node_modules/next/dist/shared/lib/constants.d.ts","./node_modules/next/dist/build/webpack/loaders/metadata/types.d.ts","./node_modules/next/dist/build/page-extensions-type.d.ts","./node_modules/next/dist/build/webpack/loaders/next-app-loader.d.ts","./node_modules/next/dist/server/lib/app-dir-module.d.ts","./node_modules/next/dist/server/response-cache/types.d.ts","./node_modules/next/dist/server/response-cache/index.d.ts","./node_modules/next/dist/server/lib/incremental-cache/index.d.ts","./node_modules/next/dist/client/components/hooks-server-context.d.ts","./node_modules/next/dist/server/app-render/dynamic-rendering.d.ts","./node_modules/next/dist/client/components/static-generation-async-storage-instance.d.ts","./node_modules/next/dist/client/components/static-generation-async-storage.external.d.ts","./node_modules/next/dist/server/web/spec-extension/adapters/request-cookies.d.ts","./node_modules/next/dist/server/async-storage/draft-mode-provider.d.ts","./node_modules/next/dist/server/web/spec-extension/adapters/headers.d.ts","./node_modules/next/dist/client/components/request-async-storage-instance.d.ts","./node_modules/next/dist/client/components/request-async-storage.external.d.ts","./node_modules/next/dist/server/app-render/create-error-handler.d.ts","./node_modules/next/dist/server/app-render/app-render.d.ts","./node_modules/next/dist/shared/lib/server-inserted-html.shared-runtime.d.ts","./node_modules/next/dist/shared/lib/amp-context.shared-runtime.d.ts","./node_modules/next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints.d.ts","./node_modules/next/dist/server/future/route-modules/app-page/module.compiled.d.ts","./node_modules/@types/react/jsx-runtime.d.ts","./node_modules/next/dist/client/components/error-boundary.d.ts","./node_modules/next/dist/client/components/router-reducer/create-initial-router-state.d.ts","./node_modules/next/dist/client/components/app-router.d.ts","./node_modules/next/dist/client/components/layout-router.d.ts","./node_modules/next/dist/client/components/render-from-template-context.d.ts","./node_modules/next/dist/client/components/action-async-storage-instance.d.ts","./node_modules/next/dist/client/components/action-async-storage.external.d.ts","./node_modules/next/dist/client/components/client-page.d.ts","./node_modules/next/dist/client/components/search-params.d.ts","./node_modules/next/dist/client/components/not-found-boundary.d.ts","./node_modules/next/dist/server/app-render/rsc/preloads.d.ts","./node_modules/next/dist/server/app-render/rsc/postpone.d.ts","./node_modules/next/dist/server/app-render/rsc/taint.d.ts","./node_modules/next/dist/server/app-render/entry-base.d.ts","./node_modules/next/dist/build/templates/app-page.d.ts","./node_modules/next/dist/server/future/route-modules/app-page/module.d.ts","./node_modules/next/dist/server/lib/builtin-request-context.d.ts","./node_modules/next/dist/server/app-render/types.d.ts","./node_modules/next/dist/client/components/router-reducer/fetch-server-response.d.ts","./node_modules/next/dist/client/components/router-reducer/router-reducer-types.d.ts","./node_modules/next/dist/shared/lib/app-router-context.shared-runtime.d.ts","./node_modules/next/dist/server/future/route-modules/pages/vendored/contexts/entrypoints.d.ts","./node_modules/next/dist/server/future/route-modules/pages/module.compiled.d.ts","./node_modules/next/dist/build/templates/pages.d.ts","./node_modules/next/dist/server/future/route-modules/pages/module.d.ts","./node_modules/next/dist/server/render.d.ts","./node_modules/next/dist/server/future/route-definitions/pages-api-route-definition.d.ts","./node_modules/next/dist/server/future/route-matches/pages-api-route-match.d.ts","./node_modules/next/dist/server/future/route-matchers/route-matcher.d.ts","./node_modules/next/dist/server/future/route-matcher-providers/route-matcher-provider.d.ts","./node_modules/next/dist/server/future/route-matcher-managers/route-matcher-manager.d.ts","./node_modules/next/dist/server/future/normalizers/normalizer.d.ts","./node_modules/next/dist/server/future/normalizers/locale-route-normalizer.d.ts","./node_modules/next/dist/server/future/normalizers/request/pathname-normalizer.d.ts","./node_modules/next/dist/server/future/normalizers/request/suffix.d.ts","./node_modules/next/dist/server/future/normalizers/request/rsc.d.ts","./node_modules/next/dist/server/future/normalizers/request/prefix.d.ts","./node_modules/next/dist/server/future/normalizers/request/postponed.d.ts","./node_modules/next/dist/server/future/normalizers/request/action.d.ts","./node_modules/next/dist/server/future/normalizers/request/prefetch-rsc.d.ts","./node_modules/next/dist/server/future/normalizers/request/next-data.d.ts","./node_modules/next/dist/server/base-server.d.ts","./node_modules/next/dist/server/image-optimizer.d.ts","./node_modules/next/dist/server/next-server.d.ts","./node_modules/next/dist/lib/coalesced-function.d.ts","./node_modules/next/dist/server/lib/router-utils/types.d.ts","./node_modules/next/dist/trace/types.d.ts","./node_modules/next/dist/trace/trace.d.ts","./node_modules/next/dist/trace/shared.d.ts","./node_modules/next/dist/trace/index.d.ts","./node_modules/next/dist/build/load-jsconfig.d.ts","./node_modules/next/dist/build/webpack-config.d.ts","./node_modules/next/dist/build/webpack/plugins/define-env-plugin.d.ts","./node_modules/next/dist/build/swc/index.d.ts","./node_modules/next/dist/server/dev/parse-version-info.d.ts","./node_modules/next/dist/server/dev/hot-reloader-types.d.ts","./node_modules/next/dist/telemetry/storage.d.ts","./node_modules/next/dist/server/lib/types.d.ts","./node_modules/next/dist/server/lib/render-server.d.ts","./node_modules/next/dist/server/lib/router-server.d.ts","./node_modules/next/dist/shared/lib/router/utils/path-match.d.ts","./node_modules/next/dist/server/lib/router-utils/filesystem.d.ts","./node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.d.ts","./node_modules/next/dist/server/lib/dev-bundler-service.d.ts","./node_modules/next/dist/server/dev/static-paths-worker.d.ts","./node_modules/next/dist/server/dev/next-dev-server.d.ts","./node_modules/next/dist/server/next.d.ts","./node_modules/next/dist/lib/metadata/types/alternative-urls-types.d.ts","./node_modules/next/dist/lib/metadata/types/extra-types.d.ts","./node_modules/next/dist/lib/metadata/types/metadata-types.d.ts","./node_modules/next/dist/lib/metadata/types/manifest-types.d.ts","./node_modules/next/dist/lib/metadata/types/opengraph-types.d.ts","./node_modules/next/dist/lib/metadata/types/twitter-types.d.ts","./node_modules/next/dist/lib/metadata/types/metadata-interface.d.ts","./node_modules/next/types/index.d.ts","./node_modules/next/dist/shared/lib/html-context.shared-runtime.d.ts","./node_modules/@next/env/dist/index.d.ts","./node_modules/next/dist/shared/lib/utils.d.ts","./node_modules/next/dist/pages/_app.d.ts","./node_modules/next/app.d.ts","./node_modules/next/dist/server/web/spec-extension/unstable-cache.d.ts","./node_modules/next/dist/server/web/spec-extension/revalidate.d.ts","./node_modules/next/dist/server/web/spec-extension/unstable-no-store.d.ts","./node_modules/next/cache.d.ts","./node_modules/next/dist/shared/lib/runtime-config.external.d.ts","./node_modules/next/config.d.ts","./node_modules/next/dist/pages/_document.d.ts","./node_modules/next/document.d.ts","./node_modules/next/dist/shared/lib/dynamic.d.ts","./node_modules/next/dynamic.d.ts","./node_modules/next/dist/pages/_error.d.ts","./node_modules/next/error.d.ts","./node_modules/next/dist/shared/lib/head.d.ts","./node_modules/next/head.d.ts","./node_modules/next/dist/client/components/draft-mode.d.ts","./node_modules/next/dist/client/components/headers.d.ts","./node_modules/next/headers.d.ts","./node_modules/next/dist/shared/lib/get-img-props.d.ts","./node_modules/next/dist/client/image-component.d.ts","./node_modules/next/dist/shared/lib/image-external.d.ts","./node_modules/next/image.d.ts","./node_modules/next/dist/client/link.d.ts","./node_modules/next/link.d.ts","./node_modules/next/dist/client/components/redirect-status-code.d.ts","./node_modules/next/dist/client/components/redirect.d.ts","./node_modules/next/dist/client/components/not-found.d.ts","./node_modules/next/dist/client/components/navigation.react-server.d.ts","./node_modules/next/dist/client/components/navigation.d.ts","./node_modules/next/navigation.d.ts","./node_modules/next/router.d.ts","./node_modules/next/dist/client/script.d.ts","./node_modules/next/script.d.ts","./node_modules/next/dist/server/web/spec-extension/user-agent.d.ts","./node_modules/next/dist/compiled/@edge-runtime/primitives/url.d.ts","./node_modules/next/dist/server/web/spec-extension/image-response.d.ts","./node_modules/next/dist/compiled/@vercel/og/satori/index.d.ts","./node_modules/next/dist/compiled/@vercel/og/emoji/index.d.ts","./node_modules/next/dist/compiled/@vercel/og/types.d.ts","./node_modules/next/server.d.ts","./node_modules/next/types/global.d.ts","./node_modules/next/types/compiled.d.ts","./node_modules/next/index.d.ts","./node_modules/next/image-types/global.d.ts","./next-env.d.ts","./node_modules/@supabase/functions-js/dist/module/types.d.ts","./node_modules/@supabase/functions-js/dist/module/functionsclient.d.ts","./node_modules/@supabase/functions-js/dist/module/index.d.ts","./node_modules/@supabase/postgrest-js/dist/index.d.mts","./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.d.ts","./node_modules/@supabase/realtime-js/dist/module/lib/serializer.d.ts","./node_modules/@supabase/phoenix/priv/static/types/constants.d.ts","./node_modules/@supabase/phoenix/priv/static/types/longpoll.d.ts","./node_modules/@supabase/phoenix/priv/static/types/types.d.ts","./node_modules/@supabase/phoenix/priv/static/types/timer.d.ts","./node_modules/@supabase/phoenix/priv/static/types/socket.d.ts","./node_modules/@supabase/phoenix/priv/static/types/push.d.ts","./node_modules/@supabase/phoenix/priv/static/types/channel.d.ts","./node_modules/@supabase/phoenix/priv/static/types/presence.d.ts","./node_modules/@supabase/phoenix/priv/static/types/serializer.d.ts","./node_modules/@supabase/phoenix/priv/static/types/index.d.ts","./node_modules/@supabase/realtime-js/dist/module/phoenix/types.d.ts","./node_modules/@supabase/realtime-js/dist/module/lib/constants.d.ts","./node_modules/@supabase/realtime-js/dist/module/realtimepresence.d.ts","./node_modules/@supabase/realtime-js/dist/module/realtimepostgresfilterbuilder.d.ts","./node_modules/@supabase/realtime-js/dist/module/realtimechannel.d.ts","./node_modules/@supabase/realtime-js/dist/module/realtimeclient.d.ts","./node_modules/@supabase/realtime-js/dist/module/index.d.ts","./node_modules/iceberg-js/dist/index.d.ts","./node_modules/@supabase/storage-js/dist/index.d.mts","./node_modules/@supabase/auth-js/dist/module/lib/error-codes.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/errors.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/web3/ethereum.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/web3/solana.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/webauthn.dom.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/helpers.d.ts","./node_modules/@supabase/auth-js/dist/module/gotrueclient.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/webauthn.errors.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/webauthn.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/types.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/fetch.d.ts","./node_modules/@supabase/auth-js/dist/module/gotrueadminapi.d.ts","./node_modules/@supabase/auth-js/dist/module/authadminapi.d.ts","./node_modules/@supabase/auth-js/dist/module/authclient.d.ts","./node_modules/@supabase/auth-js/dist/module/lib/locks.d.ts","./node_modules/@supabase/auth-js/dist/module/index.d.ts","./node_modules/@supabase/supabase-js/dist/index.d.mts","./node_modules/dotenv/lib/main.d.ts","./node_modules/@types/ms/index.d.ts","./node_modules/@types/jsonwebtoken/index.d.ts","./src/types/index.ts","./src/server/errors/index.ts","./src/server/db/client.ts","./src/server/db/mappers.ts","./src/server/db/repositories/products.ts","./src/server/db/repositories/categories.ts","./src/server/db/transactions/orders.ts","./src/server/validation/schemas.ts","./src/server/db/repositories/orders.ts","./src/server/db/repositories/quotes.ts","./src/server/db/repositories/projects.ts","./src/server/db/repositories/services.ts","./src/server/db/repositories/settings.ts","./src/server/auth/rbac.ts","./src/server/auth/tokens.ts","./src/server/db/repositories/employees.ts","./src/server/security/sanitization.ts","./src/server/db/repositories/audit.ts","./src/server/db/repositories/customers.ts","./src/server/db/repositories/enquiries.ts","./src/server/db/repositories/index.ts","./src/server/db/index.ts","./src/lib/db.ts","./src/lib/auth.ts","./src/lib/seeddata.ts","./scripts/seed-supabase.ts","./src/server/validation/index.ts","./src/server/api/response.ts","./src/lib/push-client.ts","./src/app/api/health/route.ts","./scripts/test-architecture-refactor.ts","./scripts/verify-production.ts","./src/middleware.ts","./src/app/robots.ts","./src/app/sitemap.ts","./src/app/api/admin/analytics/dashboard/route.ts","./src/app/api/admin/audit-logs/route.ts","./src/app/api/admin/employees/route.ts","./src/app/api/admin/employees/[id]/route.ts","./src/app/api/admin/export/route.ts","./node_modules/@types/web-push/index.d.ts","./src/lib/supabase.ts","./src/lib/push.ts","./src/app/api/admin/notifications/test/route.ts","./src/app/api/admin/search/route.ts","./src/app/api/admin/settings/route.ts","./src/app/api/admin/summary/route.ts","./src/app/api/admin/upload/route.ts","./src/app/api/auth/callback/route.ts","./src/app/api/auth/change-password/route.ts","./src/app/api/auth/forgot-password/route.ts","./src/app/api/auth/login/route.ts","./src/app/api/auth/logout/route.ts","./src/app/api/auth/me/route.ts","./src/app/api/auth/register/route.ts","./src/app/api/categories/route.ts","./src/app/api/categories/[id]/route.ts","./src/app/api/enquiries/route.ts","./src/app/api/enquiries/[id]/route.ts","./src/app/api/health/ready/route.ts","./src/app/api/notifications/subscribe/route.ts","./src/server/services/orderservice.ts","./src/server/services/quoteservice.ts","./src/server/services/index.ts","./src/app/api/orders/route.ts","./src/app/api/orders/[id]/route.ts","./src/app/api/orders/customer/route.ts","./src/app/api/products/route.ts","./src/app/api/products/[id]/route.ts","./src/app/api/projects/route.ts","./src/app/api/projects/[id]/route.ts","./src/app/api/quotes/route.ts","./src/app/api/quotes/[id]/route.ts","./src/app/api/quotes/[id]/convert/route.ts","./src/app/api/search/route.ts","./src/app/api/services/route.ts","./src/app/api/services/[id]/route.ts","./src/app/api/settings/route.ts","./src/server/security/config.ts","./src/server/security/index.ts","./node_modules/next/dist/compiled/@next/font/dist/types.d.ts","./node_modules/next/dist/compiled/@next/font/dist/google/index.d.ts","./node_modules/next/font/google/index.d.ts","./src/context/cartcontext.tsx","./src/context/wishlistcontext.tsx","./src/context/adminauthcontext.tsx","./node_modules/lucide-react/dist/lucide-react.d.ts","./src/components/navbar.tsx","./src/components/footer.tsx","./src/components/cartdrawer.tsx","./src/components/mobilebottomnav.tsx","./src/components/pagetransition.tsx","./src/app/layout.tsx","./src/components/reveal.tsx","./src/components/imagereveal.tsx","./src/app/page.tsx","./src/app/about/page.tsx","./src/app/account/page.tsx","./src/components/adminlayout.tsx","./src/app/admin/page.tsx","./src/app/admin/audit-logs/page.tsx","./src/components/imageuploader.tsx","./src/app/admin/categories/page.tsx","./src/app/admin/customers/page.tsx","./src/app/admin/employees/page.tsx","./src/app/admin/inventory/page.tsx","./src/app/admin/login/page.tsx","./src/app/admin/orders/page.tsx","./src/app/admin/products/page.tsx","./src/app/admin/projects/page.tsx","./src/app/admin/quotes/page.tsx","./src/app/admin/services/page.tsx","./src/app/admin/settings/page.tsx","./src/app/auth/callback/page.tsx","./src/app/cart/page.tsx","./src/app/category/[slug]/page.tsx","./src/app/checkout/page.tsx","./src/app/contact/page.tsx","./src/components/productdetailclient.tsx","./src/app/material/[slug]/page.tsx","./src/app/materials/page.tsx","./src/app/projects/page.tsx","./src/app/projects/[slug]/page.tsx","./src/app/quote/page.tsx","./src/app/search/page.tsx","./src/app/services/page.tsx","./src/app/shop/page.tsx","./src/app/studio/page.tsx","./src/app/wishlist/page.tsx","./.next/types/app/page.ts","./.next/types/app/about/page.ts","./.next/types/app/account/page.ts","./.next/types/app/admin/page.ts","./.next/types/app/admin/audit-logs/page.ts","./.next/types/app/admin/categories/page.ts","./.next/types/app/admin/customers/page.ts","./.next/types/app/admin/employees/page.ts","./.next/types/app/admin/inventory/page.ts","./.next/types/app/admin/login/page.ts","./.next/types/app/admin/orders/page.ts","./.next/types/app/admin/products/page.ts","./.next/types/app/admin/projects/page.ts","./.next/types/app/admin/quotes/page.ts","./.next/types/app/admin/services/page.ts","./.next/types/app/admin/settings/page.ts","./.next/types/app/api/admin/analytics/dashboard/route.ts","./.next/types/app/api/admin/audit-logs/route.ts","./.next/types/app/api/admin/employees/route.ts","./.next/types/app/api/admin/employees/[id]/route.ts","./.next/types/app/api/admin/export/route.ts","./.next/types/app/api/admin/notifications/test/route.ts","./.next/types/app/api/admin/search/route.ts","./.next/types/app/api/admin/settings/route.ts","./.next/types/app/api/admin/summary/route.ts","./.next/types/app/api/admin/upload/route.ts","./.next/types/app/api/auth/callback/route.ts","./.next/types/app/api/auth/change-password/route.ts","./.next/types/app/api/auth/forgot-password/route.ts","./.next/types/app/api/auth/login/route.ts","./.next/types/app/api/auth/logout/route.ts","./.next/types/app/api/auth/me/route.ts","./.next/types/app/api/auth/register/route.ts","./.next/types/app/api/categories/route.ts","./.next/types/app/api/categories/[id]/route.ts","./.next/types/app/api/enquiries/route.ts","./.next/types/app/api/enquiries/[id]/route.ts","./.next/types/app/api/health/route.ts","./.next/types/app/api/notifications/subscribe/route.ts","./.next/types/app/api/orders/route.ts","./.next/types/app/api/orders/[id]/route.ts","./.next/types/app/api/orders/customer/route.ts","./.next/types/app/api/products/route.ts","./.next/types/app/api/products/[id]/route.ts","./.next/types/app/api/projects/route.ts","./.next/types/app/api/projects/[id]/route.ts","./.next/types/app/api/quotes/route.ts","./.next/types/app/api/quotes/[id]/route.ts","./.next/types/app/api/quotes/[id]/convert/route.ts","./.next/types/app/api/search/route.ts","./.next/types/app/api/services/route.ts","./.next/types/app/api/services/[id]/route.ts","./.next/types/app/api/settings/route.ts","./.next/types/app/auth/callback/page.ts","./.next/types/app/cart/page.ts","./.next/types/app/category/[slug]/page.ts","./.next/types/app/checkout/page.ts","./.next/types/app/contact/page.ts","./.next/types/app/material/[slug]/page.ts","./.next/types/app/materials/page.ts","./.next/types/app/projects/page.ts","./.next/types/app/projects/[slug]/page.ts","./.next/types/app/quote/page.ts","./.next/types/app/search/page.ts","./.next/types/app/services/page.ts","./.next/types/app/shop/page.ts","./.next/types/app/studio/page.ts","./.next/types/app/wishlist/page.ts","./node_modules/@types/json5/index.d.ts"],"fileIdsList":[[99,145,360,552],[99,145,360,553],[99,145,360,556],[99,145,360,558],[99,145,360,559],[99,145,360,560],[99,145,360,561],[99,145,360,562],[99,145,360,563],[99,145,360,555],[99,145,360,564],[99,145,360,565],[99,145,360,566],[99,145,360,567],[99,145,360,568],[99,145,405,491],[99,145,405,492],[99,145,405,494],[99,145,405,493],[99,145,405,495],[99,145,405,499],[99,145,405,500],[99,145,405,501],[99,145,405,502],[99,145,405,503],[99,145,405,504],[99,145,405,505],[99,145,405,506],[99,145,405,507],[99,145,405,508],[99,145,405,509],[99,145,405,510],[99,145,405,512],[99,145,405,511],[99,145,405,514],[99,145,405,513],[99,145,405,485],[99,145,405,516],[99,145,405,521],[99,145,405,522],[99,145,405,520],[99,145,405,524],[99,145,405,523],[99,145,405,526],[99,145,405,525],[99,145,405,529],[99,145,405,528],[99,145,405,527],[99,145,405,530],[99,145,405,532],[99,145,405,531],[99,145,405,533],[99,145,360,569],[99,145,360,570],[99,145,360,571],[99,145,360,572],[99,145,360,573],[99,145,360,575],[99,145,360,576],[99,145,360,551],[99,145,360,578],[99,145,360,577],[99,145,360,579],[99,145,360,580],[99,145,360,581],[99,145,360,582],[99,145,360,583],[99,145,360,584],[99,145,408,409],[99,145],[99,145,447],[99,145,442],[99,145,437,445,446],[99,145,437,441,445,446,447],[99,145,437,442,445,447,448,449,450],[99,145,436,445],[99,145,445],[99,145,440,445],[99,145,437,438,439,440,444,446],[99,145,437,440,442,443,445],[99,145,411],[99,145,411,412],[99,145,419,420,421,422],[99,145,418,419,420,421,422,423,424,425],[99,145,419,423],[99,145,419],[99,145,418,419,420,423],[99,145,417,418],[99,145,415,429,431,432],[99,145,427],[99,145,426],[99,145,426,427,428,429,430,432],[99,145,415,416,427,428,431],[99,145,431],[99,145,434],[99,145,413,414,433,435,451],[99,145,150,193,454],[99,142,145],[99,144,145],[145],[99,145,150,178],[99,145,146,151,156,164,175,186],[99,145,146,147,156,164],[94,95,96,99,145],[99,145,148,187],[99,145,149,150,157,165],[99,145,150,175,183],[99,145,151,153,156,164],[99,144,145,152],[99,145,153,154],[99,145,155,156],[99,144,145,156],[99,145,156,157,158,175,186],[99,145,156,157,158,171,175,178],[99,145,153,156,159,164,175,186],[99,145,156,157,159,160,164,175,183,186],[99,145,159,161,175,183,186],[97,98,99,100,101,102,103,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192],[99,145,156,162],[99,145,163,186,191],[99,145,153,156,164,175],[99,145,165],[99,145,166],[99,144,145,167],[99,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192],[99,145,169],[99,145,170],[99,145,156,171,172],[99,145,171,173,187,189],[99,145,156,175,176,178],[99,145,177,178],[99,145,175,176],[99,145,178],[99,145,179],[99,142,145,175,180],[99,145,156,181,182],[99,145,181,182],[99,145,150,164,175,183],[99,145,184],[99,145,164,185],[99,145,159,170,186],[99,145,150,187],[99,145,175,188],[99,145,163,189],[99,145,190],[99,140,145],[99,140,145,156,158,167,175,178,186,189,191],[99,145,175,192],[87,99,145,197,198,199],[87,99,145,197,198],[87,99,145],[87,91,99,145,196,361,404],[87,91,99,145,195,361,404],[84,85,86,99,145],[99,145,161,193],[99,145,186,193],[92,99,145],[99,145,365],[99,145,367,368,369],[99,145,371],[99,145,202,212,218,220,361],[99,145,202,209,211,214,232],[99,145,212],[99,145,212,214,339],[99,145,267,285,300,407],[99,145,309],[99,145,202,212,219,253,263,336,337,407],[99,145,219,407],[99,145,212,263,264,265,407],[99,145,212,219,253,407],[99,145,407],[99,145,202,219,220,407],[99,145,293],[99,144,145,193,292],[87,99,145,286,287,288,306,307],[87,99,145,286],[99,145,276],[99,145,275,277,381],[87,99,145,286,287,304],[99,145,282,307,393],[99,145,391,392],[99,145,226,390],[99,145,279],[99,144,145,193,226,242,275,276,277,278],[87,99,145,304,306,307],[99,145,304,306],[99,145,304,305,307],[99,145,170,193],[99,145,274],[99,144,145,193,211,213,270,271,272,273],[87,99,145,203,384],[87,99,145,186,193],[87,99,145,219,251],[87,99,145,219],[99,145,249,254],[87,99,145,250,364],[99,145,536],[87,91,99,145,159,193,195,196,361,402,403],[99,145,361],[99,145,201],[99,145,354,355,356,357,358,359],[99,145,356],[87,99,145,250,286,364],[87,99,145,286,362,364],[87,99,145,286,364],[99,145,159,193,213,364],[99,145,159,193,210,211,222,240,242,274,279,280,302,304],[99,145,271,274,279,287,289,290,291,293,294,295,296,297,298,299,407],[99,145,272],[87,99,145,170,193,211,212,240,242,243,245,270,302,303,307,361,407],[99,145,159,193,213,214,226,227,275],[99,145,159,193,212,214],[99,145,159,175,193,210,213,214],[99,145,159,170,186,193,210,211,212,213,214,219,222,223,233,234,236,239,240,242,243,244,245,269,270,303,304,312,314,317,319,322,324,325,326,327],[99,145,159,175,193],[99,145,202,203,204,210,211,361,364,407],[99,145,159,175,186,193,207,338,340,341,407],[99,145,170,186,193,207,210,213,230,234,236,237,238,243,270,317,328,330,336,350,351],[99,145,212,216,270],[99,145,210,212],[99,145,223,318],[99,145,320,321],[99,145,320],[99,145,318],[99,145,320,323],[99,145,206,207],[99,145,206,246],[99,145,206],[99,145,208,223,316],[99,145,315],[99,145,207,208],[99,145,208,313],[99,145,207],[99,145,302],[99,145,159,193,210,222,241,261,267,281,284,301,304],[99,145,255,256,257,258,259,260,282,283,307,362],[99,145,311],[99,145,159,193,210,222,241,247,308,310,312,361,364],[99,145,159,186,193,203,210,212,269],[99,145,266],[99,145,159,193,344,349],[99,145,233,242,269,364],[99,145,332,336,350,353],[99,145,159,216,336,344,345,353],[99,145,202,212,233,244,347],[99,145,159,193,212,219,244,331,332,342,343,346,348],[99,145,194,240,241,242,361,364],[99,145,159,170,186,193,208,210,211,213,216,221,222,230,233,234,236,237,238,239,243,245,269,270,314,328,329,364],[99,145,159,193,210,212,216,330,352],[99,145,159,193,211,213],[87,99,145,159,170,193,201,203,210,211,214,222,239,240,242,243,245,311,361,364],[99,145,159,170,186,193,205,208,209,213],[99,145,206,268],[99,145,159,193,206,211,222],[99,145,159,193,212,223],[99,145,159,193],[99,145,226],[99,145,225],[99,145,227],[99,145,212,224,226,230],[99,145,212,224,226],[99,145,159,193,205,212,213,219,227,228,229],[87,99,145,304,305,306],[99,145,262],[87,99,145,203],[87,99,145,236],[87,99,145,194,239,242,245,361,364],[99,145,203,384,385],[87,99,145,254],[87,99,145,170,186,193,201,248,250,252,253,364],[99,145,213,219,236],[99,145,235],[87,99,145,157,159,170,193,201,254,263,361,362,363],[83,87,88,89,90,99,145,195,196,361,404],[99,145,150],[99,145,333,334,335],[99,145,333],[99,145,373],[99,145,375],[99,145,377],[99,145,537],[99,145,379],[99,145,382],[99,145,386],[91,93,99,145,361,366,370,372,374,376,378,380,383,387,389,395,396,398,405,406,407],[99,145,388],[99,145,394],[99,145,250],[99,145,397],[99,144,145,227,228,229,230,399,400,401,404],[99,145,193],[87,91,99,145,159,161,170,193,195,196,197,199,201,214,353,360,364,404],[99,112,116,145,186],[99,112,145,175,186],[99,107,145],[99,109,112,145,183,186],[99,145,164,183],[99,107,145,193],[99,109,112,145,164,186],[99,104,105,108,111,145,156,175,186],[99,112,119,145],[99,104,110,145],[99,112,133,134,145],[99,108,112,145,178,186,193],[99,133,145,193],[99,106,107,145,193],[99,112,145],[99,106,107,108,109,110,111,112,113,114,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,134,135,136,137,138,139,145],[99,112,127,145],[99,112,119,120,145],[99,110,112,120,121,145],[99,111,145],[99,104,107,112,145],[99,112,116,120,121,145],[99,116,145],[99,110,112,115,145,186],[99,104,109,112,119,145],[99,145,175],[99,107,112,133,145,191,193],[99,145,157,166,452,453,480],[99,145,469,478,482,483,485],[99,145,157,166,478,479],[87,99,145,387,389,542,549,550],[87,99,145,389,395,456,542],[87,99,145,456,542,554],[87,99,145,387,456,542,554,557],[87,99,145,395,456,542,554],[87,99,145,456,541,542,554],[87,99,145,389,395,541,542],[87,99,145,395,456,497,542,554],[87,99,145,389,542,554],[87,99,145,387,395,456,542,554,557],[87,99,145,456,484,541,542,554],[99,145,405,458,478,479],[99,145,405,478,479],[99,145,150,405,478,479],[99,145,405,479,498],[99,145,405,478,479,497],[99,145,370,405,478,479],[99,145,157,166,405,458,479],[99,145,150,405,478],[99,145,405],[99,145,405,478,479,498],[99,145,405,458],[99,145,405,458,468,484],[99,145,405,457,478,479,519],[99,145,370,405,457,478,479,519],[99,145,370,405,457,463,478,479],[99,145,405,457,479,519],[99,145,405,478],[87,99,145,395,497,542],[87,99,145,387,389,539,542],[87,99,145,387,389,395,478,542,549],[87,99,145,387,389,395,456,539,542],[87,99,145,542],[99,145,408,478,538,539,540,541,543,544,545,546,547],[87,99,145,389,395,478,542,574],[87,99,145,387,389,478,542,549],[87,99,145,387,389,478,542,549,550],[87,99,145,387,389,395,478,542,549,550],[99,145,408],[87,99,145,387,389,456,542],[99,145,408,478],[87,99,145,389,395,497,542],[87,99,145,387,389,456,539,540,542],[87,99,145,389,395,484,541,542],[87,99,145,387],[87,99,145,387,542],[87,99,145,389,395,539,542],[87,99,145,389,395,456,539,540,542],[87,99,145,456],[99,145,150,405,455,456,469,470,478],[99,145,477],[99,145,456,484,496,497],[99,145,456,479],[99,145,452],[99,145,456,457],[99,145,150,455,456],[99,145,157,166,452,456,457,480],[99,145,458,459,462,476],[99,145,456],[99,145,150,456,458,472],[99,145,150,456,457,458,459],[99,145,150,458],[99,145,150,456,458,459,469,470],[99,145,150,456,458,459],[99,145,460,461,464,465,466,467,468,471,473,474,475],[99,145,150,456,458,459,462,463],[99,145,456,458,463,480],[99,145,457,458],[99,145,472,534],[99,145,517,518],[99,145,456,457,462,463,464,473,498],[99,145,456,457,462,465,473,517]],"fileInfos":[{"version":"c430d44666289dae81f30fa7b2edebf186ecc91a2d4c71266ea6ae76388792e1","affectsGlobalScope":true,"impliedFormat":1},{"version":"45b7ab580deca34ae9729e97c13cfd999df04416a79116c3bfb483804f85ded4","impliedFormat":1},{"version":"3facaf05f0c5fc569c5649dd359892c98a85557e3e0c847964caeb67076f4d75","impliedFormat":1},{"version":"e44bb8bbac7f10ecc786703fe0a6a4b952189f908707980ba8f3c8975a760962","impliedFormat":1},{"version":"5e1c4c362065a6b95ff952c0eab010f04dcd2c3494e813b493ecfd4fcb9fc0d8","impliedFormat":1},{"version":"68d73b4a11549f9c0b7d352d10e91e5dca8faa3322bfb77b661839c42b1ddec7","impliedFormat":1},{"version":"5efce4fc3c29ea84e8928f97adec086e3dc876365e0982cc8479a07954a3efd4","impliedFormat":1},{"version":"feecb1be483ed332fad555aff858affd90a48ab19ba7272ee084704eb7167569","impliedFormat":1},{"version":"ee7bad0c15b58988daa84371e0b89d313b762ab83cb5b31b8a2d1162e8eb41c2","impliedFormat":1},{"version":"27bdc30a0e32783366a5abeda841bc22757c1797de8681bbe81fbc735eeb1c10","impliedFormat":1},{"version":"8fd575e12870e9944c7e1d62e1f5a73fcf23dd8d3a321f2a2c74c20d022283fe","impliedFormat":1},{"version":"2ab096661c711e4a81cc464fa1e6feb929a54f5340b46b0a07ac6bbf857471f0","impliedFormat":1},{"version":"080941d9f9ff9307f7e27a83bcd888b7c8270716c39af943532438932ec1d0b9","affectsGlobalScope":true,"impliedFormat":1},{"version":"2e80ee7a49e8ac312cc11b77f1475804bee36b3b2bc896bead8b6e1266befb43","affectsGlobalScope":true,"impliedFormat":1},{"version":"c57796738e7f83dbc4b8e65132f11a377649c00dd3eee333f672b8f0a6bea671","affectsGlobalScope":true,"impliedFormat":1},{"version":"dc2df20b1bcdc8c2d34af4926e2c3ab15ffe1160a63e58b7e09833f616efff44","affectsGlobalScope":true,"impliedFormat":1},{"version":"515d0b7b9bea2e31ea4ec968e9edd2c39d3eebf4a2d5cbd04e88639819ae3b71","affectsGlobalScope":true,"impliedFormat":1},{"version":"0559b1f683ac7505ae451f9a96ce4c3c92bdc71411651ca6ddb0e88baaaad6a3","affectsGlobalScope":true,"impliedFormat":1},{"version":"0dc1e7ceda9b8b9b455c3a2d67b0412feab00bd2f66656cd8850e8831b08b537","affectsGlobalScope":true,"impliedFormat":1},{"version":"ce691fb9e5c64efb9547083e4a34091bcbe5bdb41027e310ebba8f7d96a98671","affectsGlobalScope":true,"impliedFormat":1},{"version":"8d697a2a929a5fcb38b7a65594020fcef05ec1630804a33748829c5ff53640d0","affectsGlobalScope":true,"impliedFormat":1},{"version":"4ff2a353abf8a80ee399af572debb8faab2d33ad38c4b4474cff7f26e7653b8d","affectsGlobalScope":true,"impliedFormat":1},{"version":"fb0f136d372979348d59b3f5020b4cdb81b5504192b1cacff5d1fbba29378aa1","affectsGlobalScope":true,"impliedFormat":1},{"version":"d15bea3d62cbbdb9797079416b8ac375ae99162a7fba5de2c6c505446486ac0a","affectsGlobalScope":true,"impliedFormat":1},{"version":"68d18b664c9d32a7336a70235958b8997ebc1c3b8505f4f1ae2b7e7753b87618","affectsGlobalScope":true,"impliedFormat":1},{"version":"eb3d66c8327153d8fa7dd03f9c58d351107fe824c79e9b56b462935176cdf12a","affectsGlobalScope":true,"impliedFormat":1},{"version":"38f0219c9e23c915ef9790ab1d680440d95419ad264816fa15009a8851e79119","affectsGlobalScope":true,"impliedFormat":1},{"version":"69ab18c3b76cd9b1be3d188eaf8bba06112ebbe2f47f6c322b5105a6fbc45a2e","affectsGlobalScope":true,"impliedFormat":1},{"version":"a680117f487a4d2f30ea46f1b4b7f58bef1480456e18ba53ee85c2746eeca012","affectsGlobalScope":true,"impliedFormat":1},{"version":"2f11ff796926e0832f9ae148008138ad583bd181899ab7dd768a2666700b1893","affectsGlobalScope":true,"impliedFormat":1},{"version":"4de680d5bb41c17f7f68e0419412ca23c98d5749dcaaea1896172f06435891fc","affectsGlobalScope":true,"impliedFormat":1},{"version":"954296b30da6d508a104a3a0b5d96b76495c709785c1d11610908e63481ee667","affectsGlobalScope":true,"impliedFormat":1},{"version":"ac9538681b19688c8eae65811b329d3744af679e0bdfa5d842d0e32524c73e1c","affectsGlobalScope":true,"impliedFormat":1},{"version":"0a969edff4bd52585473d24995c5ef223f6652d6ef46193309b3921d65dd4376","affectsGlobalScope":true,"impliedFormat":1},{"version":"9e9fbd7030c440b33d021da145d3232984c8bb7916f277e8ffd3dc2e3eae2bdb","affectsGlobalScope":true,"impliedFormat":1},{"version":"811ec78f7fefcabbda4bfa93b3eb67d9ae166ef95f9bff989d964061cbf81a0c","affectsGlobalScope":true,"impliedFormat":1},{"version":"717937616a17072082152a2ef351cb51f98802fb4b2fdabd32399843875974ca","affectsGlobalScope":true,"impliedFormat":1},{"version":"d7e7d9b7b50e5f22c915b525acc5a49a7a6584cf8f62d0569e557c5cfc4b2ac2","affectsGlobalScope":true,"impliedFormat":1},{"version":"71c37f4c9543f31dfced6c7840e068c5a5aacb7b89111a4364b1d5276b852557","affectsGlobalScope":true,"impliedFormat":1},{"version":"576711e016cf4f1804676043e6a0a5414252560eb57de9faceee34d79798c850","affectsGlobalScope":true,"impliedFormat":1},{"version":"89c1b1281ba7b8a96efc676b11b264de7a8374c5ea1e6617f11880a13fc56dc6","affectsGlobalScope":true,"impliedFormat":1},{"version":"74f7fa2d027d5b33eb0471c8e82a6c87216223181ec31247c357a3e8e2fddc5b","affectsGlobalScope":true,"impliedFormat":1},{"version":"d6d7ae4d1f1f3772e2a3cde568ed08991a8ae34a080ff1151af28b7f798e22ca","affectsGlobalScope":true,"impliedFormat":1},{"version":"063600664504610fe3e99b717a1223f8b1900087fab0b4cad1496a114744f8df","affectsGlobalScope":true,"impliedFormat":1},{"version":"934019d7e3c81950f9a8426d093458b65d5aff2c7c1511233c0fd5b941e608ab","affectsGlobalScope":true,"impliedFormat":1},{"version":"52ada8e0b6e0482b728070b7639ee42e83a9b1c22d205992756fe020fd9f4a47","affectsGlobalScope":true,"impliedFormat":1},{"version":"3bdefe1bfd4d6dee0e26f928f93ccc128f1b64d5d501ff4a8cf3c6371200e5e6","affectsGlobalScope":true,"impliedFormat":1},{"version":"59fb2c069260b4ba00b5643b907ef5d5341b167e7d1dbf58dfd895658bda2867","affectsGlobalScope":true,"impliedFormat":1},{"version":"639e512c0dfc3fad96a84caad71b8834d66329a1f28dc95e3946c9b58176c73a","affectsGlobalScope":true,"impliedFormat":1},{"version":"368af93f74c9c932edd84c58883e736c9e3d53cec1fe24c0b0ff451f529ceab1","affectsGlobalScope":true,"impliedFormat":1},{"version":"af3dd424cf267428f30ccfc376f47a2c0114546b55c44d8c0f1d57d841e28d74","affectsGlobalScope":true,"impliedFormat":1},{"version":"995c005ab91a498455ea8dfb63aa9f83fa2ea793c3d8aa344be4a1678d06d399","affectsGlobalScope":true,"impliedFormat":1},{"version":"959d36cddf5e7d572a65045b876f2956c973a586da58e5d26cde519184fd9b8a","affectsGlobalScope":true,"impliedFormat":1},{"version":"965f36eae237dd74e6cca203a43e9ca801ce38824ead814728a2807b1910117d","affectsGlobalScope":true,"impliedFormat":1},{"version":"3925a6c820dcb1a06506c90b1577db1fdbf7705d65b62b99dce4be75c637e26b","affectsGlobalScope":true,"impliedFormat":1},{"version":"0a3d63ef2b853447ec4f749d3f368ce642264246e02911fcb1590d8c161b8005","affectsGlobalScope":true,"impliedFormat":1},{"version":"8cdf8847677ac7d20486e54dd3fcf09eda95812ac8ace44b4418da1bbbab6eb8","affectsGlobalScope":true,"impliedFormat":1},{"version":"8444af78980e3b20b49324f4a16ba35024fef3ee069a0eb67616ea6ca821c47a","affectsGlobalScope":true,"impliedFormat":1},{"version":"3287d9d085fbd618c3971944b65b4be57859f5415f495b33a6adc994edd2f004","affectsGlobalScope":true,"impliedFormat":1},{"version":"b4b67b1a91182421f5df999988c690f14d813b9850b40acd06ed44691f6727ad","affectsGlobalScope":true,"impliedFormat":1},{"version":"df83c2a6c73228b625b0beb6669c7ee2a09c914637e2d35170723ad49c0f5cd4","affectsGlobalScope":true,"impliedFormat":1},{"version":"436aaf437562f276ec2ddbee2f2cdedac7664c1e4c1d2c36839ddd582eeb3d0a","affectsGlobalScope":true,"impliedFormat":1},{"version":"8e3c06ea092138bf9fa5e874a1fdbc9d54805d074bee1de31b99a11e2fec239d","affectsGlobalScope":true,"impliedFormat":1},{"version":"87dc0f382502f5bbce5129bdc0aea21e19a3abbc19259e0b43ae038a9fc4e326","affectsGlobalScope":true,"impliedFormat":1},{"version":"b1cb28af0c891c8c96b2d6b7be76bd394fddcfdb4709a20ba05a7c1605eea0f9","affectsGlobalScope":true,"impliedFormat":1},{"version":"2fef54945a13095fdb9b84f705f2b5994597640c46afeb2ce78352fab4cb3279","affectsGlobalScope":true,"impliedFormat":1},{"version":"ac77cb3e8c6d3565793eb90a8373ee8033146315a3dbead3bde8db5eaf5e5ec6","affectsGlobalScope":true,"impliedFormat":1},{"version":"56e4ed5aab5f5920980066a9409bfaf53e6d21d3f8d020c17e4de584d29600ad","affectsGlobalScope":true,"impliedFormat":1},{"version":"4ece9f17b3866cc077099c73f4983bddbcb1dc7ddb943227f1ec070f529dedd1","affectsGlobalScope":true,"impliedFormat":1},{"version":"0a6282c8827e4b9a95f4bf4f5c205673ada31b982f50572d27103df8ceb8013c","affectsGlobalScope":true,"impliedFormat":1},{"version":"1c9319a09485199c1f7b0498f2988d6d2249793ef67edda49d1e584746be9032","affectsGlobalScope":true,"impliedFormat":1},{"version":"e3a2a0cee0f03ffdde24d89660eba2685bfbdeae955a6c67e8c4c9fd28928eeb","affectsGlobalScope":true,"impliedFormat":1},{"version":"811c71eee4aa0ac5f7adf713323a5c41b0cf6c4e17367a34fbce379e12bbf0a4","affectsGlobalScope":true,"impliedFormat":1},{"version":"51ad4c928303041605b4d7ae32e0c1ee387d43a24cd6f1ebf4a2699e1076d4fa","affectsGlobalScope":true,"impliedFormat":1},{"version":"60037901da1a425516449b9a20073aa03386cce92f7a1fd902d7602be3a7c2e9","affectsGlobalScope":true,"impliedFormat":1},{"version":"d4b1d2c51d058fc21ec2629fff7a76249dec2e36e12960ea056e3ef89174080f","affectsGlobalScope":true,"impliedFormat":1},{"version":"22adec94ef7047a6c9d1af3cb96be87a335908bf9ef386ae9fd50eeb37f44c47","affectsGlobalScope":true,"impliedFormat":1},{"version":"196cb558a13d4533a5163286f30b0509ce0210e4b316c56c38d4c0fd2fb38405","affectsGlobalScope":true,"impliedFormat":1},{"version":"73f78680d4c08509933daf80947902f6ff41b6230f94dd002ae372620adb0f60","affectsGlobalScope":true,"impliedFormat":1},{"version":"c5239f5c01bcfa9cd32f37c496cf19c61d69d37e48be9de612b541aac915805b","affectsGlobalScope":true,"impliedFormat":1},{"version":"8e7f8264d0fb4c5339605a15daadb037bf238c10b654bb3eee14208f860a32ea","affectsGlobalScope":true,"impliedFormat":1},{"version":"782dec38049b92d4e85c1585fbea5474a219c6984a35b004963b00beb1aab538","affectsGlobalScope":true,"impliedFormat":1},{"version":"0990a7576222f248f0a3b888adcb7389f957928ce2afb1cd5128169086ff4d29","impliedFormat":1},{"version":"eb5b19b86227ace1d29ea4cf81387279d04bb34051e944bc53df69f58914b788","affectsGlobalScope":true,"impliedFormat":1},{"version":"ac51dd7d31333793807a6abaa5ae168512b6131bd41d9c5b98477fc3b7800f9f","impliedFormat":1},{"version":"87d9d29dbc745f182683f63187bf3d53fd8673e5fca38ad5eaab69798ed29fbc","impliedFormat":1},{"version":"09ddcfcfbe77a8232d155ca1030005106b1328f6210df43629d0be750da07c16","affectsGlobalScope":true,"impliedFormat":1},{"version":"cc69795d9954ee4ad57545b10c7bf1a7260d990231b1685c147ea71a6faa265c","impliedFormat":1},{"version":"8bc6c94ff4f2af1f4023b7bb2379b08d3d7dd80c698c9f0b07431ea16101f05f","impliedFormat":1},{"version":"1b61d259de5350f8b1e5db06290d31eaebebc6baafd5f79d314b5af9256d7153","impliedFormat":1},{"version":"57194e1f007f3f2cbef26fa299d4c6b21f4623a2eddc63dfeef79e38e187a36e","impliedFormat":1},{"version":"0f6666b58e9276ac3a38fdc80993d19208442d6027ab885580d93aec76b4ef00","impliedFormat":1},{"version":"05fd364b8ef02fb1e174fbac8b825bdb1e5a36a016997c8e421f5fab0a6da0a0","impliedFormat":1},{"version":"70521b6ab0dcba37539e5303104f29b721bfb2940b2776da4cc818c07e1fefc1","affectsGlobalScope":true,"impliedFormat":1},{"version":"ab41ef1f2cdafb8df48be20cd969d875602483859dc194e9c97c8a576892c052","affectsGlobalScope":true,"impliedFormat":1},{"version":"d153a11543fd884b596587ccd97aebbeed950b26933ee000f94009f1ab142848","affectsGlobalScope":true,"impliedFormat":1},{"version":"21d819c173c0cf7cc3ce57c3276e77fd9a8a01d35a06ad87158781515c9a438a","impliedFormat":1},{"version":"98cffbf06d6bab333473c70a893770dbe990783904002c4f1a960447b4b53dca","affectsGlobalScope":true,"impliedFormat":1},{"version":"ba481bca06f37d3f2c137ce343c7d5937029b2468f8e26111f3c9d9963d6568d","affectsGlobalScope":true,"impliedFormat":1},{"version":"6d9ef24f9a22a88e3e9b3b3d8c40ab1ddb0853f1bfbd5c843c37800138437b61","affectsGlobalScope":true,"impliedFormat":1},{"version":"1db0b7dca579049ca4193d034d835f6bfe73096c73663e5ef9a0b5779939f3d0","affectsGlobalScope":true,"impliedFormat":1},{"version":"9798340ffb0d067d69b1ae5b32faa17ab31b82466a3fc00d8f2f2df0c8554aaa","affectsGlobalScope":true,"impliedFormat":1},{"version":"f26b11d8d8e4b8028f1c7d618b22274c892e4b0ef5b3678a8ccbad85419aef43","affectsGlobalScope":true,"impliedFormat":1},{"version":"5929864ce17fba74232584d90cb721a89b7ad277220627cc97054ba15a98ea8f","impliedFormat":1},{"version":"763fe0f42b3d79b440a9b6e51e9ba3f3f91352469c1e4b3b67bfa4ff6352f3f4","impliedFormat":1},{"version":"25c8056edf4314820382a5fdb4bb7816999acdcb929c8f75e3f39473b87e85bc","impliedFormat":1},{"version":"c464d66b20788266e5353b48dc4aa6bc0dc4a707276df1e7152ab0c9ae21fad8","impliedFormat":1},{"version":"78d0d27c130d35c60b5e5566c9f1e5be77caf39804636bc1a40133919a949f21","impliedFormat":1},{"version":"c6fd2c5a395f2432786c9cb8deb870b9b0e8ff7e22c029954fabdd692bff6195","impliedFormat":1},{"version":"1d6e127068ea8e104a912e42fc0a110e2aa5a66a356a917a163e8cf9a65e4a75","impliedFormat":1},{"version":"5ded6427296cdf3b9542de4471d2aa8d3983671d4cac0f4bf9c637208d1ced43","impliedFormat":1},{"version":"7f182617db458e98fc18dfb272d40aa2fff3a353c44a89b2c0ccb3937709bfb5","impliedFormat":1},{"version":"cadc8aced301244057c4e7e73fbcae534b0f5b12a37b150d80e5a45aa4bebcbd","impliedFormat":1},{"version":"385aab901643aa54e1c36f5ef3107913b10d1b5bb8cbcd933d4263b80a0d7f20","impliedFormat":1},{"version":"9670d44354bab9d9982eca21945686b5c24a3f893db73c0dae0fd74217a4c219","impliedFormat":1},{"version":"0b8a9268adaf4da35e7fa830c8981cfa22adbbe5b3f6f5ab91f6658899e657a7","impliedFormat":1},{"version":"11396ed8a44c02ab9798b7dca436009f866e8dae3c9c25e8c1fbc396880bf1bb","impliedFormat":1},{"version":"ba7bc87d01492633cb5a0e5da8a4a42a1c86270e7b3d2dea5d156828a84e4882","impliedFormat":1},{"version":"4893a895ea92c85345017a04ed427cbd6a1710453338df26881a6019432febdd","impliedFormat":1},{"version":"c21dc52e277bcfc75fac0436ccb75c204f9e1b3fa5e12729670910639f27343e","impliedFormat":1},{"version":"13f6f39e12b1518c6650bbb220c8985999020fe0f21d818e28f512b7771d00f9","impliedFormat":1},{"version":"9b5369969f6e7175740bf51223112ff209f94ba43ecd3bb09eefff9fd675624a","impliedFormat":1},{"version":"4fe9e626e7164748e8769bbf74b538e09607f07ed17c2f20af8d680ee49fc1da","impliedFormat":1},{"version":"24515859bc0b836719105bb6cc3d68255042a9f02a6022b3187948b204946bd2","impliedFormat":1},{"version":"ea0148f897b45a76544ae179784c95af1bd6721b8610af9ffa467a518a086a43","impliedFormat":1},{"version":"24c6a117721e606c9984335f71711877293a9651e44f59f3d21c1ea0856f9cc9","impliedFormat":1},{"version":"dd3273ead9fbde62a72949c97dbec2247ea08e0c6952e701a483d74ef92d6a17","impliedFormat":1},{"version":"405822be75ad3e4d162e07439bac80c6bcc6dbae1929e179cf467ec0b9ee4e2e","impliedFormat":1},{"version":"0db18c6e78ea846316c012478888f33c11ffadab9efd1cc8bcc12daded7a60b6","impliedFormat":1},{"version":"e61be3f894b41b7baa1fbd6a66893f2579bfad01d208b4ff61daef21493ef0a8","impliedFormat":1},{"version":"bd0532fd6556073727d28da0edfd1736417a3f9f394877b6d5ef6ad88fba1d1a","impliedFormat":1},{"version":"89167d696a849fce5ca508032aabfe901c0868f833a8625d5a9c6e861ef935d2","impliedFormat":1},{"version":"615ba88d0128ed16bf83ef8ccbb6aff05c3ee2db1cc0f89ab50a4939bfc1943f","impliedFormat":1},{"version":"a4d551dbf8746780194d550c88f26cf937caf8d56f102969a110cfaed4b06656","impliedFormat":1},{"version":"8bd86b8e8f6a6aa6c49b71e14c4ffe1211a0e97c80f08d2c8cc98838006e4b88","impliedFormat":1},{"version":"317e63deeb21ac07f3992f5b50cdca8338f10acd4fbb7257ebf56735bf52ab00","impliedFormat":1},{"version":"4732aec92b20fb28c5fe9ad99521fb59974289ed1e45aecb282616202184064f","impliedFormat":1},{"version":"2e85db9e6fd73cfa3d7f28e0ab6b55417ea18931423bd47b409a96e4a169e8e6","impliedFormat":1},{"version":"c46e079fe54c76f95c67fb89081b3e399da2c7d109e7dca8e4b58d83e332e605","impliedFormat":1},{"version":"bf67d53d168abc1298888693338cb82854bdb2e69ef83f8a0092093c2d562107","impliedFormat":1},{"version":"b52476feb4a0cbcb25e5931b930fc73cb6643fb1a5060bf8a3dda0eeae5b4b68","affectsGlobalScope":true,"impliedFormat":1},{"version":"e2677634fe27e87348825bb041651e22d50a613e2fdf6a4a3ade971d71bac37e","impliedFormat":1},{"version":"7394959e5a741b185456e1ef5d64599c36c60a323207450991e7a42e08911419","impliedFormat":1},{"version":"8c0bcd6c6b67b4b503c11e91a1fb91522ed585900eab2ab1f61bba7d7caa9d6f","impliedFormat":1},{"version":"8cd19276b6590b3ebbeeb030ac271871b9ed0afc3074ac88a94ed2449174b776","affectsGlobalScope":true,"impliedFormat":1},{"version":"696eb8d28f5949b87d894b26dc97318ef944c794a9a4e4f62360cd1d1958014b","impliedFormat":1},{"version":"3f8fa3061bd7402970b399300880d55257953ee6d3cd408722cb9ac20126460c","impliedFormat":1},{"version":"35ec8b6760fd7138bbf5809b84551e31028fb2ba7b6dc91d95d098bf212ca8b4","affectsGlobalScope":true,"impliedFormat":1},{"version":"5524481e56c48ff486f42926778c0a3cce1cc85dc46683b92b1271865bcf015a","impliedFormat":1},{"version":"68bd56c92c2bd7d2339457eb84d63e7de3bd56a69b25f3576e1568d21a162398","affectsGlobalScope":true,"impliedFormat":1},{"version":"3e93b123f7c2944969d291b35fed2af79a6e9e27fdd5faa99748a51c07c02d28","impliedFormat":1},{"version":"9d19808c8c291a9010a6c788e8532a2da70f811adb431c97520803e0ec649991","impliedFormat":1},{"version":"87aad3dd9752067dc875cfaa466fc44246451c0c560b820796bdd528e29bef40","impliedFormat":1},{"version":"4aacb0dd020eeaef65426153686cc639a78ec2885dc72ad220be1d25f1a439df","impliedFormat":1},{"version":"f0bd7e6d931657b59605c44112eaf8b980ba7f957a5051ed21cb93d978cf2f45","impliedFormat":1},{"version":"8db0ae9cb14d9955b14c214f34dae1b9ef2baee2fe4ce794a4cd3ac2531e3255","affectsGlobalScope":true,"impliedFormat":1},{"version":"15fc6f7512c86810273af28f224251a5a879e4261b4d4c7e532abfbfc3983134","impliedFormat":1},{"version":"58adba1a8ab2d10b54dc1dced4e41f4e7c9772cbbac40939c0dc8ce2cdb1d442","impliedFormat":1},{"version":"641942a78f9063caa5d6b777c99304b7d1dc7328076038c6d94d8a0b81fc95c1","impliedFormat":1},{"version":"1123a83f35cf56c97de746f0a7250012153c61a167e4a61668bf50e558162d14","impliedFormat":1},{"version":"855cd5f7eb396f5f1ab1bc0f8580339bff77b68a770f84c6b254e319bbfd1ac7","impliedFormat":1},{"version":"5650cf3dace09e7c25d384e3e6b818b938f68f4e8de96f52d9c5a1b3db068e86","impliedFormat":1},{"version":"1354ca5c38bd3fd3836a68e0f7c9f91f172582ba30ab15bb8c075891b91502b7","affectsGlobalScope":true,"impliedFormat":1},{"version":"7e20d899c28ca26a2a7afc98beaa69e63ff7fba0a8bc47b4e3bf3ede5e09e424","impliedFormat":1},{"version":"2d2fcaab481b31a5882065c7951255703ddbe1c0e507af56ea42d79ac3911201","impliedFormat":1},{"version":"a192fe8ec33f75edbc8d8f3ed79f768dfae11ff5735e7fe52bfa69956e46d78d","impliedFormat":1},{"version":"ca867399f7db82df981d6915bcbb2d81131d7d1ef683bc782b59f71dda59bc85","affectsGlobalScope":true,"impliedFormat":1},{"version":"372413016d17d804e1d139418aca0c68e47a83fb6669490857f4b318de8cccb3","affectsGlobalScope":true,"impliedFormat":1},{"version":"9e043a1bc8fbf2a255bccf9bf27e0f1caf916c3b0518ea34aa72357c0afd42ec","impliedFormat":1},{"version":"b4f70ec656a11d570e1a9edce07d118cd58d9760239e2ece99306ee9dfe61d02","impliedFormat":1},{"version":"3bc2f1e2c95c04048212c569ed38e338873f6a8593930cf5a7ef24ffb38fc3b6","impliedFormat":1},{"version":"6e70e9570e98aae2b825b533aa6292b6abd542e8d9f6e9475e88e1d7ba17c866","impliedFormat":1},{"version":"f9d9d753d430ed050dc1bf2667a1bab711ccbb1c1507183d794cc195a5b085cc","impliedFormat":1},{"version":"9eece5e586312581ccd106d4853e861aaaa1a39f8e3ea672b8c3847eedd12f6e","impliedFormat":1},{"version":"085f552d005479e2e6a7311cdbbe5d8c55c497b4d19274285df161ee9684cd9c","impliedFormat":1},{"version":"37ba7b45141a45ce6e80e66f2a96c8a5ab1bcef0fc2d0f56bb58df96ec67e972","impliedFormat":1},{"version":"45650f47bfb376c8a8ed39d4bcda5902ab899a3150029684ee4c10676d9fbaee","impliedFormat":1},{"version":"007faacc9268357caa21d24169f3f3f2497af3e9241308df2d89f6e6d9bb3f2e","affectsGlobalScope":true,"impliedFormat":1},{"version":"74cf591a0f63db318651e0e04cb55f8791385f86e987a67fd4d2eaab8191f730","impliedFormat":1},{"version":"5eab9b3dc9b34f185417342436ec3f106898da5f4801992d8ff38ab3aff346b5","impliedFormat":1},{"version":"12ed4559eba17cd977aa0db658d25c4047067444b51acfdcbf38470630642b23","affectsGlobalScope":true,"impliedFormat":1},{"version":"f3ffabc95802521e1e4bcba4c88d8615176dc6e09111d920c7a213bdda6e1d65","impliedFormat":1},{"version":"809821b8a065e3234a55b3a9d7846231ed18d66dd749f2494c66288d890daf7f","impliedFormat":1},{"version":"ae56f65caf3be91108707bd8dfbccc2a57a91feb5daabf7165a06a945545ed26","impliedFormat":1},{"version":"a136d5de521da20f31631a0a96bf712370779d1c05b7015d7019a9b2a0446ca9","impliedFormat":1},{"version":"c3b41e74b9a84b88b1dca61ec39eee25c0dbc8e7d519ba11bb070918cfacf656","affectsGlobalScope":true,"impliedFormat":1},{"version":"4737a9dc24d0e68b734e6cfbcea0c15a2cfafeb493485e27905f7856988c6b29","affectsGlobalScope":true,"impliedFormat":1},{"version":"36d8d3e7506b631c9582c251a2c0b8a28855af3f76719b12b534c6edf952748d","impliedFormat":1},{"version":"1ca69210cc42729e7ca97d3a9ad48f2e9cb0042bada4075b588ae5387debd318","impliedFormat":1},{"version":"f5ebe66baaf7c552cfa59d75f2bfba679f329204847db3cec385acda245e574e","impliedFormat":1},{"version":"ed59add13139f84da271cafd32e2171876b0a0af2f798d0c663e8eeb867732cf","affectsGlobalScope":true,"impliedFormat":1},{"version":"b7c5e2ea4a9749097c347454805e933844ed207b6eefec6b7cfd418b5f5f7b28","impliedFormat":1},{"version":"b1810689b76fd473bd12cc9ee219f8e62f54a7d08019a235d07424afbf074d25","impliedFormat":1},{"version":"8caa5c86be1b793cd5f599e27ecb34252c41e011980f7d61ae4989a149ff6ccc","impliedFormat":1},{"version":"f9fd93190acb1ffe0bc0fb395df979452f8d625071e9ffc8636e4dfb86ab2508","impliedFormat":1},{"version":"5f41fd8732a89e940c58ce22206e3df85745feb8983e2b4c6257fb8cbb118493","impliedFormat":1},{"version":"17ed71200119e86ccef2d96b73b02ce8854b76ad6bd21b5021d4269bec527b5f","impliedFormat":1},{"version":"1cfa8647d7d71cb03847d616bd79320abfc01ddea082a49569fda71ac5ece66b","impliedFormat":1},{"version":"bb7a61dd55dc4b9422d13da3a6bb9cc5e89be888ef23bbcf6558aa9726b89a1c","impliedFormat":1},{"version":"db6d2d9daad8a6d83f281af12ce4355a20b9a3e71b82b9f57cddcca0a8964a96","impliedFormat":1},{"version":"cfe4ef4710c3786b6e23dae7c086c70b4f4835a2e4d77b75d39f9046106e83d3","impliedFormat":1},{"version":"cbea99888785d49bb630dcbb1613c73727f2b5a2cf02e1abcaab7bcf8d6bf3c5","impliedFormat":1},{"version":"3a8bddb66b659f6bd2ff641fc71df8a8165bafe0f4b799cc298be5cd3755bb20","impliedFormat":1},{"version":"a86f82d646a739041d6702101afa82dcb935c416dd93cbca7fd754fd0282ce1f","impliedFormat":1},{"version":"2dad084c67e649f0f354739ec7df7c7df0779a28a4f55c97c6b6883ae850d1ce","impliedFormat":1},{"version":"fa5bbc7ab4130dd8cdc55ea294ec39f76f2bc507a0f75f4f873e38631a836ca7","impliedFormat":1},{"version":"df45ca1176e6ac211eae7ddf51336dc075c5314bc5c253651bae639defd5eec5","impliedFormat":1},{"version":"cf86de1054b843e484a3c9300d62fbc8c97e77f168bbffb131d560ca0474d4a8","impliedFormat":1},{"version":"196c960b12253fde69b204aa4fbf69470b26daf7a430855d7f94107a16495ab0","impliedFormat":1},{"version":"ee15ea5dd7a9fc9f5013832e5843031817a880bf0f24f37a29fd8337981aae07","impliedFormat":1},{"version":"bf24f6d35f7318e246010ffe9924395893c4e96d34324cde77151a73f078b9ad","impliedFormat":1},{"version":"ea53732769832d0f127ae16620bd5345991d26bf0b74e85e41b61b27d74ea90f","impliedFormat":1},{"version":"10595c7ff5094dd5b6a959ccb1c00e6a06441b4e10a87bc09c15f23755d34439","impliedFormat":1},{"version":"9620c1ff645afb4a9ab4044c85c26676f0a93e8c0e4b593aea03a89ccb47b6d0","impliedFormat":1},{"version":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","impliedFormat":1},{"version":"a9af0e608929aaf9ce96bd7a7b99c9360636c31d73670e4af09a09950df97841","impliedFormat":1},{"version":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","impliedFormat":1},{"version":"c86fe861cf1b4c46a0fb7d74dffe596cf679a2e5e8b1456881313170f092e3fa","impliedFormat":1},{"version":"08ed0b3f0166787f84a6606f80aa3b1388c7518d78912571b203817406e471da","impliedFormat":1},{"version":"47e5af2a841356a961f815e7c55d72554db0c11b4cba4d0caab91f8717846a94","impliedFormat":1},{"version":"65f43099ded6073336e697512d9b80f2d4fec3182b7b2316abf712e84104db00","impliedFormat":1},{"version":"f5f541902bf7ae0512a177295de9b6bcd6809ea38307a2c0a18bfca72212f368","impliedFormat":1},{"version":"b0decf4b6da3ebc52ea0c96095bdfaa8503acc4ac8e9081c5f2b0824835dd3bd","impliedFormat":1},{"version":"ca1b882a105a1972f82cc58e3be491e7d750a1eb074ffd13b198269f57ed9e1b","impliedFormat":1},{"version":"fc3e1c87b39e5ba1142f27ec089d1966da168c04a859a4f6aab64dceae162c2b","impliedFormat":1},{"version":"3b414b99a73171e1c4b7b7714e26b87d6c5cb03d200352da5342ab4088a54c85","impliedFormat":1},{"version":"61888522cec948102eba94d831c873200aa97d00d8989fdfd2a3e0ee75ec65a2","impliedFormat":1},{"version":"4e10622f89fea7b05dd9b52fb65e1e2b5cbd96d4cca3d9e1a60bb7f8a9cb86a1","impliedFormat":1},{"version":"74b2a5e5197bd0f2e0077a1ea7c07455bbea67b87b0869d9786d55104006784f","impliedFormat":1},{"version":"59bf32919de37809e101acffc120596a9e45fdbab1a99de5087f31fdc36e2f11","impliedFormat":1},{"version":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","impliedFormat":1},{"version":"faa03dffb64286e8304a2ca96dd1317a77db6bfc7b3fb385163648f67e535d77","impliedFormat":1},{"version":"c40c848daad198266370c1c72a7a8c3d18d2f50727c7859fcfefd3ff69a7f288","impliedFormat":1},{"version":"ac60bbee0d4235643cc52b57768b22de8c257c12bd8c2039860540cab1fa1d82","impliedFormat":1},{"version":"6428e6edd944ce6789afdf43f9376c1f2e4957eea34166177625aaff4c0da1a0","impliedFormat":1},{"version":"ada39cbb2748ab2873b7835c90c8d4620723aedf323550e8489f08220e477c7f","impliedFormat":1},{"version":"6e5f5cee603d67ee1ba6120815497909b73399842254fc1e77a0d5cdc51d8c9c","impliedFormat":1},{"version":"8dba67056cbb27628e9b9a1cba8e57036d359dceded0725c72a3abe4b6c79cd4","impliedFormat":1},{"version":"70f3814c457f54a7efe2d9ce9d2686de9250bb42eb7f4c539bd2280a42e52d33","impliedFormat":1},{"version":"154dd2e22e1e94d5bc4ff7726706bc0483760bae40506bdce780734f11f7ec47","impliedFormat":1},{"version":"ef61792acbfa8c27c9bd113f02731e66229f7d3a169e3c1993b508134f1a58e0","impliedFormat":1},{"version":"9c82171d836c47486074e4ca8e059735bf97b205e70b196535b5efd40cbe1bc5","impliedFormat":1},{"version":"0131e203d8560edb39678abe10db42564a068f98c4ebd1ed9ffe7279c78b3c81","impliedFormat":1},{"version":"f6404e7837b96da3ea4d38c4f1a3812c96c9dcdf264e93d5bdb199f983a3ef4b","impliedFormat":1},{"version":"c5426dbfc1cf90532f66965a7aa8c1136a78d4d0f96d8180ecbfc11d7722f1a5","impliedFormat":1},{"version":"65a15fc47900787c0bd18b603afb98d33ede930bed1798fc984d5ebb78b26cf9","impliedFormat":1},{"version":"9d202701f6e0744adb6314d03d2eb8fc994798fc83d91b691b75b07626a69801","impliedFormat":1},{"version":"de9d2df7663e64e3a91bf495f315a7577e23ba088f2949d5ce9ec96f44fba37d","impliedFormat":1},{"version":"c7af78a2ea7cb1cd009cfb5bdb48cd0b03dad3b54f6da7aab615c2e9e9d570c5","impliedFormat":1},{"version":"1ee45496b5f8bdee6f7abc233355898e5bf9bd51255db65f5ff7ede617ca0027","impliedFormat":1},{"version":"8b8f00491431fe82f060dfe8c7f2180a9fb239f3d851527db909b83230e75882","affectsGlobalScope":true,"impliedFormat":1},{"version":"db01d18853469bcb5601b9fc9826931cc84cc1a1944b33cad76fd6f1e3d8c544","affectsGlobalScope":true,"impliedFormat":1},{"version":"dba114fb6a32b355a9cfc26ca2276834d72fe0e94cd2c3494005547025015369","impliedFormat":1},{"version":"903e299a28282fa7b714586e28409ed73c3b63f5365519776bf78e8cf173db36","affectsGlobalScope":true,"impliedFormat":1},{"version":"fa6c12a7c0f6b84d512f200690bfc74819e99efae69e4c95c4cd30f6884c526e","impliedFormat":1},{"version":"f1c32f9ce9c497da4dc215c3bc84b722ea02497d35f9134db3bb40a8d918b92b","impliedFormat":1},{"version":"b73c319af2cc3ef8f6421308a250f328836531ea3761823b4cabbd133047aefa","affectsGlobalScope":true,"impliedFormat":1},{"version":"e433b0337b8106909e7953015e8fa3f2d30797cea27141d1c5b135365bb975a6","impliedFormat":1},{"version":"dd3900b24a6a8745efeb7ad27629c0f8a626470ac229c1d73f1fe29d67e44dca","impliedFormat":1},{"version":"ddff7fc6edbdc5163a09e22bf8df7bef75f75369ebd7ecea95ba55c4386e2441","impliedFormat":1},{"version":"106c6025f1d99fd468fd8bf6e5bda724e11e5905a4076c5d29790b6c3745e50c","impliedFormat":1},{"version":"ec29be0737d39268696edcec4f5e97ce26f449fa9b7afc2f0f99a86def34a418","impliedFormat":1},{"version":"aeab39e8e0b1a3b250434c3b2bb8f4d17bbec2a9dbce5f77e8a83569d3d2cbc2","impliedFormat":1},{"version":"ec6cba1c02c675e4dd173251b156792e8d3b0c816af6d6ad93f1a55d674591aa","impliedFormat":1},{"version":"b620391fe8060cf9bedc176a4d01366e6574d7a71e0ac0ab344a4e76576fcbb8","impliedFormat":1},{"version":"d729408dfde75b451530bcae944cf89ee8277e2a9df04d1f62f2abfd8b03c1e1","impliedFormat":1},{"version":"e15d3c84d5077bb4a3adee4c791022967b764dc41cb8fa3cfa44d4379b2c95f5","impliedFormat":1},{"version":"5f58e28cd22e8fc1ac1b3bc6b431869f1e7d0b39e2c21fbf79b9fa5195a85980","impliedFormat":1},{"version":"e1fc1a1045db5aa09366be2b330e4ce391550041fc3e925f60998ca0b647aa97","impliedFormat":1},{"version":"63533978dcda286422670f6e184ac516805a365fb37a086eeff4309e812f1402","impliedFormat":1},{"version":"43ba4f2fa8c698f5c304d21a3ef596741e8e85a810b7c1f9b692653791d8d97a","impliedFormat":1},{"version":"31fb49ef3aa3d76f0beb644984e01eab0ea222372ea9b49bb6533be5722d756c","impliedFormat":1},{"version":"33cd131e1461157e3e06b06916b5176e7a8ec3fce15a5cfe145e56de744e07d2","impliedFormat":1},{"version":"889ef863f90f4917221703781d9723278db4122d75596b01c429f7c363562b86","impliedFormat":1},{"version":"3556cfbab7b43da96d15a442ddbb970e1f2fc97876d055b6555d86d7ac57dae5","impliedFormat":1},{"version":"437751e0352c6e924ddf30e90849f1d9eb00ca78c94d58d6a37202ec84eb8393","impliedFormat":1},{"version":"48e8af7fdb2677a44522fd185d8c87deff4d36ee701ea003c6c780b1407a1397","impliedFormat":1},{"version":"d11308de5a36c7015bb73adb5ad1c1bdaac2baede4cc831a05cf85efa3cc7f2f","impliedFormat":1},{"version":"38e4684c22ed9319beda6765bab332c724103d3a966c2e5e1c5a49cf7007845f","impliedFormat":1},{"version":"f9812cfc220ecf7557183379531fa409acd249b9e5b9a145d0d52b76c20862de","affectsGlobalScope":true,"impliedFormat":1},{"version":"e650298721abc4f6ae851e60ae93ee8199791ceec4b544c3379862f81f43178c","impliedFormat":1},{"version":"2e4f37ffe8862b14d8e24ae8763daaa8340c0df0b859d9a9733def0eee7562d9","impliedFormat":1},{"version":"13283350547389802aa35d9f2188effaeac805499169a06ef5cd77ce2a0bd63f","impliedFormat":1},{"version":"680793958f6a70a44c8d9ae7d46b7a385361c69ac29dcab3ed761edce1c14ab8","impliedFormat":1},{"version":"6ac6715916fa75a1f7ebdfeacac09513b4d904b667d827b7535e84ff59679aff","impliedFormat":1},{"version":"b838d4c72740eb0afd284bf7575b74c624b105eff2e8c7b4aeead57e7ac320ff","impliedFormat":1},{"version":"913ddbba170240070bd5921b8f33ea780021bdf42fbdfcd4fcb2691b1884ddde","impliedFormat":1},{"version":"b4e6d416466999ff40d3fe5ceb95f7a8bfb7ac2262580287ac1a8391e5362431","impliedFormat":1},{"version":"5fe23bd829e6be57d41929ac374ee9551ccc3c44cee893167b7b5b77be708014","impliedFormat":1},{"version":"0a626484617019fcfbfc3c1bc1f9e84e2913f1adb73692aa9075817404fb41a1","impliedFormat":1},{"version":"438c7513b1df91dcef49b13cd7a1c4720f91a36e88c1df731661608b7c055f10","impliedFormat":1},{"version":"cf185cc4a9a6d397f416dd28cca95c227b29f0f27b160060a95c0e5e36cda865","impliedFormat":1},{"version":"0086f3e4ad898fd7ca56bb223098acfacf3fa065595182aaf0f6c4a6a95e6fbd","impliedFormat":1},{"version":"efaa078e392f9abda3ee8ade3f3762ab77f9c50b184e6883063a911742a4c96a","impliedFormat":1},{"version":"54a8bb487e1dc04591a280e7a673cdfb272c83f61e28d8a64cf1ac2e63c35c51","impliedFormat":1},{"version":"021a9498000497497fd693dd315325484c58a71b5929e2bbb91f419b04b24cea","impliedFormat":1},{"version":"9385cdc09850950bc9b59cca445a3ceb6fcca32b54e7b626e746912e489e535e","impliedFormat":1},{"version":"2894c56cad581928bb37607810af011764a2f511f575d28c9f4af0f2ef02d1ab","impliedFormat":1},{"version":"0a72186f94215d020cb386f7dca81d7495ab6c17066eb07d0f44a5bf33c1b21a","impliedFormat":1},{"version":"84124384abae2f6f66b7fbfc03862d0c2c0b71b826f7dbf42c8085d31f1d3f95","impliedFormat":1},{"version":"63a8e96f65a22604eae82737e409d1536e69a467bb738bec505f4f97cce9d878","impliedFormat":1},{"version":"3fd78152a7031315478f159c6a5872c712ece6f01212c78ea82aef21cb0726e2","impliedFormat":1},{"version":"b01bd582a6e41457bc56e6f0f9de4cb17f33f5f3843a7cf8210ac9c18472fb0f","impliedFormat":1},{"version":"58b49e5c1def740360b5ae22ae2405cfac295fee74abd88d74ac4ea42502dc03","impliedFormat":1},{"version":"512fc15cca3a35b8dbbf6e23fe9d07e6f87ad03c895acffd3087ce09f352aad0","impliedFormat":1},{"version":"9a0946d15a005832e432ea0cd4da71b57797efb25b755cc07f32274296d62355","impliedFormat":1},{"version":"a52ff6c0a149e9f370372fc3c715d7f2beee1f3bab7980e271a7ab7d313ec677","impliedFormat":1},{"version":"fd933f824347f9edd919618a76cdb6a0c0085c538115d9a287fa0c7f59957ab3","impliedFormat":1},{"version":"6ac6715916fa75a1f7ebdfeacac09513b4d904b667d827b7535e84ff59679aff","impliedFormat":1},{"version":"6a1aa3e55bdc50503956c5cd09ae4cd72e3072692d742816f65c66ca14f4dfdd","impliedFormat":1},{"version":"ab75cfd9c4f93ffd601f7ca1753d6a9d953bbedfbd7a5b3f0436ac8a1de60dfa","impliedFormat":1},{"version":"f95180f03d827525ca4f990f49e17ec67198c316dd000afbe564655141f725cd","impliedFormat":1},{"version":"b73cbf0a72c8800cf8f96a9acfe94f3ad32ca71342a8908b8ae484d61113f647","impliedFormat":1},{"version":"bae6dd176832f6423966647382c0d7ba9e63f8c167522f09a982f086cd4e8b23","impliedFormat":1},{"version":"1364f64d2fb03bbb514edc42224abd576c064f89be6a990136774ecdd881a1da","impliedFormat":1},{"version":"c9958eb32126a3843deedda8c22fb97024aa5d6dd588b90af2d7f2bfac540f23","impliedFormat":1},{"version":"950fb67a59be4c2dbe69a5786292e60a5cb0e8612e0e223537784c731af55db1","impliedFormat":1},{"version":"e927c2c13c4eaf0a7f17e6022eee8519eb29ef42c4c13a31e81a611ab8c95577","impliedFormat":1},{"version":"07ca44e8d8288e69afdec7a31fa408ce6ab90d4f3d620006701d5544646da6aa","impliedFormat":1},{"version":"70246ad95ad8a22bdfe806cb5d383a26c0c6e58e7207ab9c431f1cb175aca657","impliedFormat":1},{"version":"f00f3aa5d64ff46e600648b55a79dcd1333458f7a10da2ed594d9f0a44b76d0b","impliedFormat":1},{"version":"772d8d5eb158b6c92412c03228bd9902ccb1457d7a705b8129814a5d1a6308fc","impliedFormat":1},{"version":"4e4475fba4ed93a72f167b061cd94a2e171b82695c56de9899275e880e06ba41","impliedFormat":1},{"version":"97c5f5d580ab2e4decd0a3135204050f9b97cd7908c5a8fbc041eadede79b2fa","impliedFormat":1},{"version":"c99a3a5f2215d5b9d735aa04cec6e61ed079d8c0263248e298ffe4604d4d0624","impliedFormat":1},{"version":"49b2375c586882c3ac7f57eba86680ff9742a8d8cb2fe25fe54d1b9673690d41","impliedFormat":1},{"version":"802e797bcab5663b2c9f63f51bdf67eff7c41bc64c0fd65e6da3e7941359e2f7","impliedFormat":1},{"version":"847e160d709c74cc714fbe1f99c41d3425b74cd47b1be133df1623cd87014089","impliedFormat":1},{"version":"9fee04f1e1afa50524862289b9f0b0fdc3735b80e2a0d684cec3b9ff3d94cecc","impliedFormat":1},{"version":"5cdc27fbc5c166fc5c763a30ac21cbac9859dc5ba795d3230db6d4e52a1965bb","impliedFormat":1},{"version":"6459054aabb306821a043e02b89d54da508e3a6966601a41e71c166e4ea1474f","impliedFormat":1},{"version":"f416c9c3eee9d47ff49132c34f96b9180e50485d435d5748f0e8b72521d28d2e","impliedFormat":1},{"version":"05c97cddbaf99978f83d96de2d8af86aded9332592f08ce4a284d72d0952c391","impliedFormat":1},{"version":"14e5cdec6f8ae82dfd0694e64903a0a54abdfe37e1d966de3d4128362acbf35f","impliedFormat":1},{"version":"bbc183d2d69f4b59fd4dd8799ffdf4eb91173d1c4ad71cce91a3811c021bf80c","impliedFormat":1},{"version":"7b6ff760c8a240b40dab6e4419b989f06a5b782f4710d2967e67c695ef3e93c4","impliedFormat":1},{"version":"8dbc4134a4b3623fc476be5f36de35c40f2768e2e3d9ed437e0d5f1c4cd850f6","impliedFormat":1},{"version":"4e06330a84dec7287f7ebdd64978f41a9f70a668d3b5edc69d5d4a50b9b376bb","impliedFormat":1},{"version":"65bfa72967fbe9fc33353e1ac03f0480aa2e2ea346d61ff3ea997dfd850f641a","impliedFormat":1},{"version":"c06f0bb92d1a1a5a6c6e4b5389a5664d96d09c31673296cb7da5fe945d54d786","impliedFormat":1},{"version":"f974e4a06953682a2c15d5bd5114c0284d5abf8bc0fe4da25cb9159427b70072","impliedFormat":1},{"version":"872caaa31423f4345983d643e4649fb30f548e9883a334d6d1c5fff68ede22d4","impliedFormat":1},{"version":"94404c4a878fe291e7578a2a80264c6f18e9f1933fbb57e48f0eb368672e389c","impliedFormat":1},{"version":"5c1b7f03aa88be854bc15810bfd5bd5a1943c5a7620e1c53eddd2a013996343e","impliedFormat":1},{"version":"09dfc64fcd6a2785867f2368419859a6cc5a8d4e73cbe2538f205b1642eb0f51","impliedFormat":1},{"version":"bcf6f0a323653e72199105a9316d91463ad4744c546d1271310818b8cef7c608","impliedFormat":1},{"version":"01aa917531e116485beca44a14970834687b857757159769c16b228eb1e49c5f","impliedFormat":1},{"version":"351475f9c874c62f9b45b1f0dc7e2704e80dfd5f1af83a3a9f841f9dfe5b2912","impliedFormat":1},{"version":"ac457ad39e531b7649e7b40ee5847606eac64e236efd76c5d12db95bf4eacd17","impliedFormat":1},{"version":"187a6fdbdecb972510b7555f3caacb44b58415da8d5825d03a583c4b73fde4cf","impliedFormat":1},{"version":"d4c3250105a612202289b3a266bb7e323db144f6b9414f9dea85c531c098b811","impliedFormat":1},{"version":"95b444b8c311f2084f0fb51c616163f950fb2e35f4eaa07878f313a2d36c98a4","impliedFormat":1},{"version":"741067675daa6d4334a2dc80a4452ca3850e89d5852e330db7cb2b5f867173b1","impliedFormat":1},{"version":"f8acecec1114f11690956e007d920044799aefeb3cece9e7f4b1f8a1d542b2c9","impliedFormat":1},{"version":"178071ccd043967a58c5d1a032db0ddf9bd139e7920766b537d9783e88eb615e","impliedFormat":1},{"version":"3a17f09634c50cce884721f54fd9e7b98e03ac505889c560876291fcf8a09e90","impliedFormat":1},{"version":"32531dfbb0cdc4525296648f53b2b5c39b64282791e2a8c765712e49e6461046","impliedFormat":1},{"version":"0ce1b2237c1c3df49748d61568160d780d7b26693bd9feb3acb0744a152cd86d","impliedFormat":1},{"version":"e489985388e2c71d3542612685b4a7db326922b57ac880f299da7026a4e8a117","impliedFormat":1},{"version":"5cad4158616d7793296dd41e22e1257440910ea8d01c7b75045d4dfb20c5a41a","impliedFormat":1},{"version":"04d3aad777b6af5bd000bfc409907a159fe77e190b9d368da4ba649cdc28d39e","affectsGlobalScope":true,"impliedFormat":1},{"version":"74efc1d6523bd57eb159c18d805db4ead810626bc5bc7002a2c7f483044b2e0f","impliedFormat":1},{"version":"19252079538942a69be1645e153f7dbbc1ef56b4f983c633bf31fe26aeac32cd","impliedFormat":1},{"version":"bc11f3ac00ac060462597add171220aed628c393f2782ac75dd29ff1e0db871c","impliedFormat":1},{"version":"616775f16134fa9d01fc677ad3f76e68c051a056c22ab552c64cc281a9686790","impliedFormat":1},{"version":"65c24a8baa2cca1de069a0ba9fba82a173690f52d7e2d0f1f7542d59d5eb4db0","impliedFormat":1},{"version":"f9fe6af238339a0e5f7563acee3178f51db37f32a2e7c09f85273098cee7ec49","impliedFormat":1},{"version":"3b0b1d352b8d2e47f1c4df4fb0678702aee071155b12ef0185fce9eb4fa4af1e","impliedFormat":1},{"version":"77e71242e71ebf8528c5802993697878f0533db8f2299b4d36aa015bae08a79c","impliedFormat":1},{"version":"a344403e7a7384e0e7093942533d309194ad0a53eca2a3100c0b0ab4d3932773","impliedFormat":1},{"version":"b7fff2d004c5879cae335db8f954eb1d61242d9f2d28515e67902032723caeab","impliedFormat":1},{"version":"5f3dc10ae646f375776b4e028d2bed039a93eebbba105694d8b910feebbe8b9c","impliedFormat":1},{"version":"bb18bf4a61a17b4a6199eb3938ecfa4a59eb7c40843ad4a82b975ab6f7e3d925","impliedFormat":1},{"version":"4545c1a1ceca170d5d83452dd7c4994644c35cf676a671412601689d9a62da35","impliedFormat":1},{"version":"e9b6fc05f536dfddcdc65dbcf04e09391b1c968ab967382e48924f5cb90d88e1","impliedFormat":1},{"version":"a2d648d333cf67b9aeac5d81a1a379d563a8ffa91ddd61c6179f68de724260ff","impliedFormat":1},{"version":"2b664c3cc544d0e35276e1fb2d4989f7d4b4027ffc64da34ec83a6ccf2e5c528","impliedFormat":1},{"version":"a3f41ed1b4f2fc3049394b945a68ae4fdefd49fa1739c32f149d32c0545d67f5","impliedFormat":1},{"version":"3cd8f0464e0939b47bfccbb9bb474a6d87d57210e304029cd8eb59c63a81935d","impliedFormat":1},{"version":"47699512e6d8bebf7be488182427189f999affe3addc1c87c882d36b7f2d0b0e","impliedFormat":1},{"version":"3026abd48e5e312f2328629ede6e0f770d21c3cd32cee705c450e589d015ee09","impliedFormat":1},{"version":"8b140b398a6afbd17cc97c38aea5274b2f7f39b1ae5b62952cfe65bf493e3e75","impliedFormat":1},{"version":"7663d2c19ce5ef8288c790edba3d45af54e58c84f1b37b1249f6d49d962f3d91","impliedFormat":1},{"version":"5cce3b975cdb72b57ae7de745b3c5de5790781ee88bcb41ba142f07c0fa02e97","impliedFormat":1},{"version":"00bd6ebe607246b45296aa2b805bd6a58c859acecda154bfa91f5334d7c175c6","impliedFormat":1},{"version":"ad036a85efcd9e5b4f7dd5c1a7362c8478f9a3b6c3554654ca24a29aa850a9c5","impliedFormat":1},{"version":"fedebeae32c5cdd1a85b4e0504a01996e4a8adf3dfa72876920d3dd6e42978e7","impliedFormat":1},{"version":"0d28b974a7605c4eda20c943b3fa9ae16cb452c1666fc9b8c341b879992c7612","impliedFormat":1},{"version":"cdf21eee8007e339b1b9945abf4a7b44930b1d695cc528459e68a3adc39a622e","impliedFormat":1},{"version":"db036c56f79186da50af66511d37d9fe77fa6793381927292d17f81f787bb195","impliedFormat":1},{"version":"87ac2fb61e629e777f4d161dff534c2023ee15afd9cb3b1589b9b1f014e75c58","impliedFormat":1},{"version":"13c8b4348db91e2f7d694adc17e7438e6776bc506d5c8f5de9ad9989707fa3fe","impliedFormat":1},{"version":"3c1051617aa50b38e9efaabce25e10a5dd9b1f42e372ef0e8a674076a68742ed","impliedFormat":1},{"version":"07a3e20cdcb0f1182f452c0410606711fbea922ca76929a41aacb01104bc0d27","impliedFormat":1},{"version":"1de80059b8078ea5749941c9f863aa970b4735bdbb003be4925c853a8b6b4450","impliedFormat":1},{"version":"1d079c37fa53e3c21ed3fa214a27507bda9991f2a41458705b19ed8c2b61173d","impliedFormat":1},{"version":"4cd4b6b1279e9d744a3825cbd7757bbefe7f0708f3f1069179ad535f19e8ed2c","impliedFormat":1},{"version":"5835a6e0d7cd2738e56b671af0e561e7c1b4fb77751383672f4b009f4e161d70","impliedFormat":1},{"version":"c0eeaaa67c85c3bb6c52b629ebbfd3b2292dc67e8c0ffda2fc6cd2f78dc471e6","impliedFormat":1},{"version":"4b7f74b772140395e7af67c4841be1ab867c11b3b82a51b1aeb692822b76c872","impliedFormat":1},{"version":"27be6622e2922a1b412eb057faa854831b95db9db5035c3f6d4b677b902ab3b7","impliedFormat":1},{"version":"b95a6f019095dd1d48fd04965b50dfd63e5743a6e75478343c46d2582a5132bf","impliedFormat":99},{"version":"c2008605e78208cfa9cd70bd29856b72dda7ad89df5dc895920f8e10bcb9cd0a","impliedFormat":99},{"version":"b97cb5616d2ab82a98ec9ada7b9e9cabb1f5da880ec50ea2b8dc5baa4cbf3c16","impliedFormat":99},{"version":"d23df9ff06ae8bf1dcb7cc933e97ae7da418ac77749fecee758bb43a8d69f840","affectsGlobalScope":true,"impliedFormat":1},{"version":"040c71dde2c406f869ad2f41e8d4ce579cc60c8dbe5aa0dd8962ac943b846572","affectsGlobalScope":true,"impliedFormat":1},{"version":"3586f5ea3cc27083a17bd5c9059ede9421d587286d5a47f4341a4c2d00e4fa91","impliedFormat":1},{"version":"a6df929821e62f4719551f7955b9f42c0cd53c1370aec2dd322e24196a7dfe33","impliedFormat":1},{"version":"b789bf89eb19c777ed1e956dbad0925ca795701552d22e68fd130a032008b9f9","impliedFormat":1},"e462a655754db9df18b4a657454a7b6a88717ffded4e89403b2b3a47c6603fc3",{"version":"5a6237f90ea7b312ce8e331ad5ab88661ca01c64aad1fdfa4d8a9f2f64caf57d","impliedFormat":1},{"version":"3b60785a15e0a0c942cfceaa26c338425c6606fe025643efb54b900a8c3744d3","impliedFormat":1},{"version":"a3628f430f8d502a5c026a0c932a5c41e6361d8e0248287872cd8999bc534399","impliedFormat":1},{"version":"ba328c7b9a1ca82732b4f337a635054494d8944d8d159836667bf2e3730d8d04","impliedFormat":99},{"version":"5a800cb44fd70e436adf02e020dea317b0026786910e4bbc7ca014208c894ffd","impliedFormat":1},{"version":"2b6c6039f4d2f656904d66f82231488f4852f861d27147884895097f74e3e812","impliedFormat":1},{"version":"1621da3c4da45c37b79d6d361f7de9f0ea40b171dd11ef1ef1bb026665965fc9","impliedFormat":1},{"version":"3878700a966f0201a3e2b9aea8b75cc65008741c359889314e7b0c56c0c07b56","impliedFormat":1},{"version":"f040575209f695a7616fba0045e6a0c88d19d77b246a0098caeb4c9384447d15","impliedFormat":1},{"version":"1fcc4bb6d083b31e1587711ab5a8b0467b52a125f9735467774285bc8cc127e6","impliedFormat":1},{"version":"2193f35e13aee12b162670006604b914edb47fa0e391f39a8fe94a5402b60139","impliedFormat":1},{"version":"0e085cc503ad1332728d56244e9f7a603404beca17c0c5b2d815ed29e0727d4b","impliedFormat":1},{"version":"deda38d3245acb0404dd845dae172547c895c99c442082f176071cbb40d092f3","impliedFormat":1},{"version":"89659dc89f3a21d2a29c898297c96d56ef49f25eee0ee54aace7bd00758b6334","impliedFormat":1},{"version":"df4e0cf0d4a4ea996065de24fb0f621f96321f048869fbf4ef58a55593084d16","impliedFormat":1},{"version":"e6f3d02d69394dae0771c088b3c0b982cf15b6a91678c59f1d5fbd7c5e6ad8f8","impliedFormat":1},{"version":"ef182902b33ac9b9ad90c163b313722d2bc9d8c2cfefeb418b3205d70504a486","impliedFormat":1},{"version":"24911a68c2bf41d4c1ef50f348c4a8ff5dce2c24fdbad4b3dfa6b13416586347","impliedFormat":1},{"version":"95bdd836ed77c23e530fcd3a0823df8fd611035590dfd8d38ee164c56f2bd2c4","impliedFormat":1},{"version":"f96537f0fcfd0379e3254479573ffebc8a67c13a2cd3144c744b032af33800b9","impliedFormat":1},{"version":"c2d50e73c775fee10c2361880cd227f3497a67677536208cd0e8a5d5ab562a0d","impliedFormat":1},{"version":"cc06f33fc3cf6fe668cb89ea339a94b9d4a34ac1a97f72b9c7cf8d461eaf3416","impliedFormat":1},{"version":"435279e408da8dba444c8ba93bbefddcae9e99b33acfc9a7c3318583e8f4a745","impliedFormat":1},{"version":"447b6a80636a59c918ed18af1019de1efa94109a086e8fd8f3d20eb9b9a6937b","impliedFormat":99},{"version":"efd4f7ba1934c0c1274b36490b61a0970e3831006408e008b53babbd144a8c7a","impliedFormat":99},{"version":"05c9c065eadecdce0ee370455e3c36674bfb08673f1a268a398002a0d2d801b7","impliedFormat":1},{"version":"3f94e04c73c5ffd66fecf2ab2a199372a5321739ac4a3a6e286e39b62430dc49","impliedFormat":1},{"version":"0eae63800777384563d5727e572982c220d47acf736dcdb569a2749a32378f19","impliedFormat":1},{"version":"9bf41a89bd0bbd4f8a23a7925d04f99267cb84a5a5b239185f3320edea329b9c","impliedFormat":1},{"version":"c8699f2b983bbc3117260c84d2f9f11c83eb2b396ea881a69d4cf10ac73a339f","impliedFormat":1},{"version":"0e272603e3a4865504bf5bca2a97fa62a9860e934afb0b63c39b09c7803eeab5","impliedFormat":1},{"version":"fa84fa146e071dca378016f0a16642992c4e4ea5d9abbf53330d71149ce8b66e","impliedFormat":1},{"version":"964de3d129316ff79eccce67973270c01d0ed9c61947535ff8f35509a46fe536","impliedFormat":1},{"version":"e444a4edd02caac4c129adb1033df87601f443a38b3b505ab368da6b9c5c5560","impliedFormat":1},{"version":"d8fb95a53ecefbb7222d79afe6b2226c378b31f8b50d9778356ffca361b8efb6","impliedFormat":1},{"version":"170decb46fc69c7e82174fe44f308115628d033f11ee51c9d554f5ca735353f3","impliedFormat":1},{"version":"5a2c66c68291a04dd668558d7f23ebf128d253ded80f61da746ad145d9f1f44a","impliedFormat":1},{"version":"4ae9b50481136302de9c77668621ed3a0b34998f3e091ca3701426f4fe369c8a","impliedFormat":1},{"version":"9ba9ecc57d2f52b3ed3ac229636ee9a36e92e18b80eeae11ffb546c12e56d5e5","impliedFormat":1},{"version":"8f9bd109c51a702d1dbae7d0ef356765679726e4af5ad0e61afbf7ac6ae19b3d","impliedFormat":1},{"version":"d182d419bb30a1408784ed95fbabd973dde7517641e04525f0ce761df5d193a5","impliedFormat":1},{"version":"484f51065cef04e93cb59d909694f553dd0f4318746649561e052ddd1a26bdcd","impliedFormat":99},{"version":"85652d7bb13bd2141b3d0c68d07ac1a11e933dd32ca2bb4b1b83b8aa5f62251c","impliedFormat":1},{"version":"fb893a0dfc3c9fb0f9ca93d0648694dd95f33cbad2c0f2c629f842981dfd4e2e","impliedFormat":1},{"version":"95da3c365e3d45709ad6e0b4daa5cdaf05e9076ba3c201e8f8081dd282c02f57","impliedFormat":1},{"version":"9abfa3aa400528de1ab3ff54672b39307980c03117dee83f2543713762b4aa87","signature":"f2e2934dc1659fa312589a52ae33563f890cbfef61a1258827e27597b373cb17"},{"version":"bb6a05aeeebab93289a9cdb5b2d8adcebaa6580d12e3ee64332d46442687c114","signature":"3f1e017bcdab53709094285845b1ddc80a3fefb8f193042618301b9eae1c77a2"},"8299cbba015ad8b6b7977d1b189ae389009e888c96e55980611ec2a420e28036",{"version":"88eceb90961a2c661f55d7513a179d0985d1da3998f551931768a118546c134e","signature":"27c09f7908598e0f0238c6204f3f2adf513164991c17ec5813a9ba27da41f297"},{"version":"d2f656cc9479ed42e2e138afee3d217bccaa4c20b1ba0eacce3569e85bc93b68","signature":"3ddf0484e4e61d20faa6d982d1252a66416c7c636e8b34c7b32022b023a799eb"},"01ed227e4d55593fb3e2489bf415845d83a582835e9e335533f52b1d32910511",{"version":"90b70e992574b47d94c62eac58992cd8f4e04ddcdfa83670527c36bdad1d1c08","signature":"355554effef1a79ab9c97735819761105321c3f8c8bf55e5a608c95b7b709a2f"},{"version":"a508837678ec3d402455793d802602dbe854fa8c9ceb65b890f8e0df8e1a0255","signature":"2143f129fbade81d8f8eee85ad157823ef70ca70be53560b492b17e765471475"},"dd8842488865346e9f122591f2df204f0b0f389cdf36aab39e67ec6a10ba8bb5",{"version":"17b81575806feb4d362153ce77cc764fa82426b9395e83fe6f11c27f719009b8","signature":"cc13173d4df8cbde32caa55930ff119b6fe3d63d399f3a8daefa4bd45a6a24ee"},"796661be40b83cc0bca646bd80ad23e18cc61e82721009418b0eaf88eac6edd5","e11162002c5f110a2ead4843fdf00265bafd044f95e3c1732b7b39c0080e87c6",{"version":"7b71629c95cf862fe652a69adf71d20952f26bd5d0c4c80e09bc4f23bacb1a2a","signature":"9c6a18eb6e69398782da43cef7d75814ed7ca3e8cd5ac0951ee64a4099b3e50e"},{"version":"eab2a5f1639748454eca7fa2eb2e1b2e24d41e4dbc6fc5fc8b0c36adc865fc07","signature":"957bb93d540886ae56137e01d387d0b75b9d918bbf09776521ebcf8f54578295"},{"version":"ff4666d7ecb5d135c40ddcaa869f9631573a7e187512535d40c892b325829ab6","signature":"dc187697d3eba7974d1e4aa359491c680ee46a84098e37c16e6d8d9d808b6740"},"e5d2d4bf040f47f718838c34eea340a4d238a0cc619a25c940cf75f12f309d0f",{"version":"10e5c0b7001b905b55871dd499b320c537ac5d63b28a87d9ac38eb5b22a21f69","signature":"53df863aefc3c172d9c892c099042c979b94a0618ff1a23c08e4cefec81ba6c9"},{"version":"8c699076626c6cb75ddecdaf851d7817626ace5078b62f1e479b55598f9e900e","signature":"eb037aa836ea50343871d29f3bef9e9d28d2f7b76e24e8d25c9d6158b5213ce0"},"7bb61eb765c2bc69b76fec636fb5db9517be434410f6a142e8c77b0a6667fef6","a1a335c2b0b2337f5adb939d3ae545f1e968d869fa37637e0d40493577cb7ca6","5e3e8a5e6628b9c284ade1eae40cf807a518f87ad54fb89bf480030c928192eb","d58cddc51a2f96b75ac975b3fc8a3afaa616992e397474fe40b88391e132ffed","e8c9a691b1e2d7683d797b41f971447c154b3e2104afab7afd6467df119410cf","e3417c165ceb097db95a358ef5478311407f909f2fca621bcf721feb63bd3410","9a89a1eb9d06c27391b68a351bb22a855697ae4a8f01b0bdcd8d1109cfa28dfa","59bf403bd2b83dba9298dd6f4b39ca0f4245a5ffc390581de7d1c02cdd6f0a35","892fab71309075b5454c65008bd9a27ae4a17c8e907fcd5fb731e5f1256eb259",{"version":"272855d28e0b161afa98a43012bf1ab117b1f0953acd06f2fc926241257bff07","signature":"0b057c16595c01d5aac357c1f98d3f6aa0e3071a13b18dc71c54c429a91c4f54"},{"version":"2f516be0e28bea6fa0fa16e0bfa42ca8a158e3b67c573a394dbe11807933629d","signature":"0b7a235e36d917f137aa329c23a982f7265e0974153f2d9dab4fa36ef1f1e6c2"},"fdb5176c96901a3fc71257f9a5d26aa08d152a61c9d75360651f3bd8ed839adf","f33952f60f2245978827d56b3400afc2d6fda10849745bbc8ec47ab709e3dc46","a1d0b04d8afe529c75b6a4aba1f6db9f8aa6cb64c256956cf985af23fb96544e",{"version":"985a6efdb93c7f19402942709840d48176285992318054608b12ea50f3680aaf","signature":"757caaace5de8fade963c33dedc03147763ef6754fdefb84a3ad9efc85562847"},{"version":"ae2908c11fe76d84dc6a15cfbb74eb2a543a0077ef150b9d9dbab4ee3c263499","signature":"791e430d569117bdc239ccd371365831cbf9d4ce593da31aa6a55da72ebb1fcb"},"3848884bcb9d34e06822ccd84ed78614b08b05d8c036dd938fb1bc8a8b001ee8","6131bb4a54ca5e1f939323e6f94e9a775d6b083fa39ea0cbc6d3cc16fd0ab29d","162efea30cc262cd733e9c66324efb49f70200130723b5ca33297e449544763e","142d640105e334751c6d1c50a43c8a2adbf6e6bd276ef997ce2d490513cced1a","7b16a7238635f27e7d3f92c4f4fa6491a9d0afe1b5555c765e3f9c6bbfa4fe60","07a90c8d323018a46f04fe8ee7a2b279c464d71da4e558ed500405106180419c",{"version":"3773c8c6f3a8cdb4d1359f6eeb8060e73cbc865533b20f1f0e756527428b820f","impliedFormat":1},{"version":"797904ad145a987350ed82977b115bdca0eb9f05f1eb97cdfc3a04b72bd97a5a","signature":"a5ef23282d61786b4a80b9a23ed59a4c6db126fafd513df160680b05ebe7f497"},"c1509e9de748fb1742a53b6ef580c768369caf41a9c280e9ddf1afe7e7b8a02f","7ff0f8df31c9fd1da3c3cc2daa56743d17f94a83511552c15d6c49e742a6f9f3","9a9b61f27fff71f941e6f0f4262eae9bc8c0812a3253f5c7a298c0db17776664","38069291aa6ec0c8d866d14b6e2d078bab996ef0af4396da19bc0c9c3461248e","54717330ac6217d60865a2e1b39dee1b705afe0e362e07c8c810b50cf3f1c8c1","9f37a541d4f2ce64ff8146d6ecb3fb5ad92044e2721673f5226643a59e135403","d6869b5f5bde4518cb55a91f7035b44e1c32b0b72c7fc06ae760ef49f1755780","43669576a6b07f2edfb70cc931125625a55c3b929bce715f26045c8b6ea6d19f","2df90d63a07e6008902b531d70e2fcb87019f703ac23a08807b300116a51dd6f","57dc19479826a86b4a19dc30485dca0d36d2c4e58656ff078c3fb249a167dab3",{"version":"5e4318accf328cb2d70303c27661979301ab9c630cbb9ef5efb95b7378e39cc6","signature":"7a8ff87d1468f7846d3e20d506c78cb7cd700b770e43f956a19bf569ae977ce3"},"ba172ce96014fd1cabbff499c61a326ddc8370d92bc798ec7cfde70da06b238e","afee8ca41a903cc6a3733e5032f165598bf7408c50daea27b751b0ca866bce09","a8aac5abd8317f5ef8ee24f77ea2fe24047fdc153bce1c46a847dedc5cf6eac0","9b45ee18592a5224a032f507aec959220b4b881253c81aef177d6b5239da92fc","7489f4fcac20a4cc88cf5105ba484e270354da5ca3b2e1faf1890921cccce48e","e21e96be850aedf6abd0cc99663b65f3ab9f835bb5547395acd78faa4d48cb32",{"version":"d6989acf5612a98182d9e7622456e570a4d37b77796fe479d8c1d41fa8e678fa","signature":"4e1de9ab3efd5956fa7bcbdbfa15595438e6f27575e429f835a5c215a8deab0a"},"4de12fd13400238644487156cb89cb93dfb327ad2192e76f5187a8b2b7462eff",{"version":"a3ccf9fdee39b0e409cd33d02e17fa578a6768248071a78eb978d2039d21d0a2","signature":"d20d24d7453435ec530ab9b574e59c53d1aa7f29d5daf6a5e5da9290da062970"},{"version":"6f3b5b0c204be32d5044b330293a763281a93c4a41ef2aeb69b6e0ee913e8e05","signature":"b920a468d5df88f7c484bf004651f5357b0ee23b62798e03c05dadb040928c73"},"2b07f2121d9368f986efc4ed68851fbb813211439b0577f9cb6513e293ab0817","b4d89f7f7425c828b6190a09e216312e8986ec844f6072e91bf9a3f82aafcd91","cf325db8e8241d816b2819b13ea6896eb50901191bca87ff66b668ba726df3c1","2eef7a884ffba8e053e806f77fb64d7f6d8587d5fa2d6ee7d62f3c926c50c0cb","00db9a98a467bde072a83be5b930df0a6b2112e8ab9e1694689cd8962b72e827","29e24c2ec3fcb31a80f75c66ac250b740f8be0d1d0eb8b92915fa51d17ca8081","e3b12638e8e76cbe50b0fd54cb0c2ae5e75fbf4c9cf3cc3ab7eaf8370130ca9f","36818161e11f05f93ef6e0d7d0cf190e32d54ea99658b75c9a0480e2cedc43f7","223a7e19f6b37414e5a2b435436dd37d26ebb66ae259fea19c32162fc0922809","038981887e426e5eff93bbe37871b4766c195f391ca554c5b9027453e4147d52","ac99accbeac312551d480e1144eaee22ef9e5a26a38dd3e915537ee308b64134","eb9fa56a69678011bd56f20daefd4efc93e4bd34ca03dba9687baeab635f3dc0","d24e7ea8862241c85d069f3eb75d83e82516370fbc916587b6c3314d5096a44d","72cf63352abb3ae60da9ed8d2db84b9d9824e0e56c675464aeb1119d44987335","2b865c0a5697a2f232c346a7da9455955150bb5ea58bb0b79ed5a7c899d59b75",{"version":"4f86ad14ff5e97ae09ecc4161dabf273f5b8250a37a37ef36171a2983088a14c","signature":"901dbf8a71812bcbade6e8659f7e643369ff74e213d5e629c7d7d1865a8623c5"},"d1d6052fa0b699a65bdac52779aab2df06cab66813f2f71f4aef1799ff12ad2b",{"version":"fe93c474ab38ac02e30e3af073412b4f92b740152cf3a751fdaee8cbea982341","impliedFormat":1},{"version":"aa4feed67c9af19fa98fe02a12f424def3cdc41146fb87b8d8dab077ad9ceb3c","impliedFormat":1},{"version":"1e00b8bf9e3766c958218cd6144ffe08418286f89ff44ba5a2cc830c03dd22c7","impliedFormat":1},"551006592ad9cd578515935c4a75b193b349efa77b9e1f956dc3065c7c9ac242","c2e59bd477d277eb0e5cfb4492f61a396528148bd2b4ce654c49f0953ab1c316",{"version":"bfffb547d3be3174ed7fd77785dbe4b9f0cd10d8a3840dbfa9d69a851b57cc68","signature":"8d87373eb3ef76452e8ade083c4c1f95504b4615f25517a1161aba05f0320fcc"},{"version":"6717dad91e44ad22d68f1fc0db74e5eb5398c2c06a2943bf06d3a168e8b1ba45","impliedFormat":99},{"version":"94f259f97b98e2458b0504f2960761c75299360aaafc333a0088e8444914305d","signature":"3dc8a4c32e600223b732673f18007a7fa7d9d672f2f935fe93a6af77caff4898"},{"version":"de47e0c35a9cc479a9ba955453b61d236d2483f55846e1b60702bb19a4129b0b","signature":"444caae7e6a2b271f2ded9b50551f6c1cfccae93d4947f9163bdc055bf90f9f7"},"bfc900ba0da76cc023a0daa9d1a0e5b4876e2ea2caba804c02322634ff9b83fa","e919048a039fe36ce86ae58c65c965f3f17c3a68955060b72e3d8fcffdb971b5","c23dee8e413c73ae28c5da8a6b73ffb389fdd380ee428230d800af9883b67067","054f218a2f6125d69b925a5641ae346a606fd61a2f4b92a88d8f1cb6c9163b3e","e346257410815a2f018a6cfc07aed42253429bc6f6302ddcc00fcc3fce27ebab","08e2593ddf7127a879b727567824289daf346ab89210f9557a54f8a4945e57d1","bd2446a7f8f0efdbfad743f40d6ace08e1e90e4133da056cd1054c7373547bc6","9243a492f113932f3f67d8d114f719edfc7472ad5b846a7e2de55a807039be98","aba94d145540ae5193fc236a7342e67e9c51aee8ff9442428f9b36f44bbe53d7",{"version":"c8966268d9d039b84d565c36a37a3a3ee329e7a6795270c0e2ae3551521aa92b","signature":"5e551044fba095075bf461f5d0ae47fb87873edd4b990268466304ade6950b38"},"3ab2556dad1aa884407cba26dd2758fc0fd70456e2bccabde147364c30ab1d00","26504a23058b284bda7c62fc07b27ca22c26c443068fc4d275e362bd3d11ae87","5f36283f07e9bc32fc3b17076646d32552cd71af3c32c77124eecb472ac59a84","927b5ec212a6bf77979f4885643ed084fb7bc63e84d7a291ac7efb5775eb95c0",{"version":"5f2e3480ab73874217499f359f4dde8f4a1b1502a9f2bfc5c7ad969d28815f9c","signature":"02ed5c12412ead3487879572232f7f40cb0c3bbea3109b76bca0809c27475d7c"},{"version":"31a76576276a334556c7ee887d61cbd1ffdca31389dd76c49bc9c2ee2ba19bd0","signature":"33838c7b39af148e27a4470fd428491478b431d7abac6377efd05f291658f57b"},{"version":"aa4b1bb866b48a13bc83ebe5564994ba1008399441853ba988196d9b81a4e593","signature":"38db080d9d9fed06a7c908173be149430dcf2be9f87e78f6935d05f555876cfb"},{"version":"c459a30a711a67f1005bed5c5473cf522db22e0bcabcb864da7febdf0fe1ad25","signature":"ba8a0134405ee5fd68ce0d95cbff623eb5c503ea271445636c58e9e2e3f319d0"},{"version":"0e1d978051bccfb7654e74ba1a9e98f152a0669b38ab27a30d329c3ba96dd176","signature":"12fa65501e2d5ab119e91df7801bbb4b0212fc0160438cfa09afba2ab0f93aec"},{"version":"ef924e06202554ba45153c8d0f2a7d9dc9defb080b585271a201f65a955fffa8","signature":"43a8d23233b58f61e2519c1c45732cbaec89ce24111aed6e418a58f3f34afaa8"},"990fac897e27367d6f5f7e07da1a01f1398c846df8274521d2525f3eebefc6a1",{"version":"b0bdac653a51c962caac1e7137a748d8d35e1914e5f13b10ce91c68fef6ff461","signature":"e99830138200d1bf6e3988bf03bdbf659d723c8301c6fc358e32a8a10aac8fd5"},"a24bdb189f89f64b2f16c178beb3a325b248727858fda385b5e1c791fcb4cf1a","7e1d45061bff1b2afd2f1de6b6a2e4fab24215fa560c2fbeb99d5d898f072e87","7182bc42110f5eeb3893aa3d18c2287794420724ad343b4067c6c9c5aaa07cea","7c617824e01cf8e682423a4b6e2bba013fb9527fb9657e3714e2ffa0d2611041","d603826d25112cff20ccdc3d390cc4fa028459d610638d800e5bdc8388a2aa77",{"version":"f16cc895e489f2e092441682be22a978c33c1c98066c4de4222c9d6d721b9951","signature":"11c84e1b4c7580e4576ff177151b26ef0a1f3822cdb93f856d023553f9fa2be6"},"db315a15cc813527887ea4fae5556b1088b0c808cb746b6a5c32fe9c39104212","db973775f102a41b5263ed3b222d82160bb3f90388c4ab2f149a387bc6ab0ca2","be38c77b6ae39ea40f69c1bb9b465099f4e3efdbf0fee1246bc4f1f831969d1c","6564567d4b6bbf81f6b4cc39e1ec8534755ef898f85ad669757152c6fba762b6","5330c0c35b2802b54020522eeadaba829b44bd3d130d998065f4f7d8f371a448","e87f635158ec16ad4c966163ec6bfda4133bb62a1a6f9a98170e915dcd8d5166","7001f8abf604f5053e051fabe44b8ca5e32869acf74d5606f211fc3efc781a41","f6311b7da54d5527083e3d4064f38f33835c43c89849bc58c247708f5bb4b15a","684843b0fd4f1df133a64c5000b7c56ea844772c80d3f65a07f822e87b2a9390","61650ba67d6b99e66ddc78e08a5bf0dcdedc664eae30ef5fcdfa617ae0af5b58",{"version":"0b59f9a937e8df1142748733e123c7fbff27cabedc63fc1048d6960c11acd068","signature":"b1c2ea2c5e91d6f10588a83cd6cbfaa15155b2385d88b3c57011ee3b9808bcb9"},"348ff1d6e2651cf2457308702e162469ef04e219d28d3316dec87fe4645d7466","ac4d5cb29de0d469ad4c25809aa7cd4430181607635c54b83dfcaf59ed66d212","75d6e1a46426913edf68c64bf73e1b1c4fbf669b64b81375bd12dcfad7a5b91d","353797e1d5b775dc54b2542369e8aafea0c6ea0c352512feb730084dab3b6aa1","d6415820421c0dd36caaa8d3e893769d25ccb26176ac2ad5bddd0c41aba979df","dae31c1f59c9e1c887aabc813dd8749aa6a10e6bd856a59adbf482377489d6e0","015230827d67b16df6eef22bbde91f680e142f9e255051e555e34ce885088fe2","865fe0f2f2edcc39e1a2c7e42410177c2ba03d77ab8b01c48d288e89fc3909ab","ed976d454b02303991c812f6e37995f74bffa9bb1914abc256fe759d5ebb1b35","12f4df108f0be083efc367f46ab75a0913f879d822eee8ed6ede8d5e9712fad1","bccac47cf9af57b2f228266982f44e9629d7939d37e24061b7606a69b54a64d2","966706c8fb7b98ec70fcdb1442aa4271fa474f7b4332db0f2897e09dff32be95","08436ac77f3fe66355b5460a0e8d563e1a9bd840ca76c2ea776198971b37f3d8","56e7181e1b835b3b0e7cdf5497d57cd81fe7d471a20be4b2bb82a6e7044c9197","600fb59d71cc624b3ea57c544c7b02d8559771f9ebd275ad4b456ce16326a3ce","154335e53bae9f3a7f019fd300fe53e21d425111b3b1c245abd3b34dfd85d87f","3480f7bfc1d8f99184da693289e778d49263568c88b808aada81ebeb41156f67","a433959fc55c6612f7a0b408a0501167deb99ddb6e5f9c32b01494c53625844d","9fa09405dc16dcb8a9f7ae3f53bbfd81bdd84620714ebcd1812ff879618a73cc","66581f61417f3c2a31d2d83cf48bf0247c055c2c14063ed8893a1f657471d293","828c7beaab3d6f0089b6c6062eefe16dae3ba78bdf53743887fcc84727831208","e69f33bc985a91e90d719709de051665608c0cbb62e124058d68d08f95472dfe","cc3459fdfd7ad22901822f03414719693afd3aec97eb98363923efb076f22033","da7e9aebdf9816f5dafe1c37ff6f6dec662fc128268833adb04b0f909b941bed","0341cd876bde486d4317568d240208366b74952c925b9ba1103f8321744083bc",{"version":"3e9e6980a87e7d33094b783f4c2be77671921c7b0e5fd5ccfd0552e5fd800e7c","signature":"2cc743b624d6891f9275f11f76fedfe235af04641c806e7dc65e55740db4dd29"},"3d87da8d5ba0c2faa19e07f857a282b85ea0963a07a361124bfcf7e18fdc8e28","f744304d56f8fe84ff4ef14db6ab6d6cf4bf0ca7188baa5f92bf0e779be82a6b","a37ccf5f7488d30098ccb103c29ce4c4627884be6a2ae40085522476fdcf1177","98ac6728a0df9ee16b4dd365d9932f7a5aa1601310f1aef9b0a428ff8693dd70","117cd8959ed6d11efbea70e4b16be6f10e73c6bc04d80f4de9d1d3d24338d7e9","1b0fd25c7c676f504dc9cbf250d1345d193fabb51a50dda31abb6f56de360178","209c2f2c64563e5f7fe7014c0c910ff88e2aa974bd07dafba30490c456575148","d2948e80a8e68a11d2a7fa7575b418020d42344df845c2cac01a7100ef60e748","47978d778349875491936d87236671615883fa6d92a762277ea97e8d7ede3f17","7fd7ce7002c90a347caec1816643db7e36af49232583bf377fa205dd192b0a70","dd3eca12146eca22b16db7e5a082a6f04248685de96ce38c58297b8e61844d9f","6379a408d68336ed6d0c811caf3825a5a07ba7074b910567f037c06bb089aa40","bc3039678b5fe4fc71ca698714578fcb4a29d74f2ed52b6b967c8f83e4a35d02","247809e96673aac74eeb72849813f69735a59515053d50daeb37a6facce2fa66","0dfdd085a4f43c67b64b434833440dcd88586d8c4f9588341a1f7695c1441278","76eda29a7e25780d3d9cf24923e9794d55f84f21c52e41ab221fbd615f437145","ad876cb8cef7ce33e68a543470f3349a26e457838a59c71185312375a9c732d7","54b3c1799eae052037cd2d55f94cae4cde6d0af116689c1e7b5b1de9f2b576b4","1880f757f622cd77eb91f7cfc3c66ac9ec4fe684a30e52c6502fbfc320c6721c","0c1387560f36ce45aaac4536e0bda765fc32b470d38fe90b21a4df2c837d5edb","927c42d155fe976db6eb4968d1b2a869b42950a190d811edc6f3fda8e7473d23","3b6b486a12d6e0f30a68f0843330d101a7aec942d57afe913f368b4717d0f472","60062191e1405336f95b6a60e315bdba8481006a258f36517b8692356ecd5640","7c5d436688456208b8cb571e3ad2e86de5dbb2c8138689b01e1b7c71eabe1a0c","04f915212ff12b9a82686c65278cf3bfc1131130372c4f4de66870c1a73e051d","c4130968cb688dc3497789f8cc2d5e3665a157e2db5ad64adf77c8bca3c15e3e","1fb6dfd5afa392991268d7d200620df45f86e7cd32c3fa3945a3f719d6751afa","64502f209d314ea304aa989f716680e6e94e2e543b91cb3bdbfb58aeed34cd3a","8166d0945d66534108164a6d6156cfc2adefd452ade10f98841d7db77563c793","a440201e09d4780b558c2031ef9a4863687451d28941faa4ee0e245dbb56d83c","896386178392f15136d4ed7dd10d1138aac2c1010b730b5b0f91cb528ca66fa1","7bb113ad8a483ef8dcb6031508d03cbae2ceb048ac70d869c476b58f2869f438","878e13c5e0103969d70f6626a59735611e8d80e1cc57921022eb82d9320c8725","8a460fff7995ae2cc0c2ae059a506e2094aa7dfc5dfff3c35e61f0879c2720b7","438c6fcce2bd61a52dd47c851d14431a17ed68408367a8ae267612c0b7182cb6","4c0973952dbdff9a81582f770c5d2483d8096c3a8d28e16a1722529d541b77d7","0420d5f62798f8e7aa895769afc530daad989aa09c06d47e0d5d147e74ba465a","8baf7c9271255306ec4d3cd24b38242980181af9003b40aca8f35dcc2fafa6db","045b10599fd89e3e36a80f0163d09265bad18a421cec4ae44b756b271a81ff38","4f77d2b07e91ef6eae2170b28f36bd36f75bd7a8994af5bbd5e7c76d8d6a4efd","7a9c812ed3517ffba922076c66ece4e861898973394eea74faebbf454b7ebba4","577ade33023f69dff76b8c4a82db6bccebdca5f338e377b5810cefd8f5bb13cb","995aa220826d04c1b880577878aa4906656e338f1c2cf2837f1f51f34ace2a8a",{"version":"96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538","impliedFormat":1}],"root":[410,[456,495],[497,535],[539,541],[543,652]],"options":{"allowJs":true,"esModuleInterop":true,"jsx":1,"module":99,"skipLibCheck":true,"strict":true},"referencedMap":[[586,1],[587,2],[589,3],[590,4],[591,5],[592,6],[593,7],[594,8],[595,9],[588,10],[596,11],[597,12],[598,13],[599,14],[600,15],[601,16],[602,17],[604,18],[603,19],[605,20],[606,21],[607,22],[608,23],[609,24],[610,25],[611,26],[612,27],[613,28],[614,29],[615,30],[616,31],[617,32],[619,33],[618,34],[621,35],[620,36],[622,37],[623,38],[625,39],[626,40],[624,41],[628,42],[627,43],[630,44],[629,45],[633,46],[632,47],[631,48],[634,49],[636,50],[635,51],[637,52],[638,53],[639,54],[640,55],[641,56],[642,57],[643,58],[644,59],[585,60],[646,61],[645,62],[647,63],[648,64],[649,65],[650,66],[651,67],[652,68],[410,69],[363,70],[448,71],[449,72],[447,73],[442,74],[451,75],[436,70],[437,76],[446,77],[441,78],[450,70],[445,79],[438,70],[439,70],[444,80],[440,77],[443,78],[412,81],[413,82],[411,70],[423,83],[417,70],[426,84],[418,70],[424,85],[422,85],[425,86],[421,87],[420,70],[419,88],[414,70],[433,89],[428,90],[416,70],[415,70],[427,91],[431,92],[432,93],[430,70],[429,94],[435,95],[452,96],[653,70],[455,97],[454,70],[142,98],[143,98],[144,99],[99,100],[145,101],[146,102],[147,103],[94,70],[97,104],[95,70],[96,70],[148,105],[149,106],[150,107],[151,108],[152,109],[153,110],[154,110],[155,111],[156,112],[157,113],[158,114],[100,70],[98,70],[159,115],[160,116],[161,117],[193,118],[162,119],[163,120],[164,121],[165,122],[166,123],[167,124],[168,125],[169,126],[170,127],[171,128],[172,128],[173,129],[174,70],[175,130],[177,131],[176,132],[178,133],[179,134],[180,135],[181,136],[182,137],[183,138],[184,139],[185,140],[186,141],[187,142],[188,143],[189,144],[190,145],[101,70],[102,70],[103,70],[141,146],[191,147],[192,148],[86,70],[198,149],[199,150],[197,151],[195,152],[196,153],[84,70],[87,154],[286,151],[496,155],[85,70],[453,156],[434,70],[542,151],[93,157],[366,158],[370,159],[372,160],[219,161],[233,162],[337,163],[265,70],[340,164],[301,165],[310,166],[338,167],[220,168],[264,70],[266,169],[339,170],[240,171],[221,172],[245,171],[234,171],[204,171],[292,173],[293,174],[209,70],[289,175],[294,176],[381,177],[287,176],[382,178],[271,70],[290,179],[394,180],[393,181],[296,176],[392,70],[390,70],[391,182],[291,151],[278,183],[279,184],[288,185],[305,186],[306,187],[295,188],[273,189],[274,190],[385,191],[388,192],[252,193],[251,194],[250,195],[397,151],[249,196],[225,70],[400,70],[537,197],[536,70],[403,70],[402,151],[404,198],[200,70],[331,70],[232,199],[202,200],[354,70],[355,70],[357,70],[360,201],[356,70],[358,202],[359,202],[218,70],[231,70],[365,203],[373,204],[377,205],[214,206],[281,207],[280,70],[272,189],[300,208],[298,209],[297,70],[299,70],[304,210],[276,211],[213,212],[238,213],[328,214],[205,215],[212,216],[201,163],[342,217],[352,218],[341,70],[351,219],[239,70],[223,220],[319,221],[318,70],[325,222],[327,223],[320,224],[324,225],[326,222],[323,224],[322,222],[321,224],[261,226],[246,226],[313,227],[247,227],[207,228],[206,70],[317,229],[316,230],[315,231],[314,232],[208,233],[285,234],[302,235],[284,236],[309,237],[311,238],[308,236],[241,233],[194,70],[329,239],[267,240],[303,70],[350,241],[270,242],[345,243],[211,70],[346,244],[348,245],[349,246],[332,70],[344,215],[243,247],[330,248],[353,249],[215,70],[217,70],[222,250],[312,251],[210,252],[216,70],[269,253],[268,254],[224,255],[277,256],[275,257],[226,258],[228,259],[401,70],[227,260],[229,261],[368,70],[367,70],[369,70],[399,70],[230,262],[283,151],[92,70],[307,263],[253,70],[263,264],[242,70],[375,151],[384,265],[260,151],[379,176],[259,266],[362,267],[258,265],[203,70],[386,268],[256,151],[257,151],[248,70],[262,70],[255,269],[254,270],[244,271],[237,188],[347,70],[236,272],[235,70],[371,70],[282,151],[364,273],[83,70],[91,274],[88,151],[89,70],[90,70],[343,275],[336,276],[335,70],[334,277],[333,70],[374,278],[376,279],[378,280],[538,281],[380,282],[383,283],[409,284],[387,284],[408,285],[389,286],[395,287],[396,288],[398,289],[405,290],[407,70],[406,291],[361,292],[81,70],[82,70],[13,70],[14,70],[16,70],[15,70],[2,70],[17,70],[18,70],[19,70],[20,70],[21,70],[22,70],[23,70],[24,70],[3,70],[25,70],[26,70],[4,70],[27,70],[31,70],[28,70],[29,70],[30,70],[32,70],[33,70],[34,70],[5,70],[35,70],[36,70],[37,70],[38,70],[6,70],[42,70],[39,70],[40,70],[41,70],[43,70],[7,70],[44,70],[49,70],[50,70],[45,70],[46,70],[47,70],[48,70],[8,70],[54,70],[51,70],[52,70],[53,70],[55,70],[9,70],[56,70],[57,70],[58,70],[60,70],[59,70],[61,70],[62,70],[10,70],[63,70],[64,70],[65,70],[11,70],[66,70],[67,70],[68,70],[69,70],[70,70],[1,70],[71,70],[72,70],[12,70],[76,70],[74,70],[79,70],[78,70],[73,70],[77,70],[75,70],[80,70],[119,293],[129,294],[118,293],[139,295],[110,296],[109,297],[138,291],[132,298],[137,299],[112,300],[126,301],[111,302],[135,303],[107,304],[106,291],[136,305],[108,306],[113,307],[114,70],[117,307],[104,70],[140,308],[130,309],[121,310],[122,311],[124,312],[120,313],[123,314],[133,291],[115,315],[116,316],[125,317],[105,318],[128,309],[127,307],[131,70],[134,319],[481,320],[486,321],[487,322],[552,323],[553,324],[556,325],[558,326],[559,327],[560,328],[561,327],[562,329],[563,330],[555,331],[564,332],[565,326],[566,327],[567,326],[568,333],[491,334],[492,335],[494,336],[493,336],[495,335],[499,337],[500,338],[501,339],[502,334],[503,340],[504,338],[505,335],[506,341],[507,335],[508,342],[509,335],[510,335],[512,339],[511,339],[514,335],[513,343],[515,344],[485,345],[516,337],[521,346],[522,335],[520,347],[524,348],[523,348],[526,339],[525,339],[529,349],[528,346],[527,343],[530,350],[532,339],[531,339],[533,350],[569,351],[570,352],[571,353],[572,354],[573,355],[548,356],[575,357],[576,358],[551,359],[578,360],[577,359],[579,324],[489,361],[580,362],[581,359],[582,358],[490,363],[583,364],[584,365],[554,366],[545,352],[544,324],[550,367],[557,368],[546,369],[543,370],[547,151],[574,365],[549,151],[541,371],[539,371],[540,151],[479,372],[478,373],[484,70],[498,374],[480,375],[497,376],[488,342],[483,342],[469,377],[470,378],[458,379],[477,380],[459,381],[473,382],[461,383],[474,384],[471,385],[475,386],[476,387],[464,388],[460,383],[466,386],[465,386],[467,386],[468,389],[462,386],[457,342],[534,390],[535,391],[472,70],[519,392],[517,393],[518,394],[482,381],[463,377],[456,70]],"affectedFilesPendingEmit":[586,587,589,590,591,592,593,594,595,588,596,597,598,599,600,601,602,604,603,605,606,607,608,609,610,611,612,613,614,615,616,617,619,618,621,620,622,623,625,626,624,628,627,630,629,633,632,631,634,636,635,637,638,639,640,641,642,643,644,585,646,645,647,648,649,650,651,652,481,486,487,552,553,556,558,559,560,561,562,563,555,564,565,566,567,568,491,492,494,493,495,499,500,501,502,503,504,505,506,507,508,509,510,512,511,514,513,515,485,516,521,522,520,524,523,526,525,529,528,527,530,532,531,533,569,570,571,572,573,548,575,576,551,578,577,579,489,580,581,582,490,583,584,554,545,544,550,557,546,543,547,574,549,541,539,540,479,478,484,498,480,497,488,483,469,470,458,477,459,473,461,474,471,475,476,464,460,466,465,467,468,462,457,534,535,472,519,517,518,482,463,456],"version":"5.9.3"}
 ```
 
 ---

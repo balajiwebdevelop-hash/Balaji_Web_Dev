@@ -66,9 +66,11 @@ export async function POST(req: NextRequest) {
         user: adminPayload,
       });
 
+      const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
       response.cookies.set('balaji_admin_session', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isHttps,
         sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -92,6 +94,8 @@ export async function POST(req: NextRequest) {
       provider: 'email',
     });
 
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
     const response = NextResponse.json({
       success: true,
       role: 'customer',
@@ -106,7 +110,7 @@ export async function POST(req: NextRequest) {
 
     response.cookies.set('balaji_customer_session', customerToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isHttps,
       sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 days

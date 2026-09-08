@@ -6,9 +6,11 @@
       "passwordHash": "3903a96046ec99bc94100f812cfee1b2:e72fa457ba6ab3be8353defbdf61b4c243714f27acb2cbc20fd2232dc36e184bd6564345d66103f433154a166821c36b5e0a0b162aeddf378182678a830c7f5b",
       "name": "Vikas Sir (Principal Architect)",
       "role": "super_admin",
+      "status": "active",
       "mustChangePassword": false,
       "createdAt": "2026-08-17T16:23:54.088Z",
-      "updatedAt": "2026-08-18T14:26:57.433Z"
+      "updatedAt": "2026-08-18T14:26:57.433Z",
+      "lastLoginAt": "2026-09-08T12:05:25.086Z"
     }
   ],
   "categories": [
@@ -1033,6 +1035,30 @@
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entity": "Auth",
+      "entityId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "details": {
+        "test": true
+      },
+      "id": "log-1788869125087-hfqk",
+      "createdAt": "2026-09-08T12:05:25.087Z"
+    },
+    {
+      "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entity": "Auth",
+      "entityId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "details": {
+        "test": true
+      },
+      "id": "log-1788869056752-fjdj",
+      "createdAt": "2026-09-08T12:04:16.752Z"
+    },
     {
       "id": "log-1787152756799",
       "adminId": "system",

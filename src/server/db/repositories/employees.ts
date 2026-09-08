@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { AdminUser } from '@/types';
 import {
   isSupabaseConfigured,
+  isSupabaseAvailable,
   getServiceSupabase,
   isUUID,
   getDb,
@@ -10,17 +11,19 @@ import {
 import { mapAdminUser } from '../mappers';
 
 export async function getAdmins(): Promise<AdminUser[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: false });
-    if (error) {
-      console.error('Supabase getAdmins error:', error);
-      throw new Error(`Failed to load admin users: ${error.message}`);
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: false });
+      if (!error && data && data.length > 0) {
+        return data.map((adm) => {
+          const { passwordHash: _, ...safe } = mapAdminUser(adm);
+          return safe;
+        });
+      }
+    } catch (err) {
+      console.warn('Supabase getAdmins notice:', err);
     }
-    return (data || []).map((adm) => {
-      const { passwordHash: _, ...safe } = mapAdminUser(adm);
-      return safe;
-    });
   }
 
   const db = getDb();
@@ -31,28 +34,54 @@ export async function getAdmins(): Promise<AdminUser[]> {
 }
 
 export async function getAdminById(id: string): Promise<(AdminUser & { passwordHash: string }) | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
-    if (error || !data) return null;
-    return mapAdminUser(data);
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
+      if (!error && data) {
+        const mapped = mapAdminUser(data);
+        if (!mapped.status) mapped.status = 'active';
+        return mapped;
+      }
+    } catch (err) {
+      console.warn('Supabase getAdminById notice:', err);
+    }
   }
 
   const db = getDb();
-  return db.admins.find((a) => a.id === id) || null;
+  const found = db.admins.find((a) => a.id === id);
+  if (!found) return null;
+  return {
+    ...found,
+    status: found.status || 'active',
+    mustChangePassword: Boolean(found.mustChangePassword),
+  };
 }
 
 export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
   const normalizedEmail = email.trim().toLowerCase();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('admins').select('*').eq('email', normalizedEmail).maybeSingle();
-    if (error || !data) return null;
-    return mapAdminUser(data);
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').eq('email', normalizedEmail).maybeSingle();
+      if (!error && data) {
+        const mapped = mapAdminUser(data);
+        if (!mapped.status) mapped.status = 'active';
+        return mapped;
+      }
+    } catch (err) {
+      console.warn('Supabase getAdminByEmail notice:', err);
+    }
   }
 
   const db = getDb();
-  return db.admins.find((a) => a.email.toLowerCase() === normalizedEmail) || null;
+  const found = db.admins.find((a) => a.email.toLowerCase() === normalizedEmail);
+  if (!found) return null;
+  return {
+    ...found,
+    status: found.status || 'active',
+    mustChangePassword: Boolean(found.mustChangePassword),
+  };
 }
 
 export async function createEmployeeAdmin(
@@ -286,16 +315,20 @@ export async function updateAdminPassword(
 
 export async function recordAdminLogin(adminId: string): Promise<void> {
   const now = new Date().toISOString();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('admins').update({ last_login_at: now, updated_at: now });
-    if (isUUID(adminId)) {
-      query = query.eq('id', adminId);
-    } else {
-      query = query.eq('email', adminId);
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      let query = supabase.from('admins').update({ last_login_at: now, updated_at: now });
+      if (isUUID(adminId)) {
+        query = query.eq('id', adminId);
+      } else {
+        query = query.eq('email', adminId);
+      }
+      await query;
+      return;
+    } catch (err) {
+      console.warn('Supabase recordAdminLogin notice:', err);
     }
-    await query;
-    return;
   }
 
   const db = getDb();

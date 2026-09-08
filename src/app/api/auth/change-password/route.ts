@@ -51,9 +51,11 @@ export async function POST(req: NextRequest) {
       message: 'Password updated successfully. Bootstrap password has been permanently invalidated.',
     });
 
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
     response.cookies.set('balaji_admin_session', updatedToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isHttps,
       sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24 * 7,

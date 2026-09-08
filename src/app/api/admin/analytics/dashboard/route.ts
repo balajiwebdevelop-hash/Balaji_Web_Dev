@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
 import {
   isSupabaseConfigured,
+  isSupabaseAvailable,
   getServiceSupabase,
   memoryCache,
 } from '@/server/db/client';
@@ -45,64 +46,74 @@ export async function GET(req: NextRequest) {
     let enquiriesCount = 0;
     let auditLogs: any[] = [];
 
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
+    let supabaseSuccess = false;
+    if (await isSupabaseAvailable()) {
+      try {
+        const supabase = getServiceSupabase();
 
-      // Query database with selective projections to minimize memory and network overhead
-      const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
-        await Promise.all([
-          supabase
-            .from('orders')
-            .select(
-              'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
-            )
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('quotes')
-            .select('id, status, total_quoted_amount'),
-          supabase
-            .from('products')
-            .select('id, price, stock, moq'),
-          supabase
-            .from('projects')
-            .select('id', { count: 'exact', head: true }),
-          supabase
-            .from('enquiries')
-            .select('id', { count: 'exact', head: true }),
-          getAuditLogs(6).catch(() => []),
-        ]);
+        // Query database with selective projections to minimize memory and network overhead
+        const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
+          await Promise.all([
+            supabase
+              .from('orders')
+              .select(
+                'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
+              )
+              .order('created_at', { ascending: false }),
+            supabase
+              .from('quotes')
+              .select('id, status, total_quoted_amount'),
+            supabase
+              .from('products')
+              .select('id, price, stock, moq'),
+            supabase
+              .from('projects')
+              .select('id', { count: 'exact', head: true }),
+            supabase
+              .from('enquiries')
+              .select('id', { count: 'exact', head: true }),
+            getAuditLogs(6).catch(() => []),
+          ]);
 
-      orders = (ordersRes.data || []).map((o: any) => ({
-        id: o.id,
-        orderNumber: o.order_number,
-        customerName: o.customer_name,
-        totalAmount: Number(o.total_amount) || 0,
-        orderStatus: o.order_status,
-        paymentStatus: o.payment_status,
-        createdAt: o.created_at,
-        items: (o.items || []).map((it: any) => ({
-          productName: it.product_name || '',
-          subtotal: Number(it.subtotal) || 0,
-        })),
-      }));
+        if (!ordersRes.error && !quotesRes.error && !productsRes.error) {
+          orders = (ordersRes.data || []).map((o: any) => ({
+            id: o.id,
+            orderNumber: o.order_number,
+            customerName: o.customer_name,
+            totalAmount: Number(o.total_amount) || 0,
+            orderStatus: o.order_status,
+            paymentStatus: o.payment_status,
+            createdAt: o.created_at,
+            items: (o.items || []).map((it: any) => ({
+              productName: it.product_name || '',
+              subtotal: Number(it.subtotal) || 0,
+            })),
+          }));
 
-      quotes = (quotesRes.data || []).map((q: any) => ({
-        id: q.id,
-        status: q.status,
-        totalQuotedAmount: Number(q.total_quoted_amount) || 0,
-      }));
+          quotes = (quotesRes.data || []).map((q: any) => ({
+            id: q.id,
+            status: q.status,
+            totalQuotedAmount: Number(q.total_quoted_amount) || 0,
+          }));
 
-      products = (productsRes.data || []).map((p: any) => ({
-        id: p.id,
-        price: Number(p.price) || 0,
-        stock: Number(p.stock) || 0,
-        moq: Number(p.moq) || 1,
-      }));
+          products = (productsRes.data || []).map((p: any) => ({
+            id: p.id,
+            price: Number(p.price) || 0,
+            stock: Number(p.stock) || 0,
+            moq: Number(p.moq) || 1,
+          }));
 
-      activeProjectsCount = projectsRes.count || 0;
-      enquiriesCount = enquiriesRes.count || 0;
-      auditLogs = logsRes;
-    } else {
+          activeProjectsCount = projectsRes.count || 0;
+          enquiriesCount = enquiriesRes.count || 0;
+          auditLogs = logsRes;
+          supabaseSuccess = true;
+        }
+      } catch (err) {
+        console.warn('Dashboard Supabase fetch error, falling back to local DB:', err);
+      }
+    }
+
+    if (!supabaseSuccess) {
       const [allOrders, allQuotes, allProducts, allProjects, allEnquiries, allLogs] =
         await Promise.all([
           getOrders().catch(() => []),

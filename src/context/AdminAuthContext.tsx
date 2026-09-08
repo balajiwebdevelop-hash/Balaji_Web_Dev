@@ -50,13 +50,15 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      const adminObj = data.admin || data.user;
-      if (res.ok && data.success && adminObj) {
+      const adminObj = data.admin || (data.role !== 'customer' ? data.user : null);
+      if (res.ok && data.success && adminObj && data.role !== 'customer') {
         setAdmin(adminObj);
         return {
           success: true,
           mustChangePassword: Boolean(adminObj.mustChangePassword),
         };
+      } else if (data.role === 'customer') {
+        return { success: false, error: 'This account is not authorized for administrative access.' };
       } else {
         return { success: false, error: data.error || 'Invalid credentials' };
       }

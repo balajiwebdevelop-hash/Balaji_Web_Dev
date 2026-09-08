@@ -1,6 +1,6 @@
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
 > **Document**: `admincodebase.md`  
-> **Generation Timestamp**: `20260908-184303`  
+> **Generation Timestamp**: `20260908-191348`  
 > **Platform**: Balaji Architect & Interiors Executive Command Center & Atelier Management Suite  
 > **Architecture**: Next.js 14 App Router, TypeScript 5.7, Tailwind CSS, PBKDF2/JWT Cryptographic Authentication, Supabase / High-Performance Resilient Persistence  
 > **Admin Panel URL**: `/admin` (Executive Command Center) & `/admin/login` (Stealth Atelier Gateway)  
@@ -10078,12 +10078,12 @@ export async function POST(req: NextRequest) {
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuditLogs } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'audit.read');
   if ('response' in auth) return auth.response;
 
   try {
@@ -10573,7 +10573,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getCategories, getAllCategoriesAdmin, createCategory, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -10597,7 +10597,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'categories.create');
   if ('response' in auth) return auth.response;
 
   try {
@@ -10662,12 +10662,12 @@ export async function POST(req: NextRequest) {
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { updateCategory, deleteCategory, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'categories.update');
   if ('response' in auth) return auth.response;
 
   try {
@@ -10712,7 +10712,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'categories.delete');
   if ('response' in auth) return auth.response;
 
   try {
@@ -10760,7 +10760,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 > **Path**: `src/app/api/orders/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 65 lines • 2.0 KB
+> **Metrics**: 69 lines • 2.2 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10768,6 +10768,7 @@ import { revalidatePath } from 'next/cache';
 import { getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 import { OrderService } from '@/server/services';
+import { validateUtrNumber } from '@/server/validation/schemas';
 import { formatErrorResponse } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
@@ -10798,6 +10799,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const sanitizedUtr = validateUtrNumber(body.utrNumber);
 
     const order = await OrderService.placeOrder({
       customerName: body.customerName,
@@ -10808,6 +10810,8 @@ export async function POST(req: NextRequest) {
       items: body.items,
       paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
       notes: body.notes,
+      utrNumber: sanitizedUtr,
+      transactionId: body.transactionId,
       idempotencyKey: body.idempotencyKey,
     });
 
@@ -11057,7 +11061,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProjects, createProject, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -11082,7 +11086,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'projects.create');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11152,13 +11156,13 @@ export async function POST(req: NextRequest) {
 
 > **Path**: `src/app/api/projects/[id]/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 109 lines • 3.2 KB
+> **Metrics**: 109 lines • 3.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProjectById, updateProject, deleteProject, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -11182,7 +11186,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'projects.update');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11225,7 +11229,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'projects.delete');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11277,7 +11281,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getServices, createService, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -11300,7 +11304,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'services.create');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11358,18 +11362,18 @@ export async function POST(req: NextRequest) {
 
 > **Path**: `src/app/api/services/[id]/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 88 lines • 2.5 KB
+> **Metrics**: 88 lines • 2.6 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { updateService, deleteService, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'services.update');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11411,7 +11415,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'services.delete');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11522,12 +11526,12 @@ export async function POST(req: NextRequest) {
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { updateEnquiryStatus } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'enquiries.update');
   if ('response' in auth) return auth.response;
 
   try {
@@ -11965,7 +11969,7 @@ export function rotateSessionToken(token: string): string | null {
 
 > **Path**: `src/server/auth/rbac.ts`  
 > **Layer**: Auth & RBAC Layer  
-> **Metrics**: 274 lines • 7.2 KB
+> **Metrics**: 287 lines • 7.5 KB
 
 ```typescript
 import { AdminRole, AdminUser } from '@/types';
@@ -12042,7 +12046,11 @@ export type Permission =
   // Analytics
   | 'analytics.read'
   // Notifications
-  | 'notifications.manage';
+  | 'notifications.manage'
+  // Enquiries
+  | 'enquiries.read'
+  | 'enquiries.update'
+  | 'enquiries.delete';
 
 const ALL_PERMISSIONS: Permission[] = [
   'products.read',
@@ -12098,6 +12106,9 @@ const ALL_PERMISSIONS: Permission[] = [
   'owner.audit_logs',
   'analytics.read',
   'notifications.manage',
+  'enquiries.read',
+  'enquiries.update',
+  'enquiries.delete',
 ];
 
 const EMPLOYEE_PERMISSIONS: Permission[] = [
@@ -12107,6 +12118,8 @@ const EMPLOYEE_PERMISSIONS: Permission[] = [
   'products.publish',
   'products.write',
   'categories.read',
+  'categories.create',
+  'categories.update',
   'inventory.read',
   'inventory.adjust',
   'inventory.write',
@@ -12129,6 +12142,8 @@ const EMPLOYEE_PERMISSIONS: Permission[] = [
   'services.update',
   'services.write',
   'customers.read',
+  'enquiries.read',
+  'enquiries.update',
   'analytics.read',
 ];
 
@@ -12150,6 +12165,7 @@ const EDITOR_PERMISSIONS: Permission[] = [
   'services.create',
   'services.update',
   'services.write',
+  'enquiries.read',
 ];
 
 const VIEWER_PERMISSIONS: Permission[] = [
@@ -12161,6 +12177,7 @@ const VIEWER_PERMISSIONS: Permission[] = [
   'projects.read',
   'services.read',
   'customers.read',
+  'enquiries.read',
   'analytics.read',
 ];
 
@@ -12249,7 +12266,7 @@ export function protectOwnerFromModification(
 
 > **Path**: `src/lib/auth.ts`  
 > **Layer**: Auth & RBAC Layer  
-> **Metrics**: 276 lines • 8.0 KB
+> **Metrics**: 288 lines • 8.4 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -12478,12 +12495,24 @@ export async function requireOwner(
 }
 
 /**
- * Backward compatibility alias for requireAuthenticatedAdmin
+ * Authorizes Owner, Super Admin, Employee, or Editor roles (blocks read-only viewers)
  */
 export async function requireOwnerOrEmployee(
   req: NextRequest
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  return requireAuthenticatedAdmin(req);
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (auth.admin.role === 'viewer') {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Read-only accounts cannot perform mutations.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
 }
 
 export async function requireRole(
@@ -12700,7 +12729,7 @@ export * from './sanitization';
 
 > **Path**: `src/server/validation/schemas.ts`  
 > **Layer**: Schema Validation  
-> **Metrics**: 112 lines • 3.9 KB
+> **Metrics**: 125 lines • 4.4 KB
 
 ```typescript
 import { ValidationError } from '../errors';
@@ -12721,8 +12750,8 @@ export function validateProductInput(data: any, isUpdate = false): void {
 
   if (data.price !== undefined) {
     const p = Number(data.price);
-    if (isNaN(p) || p < 0) {
-      throw new ValidationError('Product price must be a non-negative number');
+    if (isNaN(p) || p <= 0) {
+      throw new ValidationError('Product price must be a positive number greater than zero');
     }
   }
 
@@ -12814,6 +12843,19 @@ export function validateEmployeeInput(data: any, isUpdate = false): void {
     }
   }
 }
+
+export function validateUtrNumber(utr?: string): string | undefined {
+  if (!utr) return undefined;
+  const trimmed = utr.trim();
+  if (trimmed.length < 6 || trimmed.length > 64) {
+    throw new ValidationError('Invalid UTR / Reference ID: Must be between 6 and 64 characters.');
+  }
+  if (!/^[a-zA-Z0-9_\-]+$/.test(trimmed)) {
+    throw new ValidationError('Invalid UTR / Reference ID: Only alphanumeric characters, hyphens, and underscores are allowed.');
+  }
+  return trimmed;
+}
+
 ```
 
 ---
@@ -16208,7 +16250,7 @@ export async function updateEnquiryStatus(
 
 > **Path**: `src/server/db/transactions/orders.ts`  
 > **Layer**: Server / DB  
-> **Metrics**: 237 lines • 7.0 KB
+> **Metrics**: 243 lines • 7.3 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -16239,6 +16281,8 @@ export interface CreateOrderData {
   }[];
   paymentMethod: string;
   notes?: string;
+  utrNumber?: string;
+  transactionId?: string;
   idempotencyKey?: string;
 }
 
@@ -16329,6 +16373,8 @@ export async function createOrderAtomic(
       paymentStatus: 'Submitted',
       paymentMethod: orderData.paymentMethod,
       notes: orderData.notes,
+      utrNumber: orderData.utrNumber,
+      transactionId: orderData.transactionId,
       idempotencyKey: orderData.idempotencyKey,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -16371,6 +16417,8 @@ export async function createOrderAtomic(
         items: orderData.items,
         paymentMethod: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
         notes: orderData.notes || '',
+        utrNumber: orderData.utrNumber || null,
+        transactionId: orderData.transactionId || null,
         idempotencyKey: orderData.idempotencyKey || null,
       },
     });
@@ -17864,7 +17912,7 @@ export function getInitialAdminSeed() {
 
 > **Path**: `supabase/schema.sql`  
 > **Layer**: Database Migration / SQL Schema  
-> **Metrics**: 763 lines • 26.9 KB
+> **Metrics**: 773 lines • 27.2 KB
 
 ```sql
 -- ============================================================
@@ -18057,6 +18105,8 @@ CREATE TABLE IF NOT EXISTS orders (
     order_status TEXT NOT NULL DEFAULT 'Pending',
     payment_status TEXT NOT NULL DEFAULT 'Pending',
     payment_method TEXT NOT NULL DEFAULT 'Card',
+    utr_number TEXT,
+    transaction_id TEXT,
     notes TEXT,
     idempotency_key TEXT UNIQUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -18201,6 +18251,8 @@ CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_order_status_history_order ON order_status_history(order_id);
 CREATE INDEX IF NOT EXISTS idx_payment_history_order ON payment_history(order_id);
+CREATE INDEX IF NOT EXISTS idx_orders_utr ON orders(utr_number);
+CREATE INDEX IF NOT EXISTS idx_orders_idempotency ON orders(idempotency_key);
 
 -- ============================================================
 -- ENABLE ROW LEVEL SECURITY (RLS) ON ALL TABLES
@@ -18449,6 +18501,8 @@ BEGIN
         payment_status,
         payment_method,
         notes,
+        utr_number,
+        transaction_id,
         idempotency_key,
         created_at,
         updated_at
@@ -18468,6 +18522,8 @@ BEGIN
         'Submitted',
         COALESCE(p_order_data->>'paymentMethod', 'Balaji QR Payment (Balaji PG)'),
         COALESCE(p_order_data->>'notes', ''),
+        p_order_data->>'utrNumber',
+        p_order_data->>'transactionId',
         v_idempotency_key,
         NOW(),
         NOW()
@@ -18509,7 +18565,7 @@ BEGIN
             v_item_price,
             (v_item->>'quantity')::INT,
             v_item_subtotal,
-            CASE WHEN jsonb_array_length(to_jsonb(v_product.images)) > 0 THEN v_product.images[1] ELSE '' END,
+            COALESCE(v_product.images->>0, ''),
             COALESCE(v_item->>'selectedColor', v_product.color),
             COALESCE(v_item->>'selectedFinish', v_product.finish)
         );
@@ -18547,6 +18603,8 @@ BEGIN
         'order_status', o.order_status,
         'payment_status', o.payment_status,
         'payment_method', o.payment_method,
+        'utr_number', o.utr_number,
+        'transaction_id', o.transaction_id,
         'notes', o.notes,
         'idempotency_key', o.idempotency_key,
         'created_at', o.created_at,
@@ -18637,7 +18695,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 > **Path**: `data/db.json`  
 > **Layer**: Storage Fixture  
-> **Metrics**: 1459 lines • 57.2 KB
+> **Metrics**: 1659 lines • 63.6 KB
 
 ```json
 {
@@ -18750,7 +18808,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2377,
+      "stock": 2373,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -19457,6 +19515,178 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
   ],
   "orders": [
     {
+      "id": "ord-1788874958510",
+      "orderNumber": "BAL-MTSPYNXQ-F3E385",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "9dabf14a-919d-4c23-9069-10d484877547",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788874958510",
+      "createdAt": "2026-09-08T13:42:38.510Z",
+      "updatedAt": "2026-09-08T13:42:38.521Z"
+    },
+    {
+      "id": "ord-1788874943432",
+      "orderNumber": "BAL-MTSPYCAW-BB8720",
+      "customerName": "High Net-Worth Client",
+      "customerEmail": "hnw@balaji.com",
+      "customerPhone": "+91 99999 88888",
+      "shippingAddress": {
+        "addressLine1": "Bespoke Penthouse 42",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "billingAddress": {
+        "addressLine1": "Bespoke Penthouse 42",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "items": [
+        {
+          "id": "50afedd0-986a-4ddd-a62c-5d0dd4fa91ac",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "UPI",
+      "utrNumber": "UPI-1122334455",
+      "idempotencyKey": "idemp-test-1788874943432",
+      "createdAt": "2026-09-08T13:42:23.432Z",
+      "updatedAt": "2026-09-08T13:42:23.432Z"
+    },
+    {
+      "id": "ord-1788874923819",
+      "orderNumber": "BAL-MTSPXX63-78DC36",
+      "customerName": "High Net-Worth Client",
+      "customerEmail": "hnw@balaji.com",
+      "customerPhone": "+91 99999 88888",
+      "shippingAddress": {
+        "addressLine1": "Bespoke Penthouse 42",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "billingAddress": {
+        "addressLine1": "Bespoke Penthouse 42",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400001"
+      },
+      "items": [
+        {
+          "id": "e4d3de02-01ad-4e9d-90de-ca4ef91f2453",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "UPI",
+      "utrNumber": "UPI-1122334455",
+      "idempotencyKey": "idemp-test-1788874923819",
+      "createdAt": "2026-09-08T13:42:03.819Z",
+      "updatedAt": "2026-09-08T13:42:03.819Z"
+    },
+    {
+      "id": "ord-1788874879408",
+      "orderNumber": "BAL-MTSPWYWG-1A3CE4",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "a74a89eb-b073-4998-9cc0-43c442a91637",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788874879408",
+      "createdAt": "2026-09-08T13:41:19.408Z",
+      "updatedAt": "2026-09-08T13:41:19.431Z"
+    },
+    {
       "id": "ord-1788873109221",
       "orderNumber": "BAL-MTSOV10L-B60303",
       "customerName": "Enterprise Test Client",
@@ -19864,6 +20094,34 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788874958510",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "31b04096-8b68-4557-a5dc-f70a99ce1495",
+      "createdAt": "2026-09-08T13:42:38.530Z"
+    },
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788874879408",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "5c0fcf47-ef91-456c-9693-9703cc027b9d",
+      "createdAt": "2026-09-08T13:41:19.441Z"
+    },
     {
       "adminId": "admin-test",
       "adminEmail": "admin@balaji.com",

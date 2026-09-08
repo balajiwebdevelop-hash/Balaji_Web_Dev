@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateEnquiryStatus } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'enquiries.update');
   if ('response' in auth) return auth.response;
 
   try {

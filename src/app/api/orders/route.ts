@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
 import { OrderService } from '@/server/services';
+import { validateUtrNumber } from '@/server/validation/schemas';
 import { formatErrorResponse } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
@@ -33,6 +34,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const sanitizedUtr = validateUtrNumber(body.utrNumber);
 
     const order = await OrderService.placeOrder({
       customerName: body.customerName,
@@ -43,6 +45,8 @@ export async function POST(req: NextRequest) {
       items: body.items,
       paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
       notes: body.notes,
+      utrNumber: sanitizedUtr,
+      transactionId: body.transactionId,
       idempotencyKey: body.idempotencyKey,
     });
 

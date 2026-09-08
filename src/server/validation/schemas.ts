@@ -16,8 +16,8 @@ export function validateProductInput(data: any, isUpdate = false): void {
 
   if (data.price !== undefined) {
     const p = Number(data.price);
-    if (isNaN(p) || p < 0) {
-      throw new ValidationError('Product price must be a non-negative number');
+    if (isNaN(p) || p <= 0) {
+      throw new ValidationError('Product price must be a positive number greater than zero');
     }
   }
 
@@ -109,3 +109,16 @@ export function validateEmployeeInput(data: any, isUpdate = false): void {
     }
   }
 }
+
+export function validateUtrNumber(utr?: string): string | undefined {
+  if (!utr) return undefined;
+  const trimmed = utr.trim();
+  if (trimmed.length < 6 || trimmed.length > 64) {
+    throw new ValidationError('Invalid UTR / Reference ID: Must be between 6 and 64 characters.');
+  }
+  if (!/^[a-zA-Z0-9_\-]+$/.test(trimmed)) {
+    throw new ValidationError('Invalid UTR / Reference ID: Only alphanumeric characters, hyphens, and underscores are allowed.');
+  }
+  return trimmed;
+}
+

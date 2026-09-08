@@ -72,7 +72,11 @@ export type Permission =
   // Analytics
   | 'analytics.read'
   // Notifications
-  | 'notifications.manage';
+  | 'notifications.manage'
+  // Enquiries
+  | 'enquiries.read'
+  | 'enquiries.update'
+  | 'enquiries.delete';
 
 const ALL_PERMISSIONS: Permission[] = [
   'products.read',
@@ -128,6 +132,9 @@ const ALL_PERMISSIONS: Permission[] = [
   'owner.audit_logs',
   'analytics.read',
   'notifications.manage',
+  'enquiries.read',
+  'enquiries.update',
+  'enquiries.delete',
 ];
 
 const EMPLOYEE_PERMISSIONS: Permission[] = [
@@ -137,6 +144,8 @@ const EMPLOYEE_PERMISSIONS: Permission[] = [
   'products.publish',
   'products.write',
   'categories.read',
+  'categories.create',
+  'categories.update',
   'inventory.read',
   'inventory.adjust',
   'inventory.write',
@@ -159,6 +168,8 @@ const EMPLOYEE_PERMISSIONS: Permission[] = [
   'services.update',
   'services.write',
   'customers.read',
+  'enquiries.read',
+  'enquiries.update',
   'analytics.read',
 ];
 
@@ -180,6 +191,7 @@ const EDITOR_PERMISSIONS: Permission[] = [
   'services.create',
   'services.update',
   'services.write',
+  'enquiries.read',
 ];
 
 const VIEWER_PERMISSIONS: Permission[] = [
@@ -191,6 +203,7 @@ const VIEWER_PERMISSIONS: Permission[] = [
   'projects.read',
   'services.read',
   'customers.read',
+  'enquiries.read',
   'analytics.read',
 ];
 

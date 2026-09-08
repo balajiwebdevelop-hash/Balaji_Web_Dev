@@ -181,7 +181,13 @@ export default function CheckoutPage() {
   // Step 2 Order Submission
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     if (items.length === 0) return;
+
+    if (timeLeft <= 0) {
+      setOrderError('Your payment session has expired. Please click "Tap to Renew" above to refresh your QR session.');
+      return;
+    }
 
     if (pg.requireUtr !== false && (!utrNumber || utrNumber.trim().length < 6)) {
       setOrderError('Please enter the 12-digit UPI Reference / UTR Transaction ID after completing your payment.');
@@ -217,6 +223,7 @@ export default function CheckoutPage() {
         })),
         paymentMethod: 'Balaji QR Payment (Balaji PG)',
         notes: orderNotesWithUtr,
+        utrNumber: utrNumber.trim(),
         idempotencyKey,
       };
 
@@ -637,8 +644,23 @@ export default function CheckoutPage() {
 
               <div className="flex items-center gap-2 text-xs text-amber-900 bg-amber-50 px-3 py-1.5 border border-amber-200 font-medium">
                 <Clock className="w-3.5 h-3.5 text-amber-700 animate-pulse" />
-                <span>Session Expires In: </span>
-                <span className="font-mono font-bold text-espresso">{formatTimer(timeLeft)}</span>
+                {timeLeft > 0 ? (
+                  <>
+                    <span>Session Expires In: </span>
+                    <span className="font-mono font-bold text-espresso">{formatTimer(timeLeft)}</span>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTimeLeft(600);
+                      setOrderError(null);
+                    }}
+                    className="text-xs uppercase tracking-wider text-amber-900 font-bold underline cursor-pointer hover:text-bronze"
+                  >
+                    Session Expired • Tap to Renew (10:00)
+                  </button>
+                )}
               </div>
             </div>
 

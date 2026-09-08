@@ -26,6 +26,8 @@ export interface CreateOrderData {
   }[];
   paymentMethod: string;
   notes?: string;
+  utrNumber?: string;
+  transactionId?: string;
   idempotencyKey?: string;
 }
 
@@ -116,6 +118,8 @@ export async function createOrderAtomic(
       paymentStatus: 'Submitted',
       paymentMethod: orderData.paymentMethod,
       notes: orderData.notes,
+      utrNumber: orderData.utrNumber,
+      transactionId: orderData.transactionId,
       idempotencyKey: orderData.idempotencyKey,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -158,6 +162,8 @@ export async function createOrderAtomic(
         items: orderData.items,
         paymentMethod: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
         notes: orderData.notes || '',
+        utrNumber: orderData.utrNumber || null,
+        transactionId: orderData.transactionId || null,
         idempotencyKey: orderData.idempotencyKey || null,
       },
     });

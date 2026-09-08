@@ -188,6 +188,8 @@ CREATE TABLE IF NOT EXISTS orders (
     order_status TEXT NOT NULL DEFAULT 'Pending',
     payment_status TEXT NOT NULL DEFAULT 'Pending',
     payment_method TEXT NOT NULL DEFAULT 'Card',
+    utr_number TEXT,
+    transaction_id TEXT,
     notes TEXT,
     idempotency_key TEXT UNIQUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -332,6 +334,8 @@ CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_order_status_history_order ON order_status_history(order_id);
 CREATE INDEX IF NOT EXISTS idx_payment_history_order ON payment_history(order_id);
+CREATE INDEX IF NOT EXISTS idx_orders_utr ON orders(utr_number);
+CREATE INDEX IF NOT EXISTS idx_orders_idempotency ON orders(idempotency_key);
 
 -- ============================================================
 -- ENABLE ROW LEVEL SECURITY (RLS) ON ALL TABLES
@@ -580,6 +584,8 @@ BEGIN
         payment_status,
         payment_method,
         notes,
+        utr_number,
+        transaction_id,
         idempotency_key,
         created_at,
         updated_at
@@ -599,6 +605,8 @@ BEGIN
         'Submitted',
         COALESCE(p_order_data->>'paymentMethod', 'Balaji QR Payment (Balaji PG)'),
         COALESCE(p_order_data->>'notes', ''),
+        p_order_data->>'utrNumber',
+        p_order_data->>'transactionId',
         v_idempotency_key,
         NOW(),
         NOW()
@@ -640,7 +648,7 @@ BEGIN
             v_item_price,
             (v_item->>'quantity')::INT,
             v_item_subtotal,
-            CASE WHEN jsonb_array_length(to_jsonb(v_product.images)) > 0 THEN v_product.images[1] ELSE '' END,
+            COALESCE(v_product.images->>0, ''),
             COALESCE(v_item->>'selectedColor', v_product.color),
             COALESCE(v_item->>'selectedFinish', v_product.finish)
         );
@@ -678,6 +686,8 @@ BEGIN
         'order_status', o.order_status,
         'payment_status', o.payment_status,
         'payment_method', o.payment_method,
+        'utr_number', o.utr_number,
+        'transaction_id', o.transaction_id,
         'notes', o.notes,
         'idempotency_key', o.idempotency_key,
         'created_at', o.created_at,

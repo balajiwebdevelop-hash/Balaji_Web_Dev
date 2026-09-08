@@ -224,12 +224,24 @@ export async function requireOwner(
 }
 
 /**
- * Backward compatibility alias for requireAuthenticatedAdmin
+ * Authorizes Owner, Super Admin, Employee, or Editor roles (blocks read-only viewers)
  */
 export async function requireOwnerOrEmployee(
   req: NextRequest
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  return requireAuthenticatedAdmin(req);
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (auth.admin.role === 'viewer') {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Read-only accounts cannot perform mutations.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
 }
 
 export async function requireRole(

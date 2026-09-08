@@ -1,5 +1,6 @@
 import { SiteSettings, PublicSiteSettings } from '@/types';
 import { initialSiteSettings } from '@/lib/seedData';
+import { validatePaymentSettings } from '../../validation/schemas';
 import {
   isSupabaseConfigured,
   getServiceSupabase,
@@ -150,6 +151,10 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
 }
 
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
+  if (partial.paymentGateway) {
+    validatePaymentSettings(partial.paymentGateway);
+  }
+
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const current = await getSiteSettings();

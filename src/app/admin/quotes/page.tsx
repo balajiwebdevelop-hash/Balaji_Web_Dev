@@ -1,11 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FileText, Eye, Check, X, RefreshCw, Send, DollarSign, Clock } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Quote, QuoteStatus } from '@/types';
 
-export default function AdminQuotesPage() {
+function AdminQuotesContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || null;
+
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
@@ -13,12 +17,26 @@ export default function AdminQuotesPage() {
   const [adminNotesInput, setAdminNotesInput] = useState('');
   const [updating, setUpdating] = useState(false);
 
+  const openQuoteModal = (q: Quote) => {
+    setSelectedQuote(q);
+    setQuotedAmountInput(q.totalQuotedAmount || '');
+    setAdminNotesInput(q.adminNotes || '');
+  };
+
   const loadQuotes = async () => {
     try {
       const res = await fetch('/api/quotes', { cache: 'no-store' });
       if (res.ok) {
         const d = await res.json();
-        setQuotes(d.quotes || []);
+        const qts: Quote[] = d.quotes || [];
+        setQuotes(qts);
+
+        if (highlightId) {
+          const match = qts.find((q) => q.id === highlightId || q.quoteNumber === highlightId);
+          if (match) {
+            openQuoteModal(match);
+          }
+        }
       }
     } catch (e) {
       console.error(e);
@@ -29,13 +47,7 @@ export default function AdminQuotesPage() {
 
   useEffect(() => {
     loadQuotes();
-  }, []);
-
-  const openQuoteModal = (q: Quote) => {
-    setSelectedQuote(q);
-    setQuotedAmountInput(q.totalQuotedAmount || '');
-    setAdminNotesInput(q.adminNotes || '');
-  };
+  }, [highlightId]);
 
   const handleUpdateQuote = async (status: QuoteStatus) => {
     if (!selectedQuote) return;
@@ -339,5 +351,13 @@ export default function AdminQuotesPage() {
         </div>
       )}
     </AdminLayout>
+  );
+}
+
+export default function AdminQuotesPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading quote dossiers...</div>}>
+      <AdminQuotesContent />
+    </Suspense>
   );
 }

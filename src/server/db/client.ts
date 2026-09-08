@@ -21,6 +21,7 @@ import {
   initialSiteSettings,
   getInitialAdminSeed,
 } from '@/lib/seedData';
+import { DatabaseUnavailableError } from '../errors';
 
 // =============================================================
 // DATABASE STATE & FIXTURE INTERFACES (DEVELOPMENT / TEST ONLY)
@@ -254,6 +255,11 @@ export function getDb(): DatabaseState {
 }
 
 export function saveDb(state: DatabaseState): void {
+  if (isProduction()) {
+    throw new DatabaseUnavailableError(
+      'Critical Safety Violation: Attempted to write to local db.json in production mode. Primary database connection is required.'
+    );
+  }
   dbCache = state;
   try {
     if (!fs.existsSync(DATA_DIR)) {

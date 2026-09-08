@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
           title: p.name,
           subtitle: `SKU: ${p.sku} • ₹${Number(p.price).toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
           type: 'product',
-          href: `/admin/products?highlight=${p.id}`,
+          href: `/admin/products?id=${p.id}`,
           badge: `${p.stock} in stock`,
         });
       });
@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
           title: `Order #${o.order_number}`,
           subtitle: `${o.customer_name} • ₹${Number(o.total_amount).toLocaleString('en-IN')} • ${o.order_status}`,
           type: 'order',
-          href: `/admin/orders?orderId=${o.id}`,
+          href: `/admin/orders?id=${o.id}`,
           badge: o.order_status,
         });
       });
@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
           title: `Quote #${q.quote_number || 'QT'} — ${q.customer_name}`,
           subtitle: `${q.project_type || 'Architecture'} • ${q.project_location || 'Guwahati'} • ${q.status}`,
           type: 'quote',
-          href: `/admin/quotes?quoteId=${q.id}`,
+          href: `/admin/quotes?id=${q.id}`,
           badge: q.status,
         });
       });
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
           title: c.full_name,
           subtitle: `${c.email} • ${c.phone || 'No phone'}`,
           type: 'customer',
-          href: `/admin/customers?search=${encodeURIComponent(c.email)}`,
+          href: `/admin/customers?id=${c.id}`,
           badge: 'Client',
         });
       });
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
           title: pr.title,
           subtitle: `${pr.project_type} • ${pr.location} (${pr.year})`,
           type: 'project',
-          href: `/admin/projects?projectId=${pr.id}`,
+          href: `/admin/projects?id=${pr.id}`,
           badge: pr.is_published ? 'Published' : 'Draft',
         });
       });
@@ -155,8 +155,74 @@ export async function GET(req: NextRequest) {
           title: p.name,
           subtitle: `SKU: ${p.sku} • ₹${p.price.toLocaleString('en-IN')}/${p.unit}`,
           type: 'product',
-          href: `/admin/products?highlight=${p.id}`,
+          href: `/admin/products?id=${p.id}`,
           badge: `${p.stock} in stock`,
+        });
+      }
+    }
+
+    for (const o of orders) {
+      if (
+        (o.orderNumber && o.orderNumber.toLowerCase().includes(query)) ||
+        (o.customerName && o.customerName.toLowerCase().includes(query)) ||
+        (o.customerEmail && o.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: o.id,
+          title: `Order #${o.orderNumber}`,
+          subtitle: `${o.customerName} • ₹${o.totalAmount.toLocaleString('en-IN')} • ${o.orderStatus}`,
+          type: 'order',
+          href: `/admin/orders?id=${o.id}`,
+          badge: o.orderStatus,
+        });
+      }
+    }
+
+    for (const q of quotes) {
+      if (
+        (q.quoteNumber && q.quoteNumber.toLowerCase().includes(query)) ||
+        (q.customerName && q.customerName.toLowerCase().includes(query)) ||
+        (q.customerEmail && q.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: q.id,
+          title: `Quote #${q.quoteNumber || 'QT'} — ${q.customerName}`,
+          subtitle: `${q.projectType || 'Architecture'} • ${q.status}`,
+          type: 'quote',
+          href: `/admin/quotes?id=${q.id}`,
+          badge: q.status,
+        });
+      }
+    }
+
+    for (const c of customers) {
+      if (
+        (c.fullName && c.fullName.toLowerCase().includes(query)) ||
+        (c.email && c.email.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: c.id,
+          title: c.fullName,
+          subtitle: `${c.email} • ${c.phone || 'No phone'}`,
+          type: 'customer',
+          href: `/admin/customers?id=${c.id}`,
+          badge: 'Client',
+        });
+      }
+    }
+
+    for (const pr of projects) {
+      if (
+        (pr.title && pr.title.toLowerCase().includes(query)) ||
+        (pr.location && pr.location.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: pr.id,
+          title: pr.title,
+          subtitle: `${pr.projectType} • ${pr.location}`,
+          type: 'project',
+          href: `/admin/projects?id=${pr.id}`,
+          badge: pr.isPublished ? 'Published' : 'Draft',
         });
       }
     }

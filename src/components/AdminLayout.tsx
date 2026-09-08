@@ -91,28 +91,36 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   }, [searchOpen]);
 
-  // Execute global search
+  // Execute global search with AbortController
   useEffect(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) {
       setSearchResults([]);
       return;
     }
+    const abortController = new AbortController();
     const delayDebounce = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(`/api/admin/search?q=${encodeURIComponent(searchQuery)}`);
+        const res = await fetch(`/api/admin/search?q=${encodeURIComponent(searchQuery)}`, {
+          signal: abortController.signal,
+        });
         if (res.ok) {
           const data = await res.json();
           setSearchResults(data.results || []);
         }
-      } catch (e) {
-        console.error('Search error:', e);
+      } catch (e: any) {
+        if (e.name !== 'AbortError') {
+          console.error('Search error:', e);
+        }
       } finally {
         setSearching(false);
       }
     }, 200);
 
-    return () => clearTimeout(delayDebounce);
+    return () => {
+      clearTimeout(delayDebounce);
+      abortController.abort();
+    };
   }, [searchQuery]);
 
   // Register Service Worker and initialize Push Notification state
@@ -205,39 +213,20 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Load notification badge counts
+  // Load notification badge counts via lightweight summary endpoint
   useEffect(() => {
     async function loadNotificationMetrics() {
       try {
-        const [ordRes, qtRes, prodRes] = await Promise.all([
-          fetch('/api/orders'),
-          fetch('/api/quotes'),
-          fetch('/api/products?all=true'),
-        ]);
-
-        let pOrders = 0;
-        let pQuotes = 0;
-        let lStock = 0;
-
-        if (ordRes.ok) {
-          const d = await ordRes.json();
-          pOrders = (d.orders || []).filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+        const res = await fetch('/api/admin/summary');
+        if (res.ok) {
+          const d = await res.json();
+          setNotifCounts({
+            pendingOrders: d.pendingOrders ?? 0,
+            pendingQuotes: d.pendingQuotes ?? 0,
+            lowStock: d.lowStock ?? 0,
+            recentActivity: d.recentActivity ?? 0,
+          });
         }
-        if (qtRes.ok) {
-          const d = await qtRes.json();
-          pQuotes = (d.quotes || []).filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
-        }
-        if (prodRes.ok) {
-          const d = await prodRes.json();
-          lStock = (d.products || []).filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
-        }
-
-        setNotifCounts({
-          pendingOrders: pOrders,
-          pendingQuotes: pQuotes,
-          lowStock: lStock,
-          recentActivity: pOrders + pQuotes + lStock,
-        });
       } catch (err) {
         console.warn('Notification counts load notice:', err);
       }

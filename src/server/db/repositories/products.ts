@@ -10,6 +10,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseProduct } from '../mappers';
+import { ConflictError, ValidationError } from '../../errors';
 
 export async function getProducts(options?: {
   categoryId?: string;
@@ -209,10 +210,42 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return product;
 }
 
+export async function getProductBySku(sku: string): Promise<Product | null> {
+  const normalized = sku.trim();
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .eq('sku', normalized)
+      .maybeSingle();
+
+    if (!error && data) {
+      return mapSupabaseProduct(data);
+    }
+  }
+
+  const db = getDb();
+  return db.products.find((p) => p.sku.toLowerCase() === normalized.toLowerCase()) || null;
+}
+
 export async function createProduct(
   data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<Product> {
   const now = new Date().toISOString();
+
+  // Enforce unique SKU
+  if (data.sku) {
+    const existing = await getProductBySku(data.sku);
+    if (existing) {
+      throw new ConflictError(`A product with SKU '${data.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock
+  if (data.stock !== undefined && (data.stock < 0 || isNaN(Number(data.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -284,6 +317,19 @@ export async function updateProduct(
   partialData: Partial<Product>
 ): Promise<Product | null> {
   const now = new Date().toISOString();
+
+  // Enforce unique SKU if modified
+  if (partialData.sku) {
+    const existing = await getProductBySku(partialData.sku);
+    if (existing && existing.id !== id) {
+      throw new ConflictError(`A product with SKU '${partialData.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock if modified
+  if (partialData.stock !== undefined && (partialData.stock < 0 || isNaN(Number(partialData.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();

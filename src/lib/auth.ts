@@ -2,7 +2,22 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail } from './db';
-import { AdminUser } from '@/types';
+import { AdminUser, AdminRole } from '@/types';
+import { Permission, hasPermission, isOwner } from '@/server/auth/rbac';
+import {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+  SessionTokenPayload,
+} from '@/server/auth/tokens';
+
+export {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+};
 
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
@@ -30,7 +45,7 @@ export function hashPassword(password: string): string {
 }
 
 /**
- * Verifies a plaintext password against a stored "salt:hash" string.
+ * Verifies a plaintext password against a stored "salt:hash" string using timing-safe comparison.
  */
 export function verifyPassword(password: string, storedHash: string): boolean {
   try {
@@ -43,6 +58,34 @@ export function verifyPassword(password: string, storedHash: string): boolean {
   }
 }
 
+/**
+ * Strong password policy validator:
+ * Minimum 8 characters, requires at least one letter and one number or special symbol.
+ */
+export function isStrongPassword(password: string): { valid: boolean; reason?: string } {
+  if (!password || typeof password !== 'string') {
+    return { valid: false, reason: 'Password is required' };
+  }
+  if (password.length < 8) {
+    return { valid: false, reason: 'Password must be at least 8 characters long' };
+  }
+  if (!/[a-zA-Z]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one letter' };
+  }
+  if (!/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one number or symbol' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Generates a cryptographically random, secure temporary password
+ */
+export function generateSecureTemporaryPassword(prefix = 'Balaji'): string {
+  const randomChars = crypto.randomBytes(6).toString('base64').replace(/[^a-zA-Z0-9]/g, 'X');
+  return `${prefix}#${randomChars}!`;
+}
+
 export interface AdminTokenPayload {
   id: string;
   email: string;
@@ -52,28 +95,36 @@ export interface AdminTokenPayload {
 }
 
 /**
- * Signs an admin JWT session token
+ * Signs an admin JWT session token (backward compatibility wrapper around signSessionToken)
  */
 export function signAdminToken(payload: AdminTokenPayload): string {
-  return jwt.sign(payload, getJwtSecret(), { expiresIn: '7d' });
+  return signSessionToken({
+    id: payload.id,
+    email: payload.email,
+    name: payload.name,
+    role: payload.role as AdminRole,
+    mustChangePassword: payload.mustChangePassword,
+  });
 }
 
 /**
- * Verifies and decodes an admin JWT token
+ * Verifies and decodes an admin JWT token, supporting all valid admin roles
  */
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
-  try {
-    const decoded = jwt.verify(token, getJwtSecret()) as any;
-    if (
-      decoded &&
-      (decoded.role === 'owner' || decoded.role === 'employee' || decoded.role === 'super_admin')
-    ) {
-      return decoded as AdminTokenPayload;
-    }
-    return null;
-  } catch {
-    return null;
+  const session = verifySessionToken(token);
+  if (!session) return null;
+
+  const validRoles: AdminRole[] = ['owner', 'super_admin', 'employee', 'editor', 'viewer'];
+  if (validRoles.includes(session.role)) {
+    return {
+      id: session.id,
+      email: session.email,
+      name: session.name,
+      role: session.role,
+      mustChangePassword: session.mustChangePassword,
+    };
   }
+  return null;
 }
 
 /**
@@ -107,89 +158,73 @@ export async function getAuthenticatedAdmin(req: NextRequest): Promise<AdminUser
 }
 
 /**
- * Enforces active admin session (Owner or Employee)
+ * Enforces active admin session (any authorized admin role)
  */
 export async function requireAuthenticatedAdmin(
   req: NextRequest
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  const token = getAdminTokenFromRequest(req);
-  if (!token) {
+  const admin = await getAuthenticatedAdmin(req);
+  if (!admin) {
     return {
       response: NextResponse.json(
-        { success: false, error: 'Authentication required. Please sign in to the studio portal.' },
+        { success: false, error: 'Authentication required. Please sign in to the studio portal.', code: 'UNAUTHORIZED' },
         { status: 401 }
       ),
     };
   }
-
-  const payload = verifyAdminToken(token);
-  if (!payload) {
-    return {
-      response: NextResponse.json(
-        { success: false, error: 'Invalid or expired session. Please sign in again.' },
-        { status: 401 }
-      ),
-    };
-  }
-
-  try {
-    const admin = await getAdminByEmail(payload.email);
-    if (!admin) {
-      return {
-        response: NextResponse.json(
-          { success: false, error: 'Admin account not found.' },
-          { status: 401 }
-        ),
-      };
-    }
-
-    if (admin.status === 'disabled') {
-      return {
-        response: NextResponse.json(
-          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
-          { status: 403 }
-        ),
-      };
-    }
-
-    const { passwordHash: _, ...safeAdmin } = admin;
-    return { admin: safeAdmin };
-  } catch (err: any) {
-    return {
-      response: NextResponse.json(
-        { success: false, error: err.message || 'Authorization failed' },
-        { status: 500 }
-      ),
-    };
-  }
+  return { admin };
 }
 
 /**
- * Enforces OWNER-ONLY privileges (403 for employee, 401 for unauthenticated)
+ * Enforces granular server-side RBAC permission
  */
-export async function requireOwner(
-  req: NextRequest
+export async function requirePermission(
+  req: NextRequest,
+  permission: Permission
 ): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  const authResult = await requireAuthenticatedAdmin(req);
-  if ('response' in authResult) {
-    return authResult;
-  }
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
 
-  const { admin } = authResult;
-  if (admin.role !== 'owner' && admin.role !== 'super_admin') {
+  const allowed = hasPermission(auth.admin.role, permission);
+  if (!allowed) {
     return {
       response: NextResponse.json(
-        { success: false, error: 'Forbidden: Studio Owner privileges required.' },
+        {
+          success: false,
+          error: `Access Denied: Your account role (${auth.admin.role}) lacks the required '${permission}' permission.`,
+          code: 'FORBIDDEN',
+        },
         { status: 403 }
       ),
     };
   }
 
-  return { admin };
+  return { admin: auth.admin };
 }
 
 /**
- * Enforces Owner or Employee access for operational features
+ * Enforces Owner / Super Admin access only
+ */
+export async function requireOwner(
+  req: NextRequest
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!isOwner(auth.admin)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Only studio owners can perform this action.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
+}
+
+/**
+ * Backward compatibility alias for requireAuthenticatedAdmin
  */
 export async function requireOwnerOrEmployee(
   req: NextRequest
@@ -197,84 +232,44 @@ export async function requireOwnerOrEmployee(
   return requireAuthenticatedAdmin(req);
 }
 
-/**
- * Customer session payload
- */
-export interface CustomerTokenPayload {
-  id: string;
-  email: string;
-  name: string;
-  role: 'customer';
-  provider?: 'google' | 'email';
+export async function requireRole(
+  req: NextRequest,
+  allowedRoles: AdminRole[]
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!allowedRoles.includes(auth.admin.role)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Insufficient permissions.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
 }
 
-/**
- * Signs a customer JWT session token (30-day session)
- */
-export function signCustomerToken(payload: CustomerTokenPayload): string {
+// Customer Authentication Utilities
+export function getCustomerTokenFromRequest(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get('balaji_customer_token')?.value || req.cookies.get('balaji_token')?.value;
+  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+  return cookieToken || authHeader || null;
+}
+
+export function signCustomerToken(payload: { id: string; email: string; name: string; role: 'customer'; provider?: string }): string {
   return jwt.sign(payload, getJwtSecret(), { expiresIn: '30d' });
 }
 
-/**
- * Verifies and decodes a customer JWT token
- */
-export function verifyCustomerToken(token: string): CustomerTokenPayload | null {
+export function verifyCustomerToken(token: string): { id: string; email: string; name: string; role: string; provider?: string } | null {
   try {
     const decoded = jwt.verify(token, getJwtSecret()) as any;
-    if (decoded && (decoded.role === 'customer' || !decoded.role)) {
-      return {
-        id: decoded.id || '',
-        email: decoded.email,
-        name: decoded.name || 'Client',
-        role: 'customer',
-        provider: decoded.provider || 'email',
-      };
+    if (decoded && decoded.role === 'customer') {
+      return decoded;
     }
     return null;
   } catch {
     return null;
   }
-}
-
-/**
- * Extracts customer session token from cookie or header
- */
-export function getCustomerTokenFromRequest(req: NextRequest): string | null {
-  const cookieToken = req.cookies.get('balaji_customer_session')?.value;
-  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-  return cookieToken || authHeader || null;
-}
-
-/**
- * Authoritatively resolves user role from email against the database
- */
-export async function resolveAccountRole(email: string): Promise<{
-  role: 'owner' | 'employee' | 'customer';
-  adminUser?: AdminUser;
-  isDisabled?: boolean;
-}> {
-  const normalizedEmail = email.trim().toLowerCase();
-  try {
-    const admin = await getAdminByEmail(normalizedEmail);
-    if (admin) {
-      if (admin.status === 'disabled') {
-        return { role: 'customer', isDisabled: true };
-      }
-      const { passwordHash: _, ...safeAdmin } = admin;
-      const role = (admin.role === 'owner' || admin.role === 'super_admin') ? 'owner' : 'employee';
-      return { role, adminUser: safeAdmin };
-    }
-  } catch (err) {
-    console.error('Role resolution check notice:', err);
-  }
-  return { role: 'customer' };
-}
-
-/**
- * Enforces active admin verification
- */
-export async function requireActiveAdmin(
-  req: NextRequest
-): Promise<{ admin: AdminUser } | { response: NextResponse }> {
-  return requireAuthenticatedAdmin(req);
 }

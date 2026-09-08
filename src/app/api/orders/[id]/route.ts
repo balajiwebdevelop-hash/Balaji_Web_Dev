@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getOrderById, updateOrderStatus, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requireAuthenticatedAdmin, requirePermission } from '@/lib/auth';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
   try {
     const order = await getOrderById(params.id);
     if (!order) {
@@ -12,12 +16,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
     return NextResponse.json({ success: true, order });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'orders.update_status');
   if ('response' in auth) return auth.response;
 
   try {
@@ -60,6 +64,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     return NextResponse.json({ success: true, order: updated });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }

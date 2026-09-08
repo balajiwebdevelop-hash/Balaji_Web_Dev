@@ -172,27 +172,39 @@ export async function GET(req: NextRequest) {
     const totalInventoryValuation = products.reduce((sum, p) => sum + (p.price * p.stock || 0), 0);
     const averageOrderValue = filteredOrders.length > 0 ? Math.round(periodRevenue / filteredOrders.length) : 0;
 
-    // Monthly Sales Graph (Last 6 intervals)
+    // Monthly Sales Graph (Last 6 intervals, timezone and year-boundary accurate)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const buckets: { [key: string]: number } = {};
-    const d = new Date();
+    const nowRef = new Date();
+    const intervals: Array<{ key: string; label: string; year: number; month: number; val: number }> = [];
     for (let i = 5; i >= 0; i--) {
-      const monthIdx = (d.getMonth() - i + 12) % 12;
-      buckets[months[monthIdx]] = 0;
+      const date = new Date(nowRef.getFullYear(), nowRef.getMonth() - i, 1);
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      intervals.push({
+        key: `${y}-${m}`,
+        label: months[m],
+        year: y,
+        month: m,
+        val: 0,
+      });
     }
 
+    const intervalMap = new Map(intervals.map((it) => [it.key, it]));
+
     orders.forEach((o) => {
-      const ordMonth = months[new Date(o.createdAt).getMonth()];
-      if (buckets[ordMonth] !== undefined) {
-        buckets[ordMonth] += o.totalAmount || 0;
+      const od = new Date(o.createdAt);
+      const key = `${od.getFullYear()}-${od.getMonth()}`;
+      const item = intervalMap.get(key);
+      if (item) {
+        item.val += o.totalAmount || 0;
       }
     });
 
-    const maxVal = Math.max(...Object.values(buckets), 100000);
-    const salesGraphData = Object.entries(buckets).map(([label, val]) => ({
-      label,
-      val,
-      heightPercent: Math.max(12, Math.round((val / maxVal) * 100)),
+    const maxVal = Math.max(...intervals.map((it) => it.val), 100000);
+    const salesGraphData = intervals.map((it) => ({
+      label: it.label,
+      val: it.val,
+      heightPercent: Math.max(12, Math.round((it.val / maxVal) * 100)),
     }));
 
     // Category Sales Breakdown

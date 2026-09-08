@@ -1,37 +1,95 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
-import { verifyPassword, signAdminToken, signCustomerToken } from '@/lib/auth';
+import { verifyPassword, signSessionToken, signCustomerToken } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
+// Memory-backed rate limiter for login protection: max 5 failed attempts per 15 minutes
+const loginAttempts = new Map<string, { count: number; firstAttempt: number }>();
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_WINDOW_MS = 15 * 60 * 1000;
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry) return false;
+
+  if (now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.delete(key);
+    return false;
+  }
+
+  return entry.count >= MAX_ATTEMPTS;
+}
+
+function recordFailedAttempt(key: string): void {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry || now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.set(key, { count: 1, firstAttempt: now });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function clearAttempts(key: string): void {
+  loginAttempts.delete(key);
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { email, password, isAdminLogin = false } = await req.json().catch(() => ({}));
 
     if (!email || !password) {
-      return NextResponse.json({ success: false, error: 'Email and password required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Email and password are required', code: 'MISSING_CREDENTIALS' },
+        { status: 400 }
+      );
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+    const rateLimitKey = `${clientIp}:${normalizedEmail}`;
 
-    // 1. Check if user is in Authoritative Admins Table
+    // 1. Check Rate Limiting
+    if (isRateLimited(rateLimitKey)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many failed login attempts. Account access is temporarily locked for 15 minutes.',
+          code: 'RATE_LIMITED',
+        },
+        { status: 429 }
+      );
+    }
+
+    // 2. Check if user is in Authoritative Admins Table
     const admin = await getAdminByEmail(normalizedEmail);
+
     if (admin) {
       if (admin.status === 'disabled') {
+        recordFailedAttempt(rateLimitKey);
         return NextResponse.json(
-          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
+          { success: false, error: 'Your administrative account has been deactivated. Please contact the studio owner.', code: 'ACCOUNT_DISABLED' },
           { status: 403 }
         );
       }
 
       const isMatch = verifyPassword(password, admin.passwordHash);
       if (!isMatch) {
-        return NextResponse.json({ success: false, error: 'Invalid email or password.' }, { status: 401 });
+        recordFailedAttempt(rateLimitKey);
+        return NextResponse.json(
+          { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+          { status: 401 }
+        );
       }
 
+      // Successful Admin Authentication
+      clearAttempts(rateLimitKey);
       await recordAdminLogin(admin.id);
 
-      const token = signAdminToken({
+      // Issue rotated, secure session token
+      const token = signSessionToken({
         id: admin.id,
         email: admin.email,
         name: admin.name,
@@ -46,7 +104,7 @@ export async function POST(req: NextRequest) {
         action: auditAction,
         entity: 'Auth',
         entityId: admin.id,
-        details: { role: admin.role, method: 'password', mustChangePassword: admin.mustChangePassword },
+        details: { role: admin.role, method: 'password', ip: clientIp },
       });
 
       const adminPayload = {
@@ -54,7 +112,7 @@ export async function POST(req: NextRequest) {
         email: admin.email,
         name: admin.name,
         role: admin.role,
-        status: admin.status,
+        status: admin.status || 'active',
         mustChangePassword: Boolean(admin.mustChangePassword),
       };
 
@@ -79,7 +137,17 @@ export async function POST(req: NextRequest) {
       return response;
     }
 
-    // 2. Standard Customer Authentication
+    // 3. If request came from admin portal (/admin/login or isAdminLogin), do NOT fall through to customer creation
+    const referer = req.headers.get('referer') || '';
+    if (isAdminLogin || referer.includes('/admin/login')) {
+      recordFailedAttempt(rateLimitKey);
+      return NextResponse.json(
+        { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+        { status: 401 }
+      );
+    }
+
+    // 4. Standard Customer Authentication (Public website only)
     const customer = await upsertCustomer({
       email: normalizedEmail,
       fullName: normalizedEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
@@ -118,6 +186,10 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: 'Authentication failed. Please try again.' }, { status: 500 });
+    console.error('[Login Exception]', err);
+    return NextResponse.json(
+      { success: false, error: 'Authentication service temporarily unavailable. Please retry.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
   }
 }

@@ -5,6 +5,7 @@ import { requireOwnerOrEmployee } from '@/lib/auth';
 import { getServiceSupabase, isSupabaseConfigured, isProduction } from '@/server/db/client';
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
+const ALLOWED_BUCKETS = new Set(['products', 'projects', 'brand', 'avatars']);
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',
   'image/png',
@@ -20,10 +21,24 @@ export const dynamic = 'force-dynamic';
 function validateImageMagicBytes(buffer: Buffer, extension: string): boolean {
   if (buffer.length < 4) return false;
 
-  // SVG inspection (text XML or <svg)
+  // SVG inspection (text XML or <svg) with security sanitization
   if (extension === '.svg') {
-    const textStart = buffer.slice(0, 100).toString('utf8').trim().toLowerCase();
-    return textStart.includes('<svg') || textStart.includes('<?xml');
+    const text = buffer.toString('utf8').toLowerCase();
+    const isSvg = text.includes('<svg') || text.includes('<?xml');
+    if (!isSvg) return false;
+
+    // Disallow executable script tags or malicious handlers
+    if (
+      text.includes('<script') ||
+      text.includes('onload=') ||
+      text.includes('onerror=') ||
+      text.includes('onclick=') ||
+      text.includes('javascript:') ||
+      text.includes('data:text/html')
+    ) {
+      return false;
+    }
+    return true;
   }
 
   // JPEG: FF D8 FF
@@ -64,7 +79,10 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
-    const bucket = (formData.get('bucket') as string) || 'products';
+    let bucket = (formData.get('bucket') as string) || 'products';
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      bucket = 'products';
+    }
 
     if (!file) {
       return NextResponse.json({ success: false, error: 'No image file provided' }, { status: 400 });
@@ -99,7 +117,7 @@ export async function POST(req: NextRequest) {
     // Validate actual file content header (magic bytes)
     if (!validateImageMagicBytes(buffer, extension)) {
       return NextResponse.json(
-        { success: false, error: 'File content does not match the specified image format header.' },
+        { success: false, error: 'File content does not match the specified image format header or contains unsafe payload.' },
         { status: 400 }
       );
     }
@@ -111,8 +129,6 @@ export async function POST(req: NextRequest) {
     if (isSupabaseConfigured()) {
       try {
         const supabase = getServiceSupabase();
-
-        await supabase.storage.createBucket(bucket, { public: true }).catch(() => {});
 
         const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
           contentType: file.type || 'image/jpeg',

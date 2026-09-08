@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProductById, updateProduct, deleteProduct, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission, requireAuthenticatedAdmin } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,16 +22,17 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.update');
   if ('response' in auth) return auth.response;
 
   try {
     const partialData = await req.json();
+    validateProductInput(partialData, true);
     const updated = await updateProduct(params.id, partialData);
 
     if (!updated) {
@@ -66,12 +69,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.delete');
   if ('response' in auth) return auth.response;
 
   try {
@@ -109,6 +112,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }

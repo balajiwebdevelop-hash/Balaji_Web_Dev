@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Users, Search, ShoppingBag, Mail, Phone, MapPin } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order } from '@/types';
@@ -15,10 +16,19 @@ interface AggregatedCustomer {
   lastOrderDate: string;
 }
 
-export default function AdminCustomersPage() {
+function AdminCustomersContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams?.get('search') || searchParams?.get('id') || '';
+
   const [customers, setCustomers] = useState<AggregatedCustomer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialQuery);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setSearch(initialQuery);
+    }
+  }, [initialQuery]);
 
   useEffect(() => {
     async function loadCustomers() {
@@ -151,5 +161,13 @@ export default function AdminCustomersPage() {
         </div>
       </div>
     </AdminLayout>
+  );
+}
+
+export default function AdminCustomersPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading client directory...</div>}>
+      <AdminCustomersContent />
+    </Suspense>
   );
 }

@@ -1,18 +1,28 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Boxes, AlertTriangle, Check, Search, Save, RefreshCw } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Product } from '@/types';
 
-export default function AdminInventoryPage() {
+function AdminInventoryContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams?.get('search') || searchParams?.get('id') || '';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [stockChanges, setStockChanges] = useState<Record<string, number>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [saveSuccessId, setSaveSuccessId] = useState<string | null>(null);
   const [filterLowOnly, setFilterLowOnly] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearch(initialSearch);
+    }
+  }, [initialSearch]);
 
   const loadProducts = async () => {
     try {
@@ -33,35 +43,42 @@ export default function AdminInventoryPage() {
   }, []);
 
   const handleStockInputChange = (productId: string, val: number) => {
+    const sanitized = isNaN(val) ? 0 : Math.max(0, Math.floor(val));
     setStockChanges({
       ...stockChanges,
-      [productId]: val,
+      [productId]: sanitized,
     });
   };
 
   const handleSaveStock = async (product: Product) => {
-    const newStock = stockChanges[product.id] !== undefined ? stockChanges[product.id] : product.stock;
+    const rawStock = stockChanges[product.id] !== undefined ? stockChanges[product.id] : product.stock;
+    const numStock = Number(rawStock);
+
+    if (isNaN(numStock) || numStock < 0 || !Number.isInteger(numStock)) {
+      alert('Stock quantity must be a non-negative whole integer.');
+      return;
+    }
+
     setSavingId(product.id);
 
     try {
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stock: Number(newStock) }),
+        body: JSON.stringify({ stock: numStock }),
       });
 
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success && data.product) {
+      if (res.ok && data.product) {
         setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);
         setTimeout(() => setSaveSuccessId(null), 2500);
-      } else if (res.ok) {
-        setProducts((prev) => prev.map((p) => (p.id === product.id ? { ...p, stock: Number(newStock) } : p)));
-        setSaveSuccessId(product.id);
-        setTimeout(() => setSaveSuccessId(null), 2500);
+      } else {
+        alert(`Failed to update stock: ${data.error || 'Server error'}`);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to update stock', e);
+      alert(`Network error updating stock: ${e.message}`);
     } finally {
       setSavingId(null);
     }
@@ -313,5 +330,13 @@ export default function AdminInventoryPage() {
         </div>
       </div>
     </AdminLayout>
+  );
+}
+
+export default function AdminInventoryPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading inventory records...</div>}>
+      <AdminInventoryContent />
+    </Suspense>
   );
 }

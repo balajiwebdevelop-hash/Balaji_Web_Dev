@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getQuoteById, updateQuoteStatus, createOrderAtomic, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'quotes.convert');
   if ('response' in auth) return auth.response;
 
   try {
@@ -93,6 +94,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     });
   } catch (err: any) {
     console.error('Quote conversion error:', err);
-    return NextResponse.json({ success: false, error: err.message || 'Conversion failed.' }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }

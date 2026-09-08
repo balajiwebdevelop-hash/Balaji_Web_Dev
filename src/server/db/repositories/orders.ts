@@ -10,6 +10,7 @@ import {
 } from '../client';
 import { mapSupabaseOrder } from '../mappers';
 import { cancelOrderAtomic } from '../transactions/orders';
+import { validateOrderStatusTransition } from '../../validation/schemas';
 
 export async function getOrders(options?: {
   limit?: number;
@@ -114,6 +115,11 @@ export async function updateOrderStatus(
 ): Promise<Order | null> {
   const currentOrder = await getOrderById(id);
   if (!currentOrder) return null;
+
+  // Enforce formal order state machine
+  if (orderStatus) {
+    validateOrderStatusTransition(currentOrder.orderStatus, orderStatus);
+  }
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();

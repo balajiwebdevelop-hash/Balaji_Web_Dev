@@ -9,6 +9,8 @@ import {
   saveDb,
 } from '../client';
 import { mapAdminUser } from '../mappers';
+import { protectOwnerFromModification } from '../../auth/rbac';
+import { revokeAllSessionsForAdmin } from '../../auth/tokens';
 
 export async function getAdmins(): Promise<AdminUser[]> {
   if (await isSupabaseAvailable()) {
@@ -161,15 +163,22 @@ export async function updateEmployeeAdmin(
     status?: 'active' | 'disabled';
     mustChangePassword?: boolean;
   },
-  actor?: { id: string; email: string }
+  actor?: { id: string; email: string; role?: any }
 ): Promise<AdminUser | null> {
   const current = await getAdminById(id);
   if (!current) return null;
 
-  if (current.role === 'owner' || current.role === 'super_admin') {
-    if (partialData.status === 'disabled') {
-      throw new Error('Cannot disable the master studio owner account.');
-    }
+  if (actor) {
+    protectOwnerFromModification(
+      current as any,
+      actor as any,
+      partialData.status === 'disabled' ? 'disable' : 'downgrade'
+    );
+  }
+
+  // If status is being disabled, immediately revoke all active sessions
+  if (partialData.status === 'disabled') {
+    revokeAllSessionsForAdmin(id);
   }
 
   const now = new Date().toISOString();
@@ -211,14 +220,17 @@ export async function updateEmployeeAdmin(
 
 export async function deleteEmployeeAdmin(
   id: string,
-  actor?: { id: string; email: string }
+  actor?: { id: string; email: string; role?: any }
 ): Promise<boolean> {
   const target = await getAdminById(id);
   if (!target) return false;
 
-  if (target.role === 'owner' || target.role === 'super_admin') {
-    throw new Error('Cannot delete the master studio owner account.');
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'delete');
   }
+
+  // Revoke any active sessions
+  revokeAllSessionsForAdmin(id);
 
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
@@ -239,11 +251,23 @@ export async function deleteEmployeeAdmin(
 
 export async function resetEmployeePassword(
   id: string,
-  temporaryPasswordHash: string,
-  actor?: { id: string; email: string }
+  temporaryPasswordOrHash: string,
+  actor?: { id: string; email: string; role?: any }
 ): Promise<boolean> {
   const target = await getAdminById(id);
   if (!target) return false;
+
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'reset_password');
+  }
+
+  // Derive PBKDF2 hash if plaintext was supplied
+  const derivedHash = temporaryPasswordOrHash.includes(':')
+    ? temporaryPasswordOrHash
+    : hashBootstrapPassword(temporaryPasswordOrHash);
+
+  // Revoke all previous active sessions
+  revokeAllSessionsForAdmin(id);
 
   const now = new Date().toISOString();
 
@@ -252,7 +276,7 @@ export async function resetEmployeePassword(
     const { error } = await supabase
       .from('admins')
       .update({
-        password_hash: temporaryPasswordHash,
+        password_hash: derivedHash,
         must_change_password: true,
         updated_at: now,
       })
@@ -265,7 +289,7 @@ export async function resetEmployeePassword(
   const db = getDb();
   const adm = db.admins.find((a) => a.id === id);
   if (adm) {
-    adm.passwordHash = temporaryPasswordHash;
+    adm.passwordHash = derivedHash;
     adm.mustChangePassword = true;
     adm.updatedAt = now;
     saveDb(db);

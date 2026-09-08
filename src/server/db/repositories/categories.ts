@@ -10,6 +10,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseCategory } from '../mappers';
+import { ConflictError } from '../../errors';
 
 export async function getCategories(): Promise<Category[]> {
   const now = Date.now();
@@ -234,6 +235,17 @@ export async function updateCategory(
 export async function deleteCategory(id: string): Promise<boolean> {
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
+
+    // Prevent deletion if products depend on this category
+    const { count, error: countErr } = await supabase
+      .from('products')
+      .select('id', { count: 'exact', head: true })
+      .eq('category_id', id);
+
+    if (!countErr && (count || 0) > 0) {
+      throw new ConflictError(`Cannot delete category: There are ${count} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+    }
+
     const { error } = await supabase.from('categories').delete().eq('id', id);
     if (error) {
       console.error('Supabase deleteCategory error:', error);
@@ -244,6 +256,11 @@ export async function deleteCategory(id: string): Promise<boolean> {
   }
 
   const db = getDb();
+  const prodCount = db.products.filter((p) => p.categoryId === id).length;
+  if (prodCount > 0) {
+    throw new ConflictError(`Cannot delete category: There are ${prodCount} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+  }
+
   const initialLength = db.categories.length;
   db.categories = db.categories.filter((c) => c.id !== id);
   if (db.categories.length < initialLength) {

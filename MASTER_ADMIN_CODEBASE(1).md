@@ -1,0 +1,18621 @@
+# BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
+> **Document**: `admincodebase.md`  
+> **Generation Timestamp**: `20260908-182453`  
+> **Platform**: Balaji Architect & Interiors Executive Command Center & Atelier Management Suite  
+> **Architecture**: Next.js 14 App Router, TypeScript 5.7, Tailwind CSS, PBKDF2/JWT Cryptographic Authentication, Supabase / High-Performance Resilient Persistence  
+> **Admin Panel URL**: `/admin` (Executive Command Center) & `/admin/login` (Stealth Atelier Gateway)  
+> **Default Super Admin**: `vicks@balaji.com`  
+> **Total Admin Full-Stack Files Included**: 71
+
+---
+
+## 1. ARCHITECTURAL OVERVIEW & RBAC SPECIFICATION
+
+### 1.1 Atelier Administration Architecture
+The Balaji Architect & Interiors administrative subsystem is designed as an atelier-grade management platform with multi-layered security, real-time command search, comprehensive telemetry, and an immutable security audit trail.
+
+1. **Authentication Layer**:
+   - Double-barrier authentication with PBKDF2 salt-derived hashing (10,000 iterations, 64-byte key) and high-entropy JWT session tokens.
+   - HttpOnly, SameSite=Lax, protocol-adaptive secure session cookies (`balaji_admin_session`).
+   - Forced bootstrap password changes for initial credentials.
+   - Non-blocking database reachability check preventing DNS timeouts or external network hangs (<1ms fallback to atomic storage).
+
+2. **Role-Based Access Control (RBAC)**:
+   - `owner` / `super_admin`: Absolute authority over brand identity, employee accounts, financial ledgers, system settings, database management, and emergency broadcast flags.
+   - `employee`: Authorized for daily operational duties including order fulfillment, customer status updates, inventory counts, quote estimation, and client inquiries.
+   - `editor`: Catalog, media portfolio, bespoke projects, architectural services, and content curation.
+   - `viewer`: Read-only telemetry, audit logs, catalog inspection, and performance metrics.
+
+3. **Resilient Data Access**:
+   - Authoritative Supabase integration with automatic non-blocking health probing (600ms timeout, 30s cache).
+   - Instant (<1ms) fallback to local verified atomic persistence if external database is unavailable.
+   - Zero hard crashes or silent corruption in production mode.
+
+4. **Stealth Gateway**:
+   - Discreet entry trigger hidden in the public atelier website footer requiring three rapid consecutive clicks on the copyright notice.
+   - Complete segregation from normal client/customer login flows (`/account`).
+
+5. **Omnipresent Command Search & Push Notifications**:
+   - Universal search palette (`Ctrl+K` / `Cmd+K`) querying products, orders, quotes, customers, and employees in real time.
+   - Web Push notification framework with VAPID key pairs for order notifications, quotation requests, and low-inventory alerts.
+
+---
+
+## 2. INDEX OF ALL ADMIN FULL-STACK SOURCE FILES
+
+| # | File Path | Component / Layer | Description |
+|---|---|---|---|
+| 1 | [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx) | Admin UI Shell & Context | [Jump to Code](#src-components-adminlayout-tsx) |
+| 2 | [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx) | Admin UI Shell & Context | [Jump to Code](#src-context-adminauthcontext-tsx) |
+| 3 | [`src/components/Footer.tsx`](#src-components-footer-tsx) | Admin UI Shell & Context | [Jump to Code](#src-components-footer-tsx) |
+| 4 | [`src/app/admin/page.tsx`](#src-app-admin-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-page-tsx) |
+| 5 | [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-login-page-tsx) |
+| 6 | [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-products-page-tsx) |
+| 7 | [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-categories-page-tsx) |
+| 8 | [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-inventory-page-tsx) |
+| 9 | [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-orders-page-tsx) |
+| 10 | [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-quotes-page-tsx) |
+| 11 | [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-projects-page-tsx) |
+| 12 | [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-services-page-tsx) |
+| 13 | [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-customers-page-tsx) |
+| 14 | [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-employees-page-tsx) |
+| 15 | [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-settings-page-tsx) |
+| 16 | [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-audit-logs-page-tsx) |
+| 17 | [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-login-route-ts) |
+| 18 | [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-me-route-ts) |
+| 19 | [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-change-password-route-ts) |
+| 20 | [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-callback-route-ts) |
+| 21 | [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-logout-route-ts) |
+| 22 | [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-forgot-password-route-ts) |
+| 23 | [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-analytics-dashboard-route-ts) |
+| 24 | [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees-route-ts) |
+| 25 | [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees-id-route-ts) |
+| 26 | [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-search-route-ts) |
+| 27 | [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-export-route-ts) |
+| 28 | [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-settings-route-ts) |
+| 29 | [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-upload-route-ts) |
+| 30 | [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-audit-logs-route-ts) |
+| 31 | [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-notifications-test-route-ts) |
+| 32 | [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts) | Resource API Route | [Jump to Code](#src-app-api-notifications-subscribe-route-ts) |
+| 33 | [`src/app/api/products/route.ts`](#src-app-api-products-route-ts) | Resource API Route | [Jump to Code](#src-app-api-products-route-ts) |
+| 34 | [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-products-id-route-ts) |
+| 35 | [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories-route-ts) |
+| 36 | [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories-id-route-ts) |
+| 37 | [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders-route-ts) |
+| 38 | [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders-id-route-ts) |
+| 39 | [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-route-ts) |
+| 40 | [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-id-route-ts) |
+| 41 | [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-id-convert-route-ts) |
+| 42 | [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects-route-ts) |
+| 43 | [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects-id-route-ts) |
+| 44 | [`src/app/api/services/route.ts`](#src-app-api-services-route-ts) | Resource API Route | [Jump to Code](#src-app-api-services-route-ts) |
+| 45 | [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-services-id-route-ts) |
+| 46 | [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries-route-ts) |
+| 47 | [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries-id-route-ts) |
+| 48 | [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts) | Auth & RBAC Layer | [Jump to Code](#src-server-auth-rbac-ts) |
+| 49 | [`src/lib/auth.ts`](#src-lib-auth-ts) | Auth & RBAC Layer | [Jump to Code](#src-lib-auth-ts) |
+| 50 | [`src/server/db/client.ts`](#src-server-db-client-ts) | Server / DB | [Jump to Code](#src-server-db-client-ts) |
+| 51 | [`src/server/db/mappers.ts`](#src-server-db-mappers-ts) | Server / DB | [Jump to Code](#src-server-db-mappers-ts) |
+| 52 | [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-employees-ts) |
+| 53 | [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-audit-ts) |
+| 54 | [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-orders-ts) |
+| 55 | [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-quotes-ts) |
+| 56 | [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-products-ts) |
+| 57 | [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-categories-ts) |
+| 58 | [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-projects-ts) |
+| 59 | [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-services-ts) |
+| 60 | [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-settings-ts) |
+| 61 | [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-customers-ts) |
+| 62 | [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-enquiries-ts) |
+| 63 | [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts) | Server / DB | [Jump to Code](#src-server-db-transactions-orders-ts) |
+| 64 | [`src/server/db/index.ts`](#src-server-db-index-ts) | Server / DB | [Jump to Code](#src-server-db-index-ts) |
+| 65 | [`src/lib/db.ts`](#src-lib-db-ts) | Server / DB | [Jump to Code](#src-lib-db-ts) |
+| 66 | [`src/lib/supabase.ts`](#src-lib-supabase-ts) | Server / DB | [Jump to Code](#src-lib-supabase-ts) |
+| 67 | [`src/types/index.ts`](#src-types-index-ts) | Type Definitions | [Jump to Code](#src-types-index-ts) |
+| 68 | [`src/lib/push-client.ts`](#src-lib-push-client-ts) | Server / DB | [Jump to Code](#src-lib-push-client-ts) |
+| 69 | [`src/lib/seedData.ts`](#src-lib-seeddata-ts) | Server / DB | [Jump to Code](#src-lib-seeddata-ts) |
+| 70 | [`supabase/schema.sql`](#supabase-schema-sql) | Database Schema | [Jump to Code](#supabase-schema-sql) |
+| 71 | [`data/db.json`](#data-db-json) | Data Fixture | [Jump to Code](#data-db-json) |
+
+---
+
+## 3. COMPLETE ADMIN FULL-STACK SOURCE CODE
+
+### <a id="src-components-adminlayout-tsx"></a>1. `src/components/AdminLayout.tsx`
+
+> **Path**: `src/components/AdminLayout.tsx` | **Lines**: 1178 | **Size**: 53.3 KB
+
+```tsx
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  LayoutDashboard,
+  Package,
+  FolderTree,
+  Boxes,
+  ShoppingBag,
+  Building2,
+  Compass,
+  FileText,
+  Users,
+  Settings,
+  UserCheck,
+  Bell,
+  LogOut,
+  Menu,
+  X,
+  ExternalLink,
+  Radio,
+  Search,
+  Plus,
+  Activity,
+  CheckCircle2,
+  AlertTriangle,
+  Clock,
+  ArrowRight,
+  Shield,
+  ChevronDown,
+} from 'lucide-react';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
+
+export function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { admin, loading, logout } = useAdminAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileNotifOpen, setMobileNotifOpen] = useState(false);
+  const [mobileQuickOpen, setMobileQuickOpen] = useState(false);
+  const [pushStatus, setPushStatus] = useState<string>('default');
+
+  // Global Search Palette State
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searching, setSearching] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Notification Center State
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifCounts, setNotifCounts] = useState<{
+    pendingOrders: number;
+    pendingQuotes: number;
+    lowStock: number;
+    recentActivity: number;
+  }>({ pendingOrders: 0, pendingQuotes: 0, lowStock: 0, recentActivity: 0 });
+
+  // Quick Action Dropdown State
+  const [quickActionOpen, setQuickActionOpen] = useState(false);
+
+  const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
+
+  // Keyboard shortcut Ctrl+K / Cmd+K for global search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+      if (e.key === 'Escape') {
+        setSearchOpen(false);
+        setNotifOpen(false);
+        setQuickActionOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Focus search input on open
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 50);
+    } else {
+      setSearchQuery('');
+      setSearchResults([]);
+    }
+  }, [searchOpen]);
+
+  // Execute global search with AbortController
+  useEffect(() => {
+    if (!searchQuery.trim() || searchQuery.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+    const abortController = new AbortController();
+    const delayDebounce = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const res = await fetch(`/api/admin/search?q=${encodeURIComponent(searchQuery)}`, {
+          signal: abortController.signal,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data.results || []);
+        }
+      } catch (e: any) {
+        if (e.name !== 'AbortError') {
+          console.error('Search error:', e);
+        }
+      } finally {
+        setSearching(false);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(delayDebounce);
+      abortController.abort();
+    };
+  }, [searchQuery]);
+
+  // Register Service Worker and initialize Push Notification state
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then(async (reg) => {
+        if ('Notification' in window) {
+          setPushStatus(Notification.permission);
+          if (Notification.permission === 'granted') {
+            try {
+              let sub = await reg.pushManager.getSubscription();
+              if (!sub) {
+                let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+                if (!vapidKey) {
+                  const keyRes = await fetch('/api/notifications/subscribe');
+                  if (keyRes.ok) {
+                    const keyData = await keyRes.json();
+                    vapidKey = keyData.vapidPublicKey;
+                  }
+                }
+                if (vapidKey) {
+                  sub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapidKey) as any,
+                  });
+                }
+              }
+              if (sub) {
+                await fetch('/api/notifications/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ subscription: sub }),
+                });
+              }
+            } catch (subErr) {
+              console.warn('Auto push subscription notice:', subErr);
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn('Service Worker registration notice:', err);
+      });
+  }, [admin]);
+
+  const handleRequestPushPermission = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window) || !('serviceWorker' in navigator)) {
+      alert('Push notifications are not supported in this browser environment.');
+      return;
+    }
+
+    try {
+      const perm = await Notification.requestPermission();
+      setPushStatus(perm);
+      if (perm === 'granted') {
+        let reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) {
+          reg = await navigator.serviceWorker.register('/sw.js');
+        }
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+        if (!vapidKey) {
+          const keyRes = await fetch('/api/notifications/subscribe');
+          if (keyRes.ok) {
+            const keyData = await keyRes.json();
+            vapidKey = keyData.vapidPublicKey;
+          }
+        }
+        if (vapidKey) {
+          const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(vapidKey) as any,
+          });
+          if (sub) {
+            await fetch('/api/notifications/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ subscription: sub }),
+            });
+            alert('Push notifications successfully enabled on this device.');
+          }
+        }
+      } else {
+        alert('Notification permission was not granted. Please allow notifications in your browser settings.');
+      }
+    } catch (e: any) {
+      alert(`Error enabling notifications: ${e.message}`);
+    }
+  };
+
+  // Load notification badge counts via lightweight summary endpoint
+  useEffect(() => {
+    async function loadNotificationMetrics() {
+      try {
+        const res = await fetch('/api/admin/summary');
+        if (res.ok) {
+          const d = await res.json();
+          setNotifCounts({
+            pendingOrders: d.pendingOrders ?? 0,
+            pendingQuotes: d.pendingQuotes ?? 0,
+            lowStock: d.lowStock ?? 0,
+            recentActivity: d.recentActivity ?? 0,
+          });
+        }
+      } catch (err) {
+        console.warn('Notification counts load notice:', err);
+      }
+    }
+
+    if (admin) {
+      loadNotificationMetrics();
+    }
+  }, [admin, pathname]);
+
+  // Route security checks
+  useEffect(() => {
+    if (pathname === '/admin/login') return;
+    if (!loading && !admin) {
+      router.replace('/admin/login');
+    }
+  }, [admin, loading, pathname, router]);
+
+  useEffect(() => {
+    if (pathname === '/admin/login') return;
+    if (!loading && admin && !isOwner) {
+      if (pathname.startsWith('/admin/settings') || pathname.startsWith('/admin/employees')) {
+        router.replace('/admin');
+      }
+    }
+  }, [admin, isOwner, loading, pathname, router]);
+
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0E0B09] text-[#FCFAF6] flex items-center justify-center">
+        <div className="text-center space-y-3">
+          <div className="w-8 h-8 border-2 border-champagne border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="font-serif text-lg text-champagne font-light tracking-wide">Authenticating Command Center...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!admin) {
+    return null;
+  }
+
+  // Organized Navigation Groups
+  const navGroups = [
+    {
+      group: 'OVERVIEW',
+      items: [
+        { label: 'Command Center', href: '/admin', icon: LayoutDashboard },
+      ],
+    },
+    {
+      group: 'COMMERCE & MATERIALS',
+      items: [
+        { label: 'Products & Materials', href: '/admin/products', icon: Package },
+        { label: 'Categories', href: '/admin/categories', icon: FolderTree },
+        { label: 'Inventory Control', href: '/admin/inventory', icon: Boxes },
+        { label: 'Orders & Dispatch', href: '/admin/orders', icon: ShoppingBag, badge: notifCounts.pendingOrders > 0 ? String(notifCounts.pendingOrders) : undefined },
+      ],
+    },
+    {
+      group: 'CLIENTS & CRM',
+      items: [
+        { label: 'Quotes & Dossiers', href: '/admin/quotes', icon: FileText, badge: notifCounts.pendingQuotes > 0 ? String(notifCounts.pendingQuotes) : undefined },
+        { label: 'Customer Directory', href: '/admin/customers', icon: Users },
+      ],
+    },
+    {
+      group: 'ARCHITECTURE PRACTICE',
+      items: [
+        { label: 'Selected Projects', href: '/admin/projects', icon: Building2 },
+        { label: 'Design Services', href: '/admin/services', icon: Compass },
+      ],
+    },
+    {
+      group: 'SYSTEM & AUDIT',
+      items: [
+        { label: 'Audit Logs', href: '/admin/audit-logs', icon: Activity },
+        ...(isOwner
+          ? [
+              { label: 'Employee Management', href: '/admin/employees', icon: UserCheck },
+              { label: 'Studio Settings', href: '/admin/settings', icon: Settings },
+            ]
+          : []),
+      ],
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#0E0B09] text-[#FCFAF6] flex flex-col md:flex-row antialiased selection:bg-champagne/30 selection:text-champagne">
+      {/* ========================================================================= */}
+      {/* 1. MOBILE TOP APP BAR (< md ONLY)                                         */}
+      {/* ========================================================================= */}
+      <div className="md:hidden bg-[#0A0706] text-[#FCFAF6] px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-[#241C16] shadow-md">
+        <Link href="/admin" className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-sm overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40">
+            <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-serif text-sm tracking-wider text-[#FCFAF6] font-medium leading-none">BALAJI ATELIER</span>
+            <span className="text-[8px] uppercase tracking-widest text-champagne font-mono mt-0.5">Admin Command</span>
+          </div>
+        </Link>
+
+        <div className="flex items-center gap-1.5">
+          {/* Quick Search */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="p-2 text-[#A89F91] hover:text-champagne hover:bg-[#140F0C] rounded-xs transition-colors"
+            aria-label="Global Search"
+          >
+            <Search className="w-4 h-4" />
+          </button>
+
+          {/* Quick Action (+) */}
+          <button
+            onClick={() => setMobileQuickOpen(true)}
+            className="p-2 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] rounded-xs shadow-xs transition-all flex items-center justify-center"
+            aria-label="Quick Action"
+          >
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+          </button>
+
+          {/* Mobile Notifications Bell */}
+          <button
+            onClick={() => setMobileNotifOpen(true)}
+            className="relative p-2 text-[#A89F91] hover:text-champagne hover:bg-[#140F0C] rounded-xs transition-colors"
+            aria-label="Notifications"
+          >
+            <Bell className="w-4 h-4" />
+            {notifCounts.recentActivity > 0 && (
+              <span className="absolute top-1 right-1 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center animate-pulse">
+                {notifCounts.recentActivity}
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP SIDEBAR (md:block ONLY - 100% UNTOUCHED PC NAVIGATION)          */}
+      {/* ========================================================================= */}
+      <aside className="hidden md:flex w-64 bg-[#0A0706] text-[#FCFAF6] flex-shrink-0 flex-col border-r border-[#241C16] z-40 sticky top-0 h-screen overflow-y-auto">
+        {/* Brand Header */}
+        <div className="p-5 border-b border-[#241C16] space-y-1.5 bg-[#0A0706]">
+          <Link href="/admin" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-lg overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40 group-hover:border-champagne transition-colors">
+              <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-sm tracking-widest text-[#FCFAF6] block font-light leading-tight">
+                BALAJI ATELIER
+              </span>
+              <span className="text-[8px] uppercase tracking-widest text-champagne font-medium mt-0.5">
+                Executive Command Center
+              </span>
+            </div>
+          </Link>
+          <div className="flex items-center justify-between pt-1">
+            <div className="flex items-center gap-1.5 text-[9px] text-emerald-400">
+              <Radio className="w-2.5 h-2.5 animate-pulse" />
+              <span>Realtime Pipeline Live</span>
+            </div>
+            <span className="text-[9px] text-[#7E7469] font-mono">v2.0 PRO</span>
+          </div>
+        </div>
+
+        {/* Navigation Groups */}
+        <nav className="flex-1 p-3 space-y-5 overflow-y-auto">
+          {navGroups.map((grp) => (
+            <div key={grp.group} className="space-y-1">
+              <span className="text-[9px] uppercase tracking-widest font-semibold text-[#665A4F] px-3 block">
+                {grp.group}
+              </span>
+              <div className="space-y-0.5 pt-1">
+                {grp.items.map((item) => {
+                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center justify-between px-3 py-2 text-xs tracking-wider rounded-xs transition-all font-medium ${
+                        isActive
+                          ? 'bg-champagne/15 text-champagne border-l-2 border-champagne shadow-[inset_0_0_12px_rgba(197,168,128,0.06)] font-semibold'
+                          : 'text-[#B5ABA0] hover:text-[#FCFAF6] hover:bg-[#16110E]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 truncate">
+                        <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${isActive ? 'text-champagne' : 'text-[#8E8275]'}`} />
+                        <span className="truncate">{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <span className="px-1.5 py-0.2 bg-champagne text-[#100C0A] text-[9px] font-bold rounded-2xs">
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        {/* User Card & Logout Footer */}
+        <div className="p-3.5 border-t border-[#241C16] space-y-2.5 text-xs bg-[#0A0706]">
+          <div className="flex items-center justify-between p-2 rounded-xs bg-[#140F0C] border border-[#241C16]">
+            <div className="truncate">
+              <span className="font-medium text-[#FCFAF6] block text-xs truncate">{admin.name}</span>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span
+                  className={`inline-flex items-center px-1.5 py-0.2 text-[8px] uppercase tracking-wider font-semibold rounded-2xs ${
+                    isOwner
+                      ? 'bg-champagne/20 text-champagne border border-champagne/40'
+                      : 'bg-white/10 text-white/80 border border-white/15'
+                  }`}
+                >
+                  {isOwner ? 'Principal Architect' : 'Operations'}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => logout()}
+              className="p-1.5 text-[#A89F91] hover:text-red-400 hover:bg-[#1E1713] rounded-xs transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between text-[10px] text-[#7E7469] px-1">
+            <Link href="/" target="_blank" className="hover:text-champagne transition-colors flex items-center gap-1">
+              <span>View Public Studio</span> <ExternalLink className="w-2.5 h-2.5" />
+            </Link>
+            <span className="text-emerald-500 font-mono text-[9px]">● Secure</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* ========================================================================= */}
+      {/* 3. MAIN WORKSPACE & DESKTOP HEADER                                         */}
+      {/* ========================================================================= */}
+      <div className="flex-1 flex flex-col min-w-0 bg-[#0E0B09]">
+        {/* Top Command Bar (Desktop & Tablet) */}
+        <header className="hidden md:flex items-center justify-between px-8 py-3.5 bg-[#0A0706] border-b border-[#241C16] sticky top-0 z-30">
+          {/* Global Search Bar */}
+          <div className="flex-1 max-w-md">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="w-full flex items-center justify-between px-3.5 py-1.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs text-xs text-[#8E8275] transition-all group"
+            >
+              <div className="flex items-center gap-2">
+                <Search className="w-3.5 h-3.5 text-[#8E8275] group-hover:text-champagne transition-colors" />
+                <span className="text-[#A89F91]">Search orders, materials, clients, quotes...</span>
+              </div>
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-mono text-[#7E7469] bg-[#0E0B09] border border-[#281F19] rounded-2xs">
+                ⌘K
+              </kbd>
+            </button>
+          </div>
+
+          {/* Top Actions & Notification Badges */}
+          <div className="flex items-center gap-4">
+            {/* Quick Action Button */}
+            <div className="relative">
+              <button
+                onClick={() => setQuickActionOpen(!quickActionOpen)}
+                className="px-3 py-1.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] text-xs uppercase tracking-widest font-semibold flex items-center gap-1.5 rounded-xs shadow-xs transition-all"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>Quick Action</span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+
+              {quickActionOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-56 bg-[#140F0C] border border-[#2C211A] rounded-xs shadow-xl py-1 z-50 text-xs divide-y divide-[#241C16]"
+                  onClick={() => setQuickActionOpen(false)}
+                >
+                  <div className="py-1">
+                    <Link
+                      href="/admin/products"
+                      className="flex items-center gap-2 px-3.5 py-2 text-[#FCFAF6] hover:bg-[#1E1713] hover:text-champagne transition-colors"
+                    >
+                      <Package className="w-3.5 h-3.5 text-champagne" />
+                      <span>Add New Material</span>
+                    </Link>
+                    <Link
+                      href="/admin/projects"
+                      className="flex items-center gap-2 px-3.5 py-2 text-[#FCFAF6] hover:bg-[#1E1713] hover:text-champagne transition-colors"
+                    >
+                      <Building2 className="w-3.5 h-3.5 text-champagne" />
+                      <span>Add Architectural Project</span>
+                    </Link>
+                    <Link
+                      href="/admin/quotes"
+                      className="flex items-center gap-2 px-3.5 py-2 text-[#FCFAF6] hover:bg-[#1E1713] hover:text-champagne transition-colors"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-champagne" />
+                      <span>Review Quotations</span>
+                    </Link>
+                  </div>
+                  <div className="py-1">
+                    <Link
+                      href="/admin/inventory"
+                      className="flex items-center gap-2 px-3.5 py-2 text-[#FCFAF6] hover:bg-[#1E1713] hover:text-champagne transition-colors"
+                    >
+                      <Boxes className="w-3.5 h-3.5 text-champagne" />
+                      <span>Update Inventory Stock</span>
+                    </Link>
+                    <Link
+                      href="/admin/orders"
+                      className="flex items-center gap-2 px-3.5 py-2 text-[#FCFAF6] hover:bg-[#1E1713] hover:text-champagne transition-colors"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5 text-champagne" />
+                      <span>View Orders & Dispatch</span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Notification Center */}
+            <div className="relative">
+              <button
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="relative p-2 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 text-[#FCFAF6] rounded-xs transition-colors"
+                title="Notifications"
+              >
+                <Bell className="w-4 h-4 text-[#A89F91]" />
+                {notifCounts.recentActivity > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-champagne text-[#100C0A] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {notifCounts.recentActivity}
+                  </span>
+                )}
+              </button>
+
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-[#140F0C] border border-[#2C211A] rounded-xs shadow-2xl p-4 z-50 text-xs space-y-3 animate-fade-in">
+                  <div className="flex items-center justify-between border-b border-[#241C16] pb-2">
+                    <span className="font-serif text-sm text-[#FCFAF6] font-medium">Activity Stream</span>
+                    <span className="text-[10px] text-champagne uppercase font-semibold">Realtime Feed</span>
+                  </div>
+
+                  <div className="space-y-2 max-h-72 overflow-y-auto">
+                    {notifCounts.pendingOrders > 0 && (
+                      <Link
+                        href="/admin/orders"
+                        onClick={() => setNotifOpen(false)}
+                        className="p-2.5 bg-[#1C1612] hover:bg-[#241C16] border border-[#2C211A] rounded-xs block space-y-1 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-champagne">New Orders Received</span>
+                          <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                            {notifCounts.pendingOrders}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#A89F91]">Action required for client dispatch.</p>
+                      </Link>
+                    )}
+
+                    {notifCounts.pendingQuotes > 0 && (
+                      <Link
+                        href="/admin/quotes"
+                        onClick={() => setNotifOpen(false)}
+                        className="p-2.5 bg-[#1C1612] hover:bg-[#241C16] border border-[#2C211A] rounded-xs block space-y-1 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-champagne">Architectural Quotes Pending</span>
+                          <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                            {notifCounts.pendingQuotes}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#A89F91]">Review estimation dossiers & inquiries.</p>
+                      </Link>
+                    )}
+
+                    {notifCounts.lowStock > 0 && (
+                      <Link
+                        href="/admin/inventory"
+                        onClick={() => setNotifOpen(false)}
+                        className="p-2.5 bg-[#1C1612] hover:bg-[#241C16] border border-[#2C211A] rounded-xs block space-y-1 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-amber-400">Low Stock Alert</span>
+                          <span className="px-1.5 py-0.2 bg-amber-950/60 text-amber-400 border border-amber-800/40 text-[9px] rounded-2xs font-bold">
+                            {notifCounts.lowStock}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#A89F91]">Materials requiring inventory replenishment.</p>
+                      </Link>
+                    )}
+
+                    {notifCounts.recentActivity === 0 && (
+                      <div className="p-4 text-center text-[#7E7469] space-y-1">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400 mx-auto" />
+                        <p className="text-xs">All studio pipelines are up to date.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2.5 border-t border-[#241C16] flex items-center justify-between text-[11px]">
+                    <div className="flex items-center gap-1.5">
+                      <Radio className={`w-3 h-3 ${pushStatus === 'granted' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'}`} />
+                      <span className="text-[#A89F91]">
+                        {pushStatus === 'granted' ? 'Push Alerts Active' : 'Push Inactive'}
+                      </span>
+                    </div>
+                    {pushStatus !== 'granted' ? (
+                      <button
+                        onClick={handleRequestPushPermission}
+                        className="px-2 py-1 bg-champagne/20 text-champagne hover:bg-champagne/30 rounded-2xs font-medium text-[10px] transition-colors"
+                      >
+                        Enable Alerts
+                      </button>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const res = await fetch('/api/admin/notifications/test', { method: 'POST' });
+                            const d = await res.json();
+                            alert(d.message || 'Test notification sent.');
+                          } catch (e: any) {
+                            alert(e.message || 'Failed to dispatch test notification.');
+                          }
+                        }}
+                        className="text-[10px] text-[#A89F91] hover:text-champagne underline"
+                      >
+                        Send Test Push
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Content Body with mobile safe padding */}
+        <main className="flex-1 p-3.5 sm:p-6 md:p-8 lg:p-10 max-w-7xl w-full mx-auto overflow-x-hidden pb-24 md:pb-10">
+          {children}
+        </main>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 4. MOBILE NATIVE BOTTOM NAVIGATION BAR (< md ONLY)                        */}
+      {/* ========================================================================= */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0A0706]/98 backdrop-blur-xl border-t border-[#241C16] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+        {/* Tab 1: Command Center / Overview */}
+        <Link
+          href="/admin"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname === '/admin' ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <LayoutDashboard className={`w-4 h-4 ${pathname === '/admin' ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {pathname === '/admin' && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Overview</span>
+        </Link>
+
+        {/* Tab 2: Orders */}
+        <Link
+          href="/admin/orders"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/orders') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <ShoppingBag className={`w-4 h-4 ${pathname.startsWith('/admin/orders') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {notifCounts.pendingOrders > 0 && (
+              <span className="absolute -top-1 -right-2 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                {notifCounts.pendingOrders}
+              </span>
+            )}
+            {pathname.startsWith('/admin/orders') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Orders</span>
+        </Link>
+
+        {/* Tab 3: Materials & Products */}
+        <Link
+          href="/admin/products"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/products') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <Package className={`w-4 h-4 ${pathname.startsWith('/admin/products') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {pathname.startsWith('/admin/products') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Materials</span>
+        </Link>
+
+        {/* Tab 4: Quotes */}
+        <Link
+          href="/admin/quotes"
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            pathname.startsWith('/admin/quotes') ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <FileText className={`w-4 h-4 ${pathname.startsWith('/admin/quotes') ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
+            {notifCounts.pendingQuotes > 0 && (
+              <span className="absolute -top-1 -right-2 bg-champagne text-[#100C0A] text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                {notifCounts.pendingQuotes}
+              </span>
+            )}
+            {pathname.startsWith('/admin/quotes') && (
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-champagne rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Quotes</span>
+        </Link>
+
+        {/* Tab 5: Studio Hub / Menu Drawer Trigger */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xs transition-all ${
+            mobileMenuOpen ? 'text-champagne' : 'text-[#8E8275] hover:text-[#FCFAF6]'
+          }`}
+        >
+          <div className="relative">
+            <Menu className="w-4 h-4 stroke-[1.8]" />
+            {notifCounts.lowStock > 0 && (
+              <span className="absolute -top-0.5 -right-1 w-2 h-2 bg-amber-400 rounded-full" />
+            )}
+          </div>
+          <span className="text-[9px] font-medium tracking-tight mt-1">Hub</span>
+        </button>
+      </nav>
+
+      {/* ========================================================================= */}
+      {/* 5. MOBILE SLIDE-OVER STUDIO HUB DRAWER (< md ONLY)                        */}
+      {/* ========================================================================= */}
+      {mobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl max-h-[85vh] overflow-y-auto p-5 space-y-5 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Grab Handle */}
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+
+            {/* User Profile Header */}
+            <div className="flex items-center justify-between p-3 bg-[#140F0C] border border-[#241C16] rounded-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-champagne/20 text-champagne border border-champagne/40 flex items-center justify-center font-serif text-sm font-semibold">
+                  {admin.name.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-[#FCFAF6]">{admin.name}</h4>
+                  <span className="text-[10px] text-champagne uppercase tracking-wider font-mono">
+                    {isOwner ? 'Principal Architect' : 'Operations Staff'}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => logout()}
+                className="px-2.5 py-1 text-[10px] uppercase font-semibold text-red-400 bg-red-950/40 border border-red-800/40 rounded-2xs hover:bg-red-900/60 transition-colors flex items-center gap-1"
+              >
+                <LogOut className="w-3 h-3" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+
+            {/* Quick Actions 2x2 Grid */}
+            <div className="space-y-1.5">
+              <span className="text-[9px] uppercase tracking-widest text-[#7E7469] font-semibold block px-1">
+                Quick Shortcuts
+              </span>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <Link
+                  href="/admin/products"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Package className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Add Material</span>
+                </Link>
+                <Link
+                  href="/admin/projects"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Building2 className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Add Project</span>
+                </Link>
+                <Link
+                  href="/admin/inventory"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <Boxes className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Update Stock</span>
+                </Link>
+                <Link
+                  href="/admin/quotes"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-2 transition-colors"
+                >
+                  <FileText className="w-4 h-4 text-champagne" />
+                  <span className="text-[11px] font-medium text-[#FCFAF6]">Review Quotes</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Categorized Full Studio Menu */}
+            <div className="space-y-4">
+              {navGroups.map((grp) => (
+                <div key={grp.group} className="space-y-1.5">
+                  <span className="text-[9px] uppercase tracking-widest text-[#7E7469] font-semibold block px-1">
+                    {grp.group}
+                  </span>
+                  <div className="grid grid-cols-1 gap-1">
+                    {grp.items.map((item) => {
+                      const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`flex items-center justify-between p-3 rounded-xs text-xs tracking-wider transition-colors ${
+                            isActive
+                              ? 'bg-champagne/15 text-champagne border border-champagne/30 font-semibold'
+                              : 'bg-[#140F0C] border border-[#241C16] text-[#B5ABA0] hover:text-[#FCFAF6]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <Icon className={`w-4 h-4 ${isActive ? 'text-champagne' : 'text-[#8E8275]'}`} />
+                            <span className="text-[12px]">{item.label}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="px-2 py-0.5 bg-champagne text-[#100C0A] text-[9px] font-bold rounded-2xs">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Realtime Push Notification Status Bar */}
+            <div className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <Radio className={`w-3.5 h-3.5 ${pushStatus === 'granted' ? 'text-emerald-400 animate-pulse' : 'text-amber-400'}`} />
+                <span className="text-[11px] text-[#A89F91]">
+                  {pushStatus === 'granted' ? 'Push Alerts Active' : 'Push Alerts Disabled'}
+                </span>
+              </div>
+              {pushStatus !== 'granted' ? (
+                <button
+                  onClick={handleRequestPushPermission}
+                  className="px-2.5 py-1 bg-champagne text-[#100C0A] text-[10px] font-semibold uppercase rounded-2xs"
+                >
+                  Enable
+                </button>
+              ) : (
+                <button
+                  onClick={async () => {
+                    try {
+                      const res = await fetch('/api/admin/notifications/test', { method: 'POST' });
+                      const d = await res.json();
+                      alert(d.message || 'Test notification sent.');
+                    } catch (e: any) {
+                      alert(e.message || 'Failed to dispatch test notification.');
+                    }
+                  }}
+                  className="text-[10px] text-champagne underline"
+                >
+                  Test Alert
+                </button>
+              )}
+            </div>
+
+            {/* Public Studio Link & Dismiss */}
+            <div className="flex items-center justify-between pt-2 border-t border-[#241C16]">
+              <Link
+                href="/"
+                target="_blank"
+                className="text-xs text-champagne hover:underline flex items-center gap-1.5"
+              >
+                <span>View Public Studio</span> <ExternalLink className="w-3 h-3" />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-1.5 bg-[#1C1612] text-[#A89F91] hover:text-[#FCFAF6] text-xs rounded-xs"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 6. MOBILE NOTIFICATION DRAWER (< md ONLY)                                 */}
+      {/* ========================================================================= */}
+      {mobileNotifOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileNotifOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl max-h-[80vh] overflow-y-auto p-5 space-y-4 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <span className="font-serif text-base text-[#FCFAF6]">Live Activity Feed</span>
+              <span className="text-[10px] text-champagne uppercase font-mono">Realtime Stream</span>
+            </div>
+
+            <div className="space-y-2.5 max-h-72 overflow-y-auto">
+              {notifCounts.pendingOrders > 0 && (
+                <Link
+                  href="/admin/orders"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-champagne text-xs">New Orders Received</span>
+                    <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                      {notifCounts.pendingOrders}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Action required for client dispatch.</p>
+                </Link>
+              )}
+
+              {notifCounts.pendingQuotes > 0 && (
+                <Link
+                  href="/admin/quotes"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-champagne text-xs">Architectural Quotes Pending</span>
+                    <span className="px-1.5 py-0.2 bg-champagne/20 text-champagne text-[9px] rounded-2xs font-bold">
+                      {notifCounts.pendingQuotes}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Review estimation dossiers & inquiries.</p>
+                </Link>
+              )}
+
+              {notifCounts.lowStock > 0 && (
+                <Link
+                  href="/admin/inventory"
+                  onClick={() => setMobileNotifOpen(false)}
+                  className="p-3 bg-[#140F0C] border border-[#241C16] rounded-xs block space-y-1"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-amber-400 text-xs">Low Stock Alert</span>
+                    <span className="px-1.5 py-0.2 bg-amber-950/60 text-amber-400 border border-amber-800/40 text-[9px] rounded-2xs font-bold">
+                      {notifCounts.lowStock}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#A89F91]">Materials requiring inventory replenishment.</p>
+                </Link>
+              )}
+
+              {notifCounts.recentActivity === 0 && (
+                <div className="p-6 text-center text-[#7E7469] space-y-2">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto" />
+                  <p className="text-xs">All studio pipelines are up to date.</p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => setMobileNotifOpen(false)}
+              className="w-full py-2 bg-[#140F0C] border border-[#241C16] text-[#A89F91] text-xs rounded-xs"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 7. MOBILE QUICK ACTION DRAWER (< md ONLY)                                 */}
+      {/* ========================================================================= */}
+      {mobileQuickOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex flex-col justify-end animate-fade-in"
+          onClick={() => setMobileQuickOpen(false)}
+        >
+          <div
+            className="bg-[#0E0B09] border-t border-[#2C211A] rounded-t-2xl p-5 space-y-4 shadow-2xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-[#3A2E26] rounded-full mx-auto" />
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <span className="font-serif text-base text-[#FCFAF6]">Quick Operations</span>
+              <span className="text-[10px] text-champagne uppercase font-mono">Create & Manage</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2 text-xs">
+              <Link
+                href="/admin/products"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Package className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Add New Material</span>
+                  <span className="text-[10px] text-[#8E8275]">Catalog item, finish, price modifier</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/projects"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Building2 className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Add Architectural Project</span>
+                  <span className="text-[10px] text-[#8E8275]">Publish portfolio commission & blueprints</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/inventory"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <Boxes className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Update Inventory Stock</span>
+                  <span className="text-[10px] text-[#8E8275]">Adjust warehouse stock & reserve counts</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/admin/quotes"
+                onClick={() => setMobileQuickOpen(false)}
+                className="p-3.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs flex items-center gap-3 transition-colors"
+              >
+                <FileText className="w-4 h-4 text-champagne" />
+                <div>
+                  <span className="text-xs font-medium text-[#FCFAF6] block">Review Quotations</span>
+                  <span className="text-[10px] text-[#8E8275]">Client estimation dossiers & inquiries</span>
+                </div>
+              </Link>
+            </div>
+
+            <button
+              onClick={() => setMobileQuickOpen(false)}
+              className="w-full py-2 bg-[#140F0C] border border-[#241C16] text-[#A89F91] text-xs rounded-xs"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Global Search Palette Modal (Ctrl+K) */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-start justify-center pt-20 p-4"
+          onClick={() => setSearchOpen(false)}
+        >
+          <div
+            className="bg-[#140F0C] border border-[#2C211A] w-full max-w-xl rounded-sm shadow-2xl overflow-hidden animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center px-4 border-b border-[#241C16]">
+              <Search className="w-4 h-4 text-champagne" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search materials, orders, customers, quotes, projects..."
+                className="w-full p-3.5 bg-transparent text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:outline-hidden"
+              />
+              <button
+                onClick={() => setSearchOpen(false)}
+                className="p-1 text-[#7E7469] hover:text-[#FCFAF6]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="max-h-96 overflow-y-auto p-2 divide-y divide-[#201712]">
+              {searching ? (
+                <div className="p-6 text-center text-xs text-[#A89F91] space-y-2">
+                  <div className="w-4 h-4 border-2 border-champagne border-t-transparent rounded-full animate-spin mx-auto" />
+                  <span>Searching database...</span>
+                </div>
+              ) : searchResults.length === 0 ? (
+                <div className="p-6 text-center text-xs text-[#7E7469]">
+                  {searchQuery.length < 2 ? 'Type at least 2 characters to search across studio entities...' : 'No matching studio records found.'}
+                </div>
+              ) : (
+                searchResults.map((item) => (
+                  <Link
+                    key={`${item.type}-${item.id}`}
+                    href={item.href}
+                    onClick={() => setSearchOpen(false)}
+                    className="flex items-center justify-between p-3 hover:bg-[#1E1713] transition-colors rounded-xs group block"
+                  >
+                    <div className="space-y-0.5 truncate">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-[#FCFAF6] group-hover:text-champagne transition-colors">
+                          {item.title}
+                        </span>
+                        <span className="px-1.5 py-0.2 bg-[#241C16] text-[#A89F91] text-[9px] uppercase font-mono rounded-2xs">
+                          {item.type}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[#8E8275] truncate">{item.subtitle}</p>
+                    </div>
+                    {item.badge && (
+                      <span className="text-[10px] text-champagne font-mono flex-shrink-0 ml-2">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+### <a id="src-context-adminauthcontext-tsx"></a>2. `src/context/AdminAuthContext.tsx`
+
+> **Path**: `src/context/AdminAuthContext.tsx` | **Lines**: 122 | **Size**: 3.4 KB
+
+```tsx
+'use client';
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AdminUser } from '@/types';
+
+interface AdminAuthContextType {
+  admin: AdminUser | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; mustChangePassword?: boolean; error?: string }>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  refreshAdmin: () => Promise<void>;
+}
+
+const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
+
+export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
+  const [admin, setAdmin] = useState<AdminUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refreshAdmin = async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.admin) {
+          setAdmin(data.admin);
+        } else {
+          setAdmin(null);
+        }
+      } else {
+        setAdmin(null);
+      }
+    } catch {
+      setAdmin(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshAdmin();
+  }, []);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      const adminObj = data.admin || (data.role !== 'customer' ? data.user : null);
+      if (res.ok && data.success && adminObj && data.role !== 'customer') {
+        setAdmin(adminObj);
+        return {
+          success: true,
+          mustChangePassword: Boolean(adminObj.mustChangePassword),
+        };
+      } else if (data.role === 'customer') {
+        return { success: false, error: 'This account is not authorized for administrative access.' };
+      } else {
+        return { success: false, error: data.error || 'Invalid credentials' };
+      }
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Connection error' };
+    }
+  };
+
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        if (admin) {
+          setAdmin({ ...admin, mustChangePassword: false });
+        }
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || 'Failed to update password' };
+      }
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Server error' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      setAdmin(null);
+    }
+  };
+
+  return (
+    <AdminAuthContext.Provider
+      value={{
+        admin,
+        loading,
+        login,
+        changePassword,
+        logout,
+        refreshAdmin,
+      }}
+    >
+      {children}
+    </AdminAuthContext.Provider>
+  );
+}
+
+export function useAdminAuth() {
+  const context = useContext(AdminAuthContext);
+  if (!context) {
+    throw new Error('useAdminAuth must be used within an AdminAuthProvider');
+  }
+  return context;
+}
+```
+
+---
+
+### <a id="src-components-footer-tsx"></a>3. `src/components/Footer.tsx`
+
+> **Path**: `src/components/Footer.tsx` | **Lines**: 224 | **Size**: 9.3 KB
+
+```tsx
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { ArrowUpRight } from 'lucide-react';
+
+import { SiteSettings } from '@/types';
+
+export function Footer({ initialSettings }: { initialSettings?: SiteSettings | null }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [secretClicks, setSecretClicks] = useState(0);
+
+  const handleSecretTrigger = () => {
+    setSecretClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 3) {
+        window.location.href = '/admin/login';
+        return 0;
+      }
+      setTimeout(() => setSecretClicks(0), 1200);
+      return next;
+    });
+  };
+
+  // Do not render public footer on admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
+  const brandName = initialSettings?.brandName || 'BALAJI ARCHITECT & INTERIORS';
+  const brandSubtitle = initialSettings?.brandSubtitle || 'Architecture • Interior Design • Materials';
+
+  return (
+    <footer className="bg-espresso text-surface border-t border-espresso-light mt-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-atelier-dark">
+          {/* Studio Identity */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40">
+                <img
+                  src={initialSettings?.logoUrl || '/logo.png'}
+                  alt={brandName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl tracking-widest text-surface font-light">
+                  {brandName}
+                </h3>
+                <p className="text-[9px] uppercase tracking-widest text-champagne font-medium">
+                  {brandSubtitle}
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-surface/70 font-light leading-relaxed max-w-sm pt-2">
+              Crafted spaces, bespoke architectural commissions, and considered materials for timeless living. We bridge the disciplines of luxury architecture, master interior craftsmanship, and global material curation.
+            </p>
+            <div className="pt-4 flex items-center space-x-6 text-xs uppercase tracking-widest text-surface/60">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-champagne transition-colors"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://pinterest.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-champagne transition-colors"
+              >
+                Pinterest
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-champagne transition-colors"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          {/* Architectural Practice */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="text-xs uppercase tracking-widest text-champagne font-medium">PRACTICE</h4>
+            <ul className="space-y-2.5 text-xs text-surface/70 font-light">
+              <li>
+                <Link href="/projects" className="hover:text-surface transition-colors">
+                  Selected Portfolio
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-surface transition-colors">
+                  Design Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-surface transition-colors">
+                  Studio & Founders
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#turnkey" className="hover:text-surface transition-colors">
+                  Turnkey Execution
+                </Link>
+              </li>
+              <li>
+                <Link href="/quote" className="hover:text-surface transition-colors">
+                  Project Estimation
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-surface transition-colors">
+                  Client Consultation
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Materials & Shop */}
+          <div className="lg:col-span-3 space-y-3">
+            <h4 className="text-xs uppercase tracking-widest text-champagne font-medium">MATERIALS MARKET</h4>
+            <ul className="space-y-2.5 text-xs text-surface/70 font-light">
+              <li>
+                <Link href="/category/natural-stone-marble" className="hover:text-surface transition-colors">
+                  Natural Stone & Travertine
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/hardwood-veneers" className="hover:text-surface transition-colors">
+                  Hardwood & Architectural Veneers
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/wall-panels-acoustic" className="hover:text-surface transition-colors">
+                  Acoustic Fluted Panels
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/porcelain-slabs" className="hover:text-surface transition-colors">
+                  Large Format Porcelain Slabs
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/architectural-lighting" className="hover:text-surface transition-colors">
+                  Architectural Lighting
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/bespoke-hardware" className="hover:text-surface transition-colors">
+                  Bespoke Patinated Hardware
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Studio Contact */}
+          <div className="lg:col-span-3 space-y-4">
+            <div className="space-y-1">
+              <h4 className="text-xs uppercase tracking-widest text-champagne font-medium">STUDIO & PRACTICE</h4>
+              <div className="flex items-center gap-1.5 text-[11px] text-champagne">
+                <span>★ 5.0</span>
+                <span className="text-surface/60">(22 Google Reviews)</span>
+                <span className="text-surface/40">•</span>
+                <span className="text-surface/60">Interior Architect Office</span>
+              </div>
+            </div>
+            <div className="text-xs text-surface/70 font-light space-y-1.5 leading-relaxed">
+              <p className="text-surface font-medium">Door No. 306, DN TOWER, Floor No. 03</p>
+              <p>Beltola Tiniali</p>
+              <p>Guwahati, Assam 781040</p>
+            </div>
+            <div className="text-xs text-surface/70 font-light space-y-1 pt-1">
+              <p>Inquiries: <span className="text-surface">atelier@balaji-interior.com</span></p>
+              <p>Direct: <a href="tel:+917002948484" className="text-surface hover:text-champagne transition-colors">+91 70029 48484</a></p>
+            </div>
+            <div className="pt-2 flex flex-col sm:flex-row gap-2">
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-1.5 p-2.5 sm:p-0 text-xs uppercase tracking-widest text-champagne hover:text-surface bg-surface/10 sm:bg-transparent rounded sm:rounded-none transition-colors"
+              >
+                Schedule Consultation <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+
+              <a
+                href="https://wa.me/917002948484?text=Hello%20Balaji%20Architect%20%26%20Interiors%2C%20I%20would%20like%20to%20connect."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sm:hidden inline-flex items-center justify-center gap-1.5 p-2.5 text-xs uppercase tracking-widest text-white bg-green-700 rounded transition-colors"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-surface/40 font-light gap-4">
+          <p
+            onClick={handleSecretTrigger}
+            className="cursor-default select-none transition-colors"
+          >
+            © {new Date().getFullYear()} Balaji Architect & Interiors. All rights reserved.
+          </p>
+          <div className="flex items-center space-x-6">
+            <Link href="/about" className="hover:text-surface/70 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/about" className="hover:text-surface/70 transition-colors">
+              Terms of Supply
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-page-tsx"></a>4. `src/app/admin/page.tsx`
+
+> **Path**: `src/app/admin/page.tsx` | **Lines**: 482 | **Size**: 22.5 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
+import {
+  TrendingUp,
+  ShoppingBag,
+  Clock,
+  Package,
+  AlertTriangle,
+  FileText,
+  Building2,
+  ArrowRight,
+  RefreshCw,
+  Eye,
+  Download,
+  Boxes,
+  Users,
+  Compass,
+  CheckCircle2,
+  DollarSign,
+  Activity,
+  Calendar,
+  Layers,
+  ChevronRight,
+  Filter,
+} from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+
+type TimeRange = '7D' | '30D' | '90D' | '6M' | '1Y' | 'ALL';
+
+export default function AdminDashboardPage() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [timeRange, setTimeRange] = useState<TimeRange>('30D');
+
+  const loadData = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/analytics/dashboard?timeRange=${timeRange}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          setData(json.data);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load dashboard aggregates', e);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [timeRange]);
+
+  useEffect(() => {
+    loadData();
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        loadData();
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [loadData]);
+
+  const kpis = data?.kpis || {
+    periodRevenue: 0,
+    thisMonthRevenue: 0,
+    periodOrdersCount: 0,
+    activeOrdersCount: 0,
+    pendingQuotesCount: 0,
+    totalQuotesCount: 0,
+    totalQuotesValuation: 0,
+    activeProjectsCount: 0,
+    lowStockCount: 0,
+    totalProductsCount: 0,
+    totalInventoryValuation: 0,
+    averageOrderValue: 0,
+    enquiriesCount: 0,
+  };
+
+  const salesGraphData = data?.salesGraphData || [];
+  const categoryBreakdown = data?.categoryBreakdown || [];
+  const recentOrders = data?.recentOrders || [];
+  const recentActivity = data?.recentActivity || [];
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8 animate-fade-in">
+        {/* 1. Header & Controls */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#241C16] pb-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-champagne font-semibold">
+                Executive Command Center
+              </span>
+              <span className="px-2 py-0.5 bg-champagne/15 text-champagne text-[9px] uppercase tracking-wider font-bold rounded-2xs border border-champagne/30">
+                Live Production
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light mt-1">
+              Studio Operations & Analytics
+            </h1>
+            <p className="text-xs text-[#A89F91] font-light">
+              Authoritative overview of architectural projects, material orders, clients, and inventory.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Time Filter Pills */}
+            <div className="flex items-center bg-[#140F0C] border border-[#241C16] rounded-xs p-1">
+              {(['7D', '30D', '90D', '6M', '1Y', 'ALL'] as TimeRange[]).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-2xs transition-all ${
+                    timeRange === range
+                      ? 'bg-champagne text-[#100C0A] shadow-xs'
+                      : 'text-[#8E8275] hover:text-[#FCFAF6]'
+                  }`}
+                >
+                  {range}
+                </button>
+              ))}
+            </div>
+
+            {/* Sync Button */}
+            <button
+              onClick={() => {
+                setRefreshing(true);
+                loadData();
+              }}
+              className="p-2.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors rounded-xs shadow-xs"
+              title="Sync Database"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-champagne ${refreshing ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Sync</span>
+            </button>
+
+            {/* Export CSV Action */}
+            <a
+              href="/api/admin/export?type=orders"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 bg-[#140F0C] border border-[#241C16] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors rounded-xs shadow-xs"
+              title="Export Orders CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-champagne" />
+              <span className="hidden sm:inline">Export CSV</span>
+            </a>
+          </div>
+        </div>
+
+        {/* 2. Top Executive KPI Grid (Row of 6) */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {/* Total Period Sales */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Sales ({timeRange})</span>
+              <TrendingUp className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-champagne font-light truncate">
+              ₹{kpis.periodRevenue.toLocaleString('en-IN')}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">{kpis.periodOrdersCount} transactions</p>
+          </div>
+
+          {/* This Month's Revenue */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Month Revenue</span>
+              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-emerald-400 font-light truncate">
+              ₹{kpis.thisMonthRevenue.toLocaleString('en-IN')}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">Current calendar month</p>
+          </div>
+
+          {/* Active Orders */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Active Orders</span>
+              <ShoppingBag className="w-3.5 h-3.5 text-blue-400" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-[#FCFAF6] font-light truncate">
+              {kpis.activeOrdersCount}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">Pending dispatch</p>
+          </div>
+
+          {/* Pending Quotes */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Open Quotes</span>
+              <FileText className="w-3.5 h-3.5 text-amber-400" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-[#FCFAF6] font-light truncate">
+              {kpis.pendingQuotesCount}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">{kpis.totalQuotesCount} total dossiers</p>
+          </div>
+
+          {/* Active Projects */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Projects</span>
+              <Building2 className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-[#FCFAF6] font-light truncate">
+              {kpis.activeProjectsCount}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">Architectural portfolio</p>
+          </div>
+
+          {/* Low Stock Alert */}
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Low Stock</span>
+              <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+            </div>
+            <div className="font-serif text-xl sm:text-2xl text-red-400 font-light truncate">
+              {kpis.lowStockCount}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">{kpis.totalProductsCount} total materials</p>
+          </div>
+        </div>
+
+        {/* 3. Analytics Section: Sales Graph + Category Breakdown */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Sales & Revenue Chart (8 Cols) */}
+          <div className="lg:col-span-8 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#241C16] pb-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                  Revenue Performance
+                </span>
+                <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Sales & Transaction Overview</h3>
+              </div>
+              <div className="flex items-center gap-4 text-xs">
+                <div>
+                  <span className="text-[#7E7469] block text-[10px] uppercase">Average Order</span>
+                  <span className="font-medium text-champagne font-mono">₹{kpis.averageOrderValue.toLocaleString('en-IN')}</span>
+                </div>
+                <div>
+                  <span className="text-[#7E7469] block text-[10px] uppercase">Total Catalog Value</span>
+                  <span className="font-medium text-[#FCFAF6] font-mono">₹{kpis.totalInventoryValuation.toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Bar Graph */}
+            <div className="h-52 flex items-end justify-between gap-3 sm:gap-6 pt-6 px-2">
+              {salesGraphData.length === 0 ? (
+                <p className="text-xs text-[#7E7469] py-16 text-center w-full">No sales transactions in selected period.</p>
+              ) : (
+                salesGraphData.map((item: any) => (
+                  <div key={item.label} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+                    <span className="text-[10px] text-[#8E8275] font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                      ₹{(item.val / 1000).toFixed(0)}k
+                    </span>
+                    <div className="w-full bg-[#1F1713] rounded-2xs overflow-hidden h-36 flex items-end">
+                      <div
+                        style={{ height: `${item.heightPercent}%` }}
+                        className="w-full bg-gradient-to-t from-[#9C7A4A] to-[#DAC19E] rounded-2xs group-hover:brightness-110 transition-all"
+                      />
+                    </div>
+                    <span className="text-[11px] text-[#A89F91] uppercase font-mono">{item.label}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Category Revenue Distribution (4 Cols) */}
+          <div className="lg:col-span-4 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-5">
+            <div className="border-b border-[#241C16] pb-4">
+              <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                Material Categories
+              </span>
+              <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Sales by Discipline</h3>
+            </div>
+
+            <div className="space-y-4">
+              {categoryBreakdown.length === 0 ? (
+                <p className="text-xs text-[#7E7469] py-8 text-center">No orders recorded yet.</p>
+              ) : (
+                categoryBreakdown.map((cat: any) => (
+                  <div key={cat.name} className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-[#FCFAF6] font-medium">{cat.name}</span>
+                      <span className="text-champagne font-mono font-medium">
+                        ₹{cat.amount.toLocaleString('en-IN')} ({cat.percent}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-[#1F1713] h-1.5 rounded-full overflow-hidden">
+                      <div
+                        style={{ width: `${cat.percent}%` }}
+                        className="bg-champagne h-full rounded-full"
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Architecture Projects & Quotation Pipelines */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Project Pipeline Stages (6 Cols) */}
+          <div className="lg:col-span-6 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                  Architectural Pipeline
+                </span>
+                <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Project Stages & Progress</h3>
+              </div>
+              <Link href="/admin/projects" className="text-xs text-champagne hover:underline flex items-center gap-1">
+                <span>View All ({kpis.activeProjectsCount})</span> <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              {[
+                { stage: 'Concept & Brief', count: Math.ceil(kpis.activeProjectsCount * 0.2) },
+                { stage: 'Design Development', count: Math.ceil(kpis.activeProjectsCount * 0.3) },
+                { stage: 'Execution & Turnkey', count: Math.ceil(kpis.activeProjectsCount * 0.3) },
+                { stage: 'Snagging', count: Math.ceil(kpis.activeProjectsCount * 0.1) },
+                { stage: 'Completed & Handed', count: Math.floor(kpis.activeProjectsCount * 0.1) },
+              ].map((s) => (
+                <div key={s.stage} className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
+                  <span className="text-[10px] text-[#8E8275] uppercase block truncate">{s.stage}</span>
+                  <span className="font-serif text-lg text-champagne">{s.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quotations & Inquiries Pipeline (6 Cols) */}
+          <div className="lg:col-span-6 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                  Estimation Dossiers
+                </span>
+                <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Quotation Inquiries</h3>
+              </div>
+              <Link href="/admin/quotes" className="text-xs text-champagne hover:underline flex items-center gap-1">
+                <span>Dossiers ({kpis.totalQuotesCount})</span> <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
+                <span className="text-[10px] text-[#8E8275] uppercase block">Under Review</span>
+                <span className="font-serif text-lg text-amber-400">
+                  {kpis.pendingQuotesCount}
+                </span>
+              </div>
+              <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
+                <span className="text-[10px] text-[#8E8275] uppercase block">Active Projects</span>
+                <span className="font-serif text-lg text-emerald-400">
+                  {kpis.activeProjectsCount}
+                </span>
+              </div>
+              <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
+                <span className="text-[10px] text-[#8E8275] uppercase block">Pipeline Value</span>
+                <span className="font-serif text-lg text-champagne truncate block">
+                  ₹{(kpis.totalQuotesValuation / 1000).toFixed(0)}k
+                </span>
+              </div>
+              <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
+                <span className="text-[10px] text-[#8E8275] uppercase block">Enquiries</span>
+                <span className="font-serif text-lg text-blue-400">{kpis.enquiriesCount}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Live Operations: Recent Orders + Activity Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Recent Orders (7 Cols) */}
+          <div className="lg:col-span-7 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                  Recent Purchases
+                </span>
+                <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Latest Client Orders</h3>
+              </div>
+              <Link href="/admin/orders" className="text-xs text-champagne hover:underline flex items-center gap-1">
+                <span>All Orders ({kpis.periodOrdersCount})</span> <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="divide-y divide-[#201712]">
+              {recentOrders.length === 0 ? (
+                <p className="text-xs text-[#7E7469] py-8 text-center">No orders recorded in this period.</p>
+              ) : (
+                recentOrders.map((o: any) => (
+                  <Link
+                    key={o.id}
+                    href={`/admin/orders?orderId=${o.id}`}
+                    className="py-3 flex items-center justify-between hover:bg-[#1E1713] transition-colors rounded-xs px-2 -mx-2 group"
+                  >
+                    <div className="space-y-0.5 truncate">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-semibold text-[#FCFAF6] group-hover:text-champagne transition-colors">
+                          #{o.orderNumber}
+                        </span>
+                        <span
+                          className={`px-2 py-0.2 text-[9px] uppercase tracking-wider font-semibold rounded-2xs ${
+                            o.orderStatus === 'Delivered'
+                              ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/40'
+                              : o.orderStatus === 'Shipped'
+                              ? 'bg-blue-950/60 text-blue-400 border border-blue-800/40'
+                              : 'bg-amber-950/60 text-amber-400 border border-amber-800/40'
+                          }`}
+                        >
+                          {o.orderStatus}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[#8E8275] truncate">
+                        {o.customerName} • {o.itemsCount} material items
+                      </p>
+                    </div>
+
+                    <div className="text-right flex-shrink-0 ml-3">
+                      <span className="font-mono text-xs font-medium text-champagne block">
+                        ₹{o.totalAmount.toLocaleString('en-IN')}
+                      </span>
+                      <span className="text-[10px] text-[#7E7469]">
+                        {new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                      </span>
+                    </div>
+                  </Link>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Live Activity Feed (5 Cols) */}
+          <div className="lg:col-span-5 bg-[#140F0C] border border-[#241C16] p-6 rounded-xs shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-[#241C16] pb-3">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-semibold">
+                  System Audit
+                </span>
+                <h3 className="font-serif text-xl text-[#FCFAF6] font-light">Recent Studio Activity</h3>
+              </div>
+              <Link href="/admin/audit-logs" className="text-xs text-champagne hover:underline flex items-center gap-1">
+                <span>Full Trail</span> <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="divide-y divide-[#201712] max-h-72 overflow-y-auto">
+              {recentActivity.length === 0 ? (
+                <p className="text-xs text-[#7E7469] py-8 text-center">No recent activity.</p>
+              ) : (
+                recentActivity.map((log: any) => (
+                  <div key={log.id} className="py-2.5 space-y-1 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-[#FCFAF6] text-[11px]">{log.action}</span>
+                      <span className="text-[10px] text-[#7E7469]">
+                        {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-[#8E8275] truncate">
+                      {log.entity} • {log.adminEmail || 'Admin System'}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-login-page-tsx"></a>5. `src/app/admin/login/page.tsx`
+
+> **Path**: `src/app/admin/login/page.tsx` | **Lines**: 232 | **Size**: 9.8 KB
+
+```tsx
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Shield, Lock, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+
+export default function AdminLoginPage() {
+  const router = useRouter();
+  const { admin, loading: authLoading, login, changePassword } = useAdminAuth();
+
+  const [email, setEmail] = useState('vicks@balaji.com');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Forced Password Change State
+  const [showForcePasswordModal, setShowForcePasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordChanging, setPasswordChanging] = useState(false);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+
+  // If already authenticated as an admin, redirect straight to admin panel
+  useEffect(() => {
+    if (!authLoading && admin) {
+      router.replace('/admin');
+    }
+  }, [admin, authLoading, router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const res = await login(email, password);
+    setLoading(false);
+
+    if (res.success) {
+      if (res.mustChangePassword) {
+        setShowForcePasswordModal(true);
+      } else {
+        window.location.href = '/admin';
+      }
+    } else {
+      setError(res.error || 'Invalid admin credentials');
+    }
+  };
+
+  const handleForcePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    setPasswordChanging(true);
+    setError(null);
+
+    const res = await changePassword(password, newPassword);
+    setPasswordChanging(false);
+
+    if (res.success) {
+      setPasswordSuccess(true);
+      setTimeout(() => {
+        window.location.href = '/admin';
+      }, 1500);
+    } else {
+      setError(res.error || 'Failed to update password');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#100C0A] flex items-center justify-center p-4 sm:p-6 antialiased relative">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 z-0 opacity-15 pointer-events-none bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:18px_18px]" />
+
+      <div className="w-full max-w-md bg-[#1D1714] border border-[#C5A880]/25 shadow-2xl p-8 sm:p-10 space-y-8 relative z-10 rounded-sm">
+        {/* Studio Branding */}
+        <div className="text-center space-y-2">
+          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#16110E] shadow-xl mx-auto mb-3 border border-[#C5A880]/50 flex items-center justify-center">
+            <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-[#C5A880] font-medium">
+            Studio Administration
+          </span>
+          <h1 className="font-serif text-2xl sm:text-3xl text-[#FCFAF6] font-light">
+            Balaji Architect & Interiors
+          </h1>
+          <p className="text-xs text-[#A89F91] font-light">
+            Authorized Architect & Studio Management Access
+          </p>
+        </div>
+
+        {error && (
+          <div className="p-3.5 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+            <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="text-xs uppercase tracking-wider text-[#C5A880]/90 font-medium block">
+              Admin Email
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="vicks@balaji.com"
+                className="w-full p-3 pl-10 bg-[#14100D] border border-[#382D25] focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880]/50 focus:outline-hidden text-xs text-[#FCFAF6] placeholder-[#7E7469] rounded-xs"
+              />
+              <Mail className="w-4 h-4 text-[#C5A880]/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs uppercase tracking-wider text-[#C5A880]/90 font-medium block">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full p-3 pl-10 bg-[#14100D] border border-[#382D25] focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880]/50 focus:outline-hidden text-xs text-[#FCFAF6] placeholder-[#7E7469] rounded-xs"
+              />
+              <Lock className="w-4 h-4 text-[#C5A880]/60 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-[#C5A880] text-[#100C0A] hover:bg-[#DAC19E] border border-[#C5A880] text-xs uppercase tracking-widest flex items-center justify-center gap-2 font-medium transition-all shadow-md rounded-xs cursor-pointer disabled:opacity-50"
+          >
+            {loading ? 'Authenticating...' : 'Sign In to Admin Panel'} <ArrowRight className="w-4 h-4" />
+          </button>
+        </form>
+
+        <div className="pt-4 border-t border-[#332821] text-center text-xs text-[#A89F91] space-y-2">
+          <p>
+            <Link href="/" className="hover:text-[#C5A880] transition-colors underline">
+              ← Return to Public Atelier Website
+            </Link>
+          </p>
+          <p className="text-[11px] text-[#7E7469]">
+            Client or Partner?{' '}
+            <Link href="/studio" className="hover:text-[#C5A880] transition-colors underline">
+              Visit Studio Gateway
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      {/* Forced First-Time Password Change Modal */}
+      {showForcePasswordModal && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#1D1714] border border-[#C5A880]/30 p-8 space-y-6 shadow-2xl animate-fade-up rounded-sm">
+            <div className="text-center space-y-2">
+              <div className="w-12 h-12 rounded-full bg-[#C5A880]/15 text-[#C5A880] flex items-center justify-center mx-auto border border-[#C5A880]/30">
+                <Lock className="w-6 h-6" />
+              </div>
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">Establish Permanent Password</h2>
+              <p className="text-xs text-[#A89F91] leading-relaxed">
+                As a security policy for Balaji Architect & Interiors, the initial bootstrap credential must now be replaced with your permanent custom password.
+              </p>
+            </div>
+
+            {passwordSuccess ? (
+              <div className="p-4 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 rounded-xs">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <span>Password updated! Redirecting to dashboard...</span>
+              </div>
+            ) : (
+              <form onSubmit={handleForcePasswordChange} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[11px] uppercase tracking-wider text-[#C5A880]/90 font-medium">
+                    New Secure Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Min 6 characters"
+                    className="w-full p-3 bg-[#14100D] border border-[#382D25] focus:border-[#C5A880] focus:outline-hidden text-xs text-[#FCFAF6] rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] uppercase tracking-wider text-[#C5A880]/90 font-medium">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Repeat password"
+                    className="w-full p-3 bg-[#14100D] border border-[#382D25] focus:border-[#C5A880] focus:outline-hidden text-xs text-[#FCFAF6] rounded-xs"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={passwordChanging}
+                  className="w-full py-3.5 bg-[#C5A880] text-[#100C0A] hover:bg-[#DAC19E] border border-[#C5A880] text-xs uppercase tracking-widest font-medium transition-all rounded-xs cursor-pointer"
+                >
+                  {passwordChanging ? 'Securing Account...' : 'Save & Enter Admin Panel'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-products-page-tsx"></a>6. `src/app/admin/products/page.tsx`
+
+> **Path**: `src/app/admin/products/page.tsx` | **Lines**: 704 | **Size**: 30.1 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import {
+  Plus,
+  Search,
+  Edit2,
+  Trash2,
+  Check,
+  X,
+  Upload,
+  Layers,
+  ArrowUpDown,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
+import { Product, Category, UnitType, PurchaseMode } from '@/types';
+
+function AdminProductsContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || searchParams?.get('highlight') || null;
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  // Form Fields
+  const [name, setName] = useState('');
+  const [sku, setSku] = useState('');
+  const [brand, setBrand] = useState('Balaji Architect & Interiors');
+  const [categoryId, setCategoryId] = useState('');
+  const [subcategory, setSubcategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState<number>(1000);
+  const [salePrice, setSalePrice] = useState<number | undefined>(undefined);
+  const [unit, setUnit] = useState<UnitType>('sq ft');
+  const [moq, setMoq] = useState<number>(1);
+  const [stock, setStock] = useState<number>(100);
+  const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>('BUY_NOW');
+  const [leadTime, setLeadTime] = useState('3-5 business days');
+  const [dimensions, setDimensions] = useState('');
+  const [thickness, setThickness] = useState('');
+  const [material, setMaterial] = useState('');
+  const [finish, setFinish] = useState('');
+  const [images, setImages] = useState<string[]>([]);
+  const [imageUrlInput, setImageUrlInput] = useState('');
+  const [published, setPublished] = useState(true);
+  const [isFeatured, setIsFeatured] = useState(false);
+
+  const loadData = async () => {
+    try {
+      const [prodRes, catRes] = await Promise.all([
+        fetch('/api/products?all=true', { cache: 'no-store' }),
+        fetch('/api/categories?admin=true', { cache: 'no-store' }),
+      ]);
+      if (prodRes.ok) {
+        const d = await prodRes.json();
+        setProducts(d.products || []);
+      }
+      if (catRes.ok) {
+        const c = await catRes.json();
+        setCategories(c.categories || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const openCreateModal = () => {
+    setEditingProduct(null);
+    setName('');
+    setSku(`MAT-${Math.floor(100 + Math.random() * 900)}`);
+    setBrand('Balaji Architect & Interiors');
+    setCategoryId(categories[0]?.id || '');
+    setSubcategory('');
+    setDescription('');
+    setPrice(850);
+    setSalePrice(undefined);
+    setUnit('sq ft');
+    setMoq(50);
+    setStock(500);
+    setPurchaseMode('BUY_NOW');
+    setLeadTime('3-5 business days');
+    setDimensions('');
+    setThickness('');
+    setMaterial('');
+    setFinish('');
+    setImages(['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80']);
+    setPublished(true);
+    setIsFeatured(false);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (p: Product) => {
+    setEditingProduct(p);
+    setName(p.name);
+    setSku(p.sku);
+    setBrand(p.brand);
+    setCategoryId(p.categoryId);
+    setSubcategory(p.subcategory || '');
+    setDescription(p.description);
+    setPrice(p.price);
+    setSalePrice(p.salePrice);
+    setUnit(p.unit);
+    setMoq(p.moq);
+    setStock(p.stock);
+    setPurchaseMode(p.purchaseMode);
+    setLeadTime(p.leadTime);
+    setDimensions(p.dimensions || '');
+    setThickness(p.thickness || '');
+    setMaterial(p.material || '');
+    setFinish(p.finish || '');
+    setImages(p.images || []);
+    setPublished(p.published);
+    setIsFeatured(p.isFeatured);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (highlightId && products.length > 0 && !isModalOpen) {
+      const match = products.find((p) => p.id === highlightId || p.sku === highlightId);
+      if (match) {
+        openEditModal(match);
+      }
+    }
+  }, [highlightId, products]);
+
+  // Targeted Partial Update (Stock / Published toggle)
+  const handleTogglePublish = async (p: Product) => {
+    try {
+      const res = await fetch(`/api/products/${p.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ published: !p.published }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.product) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? data.product : item)));
+      } else if (res.ok) {
+        setProducts((prev) => prev.map((item) => (item.id === p.id ? { ...item, published: !p.published } : item)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to permanently delete this material?')) return;
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setProducts((prev) => prev.filter((p) => p.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSaveProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
+    const payload = {
+      name,
+      sku,
+      brand,
+      categoryId,
+      subcategory,
+      description,
+      price: Number(price),
+      salePrice: salePrice ? Number(salePrice) : undefined,
+      unit,
+      moq: Number(moq),
+      stock: Number(stock),
+      purchaseMode,
+      leadTime,
+      dimensions,
+      thickness,
+      material,
+      finish,
+      images,
+      published,
+      isFeatured,
+    };
+
+    try {
+      const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
+      const method = editingProduct ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.product) {
+        setIsModalOpen(false);
+        if (editingProduct) {
+          setProducts((prev) => prev.map((item) => (item.id === data.product.id ? data.product : item)));
+        } else {
+          setProducts((prev) => [data.product, ...prev]);
+        }
+      } else {
+        setFormError(data.error || 'Failed to save product');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Error occurred');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const addImageUrl = () => {
+    if (imageUrlInput.trim()) {
+      setImages([...images, imageUrlInput.trim()]);
+      setImageUrlInput('');
+    }
+  };
+
+  const removeImage = (idx: number) => {
+    setImages(images.filter((_, i) => i !== idx));
+  };
+
+  const filteredProducts = products.filter((p) => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.sku.toLowerCase().includes(search.toLowerCase()) ||
+      p.material?.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = !categoryFilter || p.categoryId === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        {/* Top Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Catalog Management</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Products & Materials</h1>
+          </div>
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
+          >
+            <Plus className="w-4 h-4" /> Add New Material
+          </button>
+        </div>
+
+        {/* Filter & Search Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#1D1714] border border-[#332821] p-4 rounded-xs shadow-xs">
+          <div className="sm:col-span-2 relative">
+            <input
+              type="text"
+              placeholder="Search by material name, SKU, or finish..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            />
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+
+          <div>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            >
+              <option value="">All Categories ({categories.length})</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Mobile Material Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading catalog materials...
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No materials matching your criteria.
+            </div>
+          ) : (
+            filteredProducts.map((p) => (
+              <div
+                key={p.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="relative w-12 h-12 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
+                    {p.images[0] && (
+                      <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="font-serif text-sm font-medium text-[#FCFAF6] block truncate">{p.name}</span>
+                    <span className="text-[10px] text-[#A89F91] font-mono">{p.sku} • {p.categoryName || 'General'}</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="font-serif text-sm font-semibold text-champagne block">
+                      ₹{(p.salePrice || p.price).toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-[9px] text-[#7E7469]">/ {p.unit}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-[#201712]">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[#8E8275]">Stock:</span>
+                    <span
+                      className={`text-xs font-semibold ${
+                        p.stock <= p.moq ? 'text-red-400 font-bold' : 'text-[#FCFAF6]'
+                      }`}
+                    >
+                      {p.stock} {p.unit}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleTogglePublish(p)}
+                      className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
+                        p.published
+                          ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
+                          : 'bg-white/5 text-[#A89F91] border-[#382D25]'
+                      }`}
+                    >
+                      {p.published ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
+                      <span>{p.published ? 'Live' : 'Hidden'}</span>
+                    </button>
+                    <button
+                      onClick={() => openEditModal(p)}
+                      className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                      title="Edit Material"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(p.id)}
+                      className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] rounded-xs transition-colors"
+                      title="Delete Material"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Products Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
+              <thead>
+                <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                  <th className="p-4">Material / Item</th>
+                  <th className="p-4">SKU</th>
+                  <th className="p-4">Category</th>
+                  <th className="p-4">Price / Unit</th>
+                  <th className="p-4">Stock on Hand</th>
+                  <th className="p-4">Mode</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#281F19]">
+                {loading ? (
+                  <tr>
+                    <td colSpan={8} className="p-8 text-center text-[#A89F91]">
+                      Loading catalog materials...
+                    </td>
+                  </tr>
+                ) : filteredProducts.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="p-8 text-center text-[#7E7469]">
+                      No materials matching your criteria.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredProducts.map((p) => (
+                    <tr key={p.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-10 h-10 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
+                            {p.images[0] && (
+                              <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
+                            )}
+                          </div>
+                          <div>
+                            <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>
+                            <span className="text-[10px] text-[#A89F91]">{p.brand}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 font-mono text-[11px] text-[#A89F91]">{p.sku}</td>
+                      <td className="p-4 text-[#D8CEBF]">{p.categoryName || 'General'}</td>
+                      <td className="p-4 font-medium text-champagne">
+                        ₹{(p.salePrice || p.price).toLocaleString('en-IN')}{' '}
+                        <span className="text-[10px] text-[#A89F91] font-light">/ {p.unit}</span>
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`font-medium ${
+                            p.stock <= p.moq ? 'text-red-400 font-bold' : 'text-[#FCFAF6]'
+                          }`}
+                        >
+                          {p.stock} {p.unit}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 bg-[#14100D] border border-[#332821] text-[#C7BEB2] rounded-2xs">
+                          {p.purchaseMode}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <button
+                          onClick={() => handleTogglePublish(p)}
+                          className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
+                            p.published
+                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/60'
+                              : 'bg-white/5 text-[#A89F91] border-[#382D25] hover:bg-white/10'
+                          }`}
+                        >
+                          {p.published ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
+                          <span>{p.published ? 'Live' : 'Hidden'}</span>
+                        </button>
+                      </td>
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => openEditModal(p)}
+                            className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                            title="Edit Material"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(p.id)}
+                            className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] rounded-xs transition-colors"
+                            title="Delete Material"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Create / Edit Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">Product Matrix</span>
+                <h2 className="font-serif text-2xl text-[#FCFAF6]">
+                  {editingProduct ? `Edit "${editingProduct.name}"` : 'Add New Material'}
+                </h2>
+              </div>
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
+            )}
+
+            <form onSubmit={handleSaveProduct} className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Material Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">SKU Code *</label>
+                  <input
+                    type="text"
+                    required
+                    value={sku}
+                    onChange={(e) => setSku(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] font-mono text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Category *</label>
+                  <select
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Subcategory / Series</label>
+                  <input
+                    type="text"
+                    value={subcategory}
+                    onChange={(e) => setSubcategory(e.target.value)}
+                    placeholder="e.g. Honed Travertine"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Unit of Sale *</label>
+                  <select
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value as UnitType)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option>sq ft</option>
+                    <option>sq m</option>
+                    <option>sheet</option>
+                    <option>piece</option>
+                    <option>box</option>
+                    <option>meter</option>
+                    <option>roll</option>
+                    <option>set</option>
+                    <option>unit</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard Price (₹) *</label>
+                  <input
+                    type="number"
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Sale Price (₹ Optional)</label>
+                  <input
+                    type="number"
+                    value={salePrice || ''}
+                    onChange={(e) => setSalePrice(e.target.value ? Number(e.target.value) : undefined)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Stock On Hand *</label>
+                  <input
+                    type="number"
+                    required
+                    value={stock}
+                    onChange={(e) => setStock(Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Minimum Order Qty (MOQ)</label>
+                  <input
+                    type="number"
+                    value={moq}
+                    onChange={(e) => setMoq(Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Purchase Mode</label>
+                  <select
+                    value={purchaseMode}
+                    onChange={(e) => setPurchaseMode(e.target.value as PurchaseMode)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option value="BUY_NOW">BUY_NOW (Instant Checkout)</option>
+                    <option value="REQUEST_QUOTE">REQUEST_QUOTE (Quote Only)</option>
+                    <option value="BOTH">BOTH (Buy or Request Quote)</option>
+                    <option value="UNAVAILABLE">UNAVAILABLE</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1 text-xs">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Material Description</label>
+                <textarea
+                  rows={3}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              {/* Device Image Uploader */}
+              <div className="border-t border-[#281F19] pt-4">
+                <ImageUploader
+                  bucket="products"
+                  images={images}
+                  onChange={setImages}
+                  multiple={true}
+                  label="Material High-Res Photos (Upload from Device)"
+                />
+              </div>
+
+              <div className="flex items-center gap-6 border-t border-[#281F19] pt-4 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
+                  <input
+                    type="checkbox"
+                    checked={published}
+                    onChange={(e) => setPublished(e.target.checked)}
+                    className="accent-champagne"
+                  />
+                  <span>Published on Storefront</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="accent-champagne"
+                  />
+                  <span>Feature on Homepage</span>
+                </label>
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading materials catalog...</div>}>
+      <AdminProductsContent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-categories-page-tsx"></a>7. `src/app/admin/categories/page.tsx`
+
+> **Path**: `src/app/admin/categories/page.tsx` | **Lines**: 304 | **Size**: 12.3 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Plus, Edit2, Trash2, Check, X, FolderTree, ExternalLink } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
+import { Category } from '@/types';
+
+export default function AdminCategoriesPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [sortOrder, setSortOrder] = useState(0);
+  const [isActive, setIsActive] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const loadCategories = async () => {
+    try {
+      const res = await fetch('/api/categories?admin=true', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        setCategories(data.categories || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const openCreateModal = () => {
+    setEditingCategory(null);
+    setName('');
+    setSlug('');
+    setDescription('');
+    setImageUrl('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
+    setSortOrder(categories.length + 1);
+    setIsActive(true);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (c: Category) => {
+    setEditingCategory(c);
+    setName(c.name);
+    setSlug(c.slug);
+    setDescription(c.description || '');
+    setImageUrl(c.imageUrl || '');
+    setSortOrder(c.sortOrder);
+    setIsActive(c.isActive);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
+    const payload = {
+      name,
+      slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      description,
+      imageUrl,
+      sortOrder: Number(sortOrder),
+      isActive,
+    };
+
+    try {
+      const url = editingCategory ? `/api/categories/${editingCategory.id}` : '/api/categories';
+      const method = editingCategory ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.category) {
+        setIsModalOpen(false);
+        if (editingCategory) {
+          setCategories((prev) => prev.map((c) => (c.id === data.category.id ? data.category : c)));
+        } else {
+          setCategories((prev) => [...prev, data.category]);
+        }
+      } else {
+        setFormError(data.error || 'Failed to save category');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Server error');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this category?')) return;
+    try {
+      const res = await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setCategories(categories.filter((c) => c.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Structure</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Material Categories</h1>
+          </div>
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
+          >
+            <Plus className="w-4 h-4" /> Create Category
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((cat) => (
+            <div
+              key={cat.id}
+              className="bg-[#1D1714] border border-[#332821] p-5 space-y-4 flex flex-col justify-between rounded-xs shadow-xs"
+            >
+              <div className="space-y-3">
+                <div className="relative aspect-[16/9] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
+                  {cat.imageUrl && (
+                    <Image src={cat.imageUrl} alt={cat.name} fill className="object-cover" />
+                  )}
+                  <span className="absolute top-2 right-2 px-2 py-0.5 bg-black/80 text-champagne text-[10px] uppercase font-mono border border-champagne/30 rounded-2xs">
+                    Order: {cat.sortOrder}
+                  </span>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-start">
+                    <h3 className="font-serif text-xl text-[#FCFAF6] font-medium">{cat.name}</h3>
+                    <span className="text-xs text-champagne font-medium">{cat.productCount || 0} Materials</span>
+                  </div>
+                  <p className="text-[11px] font-mono text-champagne/70 mt-0.5">/category/{cat.slug}</p>
+                  {cat.description && (
+                    <p className="text-xs text-[#A89F91] font-light mt-2 line-clamp-2">{cat.description}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#281F19] flex items-center justify-between">
+                <span
+                  className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-2xs font-medium ${
+                    cat.isActive ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50' : 'bg-white/5 text-[#A89F91] border border-[#382D25]'
+                  }`}
+                >
+                  {cat.isActive ? 'Active' : 'Disabled'}
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openEditModal(cat)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] text-xs rounded-xs transition-colors"
+                    title="Edit"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(cat.id)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] text-xs rounded-xs transition-colors"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">
+                {editingCategory ? 'Edit Category' : 'New Category'}
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
+            )}
+
+            <form onSubmit={handleSave} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Category Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Slug URL (Optional)</label>
+                <input
+                  type="text"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  placeholder="e.g. natural-stone-marble"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="border-t border-[#281F19] pt-3">
+                <ImageUploader
+                  bucket="products"
+                  images={imageUrl ? [imageUrl] : []}
+                  onChange={(imgs) => setImageUrl(imgs[0] || '')}
+                  multiple={false}
+                  label="Category Cover Photo (Upload from Device)"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Sort Order</label>
+                  <input
+                    type="number"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 pt-6">
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    checked={isActive}
+                    onChange={(e) => setIsActive(e.target.checked)}
+                    className="accent-champagne"
+                  />
+                  <label htmlFor="isActive" className="uppercase tracking-wider text-[#FCFAF6] font-medium cursor-pointer">
+                    Active in Navbar
+                  </label>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Description</label>
+                <textarea
+                  rows={3}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Saving...' : editingCategory ? 'Update Category' : 'Create Category'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-inventory-page-tsx"></a>8. `src/app/admin/inventory/page.tsx`
+
+> **Path**: `src/app/admin/inventory/page.tsx` | **Lines**: 343 | **Size**: 15.1 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Boxes, AlertTriangle, Check, Search, Save, RefreshCw } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { Product } from '@/types';
+
+function AdminInventoryContent() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams?.get('search') || searchParams?.get('id') || '';
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stockChanges, setStockChanges] = useState<Record<string, number>>({});
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [saveSuccessId, setSaveSuccessId] = useState<string | null>(null);
+  const [filterLowOnly, setFilterLowOnly] = useState(false);
+  const [search, setSearch] = useState(initialSearch);
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearch(initialSearch);
+    }
+  }, [initialSearch]);
+
+  const loadProducts = async () => {
+    try {
+      const res = await fetch('/api/products?all=true', { cache: 'no-store' });
+      if (res.ok) {
+        const d = await res.json();
+        setProducts(d.products || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const handleStockInputChange = (productId: string, val: number) => {
+    const sanitized = isNaN(val) ? 0 : Math.max(0, Math.floor(val));
+    setStockChanges({
+      ...stockChanges,
+      [productId]: sanitized,
+    });
+  };
+
+  const handleSaveStock = async (product: Product) => {
+    const rawStock = stockChanges[product.id] !== undefined ? stockChanges[product.id] : product.stock;
+    const numStock = Number(rawStock);
+
+    if (isNaN(numStock) || numStock < 0 || !Number.isInteger(numStock)) {
+      alert('Stock quantity must be a non-negative whole integer.');
+      return;
+    }
+
+    setSavingId(product.id);
+
+    try {
+      const res = await fetch(`/api/products/${product.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stock: numStock }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.product) {
+        setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
+        setSaveSuccessId(product.id);
+        setTimeout(() => setSaveSuccessId(null), 2500);
+      } else {
+        alert(`Failed to update stock: ${data.error || 'Server error'}`);
+      }
+    } catch (e: any) {
+      console.error('Failed to update stock', e);
+      alert(`Network error updating stock: ${e.message}`);
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const filtered = products.filter((p) => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.sku.toLowerCase().includes(search.toLowerCase());
+    const isLow = p.stock <= (p.moq * 2) || p.stock < 10;
+    if (filterLowOnly) return matchesSearch && isLow;
+    return matchesSearch;
+  });
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Warehouse & Logistics</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Inventory Control</h1>
+          </div>
+          <button
+            onClick={loadProducts}
+            className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 self-start rounded-xs transition-colors shadow-xs"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Sync Stock
+          </button>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 bg-[#1D1714] border border-[#332821] p-4 items-center justify-between rounded-xs shadow-xs">
+          <div className="relative w-full sm:w-80">
+            <input
+              type="text"
+              placeholder="Search material or SKU..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            />
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+
+          <label className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#FCFAF6] cursor-pointer self-start sm:self-center">
+            <input
+              type="checkbox"
+              checked={filterLowOnly}
+              onChange={(e) => setFilterLowOnly(e.target.checked)}
+              className="accent-champagne"
+            />
+            <span className="flex items-center gap-1 text-amber-400 font-medium">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" /> Show Low-Stock Lots Only
+            </span>
+          </label>
+        </div>
+
+        {/* Mobile Inventory Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading inventory records...
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No material records found.
+            </div>
+          ) : (
+            filtered.map((p) => {
+              const currentInputStock =
+                stockChanges[p.id] !== undefined ? stockChanges[p.id] : p.stock;
+              const isModified = stockChanges[p.id] !== undefined && stockChanges[p.id] !== p.stock;
+              const isLow = p.stock <= p.moq;
+
+              return (
+                <div
+                  key={p.id}
+                  className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>
+                      <span className="text-[10px] font-mono text-[#A89F91]">SKU: {p.sku} • {p.categoryName || 'General'}</span>
+                    </div>
+                    <span
+                      className={`text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-2xs border ${
+                        isLow
+                          ? 'bg-red-950/40 text-red-300 border-red-800/50'
+                          : 'bg-[#1A1410] text-[#A89F91] border-[#332821]'
+                      }`}
+                    >
+                      {isLow ? 'Low Stock' : 'In Stock'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                    <div>
+                      <span className="text-[10px] text-[#8E8275] block">Current Stock</span>
+                      <span className="font-medium text-[#FCFAF6] text-xs">
+                        {p.stock} {p.unit} <span className="text-[10px] text-[#7E7469]">(MOQ: {p.moq})</span>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleStockInputChange(p.id, Math.max(0, currentInputStock - 1))}
+                        className="w-8 h-8 bg-[#1F1814] border border-[#382D25] text-[#FCFAF6] hover:border-champagne rounded-xs flex items-center justify-center font-bold text-sm"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        min="0"
+                        value={currentInputStock}
+                        onChange={(e) => handleStockInputChange(p.id, Number(e.target.value))}
+                        className="w-16 h-8 text-center bg-[#14100D] border border-[#382D25] text-xs text-champagne font-semibold focus:border-champagne focus:outline-hidden rounded-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleStockInputChange(p.id, currentInputStock + 1)}
+                        className="w-8 h-8 bg-[#1F1814] border border-[#382D25] text-[#FCFAF6] hover:border-champagne rounded-xs flex items-center justify-center font-bold text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-[#201712]">
+                    <button
+                      onClick={() => handleSaveStock(p)}
+                      disabled={savingId === p.id || !isModified}
+                      className={`w-full py-2 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-1.5 rounded-xs transition-all ${
+                        saveSuccessId === p.id
+                          ? 'bg-emerald-700 text-white shadow-xs'
+                          : isModified
+                          ? 'bg-champagne text-[#100C0A] hover:bg-[#DAC19E] cursor-pointer shadow-xs'
+                          : 'opacity-40 bg-[#14100D] text-[#7E7469] cursor-not-allowed border border-[#332821]'
+                      }`}
+                    >
+                      {saveSuccessId === p.id ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" /> Saved Successfully
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-3.5 h-3.5" /> Save Stock Update
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+          <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
+            <thead>
+              <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                <th className="p-4">Material / SKU</th>
+                <th className="p-4">Category</th>
+                <th className="p-4">Unit of Measure</th>
+                <th className="p-4">MOQ</th>
+                <th className="p-4">Stock on Hand</th>
+                <th className="p-4">Quick Adjust</th>
+                <th className="p-4 text-right">Save</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#281F19]">
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="p-8 text-center text-[#A89F91]">
+                    Loading inventory records...
+                  </td>
+                </tr>
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="p-8 text-center text-[#7E7469]">
+                    No material records found.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((p) => {
+                  const currentInputStock =
+                    stockChanges[p.id] !== undefined ? stockChanges[p.id] : p.stock;
+                  const isModified = stockChanges[p.id] !== undefined && stockChanges[p.id] !== p.stock;
+                  const isLow = p.stock <= p.moq;
+
+                  return (
+                    <tr key={p.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="p-4">
+                        <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>
+                        <span className="text-[10px] font-mono text-[#A89F91]">SKU: {p.sku}</span>
+                      </td>
+                      <td className="p-4 text-[#D8CEBF]">{p.categoryName}</td>
+                      <td className="p-4 uppercase font-medium text-champagne">{p.unit}</td>
+                      <td className="p-4 text-[#A89F91]">{p.moq}</td>
+                      <td className="p-4">
+                        <span
+                          className={`font-medium px-2 py-1 rounded-2xs ${
+                            isLow
+                              ? 'bg-red-950/40 text-red-300 border border-red-800/50'
+                              : 'bg-[#14100D] text-[#FCFAF6] border border-[#332821]'
+                          }`}
+                        >
+                          {p.stock} {p.unit}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          min="0"
+                          value={currentInputStock}
+                          onChange={(e) => handleStockInputChange(p.id, Number(e.target.value))}
+                          className="w-24 p-1.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                        />
+                      </td>
+                      <td className="p-4 text-right">
+                        <button
+                          onClick={() => handleSaveStock(p)}
+                          disabled={savingId === p.id || !isModified}
+                          className={`px-3.5 py-1.5 text-xs uppercase tracking-wider font-medium inline-flex items-center gap-1 rounded-xs transition-all ${
+                            saveSuccessId === p.id
+                              ? 'bg-emerald-700 text-white shadow-xs'
+                              : isModified
+                              ? 'bg-champagne text-[#100C0A] hover:bg-[#DAC19E] cursor-pointer shadow-xs font-semibold'
+                              : 'opacity-40 bg-[#14100D] text-[#7E7469] cursor-not-allowed border border-[#332821]'
+                          }`}
+                        >
+                          {saveSuccessId === p.id ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" /> Saved
+                            </>
+                          ) : (
+                            <>
+                              <Save className="w-3.5 h-3.5" /> Update
+                            </>
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </AdminLayout>
+  );
+}
+
+export default function AdminInventoryPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading inventory records...</div>}>
+      <AdminInventoryContent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-orders-page-tsx"></a>9. `src/app/admin/orders/page.tsx`
+
+> **Path**: `src/app/admin/orders/page.tsx` | **Lines**: 519 | **Size**: 23.4 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import {
+  ShoppingBag,
+  RefreshCw,
+  Search,
+  Eye,
+  CheckCircle2,
+  Clock,
+  Truck,
+  PackageCheck,
+  X,
+  Printer,
+  Radio,
+} from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { Order, OrderStatus, PaymentStatus } from '@/types';
+import { supabase } from '@/lib/supabase';
+
+function AdminOrdersContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || null;
+
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [isLiveConnected, setIsLiveConnected] = useState(false);
+
+  const loadOrders = async () => {
+    try {
+      const res = await fetch('/api/orders', {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+      if (res.ok) {
+        const d = await res.json();
+        const ords: Order[] = d.orders || [];
+        setOrders(ords);
+
+        if (highlightId && !selectedOrder) {
+          const match = ords.find((o) => o.id === highlightId || o.orderNumber === highlightId);
+          if (match) setSelectedOrder(match);
+        }
+      }
+    } catch (e) {
+      console.error('Error loading orders:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadOrders();
+
+    // 1. Setup Supabase Realtime Channel if client is configured
+    let channel: any = null;
+    if (supabase) {
+      channel = supabase
+        .channel('admin-orders-realtime-stream')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'orders' },
+          (payload: any) => {
+            // Immediately reload orders on any new order insertion or status update
+            loadOrders();
+
+            // If browser notifications are permitted, display order alert
+            if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
+              const newRecord = payload.new as any;
+              new Notification('New Order Placed — Balaji Architect & Interiors', {
+                body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
+                icon: '/favicon.ico',
+              });
+            }
+          }
+        )
+        .subscribe((status: string) => {
+          if (status === 'SUBSCRIBED') {
+            setIsLiveConnected(true);
+          }
+        });
+    }
+
+    // 2. Periodic sync fallback (every 30 seconds when tab is active)
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        loadOrders();
+      }
+    }, 30000);
+
+    return () => {
+      if (supabase && channel) {
+        supabase.removeChannel(channel);
+      }
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleUpdateStatus = async (orderId: string, orderStatus: OrderStatus, paymentStatus?: PaymentStatus) => {
+    setUpdatingId(orderId);
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderStatus, paymentStatus }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.order) {
+          setOrders((prev) => prev.map((o) => (o.id === orderId ? data.order : o)));
+          if (selectedOrder && selectedOrder.id === orderId) {
+            setSelectedOrder(data.order);
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const filteredOrders = orders.filter((o) => {
+    const matchesSearch =
+      o.orderNumber.toLowerCase().includes(search.toLowerCase()) ||
+      o.customerName.toLowerCase().includes(search.toLowerCase()) ||
+      o.customerEmail.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = !statusFilter || o.orderStatus === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-champagne font-medium">Logistics & Orders</span>
+              <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
+                <Radio className="w-3 h-3 animate-pulse" /> Live Stream
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Client Orders</h1>
+          </div>
+          <button
+            onClick={loadOrders}
+            className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 self-start rounded-xs transition-colors shadow-xs"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Sync Orders
+          </button>
+        </div>
+
+        {/* Filter Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#1D1714] border border-[#332821] p-4 rounded-xs shadow-xs">
+          <div className="sm:col-span-2 relative">
+            <input
+              type="text"
+              placeholder="Search by order #, client name, or email..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            />
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+
+          <div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            >
+              <option value="">All Statuses ({orders.length})</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Processing">Processing</option>
+              <option value="Packed">Packed</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Mobile Phone Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading incoming order logs...
+            </div>
+          ) : filteredOrders.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No order records matching filter.
+            </div>
+          ) : (
+            filteredOrders.map((ord) => (
+              <div
+                key={ord.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-mono font-semibold text-xs text-[#FCFAF6] block">{ord.orderNumber}</span>
+                    <span className="text-[10px] text-[#7E7469]">
+                      {new Date(ord.createdAt).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold border rounded-2xs ${
+                        ord.paymentStatus === 'Paid'
+                          ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
+                          : 'bg-amber-950/50 text-amber-300 border-amber-800/50'
+                      }`}
+                    >
+                      {ord.paymentStatus}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                  <div className="truncate">
+                    <span className="font-medium text-[#FCFAF6] block truncate">{ord.customerName}</span>
+                    <span className="text-[10px] text-[#8E8275]">{ord.items.length} material items</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="font-serif text-sm font-semibold text-champagne block">
+                      ₹{ord.totalAmount.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#201712]">
+                  <div className="flex-1">
+                    <select
+                      value={ord.orderStatus}
+                      onChange={(e) => handleUpdateStatus(ord.id, e.target.value as OrderStatus)}
+                      disabled={updatingId === ord.id}
+                      className="w-full p-2 bg-[#1A1410] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Packed">Packed</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                  <button
+                    onClick={() => setSelectedOrder(ord)}
+                    className="px-3 py-2 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center gap-1.5 transition-colors flex-shrink-0"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-champagne" />
+                    <span>Slip</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Orders Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
+              <thead>
+                <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                  <th className="p-4">Order Ref</th>
+                  <th className="p-4">Client</th>
+                  <th className="p-4">Date Placed</th>
+                  <th className="p-4">Total Amount</th>
+                  <th className="p-4">Payment</th>
+                  <th className="p-4">Order Status</th>
+                  <th className="p-4 text-right">Review</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#281F19]">
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-[#A89F91]">
+                      Loading incoming order logs...
+                    </td>
+                  </tr>
+                ) : filteredOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-[#7E7469]">
+                      No order records matching filter.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredOrders.map((ord) => (
+                    <tr key={ord.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="p-4">
+                        <span className="font-mono font-medium text-[#FCFAF6] block">{ord.orderNumber}</span>
+                        <span className="text-[10px] text-[#A89F91]">{ord.items.length} materials</span>
+                      </td>
+                      <td className="p-4">
+                        <span className="font-medium text-[#FCFAF6] block">{ord.customerName}</span>
+                        <span className="text-[10px] text-[#A89F91]">{ord.customerEmail}</span>
+                      </td>
+                      <td className="p-4 text-[#A89F91]">
+                        {new Date(ord.createdAt).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </td>
+                      <td className="p-4 font-serif text-sm font-medium text-champagne">
+                        ₹{ord.totalAmount.toLocaleString('en-IN')}
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-medium border rounded-2xs ${
+                            ord.paymentStatus === 'Paid'
+                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
+                              : 'bg-amber-950/40 text-amber-300 border-amber-800/50'
+                          }`}
+                        >
+                          {ord.paymentStatus}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <select
+                          value={ord.orderStatus}
+                          onChange={(e) => handleUpdateStatus(ord.id, e.target.value as OrderStatus)}
+                          disabled={updatingId === ord.id}
+                          className="p-1 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Confirmed">Confirmed</option>
+                          <option value="Processing">Processing</option>
+                          <option value="Packed">Packed</option>
+                          <option value="Shipped">Shipped</option>
+                          <option value="Delivered">Delivered</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                      <td className="p-4 text-right">
+                        <button
+                          onClick={() => setSelectedOrder(ord)}
+                          className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                          title="View Slip"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Order Detail Modal / Packing Slip */}
+      {selectedOrder && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-start border-b border-[#281F19] pb-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">Order Slip</span>
+                <h2 className="font-serif text-2xl text-[#FCFAF6] font-normal">
+                  Order #{selectedOrder.orderNumber}
+                </h2>
+                <span className="text-xs text-[#A89F91]">
+                  Placed on {new Date(selectedOrder.createdAt).toLocaleString('en-IN')}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                  title="Print Packing Slip"
+                >
+                  <Printer className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="p-1.5 text-[#A89F91] hover:text-[#FCFAF6] transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Client & Address Info */}
+            <div className="grid grid-cols-2 gap-4 p-4 bg-[#14100D] border border-[#332821] text-xs rounded-xs">
+              <div className="space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
+                  Customer Information
+                </span>
+                <p className="font-medium text-[#FCFAF6]">{selectedOrder.customerName}</p>
+                <p className="text-[#A89F91]">{selectedOrder.customerEmail}</p>
+                <p className="text-[#A89F91]">{selectedOrder.customerPhone}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
+                  Delivery Site
+                </span>
+                <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress.addressLine1}</p>
+                {selectedOrder.shippingAddress.addressLine2 && (
+                  <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress.addressLine2}</p>
+                )}
+                <p className="text-[#A89F91]">
+                  {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state} -{' '}
+                  {selectedOrder.shippingAddress.pincode}
+                </p>
+              </div>
+            </div>
+
+            {/* Line Items */}
+            <div className="space-y-3">
+              <h3 className="text-xs uppercase tracking-wider text-champagne font-medium">
+                Materials in this Crate ({selectedOrder.items.length})
+              </h3>
+              <div className="border border-[#332821] divide-y divide-[#281F19] text-xs rounded-xs">
+                {selectedOrder.items.map((item) => (
+                  <div key={item.id} className="p-3 flex justify-between items-center bg-[#16110E]">
+                    <div>
+                      <p className="font-serif text-sm font-medium text-[#FCFAF6]">{item.productName}</p>
+                      <p className="text-[11px] text-[#A89F91]">
+                        SKU: {item.productSku} • Qty: {item.quantity} {item.unit} @ ₹{item.unitPrice.toLocaleString('en-IN')}/{item.unit}
+                      </p>
+                    </div>
+                    <span className="font-medium text-champagne">
+                      ₹{item.subtotal.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Financial Summary */}
+            <div className="p-4 bg-[#14100D] border border-[#332821] space-y-1.5 text-xs text-[#A89F91] rounded-xs">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span className="text-[#FCFAF6] font-medium">₹{selectedOrder.subtotal.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>GST (18%)</span>
+                <span className="text-[#FCFAF6] font-medium">₹{selectedOrder.tax.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Freight Fee</span>
+                <span className="text-[#FCFAF6] font-medium">₹{selectedOrder.shippingFee.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-[#281F19] text-sm font-medium text-[#FCFAF6]">
+                <span>Total Due / Paid</span>
+                <span className="font-serif text-lg text-champagne">₹{selectedOrder.totalAmount.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+
+            {/* Status Controls */}
+            <div className="grid grid-cols-2 gap-4 pt-2 border-t border-[#281F19] text-xs">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                  Update Order Status
+                </label>
+                <select
+                  value={selectedOrder.orderStatus}
+                  onChange={(e) => handleUpdateStatus(selectedOrder.id, e.target.value as OrderStatus)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Packed">Packed</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                  Update Payment Status
+                </label>
+                <select
+                  value={selectedOrder.paymentStatus}
+                  onChange={(e) =>
+                    handleUpdateStatus(selectedOrder.id, selectedOrder.orderStatus, e.target.value as PaymentStatus)
+                  }
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Submitted">Submitted</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Failed">Failed</option>
+                  <option value="Refunded">Refunded</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+
+export default function AdminOrdersPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading orders module...</div>}>
+      <AdminOrdersContent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-quotes-page-tsx"></a>10. `src/app/admin/quotes/page.tsx`
+
+> **Path**: `src/app/admin/quotes/page.tsx` | **Lines**: 364 | **Size**: 16.9 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { FileText, Eye, Check, X, RefreshCw, Send, DollarSign, Clock } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { Quote, QuoteStatus } from '@/types';
+
+function AdminQuotesContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || null;
+
+  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
+  const [quotedAmountInput, setQuotedAmountInput] = useState<number | ''>('');
+  const [adminNotesInput, setAdminNotesInput] = useState('');
+  const [updating, setUpdating] = useState(false);
+
+  const openQuoteModal = (q: Quote) => {
+    setSelectedQuote(q);
+    setQuotedAmountInput(q.totalQuotedAmount || '');
+    setAdminNotesInput(q.adminNotes || '');
+  };
+
+  const loadQuotes = async () => {
+    try {
+      const res = await fetch('/api/quotes', { cache: 'no-store' });
+      if (res.ok) {
+        const d = await res.json();
+        const qts: Quote[] = d.quotes || [];
+        setQuotes(qts);
+
+        if (highlightId) {
+          const match = qts.find((q) => q.id === highlightId || q.quoteNumber === highlightId);
+          if (match) {
+            openQuoteModal(match);
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadQuotes();
+  }, [highlightId]);
+
+  const handleUpdateQuote = async (status: QuoteStatus) => {
+    if (!selectedQuote) return;
+    setUpdating(true);
+
+    try {
+      const res = await fetch(`/api/quotes/${selectedQuote.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status,
+          totalQuotedAmount: quotedAmountInput !== '' ? Number(quotedAmountInput) : undefined,
+          adminNotes: adminNotesInput,
+        }),
+      });
+
+      if (res.ok) {
+        const d = await res.json();
+        if (d.quote) {
+          setQuotes((prev) => prev.map((item) => (item.id === selectedQuote.id ? d.quote : item)));
+          setSelectedQuote(d.quote);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Inquiries & Estimation</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Quotes</h1>
+          </div>
+          <button
+            onClick={loadQuotes}
+            className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 self-start rounded-xs transition-colors shadow-xs"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Sync Quotes
+          </button>
+        </div>
+
+        {/* Mobile Quote Cards View (< md) */}
+        <div className="md:hidden space-y-3">
+          {loading ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
+              Loading quote inbox...
+            </div>
+          ) : quotes.length === 0 ? (
+            <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
+              No quote requests in record.
+            </div>
+          ) : (
+            quotes.map((q) => (
+              <div
+                key={q.id}
+                className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-mono font-semibold text-xs text-[#FCFAF6] block">{q.quoteNumber}</span>
+                    <span className="text-[10px] text-[#7E7469]">{q.projectLocation}</span>
+                  </div>
+                  <span
+                    className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium border rounded-2xs ${
+                      q.status === 'Approved' || q.status === 'Converted_To_Order'
+                        ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
+                        : q.status === 'Quotation_Sent'
+                        ? 'bg-blue-950/50 text-blue-300 border-blue-800/50'
+                        : 'bg-amber-950/50 text-amber-300 border-amber-800/50'
+                    }`}
+                  >
+                    {q.status.replace(/_/g, ' ')}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
+                  <div className="truncate">
+                    <span className="font-medium text-[#FCFAF6] block truncate">{q.customerName}</span>
+                    <span className="text-[10px] text-[#8E8275]">{q.projectType} • {q.items.length} items</span>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="text-[10px] text-[#7E7469] block">Budget</span>
+                    <span className="text-xs font-semibold text-champagne block">{q.budgetRange}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-[#201712] flex justify-end">
+                  <button
+                    onClick={() => openQuoteModal(q)}
+                    className="w-full py-2 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-champagne" />
+                    <span>Review & Estimate</span>
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Quotes Table (hidden md:block - 100% UNTOUCHED) */}
+        <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
+              <thead>
+                <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                  <th className="p-4">Quote Ref</th>
+                  <th className="p-4">Client Entity</th>
+                  <th className="p-4">Project Typology</th>
+                  <th className="p-4">Location</th>
+                  <th className="p-4">Target Budget</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#281F19]">
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-[#A89F91]">
+                      Loading quote inbox...
+                    </td>
+                  </tr>
+                ) : quotes.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-[#7E7469]">
+                      No quote requests in record.
+                    </td>
+                  </tr>
+                ) : (
+                  quotes.map((q) => (
+                    <tr key={q.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="p-4 font-mono font-medium text-[#FCFAF6]">{q.quoteNumber}</td>
+                      <td className="p-4">
+                        <span className="font-medium text-[#FCFAF6] block">{q.customerName}</span>
+                        <span className="text-[10px] text-[#A89F91]">{q.customerEmail}</span>
+                      </td>
+                      <td className="p-4 font-serif text-sm text-[#D8CEBF]">{q.projectType}</td>
+                      <td className="p-4 text-[#A89F91]">{q.projectLocation}</td>
+                      <td className="p-4 text-champagne font-medium">{q.budgetRange}</td>
+                      <td className="p-4">
+                        <span
+                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-medium border rounded-2xs ${
+                            q.status === 'Approved' || q.status === 'Converted_To_Order'
+                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
+                              : q.status === 'Quotation_Sent'
+                              ? 'bg-blue-950/40 text-blue-300 border-blue-800/50'
+                              : 'bg-amber-950/40 text-amber-300 border-amber-800/50'
+                          }`}
+                        >
+                          {q.status.replace(/_/g, ' ')}
+                        </span>
+                      </td>
+                      <td className="p-4 text-right">
+                        <button
+                          onClick={() => openQuoteModal(q)}
+                          className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                          title="Review & Price Quote"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Quote Review Drawer / Modal */}
+      {selectedQuote && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-start border-b border-[#281F19] pb-4">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">Estimate Dossier</span>
+                <h2 className="font-serif text-2xl text-[#FCFAF6] font-normal">
+                  Quote #{selectedQuote.quoteNumber}
+                </h2>
+                <p className="text-xs text-[#A89F91]">Received on {new Date(selectedQuote.createdAt).toLocaleString('en-IN')}</p>
+              </div>
+              <button onClick={() => setSelectedQuote(null)} className="p-1.5 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 p-4 bg-[#14100D] border border-[#332821] text-xs rounded-xs">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
+                  Client Details
+                </span>
+                <p className="font-medium text-[#FCFAF6]">{selectedQuote.customerName}</p>
+                <p className="text-[#A89F91]">{selectedQuote.customerEmail}</p>
+                <p className="text-[#A89F91]">{selectedQuote.customerPhone}</p>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
+                  Project Scope
+                </span>
+                <p className="text-[#FCFAF6] font-medium">{selectedQuote.projectType}</p>
+                <p className="text-[#A89F91]">Site: {selectedQuote.projectLocation}</p>
+                <p className="text-[#A89F91]">Timeline: {selectedQuote.estimatedTimeline}</p>
+              </div>
+            </div>
+
+            {/* Line Items */}
+            <div className="space-y-3">
+              <h3 className="text-xs uppercase tracking-wider text-champagne font-medium">
+                Materials & Sizing Requested ({selectedQuote.items.length})
+              </h3>
+              <div className="border border-[#332821] divide-y divide-[#281F19] text-xs rounded-xs">
+                {selectedQuote.items.map((item, idx) => (
+                  <div key={idx} className="p-3 space-y-1 bg-[#16110E]">
+                    <div className="flex justify-between">
+                      <span className="font-serif text-sm font-medium text-[#FCFAF6]">{item.productName}</span>
+                      <span className="font-mono text-champagne">{item.quantity} {item.unit}</span>
+                    </div>
+                    {item.dimensions && <p className="text-[11px] text-[#A89F91]">Dimensions: {item.dimensions}</p>}
+                    {item.notes && <p className="text-[11px] text-[#A89F91] italic">&ldquo;{item.notes}&rdquo;</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {selectedQuote.notes && (
+              <div className="p-3 bg-[#14100D] border border-[#332821] text-xs space-y-1 rounded-xs">
+                <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
+                  Client Design Notes:
+                </span>
+                <p className="text-[#A89F91] leading-relaxed">{selectedQuote.notes}</p>
+              </div>
+            )}
+
+            {/* Estimation Action Controls */}
+            <div className="space-y-4 pt-2 border-t border-[#281F19] text-xs">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                    Calculated Quotation Amount (₹)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 450000"
+                    value={quotedAmountInput}
+                    onChange={(e) => setQuotedAmountInput(e.target.value ? Number(e.target.value) : '')}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs font-serif text-champagne text-base font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                    Update Quote Workflow Status
+                  </label>
+                  <select
+                    value={selectedQuote.status}
+                    onChange={(e) => handleUpdateQuote(e.target.value as QuoteStatus)}
+                    disabled={updating}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] font-medium focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option value="Pending">Pending Review</option>
+                    <option value="Under_Review">Under Technical Review</option>
+                    <option value="Quotation_Sent">Quotation Dispatched to Client</option>
+                    <option value="Approved">Client Approved</option>
+                    <option value="Converted_To_Order">Converted to Confirmed Order</option>
+                    <option value="Rejected">Rejected / Infeasible</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                  Studio Internal Notes & Quarry Coordination
+                </label>
+                <textarea
+                  rows={2}
+                  value={adminNotesInput}
+                  onChange={(e) => setAdminNotesInput(e.target.value)}
+                  placeholder="e.g. Quarry block #42 reserved in Verona. 3 week shipping timeline."
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => handleUpdateQuote(selectedQuote.status)}
+                  disabled={updating}
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {updating ? 'Saving...' : 'Save Estimate & Notes'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+
+export default function AdminQuotesPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading quote dossiers...</div>}>
+      <AdminQuotesContent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-projects-page-tsx"></a>11. `src/app/admin/projects/page.tsx`
+
+> **Path**: `src/app/admin/projects/page.tsx` | **Lines**: 437 | **Size**: 17.9 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Plus, Edit2, Trash2, Check, X, Building2, Eye, EyeOff } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
+import { Project, ProjectType } from '@/types';
+
+export default function AdminProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  // Fields
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [location, setLocation] = useState('Mumbai');
+  const [year, setYear] = useState('2025');
+  const [projectType, setProjectType] = useState<ProjectType>('Residential Interiors');
+  const [area, setArea] = useState('6,500 sq ft');
+  const [shortDescription, setShortDescription] = useState('');
+  const [description, setDescription] = useState('');
+  const [heroImage, setHeroImage] = useState('');
+  const [gallery, setGallery] = useState<string[]>([]);
+  const [galleryInput, setGalleryInput] = useState('');
+  const [designApproach, setDesignApproach] = useState('');
+  const [isPublished, setIsPublished] = useState(true);
+  const [isFeatured, setIsFeatured] = useState(false);
+
+  const loadProjects = async () => {
+    try {
+      const res = await fetch('/api/projects?all=true', { cache: 'no-store' });
+      if (res.ok) {
+        const d = await res.json();
+        setProjects(d.projects || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const openCreateModal = () => {
+    setEditingProject(null);
+    setTitle('');
+    setSlug('');
+    setLocation('Mumbai');
+    setYear('2025');
+    setProjectType('Residential Interiors');
+    setArea('5,000 sq ft');
+    setShortDescription('');
+    setDescription('');
+    setHeroImage('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85');
+    setGallery([]);
+    setDesignApproach('');
+    setIsPublished(true);
+    setIsFeatured(false);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (p: Project) => {
+    setEditingProject(p);
+    setTitle(p.title);
+    setSlug(p.slug);
+    setLocation(p.location);
+    setYear(p.year);
+    setProjectType(p.projectType);
+    setArea(p.area);
+    setShortDescription(p.shortDescription);
+    setDescription(p.description);
+    setHeroImage(p.heroImage);
+    setGallery(p.gallery || []);
+    setDesignApproach(p.designApproach);
+    setIsPublished(p.isPublished);
+    setIsFeatured(p.isFeatured);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleTogglePublish = async (p: Project) => {
+    try {
+      const res = await fetch(`/api/projects/${p.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPublished: !p.isPublished }),
+      });
+      if (res.ok) {
+        setProjects(projects.map((item) => (item.id === p.id ? { ...item, isPublished: !p.isPublished } : item)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this project monograph?')) return;
+    try {
+      const res = await fetch(`/api/projects/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setProjects(projects.filter((p) => p.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
+    const payload = {
+      title,
+      slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      location,
+      year,
+      projectType,
+      area,
+      shortDescription,
+      description,
+      heroImage,
+      gallery,
+      designApproach,
+      isPublished,
+      isFeatured,
+    };
+
+    try {
+      const url = editingProject ? `/api/projects/${editingProject.id}` : '/api/projects';
+      const method = editingProject ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.project) {
+        setIsModalOpen(false);
+        if (editingProject) {
+          setProjects((prev) => prev.map((p) => (p.id === data.project.id ? data.project : p)));
+        } else {
+          setProjects((prev) => [data.project, ...prev]);
+        }
+      } else {
+        setFormError(data.error || 'Failed to save project');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Error saving');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const addGalleryImage = () => {
+    if (galleryInput.trim()) {
+      setGallery([...gallery, galleryInput.trim()]);
+      setGalleryInput('');
+    }
+  };
+
+  const removeGalleryImage = (idx: number) => {
+    setGallery(gallery.filter((_, i) => i !== idx));
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Monographs</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Projects</h1>
+          </div>
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
+          >
+            <Plus className="w-4 h-4" /> Add Project Case Study
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((proj) => (
+            <div
+              key={proj.id}
+              className="bg-[#1D1714] border border-[#332821] p-5 space-y-4 flex flex-col justify-between rounded-xs shadow-xs"
+            >
+              <div className="space-y-3">
+                <div className="relative aspect-[16/10] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
+                  <Image src={proj.heroImage} alt={proj.title} fill className="object-cover" />
+                  <span className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 text-champagne text-[10px] uppercase tracking-wider font-medium border border-champagne/30 rounded-2xs">
+                    {proj.projectType}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="font-serif text-xl text-[#FCFAF6] font-medium">{proj.title}</h3>
+                  <p className="text-xs text-champagne/80 mt-0.5">
+                    {proj.location} • {proj.year} • {proj.area}
+                  </p>
+                  <p className="text-xs text-[#A89F91] font-light mt-2 line-clamp-2">{proj.shortDescription}</p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#281F19] flex items-center justify-between">
+                <button
+                  onClick={() => handleTogglePublish(proj)}
+                  className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
+                    proj.isPublished
+                      ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/60'
+                      : 'bg-white/5 text-[#A89F91] border-[#382D25] hover:bg-white/10'
+                  }`}
+                >
+                  {proj.isPublished ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
+                  <span>{proj.isPublished ? 'Live' : 'Draft'}</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openEditModal(proj)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] text-xs rounded-xs transition-colors"
+                    title="Edit"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(proj.id)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] text-xs rounded-xs transition-colors"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Project Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">
+                {editingProject ? `Edit "${editingProject.title}"` : 'New Architectural Case Study'}
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
+            )}
+
+            <form onSubmit={handleSave} className="space-y-4 text-xs max-h-[70vh] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Project Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Typology *</label>
+                  <select
+                    value={projectType}
+                    onChange={(e) => setProjectType(e.target.value as ProjectType)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option>Residential Interiors</option>
+                    <option>Architecture & Villa</option>
+                    <option>Penthouse & Estate</option>
+                    <option>Commercial & Studio</option>
+                    <option>Hospitality & Luxury Dining</option>
+                    <option>Custom Spatial Design</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Site Location</label>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Year Completed</label>
+                  <input
+                    type="text"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Built Area (sq ft)</label>
+                  <input
+                    type="text"
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Image URL *</label>
+                  <input
+                    type="url"
+                    required
+                    value={heroImage}
+                    onChange={(e) => setHeroImage(e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Short Monograph Synopsis</label>
+                <textarea
+                  rows={2}
+                  value={shortDescription}
+                  onChange={(e) => setShortDescription(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Full Architectural Narrative</label>
+                <textarea
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Design Approach & Material Integration</label>
+                <textarea
+                  rows={3}
+                  value={designApproach}
+                  onChange={(e) => setDesignApproach(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              {/* Hero Image Uploader */}
+              <div className="border-t border-[#281F19] pt-3">
+                <ImageUploader
+                  bucket="projects"
+                  images={heroImage ? [heroImage] : []}
+                  onChange={(imgs) => setHeroImage(imgs[0] || '')}
+                  multiple={false}
+                  label="Architectural Hero Photo (Upload from Device) *"
+                />
+              </div>
+
+              {/* Gallery Plates Uploader */}
+              <div className="border-t border-[#281F19] pt-3">
+                <ImageUploader
+                  bucket="projects"
+                  images={gallery}
+                  onChange={setGallery}
+                  multiple={true}
+                  label="Project Gallery Plates (Upload Multiple from Device)"
+                />
+              </div>
+
+              <div className="flex items-center gap-6 border-t border-[#281F19] pt-4 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
+                  <input
+                    type="checkbox"
+                    checked={isPublished}
+                    onChange={(e) => setIsPublished(e.target.checked)}
+                    className="accent-champagne"
+                  />
+                  <span>Published in Portfolio</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer text-[#FCFAF6]">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="accent-champagne"
+                  />
+                  <span>Feature on Homepage</span>
+                </label>
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Saving...' : 'Save Case Study'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-services-page-tsx"></a>12. `src/app/admin/services/page.tsx`
+
+> **Path**: `src/app/admin/services/page.tsx` | **Lines**: 342 | **Size**: 13.7 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Plus, Edit2, Trash2, Check, X, Compass, Eye, EyeOff } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
+import { Service } from '@/types';
+
+export default function AdminServicesPage() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [shortDesc, setShortDesc] = useState('');
+  const [fullDesc, setFullDesc] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [deliverables, setDeliverables] = useState<string[]>([]);
+  const [deliverableInput, setDeliverableInput] = useState('');
+  const [sortOrder, setSortOrder] = useState(0);
+  const [isPublished, setIsPublished] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const loadServices = async () => {
+    try {
+      const res = await fetch('/api/services?all=true', { cache: 'no-store' });
+      if (res.ok) {
+        const d = await res.json();
+        setServices(d.services || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadServices();
+  }, []);
+
+  const openCreateModal = () => {
+    setEditingService(null);
+    setTitle('');
+    setSlug('');
+    setShortDesc('');
+    setFullDesc('');
+    setImageUrl('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80');
+    setDeliverables(['Concept Moodboards', 'Spatial CAD Layouts', 'Material Procurement Schedule']);
+    setSortOrder(services.length + 1);
+    setIsPublished(true);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (s: Service) => {
+    setEditingService(s);
+    setTitle(s.title);
+    setSlug(s.slug);
+    setShortDesc(s.shortDesc);
+    setFullDesc(s.fullDesc);
+    setImageUrl(s.imageUrl || '');
+    setDeliverables(s.deliverables || []);
+    setSortOrder(s.sortOrder);
+    setIsPublished(s.isPublished);
+    setFormError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleTogglePublish = async (s: Service) => {
+    try {
+      const res = await fetch(`/api/services/${s.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPublished: !s.isPublished }),
+      });
+      if (res.ok) {
+        setServices(services.map((item) => (item.id === s.id ? { ...item, isPublished: !s.isPublished } : item)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this architectural service?')) return;
+    try {
+      const res = await fetch(`/api/services/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setServices((prev) => prev.filter((s) => s.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
+    const payload = {
+      title,
+      slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      shortDesc,
+      fullDesc,
+      iconName: 'Compass',
+      imageUrl,
+      deliverables,
+      sortOrder: Number(sortOrder),
+      isPublished,
+    };
+
+    try {
+      const url = editingService ? `/api/services/${editingService.id}` : '/api/services';
+      const method = editingService ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.service) {
+        setIsModalOpen(false);
+        if (editingService) {
+          setServices((prev) => prev.map((s) => (s.id === data.service.id ? data.service : s)));
+        } else {
+          setServices((prev) => [...prev, data.service]);
+        }
+      } else {
+        setFormError(data.error || 'Failed to save service');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Error occurred');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const addDeliverable = () => {
+    if (deliverableInput.trim()) {
+      setDeliverables([...deliverables, deliverableInput.trim()]);
+      setDeliverableInput('');
+    }
+  };
+
+  const removeDeliverable = (idx: number) => {
+    setDeliverables(deliverables.filter((_, i) => i !== idx));
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Practice Offerings</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Services</h1>
+          </div>
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
+          >
+            <Plus className="w-4 h-4" /> Add Service Offering
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((srv) => (
+            <div
+              key={srv.id}
+              className="bg-[#1D1714] border border-[#332821] p-5 space-y-4 flex flex-col justify-between rounded-xs shadow-xs"
+            >
+              <div className="space-y-3">
+                <div className="relative aspect-[16/10] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
+                  {srv.imageUrl && <Image src={srv.imageUrl} alt={srv.title} fill className="object-cover" />}
+                </div>
+
+                <div>
+                  <h3 className="font-serif text-xl text-[#FCFAF6] font-medium">{srv.title}</h3>
+                  <p className="text-xs text-[#A89F91] font-light mt-1.5 line-clamp-2">{srv.shortDesc}</p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#281F19] flex items-center justify-between">
+                <button
+                  onClick={() => handleTogglePublish(srv)}
+                  className={`px-2 py-1 text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 border rounded-2xs transition-colors ${
+                    srv.isPublished
+                      ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50 hover:bg-emerald-900/60'
+                      : 'bg-white/5 text-[#A89F91] border-[#382D25] hover:bg-white/10'
+                  }`}
+                >
+                  {srv.isPublished ? <Eye className="w-3 h-3 text-emerald-400" /> : <EyeOff className="w-3 h-3 text-[#A89F91]" />}
+                  <span>{srv.isPublished ? 'Live' : 'Hidden'}</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openEditModal(srv)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] text-xs rounded-xs transition-colors"
+                    title="Edit"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(srv.id)}
+                    className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-red-500 hover:text-red-400 text-[#A89F91] text-xs rounded-xs transition-colors"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Service Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-xl bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl my-8 rounded-sm">
+            <div className="flex justify-between items-center border-b border-[#281F19] pb-4">
+              <h2 className="font-serif text-2xl text-[#FCFAF6]">
+                {editingService ? `Edit Service` : 'New Architectural Service'}
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs rounded-xs">{formError}</div>
+            )}
+
+            <form onSubmit={handleSave} className="space-y-4 text-xs max-h-[70vh] overflow-y-auto pr-2">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Service Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="border-t border-[#281F19] pt-3">
+                <ImageUploader
+                  bucket="services"
+                  images={imageUrl ? [imageUrl] : []}
+                  onChange={(imgs) => setImageUrl(imgs[0] || '')}
+                  multiple={false}
+                  label="Service Cover Photo (Upload from Device)"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Short Summary</label>
+                <textarea
+                  rows={2}
+                  value={shortDesc}
+                  onChange={(e) => setShortDesc(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium">Detailed Scope Description</label>
+                <textarea
+                  rows={4}
+                  value={fullDesc}
+                  onChange={(e) => setFullDesc(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                />
+              </div>
+
+              {/* Deliverables */}
+              <div className="space-y-2 border-t border-[#281F19] pt-3">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">
+                  Key Deliverables
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. 3D Volumetric BIM Models"
+                    value={deliverableInput}
+                    onChange={(e) => setDeliverableInput(e.target.value)}
+                    className="flex-1 p-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={addDeliverable}
+                    className="px-4 py-2 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-wider font-medium transition-all rounded-xs"
+                  >
+                    Add
+                  </button>
+                </div>
+
+                <ul className="space-y-1 pt-1">
+                  {deliverables.map((item, idx) => (
+                    <li key={idx} className="flex justify-between items-center p-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] rounded-xs">
+                      <span>• {item}</span>
+                      <button type="button" onClick={() => removeDeliverable(idx)} className="text-red-400 hover:text-red-300">
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2.5 border border-[#382D25] text-xs uppercase tracking-widest text-[#A89F91] hover:text-[#FCFAF6] hover:border-champagne/40 transition-colors rounded-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-8 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Saving...' : editingService ? 'Update Service' : 'Create Service'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-customers-page-tsx"></a>13. `src/app/admin/customers/page.tsx`
+
+> **Path**: `src/app/admin/customers/page.tsx` | **Lines**: 174 | **Size**: 6.5 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Users, Search, ShoppingBag, Mail, Phone, MapPin } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { Order } from '@/types';
+
+interface AggregatedCustomer {
+  email: string;
+  name: string;
+  phone: string;
+  city: string;
+  orderCount: number;
+  totalSpend: number;
+  lastOrderDate: string;
+}
+
+function AdminCustomersContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams?.get('search') || searchParams?.get('id') || '';
+
+  const [customers, setCustomers] = useState<AggregatedCustomer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(initialQuery);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setSearch(initialQuery);
+    }
+  }, [initialQuery]);
+
+  useEffect(() => {
+    async function loadCustomers() {
+      try {
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const data = await res.json();
+          const orders: Order[] = data.orders || [];
+
+          const map = new Map<string, AggregatedCustomer>();
+
+          orders.forEach((o) => {
+            const key = o.customerEmail.toLowerCase().trim();
+            if (!map.has(key)) {
+              map.set(key, {
+                email: o.customerEmail,
+                name: o.customerName,
+                phone: o.customerPhone,
+                city: o.shippingAddress.city || 'Mumbai',
+                orderCount: 1,
+                totalSpend: o.totalAmount,
+                lastOrderDate: o.createdAt,
+              });
+            } else {
+              const cur = map.get(key)!;
+              cur.orderCount += 1;
+              cur.totalSpend += o.totalAmount;
+              if (new Date(o.createdAt) > new Date(cur.lastOrderDate)) {
+                cur.lastOrderDate = o.createdAt;
+              }
+            }
+          });
+
+          setCustomers(Array.from(map.values()));
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadCustomers();
+  }, []);
+
+  const filtered = customers.filter(
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.email.toLowerCase().includes(search.toLowerCase()) ||
+      c.city.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Client Directory</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Client Portfolio</h1>
+          </div>
+          <div className="text-xs text-[#A89F91]">
+            Total Unique Clients: <strong className="text-champagne">{customers.length}</strong>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div className="relative max-w-md">
+          <input
+            type="text"
+            placeholder="Search by client name, email, or city..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full p-2.5 pl-9 bg-[#1D1714] border border-[#332821] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs shadow-xs"
+          />
+          <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+        </div>
+
+        {/* Customers Table */}
+        <div className="bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
+          <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
+            <thead>
+              <tr className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                <th className="p-4">Client Entity</th>
+                <th className="p-4">Contact</th>
+                <th className="p-4">Primary Location</th>
+                <th className="p-4">Orders Placed</th>
+                <th className="p-4">Lifetime Value</th>
+                <th className="p-4 text-right">Last Transaction</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#281F19]">
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="p-8 text-center text-[#A89F91]">
+                    Loading client records...
+                  </td>
+                </tr>
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="p-8 text-center text-[#7E7469]">
+                    No client records found.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((c) => (
+                  <tr key={c.email} className="hover:bg-[#251E1A]/60 transition-colors">
+                    <td className="p-4 font-medium text-[#FCFAF6]">{c.name}</td>
+                    <td className="p-4">
+                      <div className="space-y-0.5 text-[11px] text-[#A89F91]">
+                        <span className="flex items-center gap-1.5"><Mail className="w-3 h-3 text-champagne" /> {c.email}</span>
+                        <span className="flex items-center gap-1.5"><Phone className="w-3 h-3 text-champagne" /> {c.phone}</span>
+                      </div>
+                    </td>
+                    <td className="p-4 text-[#D8CEBF]">{c.city}</td>
+                    <td className="p-4">
+                      <span className="px-2 py-0.5 bg-[#14100D] border border-[#332821] text-[10px] font-mono text-champagne rounded-2xs">
+                        {c.orderCount}
+                      </span>
+                    </td>
+                    <td className="p-4 font-serif text-sm font-medium text-champagne">
+                      ₹{c.totalSpend.toLocaleString('en-IN')}
+                    </td>
+                    <td className="p-4 text-right text-[#A89F91]">
+                      {new Date(c.lastOrderDate).toLocaleDateString('en-IN')}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </AdminLayout>
+  );
+}
+
+export default function AdminCustomersPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading client directory...</div>}>
+      <AdminCustomersContent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-employees-page-tsx"></a>14. `src/app/admin/employees/page.tsx`
+
+> **Path**: `src/app/admin/employees/page.tsx` | **Lines**: 780 | **Size**: 33.8 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import {
+  UserCheck,
+  Plus,
+  Shield,
+  Edit2,
+  Trash2,
+  KeyRound,
+  Ban,
+  CheckCircle,
+  AlertTriangle,
+  Search,
+  RefreshCw,
+  X,
+  Lock,
+  Mail,
+  User,
+  ShieldAlert,
+} from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { AdminUser } from '@/types';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+
+export default function EmployeeManagementPage() {
+  const { admin } = useAdminAuth();
+  const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
+
+  const [employees, setEmployees] = useState<AdminUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Modals state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<AdminUser | null>(null);
+
+  // Form states
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<'employee'>('employee');
+  const [status, setStatus] = useState<'active' | 'disabled'>('active');
+  const generateSecurePassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+    let generated = '';
+    for (let i = 0; i < 10; i++) {
+      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return generated;
+  };
+
+  const [tempPassword, setTempPassword] = useState(generateSecurePassword);
+  const [newPassword, setNewPassword] = useState('');
+
+  // Status feedback
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const loadEmployees = async () => {
+    try {
+      const res = await fetch('/api/admin/employees', { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        setEmployees(data.employees || []);
+      }
+    } catch (e) {
+      console.error('Failed to load employees', e);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOwner) {
+      loadEmployees();
+    }
+  }, [isOwner]);
+
+  const showSuccess = (msg: string) => {
+    setSuccessMessage(msg);
+    setTimeout(() => setSuccessMessage(null), 3500);
+  };
+
+  const handleOpenAdd = () => {
+    setName('');
+    setEmail('');
+    setRole('employee');
+    setTempPassword(generateSecurePassword());
+    setFormError(null);
+    setIsAddModalOpen(true);
+  };
+
+  const handleGeneratePassword = () => {
+    setTempPassword(generateSecurePassword());
+  };
+
+  const handleCreateEmployee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
+    try {
+      const res = await fetch('/api/admin/employees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          role: 'employee',
+          temporaryPassword: tempPassword,
+          mustChangePassword: true,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.employee) {
+        setEmployees((prev) => [...prev, data.employee]);
+        setIsAddModalOpen(false);
+        showSuccess('Employee account created successfully.');
+      } else {
+        setFormError(data.error || 'Failed to create employee');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Network error');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleOpenEdit = (emp: AdminUser) => {
+    setSelectedEmployee(emp);
+    setName(emp.name);
+    setEmail(emp.email);
+    setRole(emp.role === 'owner' ? 'employee' : 'employee');
+    setStatus(emp.status);
+    setFormError(null);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedEmployee) return;
+    setFormLoading(true);
+    setFormError(null);
+
+    try {
+      const res = await fetch(`/api/admin/employees/${selectedEmployee.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          role,
+          status,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.employee) {
+        setEmployees((prev) => prev.map((item) => (item.id === selectedEmployee.id ? data.employee : item)));
+        setIsEditModalOpen(false);
+        showSuccess('Employee updated successfully.');
+      } else {
+        setFormError(data.error || 'Failed to update employee');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Network error');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleToggleStatus = async (emp: AdminUser) => {
+    const nextStatus = emp.status === 'active' ? 'disabled' : 'active';
+    const actionLabel = nextStatus === 'disabled' ? 'disable' : 'enable';
+    if (!confirm(`Are you sure you want to ${actionLabel} ${emp.name}'s account?`)) return;
+
+    try {
+      const res = await fetch(`/api/admin/employees/${emp.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.employee) {
+        setEmployees((prev) => prev.map((item) => (item.id === emp.id ? data.employee : item)));
+        showSuccess(`Account ${nextStatus === 'disabled' ? 'disabled' : 'enabled'} successfully.`);
+      } else {
+        alert(data.error || 'Failed to change account status');
+      }
+    } catch (e: any) {
+      alert(e.message || 'Error occurred');
+    }
+  };
+
+  const handleOpenResetPassword = (emp: AdminUser) => {
+    setSelectedEmployee(emp);
+    setNewPassword(generateSecurePassword());
+    setFormError(null);
+    setIsResetPasswordModalOpen(true);
+  };
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedEmployee) return;
+    setFormLoading(true);
+    setFormError(null);
+
+    try {
+      const res = await fetch(`/api/admin/employees/${selectedEmployee.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'reset_password',
+          newPassword,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsResetPasswordModalOpen(false);
+        showSuccess('Password reset successfully. Employee must change password on next login.');
+      } else {
+        setFormError(data.error || 'Failed to reset password');
+      }
+    } catch (err: any) {
+      setFormError(err.message || 'Network error');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const handleOpenDelete = (emp: AdminUser) => {
+    setSelectedEmployee(emp);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteSubmit = async () => {
+    if (!selectedEmployee) return;
+    setFormLoading(true);
+
+    try {
+      const res = await fetch(`/api/admin/employees/${selectedEmployee.id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setEmployees((prev) => prev.filter((item) => item.id !== selectedEmployee.id));
+        setIsDeleteModalOpen(false);
+        showSuccess('Employee account removed successfully.');
+      } else {
+        alert(data.error || 'Failed to delete employee');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Network error');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  if (!isOwner) {
+    return (
+      <AdminLayout>
+        <div className="bg-red-950/40 border border-red-800/50 p-8 text-center space-y-4 max-w-lg mx-auto mt-12 rounded-sm">
+          <ShieldAlert className="w-12 h-12 text-red-400 mx-auto" />
+          <h2 className="font-serif text-2xl text-red-300">Access Restricted</h2>
+          <p className="text-xs text-red-200/80 leading-relaxed">
+            Employee Management is strictly restricted to the Studio Owner. If you believe this is an error, please contact Vikas Sir (Principal Architect).
+          </p>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  const filteredEmployees = employees.filter(
+    (emp) =>
+      emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      emp.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        {/* Header and Add Action */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Administration & Roles</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Employee Management</h1>
+            <p className="text-xs text-[#A89F91] mt-1">
+              Manage operational staff permissions, active sessions, and credential resets.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                setRefreshing(true);
+                loadEmployees();
+              }}
+              className="p-2.5 bg-[#1D1714] hover:bg-[#251E1A] border border-[#332821] text-[#FCFAF6] text-xs flex items-center gap-1.5 transition-colors rounded-xs shadow-xs"
+              title="Refresh Employees"
+            >
+              <RefreshCw className={`w-4 h-4 text-champagne ${refreshing ? 'animate-spin' : ''}`} />
+            </button>
+            <button
+              onClick={handleOpenAdd}
+              className="px-5 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium transition-all rounded-xs shadow-xs"
+            >
+              <Plus className="w-4 h-4" /> Add Employee
+            </button>
+          </div>
+        </div>
+
+        {/* Global Feedback Banner */}
+        {successMessage && (
+          <div className="p-3.5 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 animate-fade-in rounded-xs">
+            <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
+        {/* Search Bar */}
+        <div className="flex items-center justify-between gap-4 bg-[#1D1714] p-4 border border-[#332821] rounded-xs shadow-xs">
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name or email..."
+              className="w-full pl-9 pr-4 py-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:outline-hidden focus:border-champagne focus:ring-1 focus:ring-champagne/40 rounded-xs"
+            />
+          </div>
+          <span className="text-xs text-champagne font-mono">
+            {filteredEmployees.length} {filteredEmployees.length === 1 ? 'Account' : 'Accounts'}
+          </span>
+        </div>
+
+        {/* Employee Table */}
+        <div className="bg-[#1D1714] border border-[#332821] overflow-x-auto shadow-xs rounded-xs">
+          {loading ? (
+            <div className="p-12 text-center text-xs text-[#A89F91]">Loading staff accounts...</div>
+          ) : filteredEmployees.length === 0 ? (
+            <div className="p-12 text-center text-xs text-[#7E7469]">No employees match your search.</div>
+          ) : (
+            <table className="w-full text-left text-xs text-[#FCFAF6]">
+              <thead className="bg-[#16110E] border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                <tr>
+                  <th className="py-3.5 px-4 sm:px-6">Employee</th>
+                  <th className="py-3.5 px-4">Role</th>
+                  <th className="py-3.5 px-4">Status</th>
+                  <th className="py-3.5 px-4 hidden md:table-cell">Created</th>
+                  <th className="py-3.5 px-4 hidden lg:table-cell">Last Login</th>
+                  <th className="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#281F19]">
+                {filteredEmployees.map((emp) => {
+                  const isThisOwner = emp.role === 'owner' || emp.email === 'vicks@balaji.com';
+                  return (
+                    <tr key={emp.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                      <td className="py-4 px-4 sm:px-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-[#100C0A] text-champagne border border-champagne/40 flex items-center justify-center font-serif text-sm">
+                            {emp.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="font-medium text-[#FCFAF6] flex items-center gap-1.5">
+                              <span>{emp.name}</span>
+                              {isThisOwner && (
+                                <span className="text-[9px] bg-champagne/20 text-champagne border border-champagne/40 px-1.5 py-0.2 font-semibold tracking-wider rounded-2xs">
+                                  PROTECTED OWNER
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[11px] text-[#A89F91] font-mono">{emp.email}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="py-4 px-4">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-2xs ${
+                            emp.role === 'owner'
+                              ? 'bg-champagne/20 text-champagne border border-champagne/40'
+                              : 'bg-[#14100D] text-[#C7BEB2] border border-[#382D25]'
+                          }`}
+                        >
+                          <Shield className="w-3 h-3" />
+                          {emp.role === 'owner' ? 'OWNER' : 'EMPLOYEE'}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-4">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-2xs ${
+                            emp.status === 'active'
+                              ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50'
+                              : 'bg-red-950/40 text-red-300 border border-red-800/50'
+                          }`}
+                        >
+                          {emp.status === 'active' ? (
+                            <>
+                              <CheckCircle className="w-3 h-3 text-emerald-400" /> Active
+                            </>
+                          ) : (
+                            <>
+                              <Ban className="w-3 h-3 text-red-400" /> Disabled
+                            </>
+                          )}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-4 hidden md:table-cell text-[#A89F91] text-[11px]">
+                        {new Date(emp.createdAt).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </td>
+
+                      <td className="py-4 px-4 hidden lg:table-cell text-[#A89F91] text-[11px]">
+                        {emp.lastLoginAt
+                          ? new Date(emp.lastLoginAt).toLocaleString('en-IN', {
+                              day: '2-digit',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })
+                          : 'Never logged in'}
+                      </td>
+
+                      <td className="py-4 px-4 text-right space-x-1">
+                        {!isThisOwner ? (
+                          <>
+                            <button
+                              onClick={() => handleOpenEdit(emp)}
+                              className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs transition-colors"
+                              title="Edit Employee"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleOpenResetPassword(emp)}
+                              className="p-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-champagne rounded-xs transition-colors"
+                              title="Reset Password"
+                            >
+                              <KeyRound className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleToggleStatus(emp)}
+                              className={`p-1.5 bg-[#251E1A] border border-[#3D3027] rounded-xs transition-colors ${
+                                emp.status === 'active'
+                                  ? 'text-amber-400 hover:border-amber-500'
+                                  : 'text-emerald-400 hover:border-emerald-500'
+                              }`}
+                              title={emp.status === 'active' ? 'Disable Account' : 'Enable Account'}
+                            >
+                              {emp.status === 'active' ? <Ban className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
+                            </button>
+                            <button
+                              onClick={() => handleOpenDelete(emp)}
+                              className="p-1.5 bg-[#251E1A] border border-[#3D3027] text-red-400 hover:border-red-500 hover:text-red-300 rounded-xs transition-colors"
+                              title="Delete Employee"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-[10px] text-champagne/70 italic pr-2 font-mono">Full Permissions</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+
+      {/* Modal: Add Employee */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-up rounded-sm">
+            <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
+              <div className="flex items-center gap-2">
+                <UserCheck className="w-5 h-5 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Add Studio Employee</h2>
+              </div>
+              <button onClick={() => setIsAddModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+                <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleCreateEmployee} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Full Name</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Ananya Sharma"
+                    className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:outline-hidden focus:border-champagne rounded-xs"
+                  />
+                  <User className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Email Address</label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. ananya@balaji.com"
+                    className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:outline-hidden focus:border-champagne rounded-xs"
+                  />
+                  <Mail className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Role Permission</label>
+                <select
+                  disabled
+                  value={role}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:outline-hidden rounded-xs"
+                >
+                  <option value="employee">EMPLOYEE (Operational Management)</option>
+                </select>
+                <span className="text-[10px] text-[#A89F91]">
+                  Employees have operational access to Products, Inventory, Orders, Projects, Services, and Quotes.
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Initial Temporary Password</label>
+                  <button
+                    type="button"
+                    onClick={handleGeneratePassword}
+                    className="text-[10px] text-champagne hover:underline font-medium"
+                  >
+                    Generate Random
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={tempPassword}
+                    onChange={(e) => setTempPassword(e.target.value)}
+                    className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:outline-hidden focus:border-champagne rounded-xs"
+                  />
+                  <Lock className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+                </div>
+                <p className="text-[10px] text-[#A89F91]">
+                  Employee will be required to change this password upon first logging in.
+                </p>
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2.5 bg-[#251E1A] hover:bg-[#2F2621] border border-[#382D25] text-[#FCFAF6] uppercase tracking-wider text-xs rounded-xs transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne uppercase tracking-widest text-xs font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Creating...' : 'Create Employee'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Edit Employee */}
+      {isEditModalOpen && selectedEmployee && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-up rounded-sm">
+            <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
+              <div className="flex items-center gap-2">
+                <Edit2 className="w-5 h-5 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Edit Employee Details</h2>
+              </div>
+              <button onClick={() => setIsEditModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+                <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:outline-hidden focus:border-champagne rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:outline-hidden focus:border-champagne rounded-xs"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">Account Status</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as any)}
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:outline-hidden rounded-xs"
+                >
+                  <option value="active">Active (Access Allowed)</option>
+                  <option value="disabled">Disabled (Access Blocked)</option>
+                </select>
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="px-4 py-2.5 bg-[#251E1A] hover:bg-[#2F2621] border border-[#382D25] text-[#FCFAF6] uppercase tracking-wider text-xs rounded-xs transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne uppercase tracking-widest text-xs font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Reset Password */}
+      {isResetPasswordModalOpen && selectedEmployee && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#1D1714] border border-champagne/30 p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-up rounded-sm">
+            <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
+              <div className="flex items-center gap-2">
+                <KeyRound className="w-5 h-5 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Reset Password</h2>
+              </div>
+              <button onClick={() => setIsResetPasswordModalOpen(false)} className="p-1 text-[#A89F91] hover:text-[#FCFAF6] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs text-[#A89F91] leading-relaxed">
+              Set a temporary password for <span className="font-medium text-[#FCFAF6]">{selectedEmployee.name}</span> ({selectedEmployee.email}). The employee will be required to change it upon their next login.
+            </p>
+
+            {formError && (
+              <div className="p-3 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+                <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleResetPasswordSubmit} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="uppercase tracking-wider text-champagne/90 font-medium block">New Temporary Password</label>
+                <input
+                  type="text"
+                  required
+                  minLength={6}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Min 6 characters"
+                  className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:outline-hidden focus:border-champagne rounded-xs"
+                />
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#281F19]">
+                <button
+                  type="button"
+                  onClick={() => setIsResetPasswordModalOpen(false)}
+                  className="px-4 py-2.5 bg-[#251E1A] hover:bg-[#2F2621] border border-[#382D25] text-[#FCFAF6] uppercase tracking-wider text-xs rounded-xs transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne uppercase tracking-widest text-xs font-medium transition-all rounded-xs shadow-xs"
+                >
+                  {formLoading ? 'Resetting...' : 'Confirm Reset'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Delete Confirmation */}
+      {isDeleteModalOpen && selectedEmployee && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#1D1714] border border-red-800/40 p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-up rounded-sm">
+            <div className="flex items-center gap-3 text-red-400">
+              <AlertTriangle className="w-6 h-6 flex-shrink-0" />
+              <h2 className="font-serif text-xl text-[#FCFAF6]">Delete Employee Account?</h2>
+            </div>
+
+            <div className="text-xs text-[#A89F91] space-y-2 leading-relaxed">
+              <p>
+                Are you sure you want to permanently delete the account for <strong className="text-[#FCFAF6]">{selectedEmployee.name}</strong> ({selectedEmployee.email})?
+              </p>
+              <p className="p-3 bg-amber-950/40 border border-amber-800/50 text-amber-300 text-[11px] rounded-xs">
+                Note: All products, orders, projects, and quotes previously handled by this employee will remain completely safe and intact in the database.
+              </p>
+            </div>
+
+            <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#281F19]">
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="px-4 py-2.5 bg-[#251E1A] hover:bg-[#2F2621] border border-[#382D25] text-[#FCFAF6] uppercase tracking-wider text-xs rounded-xs transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteSubmit}
+                disabled={formLoading}
+                className="px-6 py-2.5 bg-red-800 hover:bg-red-700 text-white uppercase tracking-widest text-xs font-medium transition-all rounded-xs shadow-xs"
+              >
+                {formLoading ? 'Deleting...' : 'Delete Account'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-settings-page-tsx"></a>15. `src/app/admin/settings/page.tsx`
+
+> **Path**: `src/app/admin/settings/page.tsx` | **Lines**: 1340 | **Size**: 68.2 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import {
+  Settings,
+  Shield,
+  Bell,
+  Save,
+  Check,
+  History,
+  RefreshCw,
+  Building2,
+  Phone,
+  Truck,
+  Globe,
+  Megaphone,
+  AlertCircle,
+  Search,
+  Filter,
+  LayoutTemplate,
+  Sparkles,
+  ArrowRight,
+  Eye,
+  ImageIcon,
+  QrCode,
+  CreditCard,
+  Copy,
+  ShieldAlert,
+} from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { SiteSettings, AuditLog, HomepageSettings, PaymentGatewaySettings } from '@/types';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
+
+export default function AdminSettingsPage() {
+  const { admin } = useAdminAuth();
+  const isOwner = admin?.role === 'owner' || admin?.role === 'super_admin';
+
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [logs, setLogs] = useState<AuditLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [savedSuccess, setSavedSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [testPushing, setTestPushing] = useState(false);
+  const [pushResult, setPushResult] = useState<string | null>(null);
+  const [browserPerm, setBrowserPerm] = useState<NotificationPermission | 'unsupported'>('default');
+
+  // Active section tab
+  const [activeTab, setActiveTab] = useState<
+    'homepage' | 'identity' | 'payment' | 'fiscal' | 'announcements' | 'push' | 'audit'
+  >('homepage');
+
+  // Audit Log Filter States
+  const [auditSearch, setAuditSearch] = useState('');
+  const [entityFilter, setEntityFilter] = useState('ALL');
+
+  const loadSettingsAndLogs = async () => {
+    try {
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        setBrowserPerm(Notification.permission);
+      } else if (typeof window !== 'undefined') {
+        setBrowserPerm('unsupported');
+      }
+
+      const [setRes, logRes] = await Promise.all([
+        fetch('/api/admin/settings', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
+        fetch('/api/admin/audit-logs', { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } }),
+      ]);
+
+      if (setRes.ok) {
+        const d = await setRes.json();
+        setSettings(d.settings);
+      } else {
+        const errData = await setRes.json().catch(() => ({}));
+        setSaveError(errData.error || 'Failed to load site settings from server.');
+      }
+
+      if (logRes.ok) {
+        const l = await logRes.json();
+        setLogs(l.logs || []);
+      }
+    } catch (e: any) {
+      console.error(e);
+      setSaveError(e.message || 'Network error loading studio configuration.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSettingsAndLogs();
+  }, []);
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!settings) return;
+    setSaving(true);
+    setSavedSuccess(false);
+    setSaveError(null);
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.success) {
+        setSavedSuccess(true);
+        if (data.settings) {
+          setSettings(data.settings);
+        }
+        // Reload audit logs to reflect the settings modification
+        const logRes = await fetch('/api/admin/audit-logs');
+        if (logRes.ok) {
+          const l = await logRes.json();
+          setLogs(l.logs || []);
+        }
+        setTimeout(() => setSavedSuccess(false), 3500);
+      } else {
+        setSaveError(data.error || 'Failed to save settings to database.');
+      }
+    } catch (e: any) {
+      console.error(e);
+      setSaveError(e.message || 'Network error saving settings.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updateHomepage = (field: keyof HomepageSettings, value: string) => {
+    if (!settings) return;
+    const currentHome = settings.homepage || {};
+    setSettings({
+      ...settings,
+      homepage: {
+        ...currentHome,
+        [field]: value,
+      },
+    });
+  };
+
+  const updatePaymentGateway = (field: keyof PaymentGatewaySettings, value: any) => {
+    if (!settings) return;
+    const currentPg = settings.paymentGateway || {
+      enabled: true,
+      gatewayName: 'Balaji PG',
+      methodName: 'Balaji QR Payment',
+      upiId: '6000149918@fam',
+      merchantName: 'Balaji Architect & Interiors',
+      instructions: '',
+      qrExpiryMinutes: 10,
+      enableGPay: true,
+      enablePhonePe: true,
+      enablePaytm: true,
+      enableBhim: true,
+      enableCred: true,
+      enableAmazonPay: true,
+      requireUtr: true,
+    };
+
+    setSettings({
+      ...settings,
+      paymentGateway: {
+        ...currentPg,
+        [field]: value,
+      },
+    });
+  };
+
+  const handleSendTestPush = async () => {
+    setTestPushing(true);
+    setPushResult(null);
+    try {
+      // 1. Ensure service worker and browser push subscription are registered
+      if (typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window) {
+        if (Notification.permission !== 'granted') {
+          const perm = await Notification.requestPermission();
+          setBrowserPerm(perm);
+          if (perm !== 'granted') {
+            setPushResult('Please allow browser notifications in the permission prompt to enable alerts.');
+            setTestPushing(false);
+            return;
+          }
+        }
+
+        // Register service worker if not already registered
+        let reg = await navigator.serviceWorker.getRegistration();
+        if (!reg) {
+          reg = await navigator.serviceWorker.register('/sw.js');
+        }
+
+        let vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+        if (!vapidKey) {
+          try {
+            const keyRes = await fetch('/api/notifications/subscribe');
+            if (keyRes.ok) {
+              const keyData = await keyRes.json();
+              vapidKey = keyData.vapidPublicKey;
+            }
+          } catch (e) {
+            console.warn('Failed to fetch VAPID key from API:', e);
+          }
+        }
+
+        const convertedKey = urlBase64ToUint8Array(vapidKey);
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedKey as any,
+          });
+        }
+        if (sub) {
+          await fetch('/api/notifications/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subscription: sub }),
+          });
+        }
+      }
+
+      // 2. Dispatch real server push
+      const res = await fetch('/api/admin/notifications/test', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPushResult(data.message || 'Real Web Push notification dispatched to your registered device.');
+      } else {
+        setPushResult(data.message || data.error || 'Test notification sent to registered endpoints.');
+      }
+    } catch (err: any) {
+      setPushResult(err.message || 'Server error sending test push.');
+    } finally {
+      setTestPushing(false);
+    }
+  };
+
+  const filteredLogs = logs.filter((l) => {
+    const matchesSearch =
+      auditSearch === '' ||
+      l.action.toLowerCase().includes(auditSearch.toLowerCase()) ||
+      l.adminEmail.toLowerCase().includes(auditSearch.toLowerCase()) ||
+      (l.entity && l.entity.toLowerCase().includes(auditSearch.toLowerCase())) ||
+      (l.details && JSON.stringify(l.details).toLowerCase().includes(auditSearch.toLowerCase()));
+
+    const matchesEntity =
+      entityFilter === 'ALL' || (l.entity && l.entity.toLowerCase() === entityFilter.toLowerCase());
+
+    return matchesSearch && matchesEntity;
+  });
+
+  if (!isOwner) {
+    return (
+      <AdminLayout>
+        <div className="bg-red-950/40 border border-red-800/50 p-8 text-center space-y-4 max-w-lg mx-auto mt-12 rounded-sm">
+          <ShieldAlert className="w-12 h-12 text-red-400 mx-auto" />
+          <h2 className="font-serif text-2xl text-red-300">Access Restricted</h2>
+          <p className="text-xs text-red-200/80 leading-relaxed">
+            Studio Settings & Global Configuration is strictly restricted to the Studio Owner. If you require changes to branding, payment, or studio configuration, please contact Vikas Sir (Principal Architect).
+          </p>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (loading || !settings) {
+    return (
+      <AdminLayout>
+        <div className="p-12 text-center text-[#A89F91] flex flex-col items-center justify-center gap-3">
+          <RefreshCw className="w-6 h-6 animate-spin text-champagne" />
+          <span className="text-xs uppercase tracking-widest text-champagne">Loading studio configuration & audit trail...</span>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  const home = settings.homepage || {};
+  const pg = settings.paymentGateway || {
+    enabled: true,
+    gatewayName: 'Balaji PG',
+    methodName: 'Balaji QR Payment',
+    upiId: '6000149918@fam',
+    merchantName: 'Balaji Architect & Interiors',
+    instructions:
+      '1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee "Balaji Architect & Interiors" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.',
+    qrExpiryMinutes: 10,
+    enableGPay: true,
+    enablePhonePe: true,
+    enablePaytm: true,
+    enableBhim: true,
+    enableCred: true,
+    enableAmazonPay: true,
+    requireUtr: true,
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Full CMS & Operations</span>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Studio Settings & Page Controls</h1>
+          </div>
+          <div className="flex items-center gap-3 self-start sm:self-auto">
+            <button
+              onClick={loadSettingsAndLogs}
+              className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer rounded-xs shadow-xs"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Reload Config
+            </button>
+            <button
+              onClick={handleSaveSettings}
+              disabled={saving}
+              className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer transition-all rounded-xs shadow-xs"
+            >
+              {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+              {saving ? 'Saving...' : 'Save All Changes'}
+            </button>
+          </div>
+        </div>
+
+        {/* Global Feedback Notifications */}
+        {savedSuccess && (
+          <div className="p-4 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 rounded-xs animate-fade-in">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to Supabase.</span>
+          </div>
+        )}
+
+        {saveError && (
+          <div className="p-4 bg-red-950/40 border border-red-800/50 text-red-300 text-xs flex items-center gap-2 rounded-xs">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <span className="font-medium">{saveError}</span>
+          </div>
+        )}
+
+        {/* Navigation Tabs (Smooth touch scrollable on phone) */}
+        <div className="flex items-center gap-2 border-b border-[#281F19] pb-3 overflow-x-auto flex-nowrap sm:flex-wrap no-scrollbar">
+          <button
+            type="button"
+            onClick={() => setActiveTab('homepage')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'homepage'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <LayoutTemplate className="w-3.5 h-3.5" />
+            Homepage & Hero Control
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('identity')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'identity'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            Brand Logo & Identity
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('payment')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'payment'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <QrCode className="w-3.5 h-3.5" />
+            Balaji PG / QR Gateway
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('fiscal')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'fiscal'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Truck className="w-3.5 h-3.5" />
+            Tax, GST & Freight
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('announcements')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'announcements'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Megaphone className="w-3.5 h-3.5" />
+            Announcement Bar & Social
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('push')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'push'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Bell className="w-3.5 h-3.5" />
+            Push Notifications
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('audit')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'audit'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5" />
+            Security Audit Trail
+          </button>
+        </div>
+
+        {/* Master Form */}
+        <form onSubmit={handleSaveSettings} className="space-y-8">
+          {/* TAB 1: HOMEPAGE & HERO CONTROL */}
+          {activeTab === 'homepage' && (
+            <div className="space-y-8">
+              {/* Hero Live Preview Card */}
+              <div className="relative rounded-sm overflow-hidden border border-[#332821] bg-[#16110E] text-[#FCFAF6] p-8 sm:p-12 text-center space-y-4 shadow-md">
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-30"
+                  style={{
+                    backgroundImage: `url(${
+                      home.heroImageUrl ||
+                      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90'
+                    })`,
+                  }}
+                />
+                <div className="relative z-10 space-y-4 max-w-2xl mx-auto">
+                  <span className="text-[10px] uppercase tracking-widest text-champagne font-medium">
+                    {home.heroEyebrow || 'Architecture • Interior Studio • Material Curation'}
+                  </span>
+                  <h1 className="font-serif text-2xl sm:text-4xl text-[#FCFAF6] font-light leading-tight">
+                    {home.heroHeadingLine1 || 'INTERIORS.'} <br />
+                    {home.heroHeadingLine2 || 'ARCHITECTURE.'} <br />
+                    {home.heroHeadingLine3 || 'MATERIALS.'}
+                  </h1>
+                  <p className="text-xs text-[#E5DCD0] max-w-lg mx-auto line-clamp-2">
+                    {home.heroDescription ||
+                      'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.'}
+                  </p>
+                  <div className="flex items-center justify-center gap-3 pt-2">
+                    <span className="px-4 py-2 bg-champagne text-[#100C0A] text-[10px] uppercase tracking-widest font-medium rounded-2xs">
+                      {home.heroPrimaryBtnText || 'Explore Projects'} &rarr;
+                    </span>
+                    <span className="px-4 py-2 border border-champagne/50 text-champagne text-[10px] uppercase tracking-widest font-medium rounded-2xs">
+                      {home.heroSecondaryBtnText || 'Explore Materials'}
+                    </span>
+                  </div>
+                </div>
+                <div className="absolute top-3 right-3 text-[10px] bg-[#100C0A]/90 text-champagne px-2 py-1 uppercase tracking-widest border border-champagne/30 rounded-2xs font-mono">
+                  Live Preview
+                </div>
+              </div>
+
+              {/* Hero Section Edit Controls */}
+              <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+                <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                  <LayoutTemplate className="w-4 h-4 text-champagne" />
+                  <h2 className="font-serif text-xl text-[#FCFAF6]">Hero Section Typography & Media</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-champagne" /> Hero Background Image URL
+                    </label>
+                    <input
+                      type="text"
+                      value={home.heroImageUrl || ''}
+                      onChange={(e) => updateHomepage('heroImageUrl', e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden font-mono text-[11px] rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                      Hero Subtitle / Eyebrow Header
+                    </label>
+                    <input
+                      type="text"
+                      value={home.heroEyebrow || ''}
+                      onChange={(e) => updateHomepage('heroEyebrow', e.target.value)}
+                      placeholder="Architecture • Interior Studio • Material Curation"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 1</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine1 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine1', e.target.value)}
+                      placeholder="INTERIORS."
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 2</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine2 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine2', e.target.value)}
+                      placeholder="ARCHITECTURE."
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Hero Heading — Line 3</label>
+                    <input
+                      type="text"
+                      value={home.heroHeadingLine3 || ''}
+                      onChange={(e) => updateHomepage('heroHeadingLine3', e.target.value)}
+                      placeholder="MATERIALS."
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                      Hero Narrative Description
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={home.heroDescription || ''}
+                      onChange={(e) => updateHomepage('heroDescription', e.target.value)}
+                      placeholder="Crafted spaces and considered materials for timeless living..."
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden resize-none rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Primary Button Text</label>
+                    <input
+                      type="text"
+                      value={home.heroPrimaryBtnText || ''}
+                      onChange={(e) => updateHomepage('heroPrimaryBtnText', e.target.value)}
+                      placeholder="Explore Projects"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Primary Button Link</label>
+                    <input
+                      type="text"
+                      value={home.heroPrimaryBtnLink || ''}
+                      onChange={(e) => updateHomepage('heroPrimaryBtnLink', e.target.value)}
+                      placeholder="/projects"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Secondary Button Text</label>
+                    <input
+                      type="text"
+                      value={home.heroSecondaryBtnText || ''}
+                      onChange={(e) => updateHomepage('heroSecondaryBtnText', e.target.value)}
+                      placeholder="Explore Materials"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Secondary Button Link</label>
+                    <input
+                      type="text"
+                      value={home.heroSecondaryBtnLink || ''}
+                      onChange={(e) => updateHomepage('heroSecondaryBtnLink', e.target.value)}
+                      placeholder="/materials"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Trust Banner Badges */}
+              <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+                <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                  <Sparkles className="w-4 h-4 text-champagne" />
+                  <h2 className="font-serif text-xl text-[#FCFAF6]">Hero Bottom Trust Badges (4 Items)</h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 1 (Rating / Trust)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge1 || ''}
+                      onChange={(e) => updateHomepage('trustBadge1', e.target.value)}
+                      placeholder="★ 5.0 (22 Google Reviews)"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 2 (Location)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge2 || ''}
+                      onChange={(e) => updateHomepage('trustBadge2', e.target.value)}
+                      placeholder="Guwahati Studio Office"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 3 (Practice Model)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge3 || ''}
+                      onChange={(e) => updateHomepage('trustBadge3', e.target.value)}
+                      placeholder="Turnkey Architecture"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Badge 4 (Logistics)</label>
+                    <input
+                      type="text"
+                      value={home.trustBadge4 || ''}
+                      onChange={(e) => updateHomepage('trustBadge4', e.target.value)}
+                      placeholder="Pan-India Material Logistics"
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: BRAND LOGO & IDENTITY */}
+          {activeTab === 'identity' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Building2 className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Header Branding Typography & Studio Profile</h2>
+              </div>
+
+              {/* Live Header Logo Preview */}
+              <div className="p-6 bg-[#14100D] border border-[#332821] flex flex-col items-center justify-center text-center space-y-2 rounded-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#100C0A] shadow-md flex-shrink-0 border border-champagne/50">
+                    <img
+                      src={settings.logoUrl || '/logo.png'}
+                      alt="Brand Logo"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="font-serif text-xl tracking-widest text-[#FCFAF6] font-normal leading-tight">
+                      {settings.brandName || 'BALAJI ARCHITECT & INTERIORS'}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-widest text-champagne font-medium mt-0.5">
+                      {settings.brandSubtitle || 'ARCHITECTURE • INTERIORS • MATERIALS'}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[9px] uppercase tracking-wider text-champagne/80 pt-1 font-mono">Live Header Brand & Logo Preview</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Logo Image Path / URL</label>
+                  <input
+                    type="text"
+                    value={settings.logoUrl || '/logo.png'}
+                    onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-mono text-xs rounded-xs"
+                    placeholder="/logo.png"
+                  />
+                  <span className="text-[10px] text-[#A89F91]">
+                    Master high-resolution brand logo & iOS app icon (stored in public/logo.png).
+                  </span>
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Name (Header Title)</label>
+                  <input
+                    type="text"
+                    value={settings.brandName || ''}
+                    onChange={(e) => setSettings({ ...settings, brandName: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-serif text-sm tracking-wider rounded-xs"
+                    placeholder="BALAJI ARCHITECT & INTERIORS"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Subtitle (Header Sub-text)</label>
+                  <input
+                    type="text"
+                    value={settings.brandSubtitle || ''}
+                    onChange={(e) => setSettings({ ...settings, brandSubtitle: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden uppercase tracking-widest text-[11px] rounded-xs"
+                    placeholder="ARCHITECTURE • INTERIORS • MATERIALS"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Principal Architect Name</label>
+                  <input
+                    type="text"
+                    value={settings.architectName || ''}
+                    onChange={(e) => setSettings({ ...settings, architectName: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    placeholder="Vikas Sir (Principal Architect)"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Established Year</label>
+                  <input
+                    type="text"
+                    value={settings.establishedYear || '2014'}
+                    onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Tagline / Atelier Philosophy</label>
+                  <input
+                    type="text"
+                    value={settings.tagline || ''}
+                    onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Google Rating / Trust Metric</label>
+                  <input
+                    type="text"
+                    value={settings.googleRating || '★ 5.0 (22 Google Reviews)'}
+                    onChange={(e) => setSettings({ ...settings, googleRating: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Official Studio Email</label>
+                  <input
+                    type="email"
+                    value={settings.contactEmail || ''}
+                    onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Direct Telephone</label>
+                  <input
+                    type="text"
+                    value={settings.contactPhone || ''}
+                    onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">WhatsApp Direct Line</label>
+                  <input
+                    type="text"
+                    value={settings.whatsappNumber || '+91 70029 48484'}
+                    onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Physical Studio Address</label>
+                  <input
+                    type="text"
+                    value={settings.studioAddress || ''}
+                    onChange={(e) => setSettings({ ...settings, studioAddress: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Operating Hours</label>
+                  <input
+                    type="text"
+                    value={settings.businessHours || 'Mon - Sat: 10:00 AM - 7:00 PM (IST)'}
+                    onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: BALAJI PG / PAYMENT GATEWAY (DYNAMIC QR PAYMENT) */}
+          {activeTab === 'payment' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-5 h-5 text-champagne" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">Balaji PG • Dynamic QR Payment Gateway</h2>
+                    <span className="text-[11px] text-[#A89F91]">Real-Time UPI Gateway Configuration</span>
+                  </div>
+                </div>
+                <label className="flex items-center gap-2 text-xs uppercase tracking-wider font-medium text-[#FCFAF6] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={pg.enabled ?? true}
+                    onChange={(e) => updatePaymentGateway('enabled', e.target.checked)}
+                    className="w-4 h-4 accent-champagne"
+                  />
+                  <span>Gateway Active</span>
+                </label>
+              </div>
+
+              {/* Gateway Parameters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Gateway Brand Name</label>
+                  <input
+                    type="text"
+                    value={pg.gatewayName || 'Balaji PG'}
+                    onChange={(e) => updatePaymentGateway('gatewayName', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-medium rounded-xs"
+                    placeholder="Balaji PG"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Payment Method Name</label>
+                  <input
+                    type="text"
+                    value={pg.methodName || 'Balaji QR Payment'}
+                    onChange={(e) => updatePaymentGateway('methodName', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    placeholder="Balaji QR Payment"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne font-medium">
+                    Primary Payee UPI ID (Settlement Account) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={pg.upiId || '6000149918@fam'}
+                    onChange={(e) => updatePaymentGateway('upiId', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-champagne/50 focus:border-champagne focus:outline-hidden font-mono text-xs font-semibold text-champagne rounded-xs"
+                    placeholder="6000149918@fam"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Payee Merchant / Studio Name</label>
+                  <input
+                    type="text"
+                    value={pg.merchantName || 'Balaji Architect & Interiors'}
+                    onChange={(e) => updatePaymentGateway('merchantName', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-medium rounded-xs"
+                    placeholder="Balaji Architect & Interiors"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">QR Auto-Expiry Duration (Minutes)</label>
+                  <input
+                    type="number"
+                    value={pg.qrExpiryMinutes || 10}
+                    onChange={(e) => updatePaymentGateway('qrExpiryMinutes', Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2 lg:col-span-3">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Customer Step-by-Step Payment Instructions
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={pg.instructions || ''}
+                    onChange={(e) => updatePaymentGateway('instructions', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden text-xs leading-relaxed rounded-xs"
+                    placeholder="1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay)..."
+                  />
+                </div>
+              </div>
+
+              {/* Supported UPI Apps Control */}
+              <div className="pt-6 border-t border-[#281F19] space-y-4">
+                <span className="text-xs uppercase tracking-widest text-[#FCFAF6] font-medium block">
+                  Active UPI Application Badges on Checkout:
+                </span>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableGPay ?? true}
+                      onChange={(e) => updatePaymentGateway('enableGPay', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">Google Pay</span>
+                  </label>
+
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enablePhonePe ?? true}
+                      onChange={(e) => updatePaymentGateway('enablePhonePe', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">PhonePe</span>
+                  </label>
+
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enablePaytm ?? true}
+                      onChange={(e) => updatePaymentGateway('enablePaytm', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">Paytm UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableBhim ?? true}
+                      onChange={(e) => updatePaymentGateway('enableBhim', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">BHIM UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableCred ?? true}
+                      onChange={(e) => updatePaymentGateway('enableCred', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">CRED UPI</span>
+                  </label>
+
+                  <label className="p-3 bg-[#14100D] border border-[#382D25] flex items-center gap-2.5 cursor-pointer rounded-xs hover:border-champagne/40 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={pg.enableAmazonPay ?? true}
+                      onChange={(e) => updatePaymentGateway('enableAmazonPay', e.target.checked)}
+                      className="w-3.5 h-3.5 accent-champagne"
+                    />
+                    <span className="font-medium text-[#FCFAF6]">Amazon Pay</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* UTR Verification Toggle */}
+              <div className="pt-4 border-t border-[#281F19] flex items-center gap-3 text-xs">
+                <input
+                  type="checkbox"
+                  id="requireUtr"
+                  checked={pg.requireUtr ?? true}
+                  onChange={(e) => updatePaymentGateway('requireUtr', e.target.checked)}
+                  className="w-4 h-4 accent-champagne cursor-pointer"
+                />
+                <label htmlFor="requireUtr" className="cursor-pointer text-[#FCFAF6] font-medium">
+                  Require customer to enter 12-digit UPI Reference / UTR Number before order placement
+                </label>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: FISCAL, GST & FREIGHT */}
+          {activeTab === 'fiscal' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Truck className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Fiscal, GST & Freight Logistics</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard GST Tax Rate (%)</label>
+                  <input
+                    type="number"
+                    value={settings.taxRatePercent !== undefined ? settings.taxRatePercent : 18}
+                    onChange={(e) => setSettings({ ...settings, taxRatePercent: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Official GSTIN Number</label>
+                  <input
+                    type="text"
+                    value={settings.gstinNumber || '18AAECB4848F1ZX'}
+                    onChange={(e) => setSettings({ ...settings, gstinNumber: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
+                    placeholder="18AAECB4848F1ZX"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Standard Freight Fee (₹)</label>
+                  <input
+                    type="number"
+                    value={settings.standardShippingFee !== undefined ? settings.standardShippingFee : 1500}
+                    onChange={(e) => setSettings({ ...settings, standardShippingFee: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Complimentary Freight Threshold (₹)</label>
+                  <input
+                    type="number"
+                    value={settings.freeShippingThreshold !== undefined ? settings.freeShippingThreshold : 50000}
+                    onChange={(e) => setSettings({ ...settings, freeShippingThreshold: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Currency Symbol</label>
+                  <input
+                    type="text"
+                    value={settings.currencySymbol || '₹'}
+                    onChange={(e) => setSettings({ ...settings, currencySymbol: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Currency Code</label>
+                  <input
+                    type="text"
+                    value={settings.currency || 'INR'}
+                    onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] font-mono focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: ANNOUNCEMENTS & SOCIAL */}
+          {activeTab === 'announcements' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex items-center gap-2 border-b border-[#281F19] pb-3">
+                <Megaphone className="w-4 h-4 text-champagne" />
+                <h2 className="font-serif text-xl text-[#FCFAF6]">Global Announcement Banner & Socials</h2>
+              </div>
+
+              <div className="space-y-6 text-xs">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="announcementToggle"
+                    checked={settings.announcementBanner?.enabled ?? true}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        announcementBanner: {
+                          enabled: e.target.checked,
+                          text: settings.announcementBanner?.text || '',
+                          linkUrl: settings.announcementBanner?.linkUrl || '/quote',
+                        },
+                      })
+                    }
+                    className="w-4 h-4 accent-champagne cursor-pointer"
+                  />
+                  <label htmlFor="announcementToggle" className="cursor-pointer uppercase tracking-wider text-[#FCFAF6] font-medium">
+                    Display Announcement Header Bar on Website Top
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="sm:col-span-2 space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Announcement Message</label>
+                    <input
+                      type="text"
+                      value={settings.announcementBanner?.text || ''}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          announcementBanner: {
+                            enabled: settings.announcementBanner?.enabled ?? true,
+                            text: e.target.value,
+                            linkUrl: settings.announcementBanner?.linkUrl || '/quote',
+                          },
+                        })
+                      }
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Call-to-Action Link</label>
+                    <input
+                      type="text"
+                      value={settings.announcementBanner?.linkUrl || '/quote'}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          announcementBanner: {
+                            enabled: settings.announcementBanner?.enabled ?? true,
+                            text: settings.announcementBanner?.text || '',
+                            linkUrl: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-[#281F19] grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Instagram Atelier URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialInstagram || ''}
+                      onChange={(e) => setSettings({ ...settings, socialInstagram: e.target.value })}
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Pinterest Portfolio URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialPinterest || ''}
+                      onChange={(e) => setSettings({ ...settings, socialPinterest: e.target.value })}
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">LinkedIn Practice URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialLinkedin || ''}
+                      onChange={(e) => setSettings({ ...settings, socialLinkedin: e.target.value })}
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="uppercase tracking-wider text-champagne/90 font-medium">Facebook Page URL</label>
+                    <input
+                      type="text"
+                      value={settings.socialFacebook || 'https://facebook.com/balajiarchitects'}
+                      onChange={(e) => setSettings({ ...settings, socialFacebook: e.target.value })}
+                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: WEB PUSH NOTIFICATIONS */}
+          {activeTab === 'push' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#281F19] pb-4">
+                <div className="flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-champagne" />
+                  <h2 className="font-serif text-2xl text-[#FCFAF6]">Web Push Dispatch System</h2>
+                </div>
+                {browserPerm === 'granted' ? (
+                  <span className="text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-800/50 px-2.5 py-1 font-medium flex items-center gap-1.5 rounded-2xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Alerts Active on this Device
+                  </span>
+                ) : (
+                  <span className="text-[11px] bg-amber-950/40 text-amber-300 border border-amber-800/50 px-2.5 py-1 font-medium rounded-2xs">
+                    {browserPerm === 'denied' ? 'Notifications Blocked in Browser' : 'Registration Pending'}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-[#A89F91] leading-relaxed max-w-2xl">
+                When a customer places an order or submits an architectural quote, the server dispatches a VAPID web push directly to all registered administrative browsers.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  type="button"
+                  onClick={handleSendTestPush}
+                  disabled={testPushing}
+                  className="px-6 py-2.5 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-wider font-medium flex items-center gap-2 cursor-pointer transition-all rounded-xs shadow-xs"
+                >
+                  <Bell className="w-3.5 h-3.5" /> {testPushing ? 'Registering & Sending...' : 'Dispatch Test Notification'}
+                </button>
+                {pushResult && <span className="text-xs text-champagne font-medium">{pushResult}</span>}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 7: SECURITY AUDIT LOG */}
+          {activeTab === 'audit' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-6 rounded-xs shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-4">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-champagne" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">Security Audit Log</h2>
+                    <span className="text-[11px] text-[#A89F91]">Immutable Traceability & Action Records</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Search */}
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-3.5 h-3.5 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search logs by action, operator, details..."
+                      value={auditSearch}
+                      onChange={(e) => setAuditSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                    />
+                  </div>
+
+                  {/* Entity Filter */}
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Filter className="w-3.5 h-3.5 text-champagne/60" />
+                    <select
+                      value={entityFilter}
+                      onChange={(e) => setEntityFilter(e.target.value)}
+                      className="p-2 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                    >
+                      <option value="ALL">All Entities</option>
+                      <option value="Order">Orders</option>
+                      <option value="Product">Products</option>
+                      <option value="Category">Categories</option>
+                      <option value="SiteSettings">Site Settings</option>
+                      <option value="Auth">Authentication</option>
+                      <option value="Quote">Quotes</option>
+                      <option value="Enquiry">Enquiries</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Audit Table */}
+              <div className="overflow-x-auto max-h-[480px] overflow-y-auto border border-[#281F19] rounded-xs">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="sticky top-0 bg-[#16110E] z-10">
+                    <tr className="border-b border-[#281F19] text-[10px] uppercase tracking-widest text-champagne/90 font-medium">
+                      <th className="p-3">Timestamp (IST)</th>
+                      <th className="p-3">Operator</th>
+                      <th className="p-3">Action</th>
+                      <th className="p-3">Entity</th>
+                      <th className="p-3">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#281F19] font-mono text-[11px]">
+                    {filteredLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="p-8 text-center text-[#7E7469] font-sans">
+                          No audit records found matching the current filters.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-[#251E1A]/60 transition-colors">
+                          <td className="p-3 text-[#A89F91] whitespace-nowrap">
+                            {new Date(log.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                          </td>
+                          <td className="p-3 text-[#FCFAF6] whitespace-nowrap font-medium">{log.adminEmail}</td>
+                          <td className="p-3">
+                            <span className="inline-block px-2 py-0.5 bg-[#14100D] border border-[#382D25] text-champagne font-medium text-[10px] uppercase tracking-wider rounded-2xs">
+                              {log.action}
+                            </span>
+                          </td>
+                          <td className="p-3 text-[#D8CEBF]">{log.entity}</td>
+                          <td className="p-3 text-[#A89F91] font-sans text-xs max-w-md break-words">
+                            {log.details ? (
+                              <span className="text-[#ECE5DC]">{JSON.stringify(log.details)}</span>
+                            ) : (
+                              <span className="text-[#7E7469]">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Fixed Action Bar */}
+          <div className="p-4 bg-[#1D1714] border border-[#332821] flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xs shadow-xs">
+            <span className="text-xs text-[#A89F91]">
+              Changes update Supabase PostgreSQL immediately upon saving and take effect live across all pages.
+            </span>
+            <button
+              type="submit"
+              disabled={saving}
+              className="px-8 py-3 bg-champagne text-[#100C0A] hover:bg-[#DAC19E] border border-champagne text-xs uppercase tracking-widest flex items-center gap-2 font-medium cursor-pointer shrink-0 transition-all rounded-xs shadow-xs"
+            >
+              {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              {saving ? 'Persisting to Database...' : 'Save All Changes'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-admin-audit-logs-page-tsx"></a>16. `src/app/admin/audit-logs/page.tsx`
+
+> **Path**: `src/app/admin/audit-logs/page.tsx` | **Lines**: 134 | **Size**: 5.9 KB
+
+```tsx
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { ShieldCheck, RefreshCw, Filter, Clock, Activity, FileText, ShoppingBag, Package } from 'lucide-react';
+import { AdminLayout } from '@/components/AdminLayout';
+import { AuditLog } from '@/types';
+
+export default function AdminAuditLogsPage() {
+  const [logs, setLogs] = useState<AuditLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterAction, setFilterAction] = useState<string>('ALL');
+
+  const loadLogs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/audit-logs?limit=150');
+      if (res.ok) {
+        const data = await res.json();
+        setLogs(data.logs || []);
+      }
+    } catch (e) {
+      console.error('Failed to load audit logs:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
+  const filteredLogs = logs.filter((log) => {
+    if (filterAction === 'ALL') return true;
+    return log.action.includes(filterAction);
+  });
+
+  return (
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-champagne font-medium">System Security & Operations</span>
+              <span className="px-2 py-0.5 bg-champagne/15 text-champagne text-[9px] uppercase tracking-wider font-semibold rounded-2xs border border-champagne/30">
+                Immutable Trail
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl text-[#FCFAF6] font-light mt-1">Audit Logs & Activity Stream</h1>
+            <p className="text-xs text-[#A89F91]">Authoritative record of mutations, logins, and operational actions.</p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={loadLogs}
+              className="p-2.5 bg-[#1D1714] border border-[#332821] hover:border-champagne/60 text-[#FCFAF6] text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors rounded-xs shadow-xs"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-champagne ${loading ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 text-xs">
+          {['ALL', 'LOGIN', 'ORDER', 'PRODUCT', 'QUOTE', 'EMPLOYEE', 'SETTINGS'].map((action) => (
+            <button
+              key={action}
+              onClick={() => setFilterAction(action)}
+              className={`px-3 py-1.5 rounded-xs uppercase tracking-wider text-[11px] font-medium transition-colors ${
+                filterAction === action
+                  ? 'bg-champagne text-[#100C0A]'
+                  : 'bg-[#1D1714] text-[#A89F91] border border-[#332821] hover:text-[#FCFAF6]'
+              }`}
+            >
+              {action === 'ALL' ? 'All Activity' : action}
+            </button>
+          ))}
+        </div>
+
+        {/* Logs Table */}
+        <div className="bg-[#16110E] border border-[#281F19] rounded-xs overflow-hidden shadow-xs">
+          {loading ? (
+            <div className="p-12 text-center space-y-2">
+              <div className="w-6 h-6 border-2 border-champagne border-t-transparent rounded-full animate-spin mx-auto" />
+              <p className="text-xs uppercase tracking-wider text-[#A89F91]">Retrieving system audit trail...</p>
+            </div>
+          ) : filteredLogs.length === 0 ? (
+            <div className="p-12 text-center space-y-2">
+              <Activity className="w-8 h-8 text-[#A89F91] mx-auto stroke-1" />
+              <p className="font-serif text-lg text-[#FCFAF6]">No activity recorded</p>
+              <p className="text-xs text-[#7E7469]">Operational mutations will appear here in realtime.</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-[#281F19]">
+              {filteredLogs.map((l) => (
+                <div key={l.id} className="p-4 hover:bg-[#1D1714] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-bold rounded-2xs ${
+                          l.action.includes('DELETE')
+                            ? 'bg-red-950/60 text-red-400 border border-red-800/40'
+                            : l.action.includes('CREATE') || l.action.includes('SUCCESS')
+                            ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/40'
+                            : 'bg-amber-950/60 text-amber-400 border border-amber-800/40'
+                        }`}
+                      >
+                        {l.action}
+                      </span>
+                      <span className="text-[#FCFAF6] font-medium">{l.entity}</span>
+                      {l.entityId && <span className="text-[#7E7469] font-mono text-[10px]">#{l.entityId}</span>}
+                    </div>
+
+                    <p className="text-[#A89F91] text-[11px]">
+                      By <span className="text-[#FCFAF6]">{l.adminEmail || 'System'}</span>
+                      {l.details && typeof l.details === 'object' ? ` • ${JSON.stringify(l.details)}` : ''}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-[#7E7469] text-[11px] whitespace-nowrap">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>{new Date(l.createdAt).toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </AdminLayout>
+  );
+}
+```
+
+---
+
+### <a id="src-app-api-auth-login-route-ts"></a>17. `src/app/api/auth/login/route.ts`
+
+> **Path**: `src/app/api/auth/login/route.ts` | **Lines**: 196 | **Size**: 5.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
+import { verifyPassword, signSessionToken, signCustomerToken } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+// Memory-backed rate limiter for login protection: max 5 failed attempts per 15 minutes
+const loginAttempts = new Map<string, { count: number; firstAttempt: number }>();
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_WINDOW_MS = 15 * 60 * 1000;
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry) return false;
+
+  if (now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.delete(key);
+    return false;
+  }
+
+  return entry.count >= MAX_ATTEMPTS;
+}
+
+function recordFailedAttempt(key: string): void {
+  const now = Date.now();
+  const entry = loginAttempts.get(key);
+  if (!entry || now - entry.firstAttempt > LOCKOUT_WINDOW_MS) {
+    loginAttempts.set(key, { count: 1, firstAttempt: now });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function clearAttempts(key: string): void {
+  loginAttempts.delete(key);
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { email, password, isAdminLogin = false } = await req.json().catch(() => ({}));
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { success: false, error: 'Email and password are required', code: 'MISSING_CREDENTIALS' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+    const rateLimitKey = `${clientIp}:${normalizedEmail}`;
+
+    // 1. Check Rate Limiting
+    if (isRateLimited(rateLimitKey)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many failed login attempts. Account access is temporarily locked for 15 minutes.',
+          code: 'RATE_LIMITED',
+        },
+        { status: 429 }
+      );
+    }
+
+    // 2. Check if user is in Authoritative Admins Table
+    const admin = await getAdminByEmail(normalizedEmail);
+
+    if (admin) {
+      if (admin.status === 'disabled') {
+        recordFailedAttempt(rateLimitKey);
+        return NextResponse.json(
+          { success: false, error: 'Your administrative account has been deactivated. Please contact the studio owner.', code: 'ACCOUNT_DISABLED' },
+          { status: 403 }
+        );
+      }
+
+      const isMatch = verifyPassword(password, admin.passwordHash);
+      if (!isMatch) {
+        recordFailedAttempt(rateLimitKey);
+        return NextResponse.json(
+          { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+          { status: 401 }
+        );
+      }
+
+      // Successful Admin Authentication
+      clearAttempts(rateLimitKey);
+      await recordAdminLogin(admin.id);
+
+      // Issue rotated, secure session token
+      const token = signSessionToken({
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        mustChangePassword: admin.mustChangePassword,
+      });
+
+      const auditAction = (admin.role === 'owner' || admin.role === 'super_admin') ? 'ADMIN_LOGIN_SUCCESS' : 'EMPLOYEE_LOGIN';
+      await addAuditLog({
+        adminId: admin.id,
+        adminEmail: admin.email,
+        action: auditAction,
+        entity: 'Auth',
+        entityId: admin.id,
+        details: { role: admin.role, method: 'password', ip: clientIp },
+      });
+
+      const adminPayload = {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        status: admin.status || 'active',
+        mustChangePassword: Boolean(admin.mustChangePassword),
+      };
+
+      const response = NextResponse.json({
+        success: true,
+        role: admin.role,
+        redirectUrl: '/admin',
+        admin: adminPayload,
+        user: adminPayload,
+      });
+
+      const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
+      response.cookies.set('balaji_admin_session', token, {
+        httpOnly: true,
+        secure: isHttps,
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      });
+
+      return response;
+    }
+
+    // 3. If request came from admin portal (/admin/login or isAdminLogin), do NOT fall through to customer creation
+    const referer = req.headers.get('referer') || '';
+    if (isAdminLogin || referer.includes('/admin/login')) {
+      recordFailedAttempt(rateLimitKey);
+      return NextResponse.json(
+        { success: false, error: 'Invalid email or password.', code: 'INVALID_CREDENTIALS' },
+        { status: 401 }
+      );
+    }
+
+    // 4. Standard Customer Authentication (Public website only)
+    const customer = await upsertCustomer({
+      email: normalizedEmail,
+      fullName: normalizedEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+      isGuest: false,
+    });
+
+    const customerToken = signCustomerToken({
+      id: customer.id,
+      email: customer.email,
+      name: customer.fullName,
+      role: 'customer',
+      provider: 'email',
+    });
+
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
+    const response = NextResponse.json({
+      success: true,
+      role: 'customer',
+      redirectUrl: '/account',
+      user: {
+        id: customer.id,
+        email: customer.email,
+        name: customer.fullName,
+        role: 'customer',
+      },
+    });
+
+    response.cookies.set('balaji_customer_session', customerToken, {
+      httpOnly: true,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
+
+    return response;
+  } catch (err: any) {
+    console.error('[Login Exception]', err);
+    return NextResponse.json(
+      { success: false, error: 'Authentication service temporarily unavailable. Please retry.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-auth-me-route-ts"></a>18. `src/app/api/auth/me/route.ts`
+
+> **Path**: `src/app/api/auth/me/route.ts` | **Lines**: 61 | **Size**: 1.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyAdminToken, verifyCustomerToken } from '@/lib/auth';
+import { getAdminByEmail } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  try {
+    // 1. Check Admin Session
+    const adminToken = req.cookies.get('balaji_admin_session')?.value;
+    if (adminToken) {
+      const payload = verifyAdminToken(adminToken);
+      if (payload) {
+        const currentAdmin = await getAdminByEmail(payload.email);
+        if (currentAdmin && currentAdmin.status !== 'disabled') {
+          return NextResponse.json({
+            admin: {
+              id: currentAdmin.id,
+              email: currentAdmin.email,
+              name: currentAdmin.name,
+              role: currentAdmin.role,
+              status: currentAdmin.status,
+              mustChangePassword: currentAdmin.mustChangePassword,
+            },
+            user: {
+              id: currentAdmin.id,
+              email: currentAdmin.email,
+              name: currentAdmin.name,
+              role: currentAdmin.role,
+              status: currentAdmin.status,
+              mustChangePassword: currentAdmin.mustChangePassword,
+            },
+          });
+        }
+      }
+    }
+
+    // 2. Check Customer Session
+    const customerToken = req.cookies.get('balaji_customer_session')?.value;
+    if (customerToken) {
+      const customerPayload = verifyCustomerToken(customerToken);
+      if (customerPayload) {
+        return NextResponse.json({
+          admin: null,
+          user: {
+            id: customerPayload.id,
+            email: customerPayload.email,
+            name: customerPayload.name,
+            role: 'customer',
+            provider: customerPayload.provider || 'email',
+          },
+        });
+      }
+    }
+
+    return NextResponse.json({ admin: null, user: null });
+  } catch {
+    return NextResponse.json({ admin: null, user: null });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-auth-change-password-route-ts"></a>19. `src/app/api/auth/change-password/route.ts`
+
+> **Path**: `src/app/api/auth/change-password/route.ts` | **Lines**: 116 | **Size**: 3.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getAdminByEmail, updateAdminPassword, addAuditLog } from '@/lib/db';
+import {
+  hashPassword,
+  verifyAdminToken,
+  verifyPassword,
+  signSessionToken,
+  isStrongPassword,
+  revokeAllSessionsForAdmin,
+} from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest) {
+  try {
+    const token = req.cookies.get('balaji_admin_session')?.value;
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized. Active admin session required.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    const payload = verifyAdminToken(token);
+    if (!payload) {
+      return NextResponse.json(
+        { success: false, error: 'Session expired. Please sign in again.', code: 'SESSION_EXPIRED' },
+        { status: 401 }
+      );
+    }
+
+    const { currentPassword, newPassword } = await req.json().catch(() => ({}));
+
+    // 1. Strong password policy validation
+    const policy = isStrongPassword(newPassword);
+    if (!policy.valid) {
+      return NextResponse.json(
+        { success: false, error: policy.reason || 'Password does not meet security standards.', code: 'WEAK_PASSWORD' },
+        { status: 400 }
+      );
+    }
+
+    const admin = await getAdminByEmail(payload.email);
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, error: 'Admin account not found.', code: 'ACCOUNT_NOT_FOUND' },
+        { status: 404 }
+      );
+    }
+
+    // 2. Current password check (Required unless in forced first-login change flow)
+    if (!admin.mustChangePassword) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          { success: false, error: 'Current password is required to update credentials.', code: 'MISSING_CURRENT_PASSWORD' },
+          { status: 400 }
+        );
+      }
+      const isMatch = verifyPassword(currentPassword, admin.passwordHash);
+      if (!isMatch) {
+        return NextResponse.json(
+          { success: false, error: 'Current password incorrect.', code: 'INVALID_CREDENTIALS' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // 3. Invalidate old sessions and update hash
+    revokeAllSessionsForAdmin(admin.id);
+    const newHash = hashPassword(newPassword);
+    await updateAdminPassword(admin.id, newHash);
+
+    // 4. Audit Log
+    await addAuditLog({
+      adminId: admin.id,
+      adminEmail: admin.email,
+      action: 'ADMIN_PASSWORD_CHANGED',
+      entity: 'Auth',
+      entityId: admin.id,
+      details: { forcedChange: Boolean(admin.mustChangePassword) },
+    });
+
+    // 5. Issue new session token
+    const updatedToken = signSessionToken({
+      id: admin.id,
+      email: admin.email,
+      name: admin.name,
+      role: admin.role,
+      mustChangePassword: false,
+    });
+
+    const response = NextResponse.json({
+      success: true,
+      message: 'Password updated successfully. All previous sessions have been invalidated.',
+    });
+
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
+    response.cookies.set('balaji_admin_session', updatedToken, {
+      httpOnly: true,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
+  } catch (err: any) {
+    console.error('[Change Password Error]', err);
+    return NextResponse.json(
+      { success: false, error: err.message || 'Server error updating password.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-auth-callback-route-ts"></a>20. `src/app/api/auth/callback/route.ts`
+
+> **Path**: `src/app/api/auth/callback/route.ts` | **Lines**: 179 | **Size**: 6.0 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getServiceSupabase } from '@/lib/supabase';
+import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
+import { signAdminToken, signCustomerToken } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { accessToken, token, code, provider = 'google' } = body;
+
+    const authToken = accessToken || token;
+
+    // ============================================================
+    // CRITICAL SECURITY RULE: INDEPENDENT CRYPTOGRAPHIC VERIFICATION
+    // The server MUST verify the token with Supabase Auth.
+    // Client-provided email strings in request body are NEVER trusted.
+    // ============================================================
+    let verifiedEmail: string | null = null;
+    let verifiedName: string | null = null;
+
+    const supabase = getServiceSupabase();
+
+    if (authToken && typeof authToken === 'string') {
+      const { data: userData, error: userError } = await supabase.auth.getUser(authToken);
+      if (userError || !userData?.user) {
+        return NextResponse.json(
+          { success: false, error: 'Cryptographic authentication verification failed. Invalid or expired token.' },
+          { status: 401 }
+        );
+      }
+      verifiedEmail = userData.user.email?.trim().toLowerCase() || null;
+      verifiedName =
+        userData.user.user_metadata?.full_name ||
+        userData.user.user_metadata?.name ||
+        verifiedEmail?.split('@')[0] ||
+        'User';
+    } else if (code && typeof code === 'string') {
+      const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+      if (sessionError || !sessionData?.user) {
+        return NextResponse.json(
+          { success: false, error: 'Failed to exchange authorization code for verified session.' },
+          { status: 401 }
+        );
+      }
+      verifiedEmail = sessionData.user.email?.trim().toLowerCase() || null;
+      verifiedName =
+        sessionData.user.user_metadata?.full_name ||
+        sessionData.user.user_metadata?.name ||
+        verifiedEmail?.split('@')[0] ||
+        'User';
+    } else {
+      return NextResponse.json(
+        { success: false, error: 'Supabase OAuth access token or authorization code required for verification.' },
+        { status: 401 }
+      );
+    }
+
+    if (!verifiedEmail) {
+      return NextResponse.json(
+        { success: false, error: 'No verified email associated with authenticated account.' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = verifiedEmail.trim().toLowerCase();
+
+    // ============================================================
+    // CRITICAL SECURITY RULE: AUTHORITATIVE ROLE RESOLUTION
+    // A Google email MUST NEVER automatically become admin unless
+    // an active, valid record already exists in the authoritative `admins` table.
+    // ============================================================
+    const existingAdmin = await getAdminByEmail(normalizedEmail);
+
+    if (existingAdmin) {
+      if (existingAdmin.status === 'disabled') {
+        return NextResponse.json(
+          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
+          { status: 403 }
+        );
+      }
+
+      await recordAdminLogin(existingAdmin.id);
+
+      const adminToken = signAdminToken({
+        id: existingAdmin.id,
+        email: existingAdmin.email,
+        name: existingAdmin.name,
+        role: existingAdmin.role,
+        mustChangePassword: existingAdmin.mustChangePassword,
+      });
+
+      const auditAction =
+        existingAdmin.role === 'owner' || existingAdmin.role === 'super_admin'
+          ? 'ADMIN_GOOGLE_LOGIN'
+          : 'EMPLOYEE_GOOGLE_LOGIN';
+
+      await addAuditLog({
+        adminId: existingAdmin.id,
+        adminEmail: existingAdmin.email,
+        action: auditAction,
+        entity: 'Auth',
+        entityId: existingAdmin.id,
+        details: { role: existingAdmin.role, provider: 'google', verified: true },
+      });
+
+      const response = NextResponse.json({
+        success: true,
+        role: existingAdmin.role,
+        redirectUrl: '/admin',
+        user: {
+          id: existingAdmin.id,
+          email: existingAdmin.email,
+          name: existingAdmin.name,
+          role: existingAdmin.role,
+          status: existingAdmin.status,
+        },
+      });
+
+      const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
+      response.cookies.set('balaji_admin_session', adminToken, {
+        httpOnly: true,
+        secure: isHttps,
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      });
+
+      return response;
+    }
+
+    // ============================================================
+    // STANDARD CUSTOMER ACCOUNT (Verified Google User)
+    // ============================================================
+    const customer = await upsertCustomer({
+      email: normalizedEmail,
+      fullName: verifiedName || normalizedEmail.split('@')[0],
+      isGuest: false,
+    });
+
+    const customerToken = signCustomerToken({
+      id: customer.id,
+      email: customer.email,
+      name: customer.fullName,
+      role: 'customer',
+      provider: 'google',
+    });
+
+    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
+
+    const response = NextResponse.json({
+      success: true,
+      role: 'customer',
+      redirectUrl: '/account',
+      user: {
+        id: customer.id,
+        email: customer.email,
+        name: customer.fullName,
+        role: 'customer',
+      },
+    });
+
+    response.cookies.set('balaji_customer_session', customerToken, {
+      httpOnly: true,
+      secure: isHttps,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
+  } catch (err: any) {
+    console.error('Cryptographic auth callback error:', err);
+    return NextResponse.json({ success: false, error: 'Authentication verification failed.' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-auth-logout-route-ts"></a>21. `src/app/api/auth/logout/route.ts`
+
+> **Path**: `src/app/api/auth/logout/route.ts` | **Lines**: 9 | **Size**: 0.3 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  const response = NextResponse.json({ success: true, message: 'Logged out successfully' });
+  response.cookies.delete('balaji_admin_session');
+  response.cookies.delete('balaji_customer_session');
+  return response;
+}
+```
+
+---
+
+### <a id="src-app-api-auth-forgot-password-route-ts"></a>22. `src/app/api/auth/forgot-password/route.ts`
+
+> **Path**: `src/app/api/auth/forgot-password/route.ts` | **Lines**: 72 | **Size**: 2.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { getAdminByEmail, addAuditLog } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+// Memory store for single-use password reset tokens (hashedToken -> { email, expiresAt })
+const resetTokenStore = new Map<string, { email: string; expiresAt: number; consumed: boolean }>();
+
+function verifyAndConsumeResetToken(rawToken: string): { valid: boolean; email?: string } {
+  const hashed = crypto.createHash('sha256').update(rawToken).digest('hex');
+  const record = resetTokenStore.get(hashed);
+  if (!record) return { valid: false };
+
+  if (record.consumed || Date.now() > record.expiresAt) {
+    resetTokenStore.delete(hashed);
+    return { valid: false };
+  }
+
+  record.consumed = true;
+  resetTokenStore.delete(hashed);
+  return { valid: true, email: record.email };
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { email } = await req.json().catch(() => ({}));
+
+    if (!email || typeof email !== 'string') {
+      return NextResponse.json(
+        { success: false, error: 'Email is required', code: 'MISSING_EMAIL' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const admin = await getAdminByEmail(normalizedEmail);
+
+    if (admin && admin.status !== 'disabled') {
+      // 1. Generate single-use random 32-byte cryptographic token
+      const rawToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+      const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour validity
+
+      // 2. Store hashed token with expiry
+      resetTokenStore.set(hashedToken, { email: normalizedEmail, expiresAt, consumed: false });
+
+      // 3. Security Audit Log
+      await addAuditLog({
+        adminId: admin.id,
+        adminEmail: admin.email,
+        action: 'PASSWORD_RESET_REQUESTED',
+        entity: 'Auth',
+        entityId: admin.id,
+        details: { expiresAt: new Date(expiresAt).toISOString() },
+      });
+    }
+
+    // Security practice: Never disclose whether an email exists or not to prevent user enumeration
+    return NextResponse.json({
+      success: true,
+      message: 'If an administrative account exists with this email, password reset instructions have been recorded.',
+    });
+  } catch (err: any) {
+    console.error('[Forgot Password Error]', err);
+    return NextResponse.json(
+      { success: false, error: 'Request could not be processed. Please try again later.', code: 'SERVER_ERROR' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-analytics-dashboard-route-ts"></a>23. `src/app/api/admin/analytics/dashboard/route.ts`
+
+> **Path**: `src/app/api/admin/analytics/dashboard/route.ts` | **Lines**: 280 | **Size**: 9.4 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import {
+  isSupabaseConfigured,
+  isSupabaseAvailable,
+  getServiceSupabase,
+  memoryCache,
+} from '@/server/db/client';
+import {
+  getOrders,
+  getQuotes,
+  getProducts,
+  getProjects,
+  getEnquiries,
+  getAuditLogs,
+} from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+const DASHBOARD_CACHE_TTL_MS = 30 * 1000; // 30 seconds
+
+export async function GET(req: NextRequest) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
+  const timeRange = req.nextUrl.searchParams.get('timeRange') || '30D';
+  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+
+  // 1. Check in-memory dashboard cache
+  const cacheKey = `dashboard_${timeRange}`;
+  const now = Date.now();
+  const cached = memoryCache.dashboardAnalytics.get(cacheKey);
+  if (cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS && !forceRefresh) {
+    return NextResponse.json({
+      success: true,
+      data: cached.data,
+      cached: true,
+    });
+  }
+
+  try {
+    let orders: any[] = [];
+    let quotes: any[] = [];
+    let products: any[] = [];
+    let activeProjectsCount = 0;
+    let enquiriesCount = 0;
+    let auditLogs: any[] = [];
+
+    let supabaseSuccess = false;
+    if (await isSupabaseAvailable()) {
+      try {
+        const supabase = getServiceSupabase();
+
+        // Query database with selective projections to minimize memory and network overhead
+        const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
+          await Promise.all([
+            supabase
+              .from('orders')
+              .select(
+                'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
+              )
+              .order('created_at', { ascending: false }),
+            supabase
+              .from('quotes')
+              .select('id, status, total_quoted_amount'),
+            supabase
+              .from('products')
+              .select('id, price, stock, moq'),
+            supabase
+              .from('projects')
+              .select('id', { count: 'exact', head: true }),
+            supabase
+              .from('enquiries')
+              .select('id', { count: 'exact', head: true }),
+            getAuditLogs(6).catch(() => []),
+          ]);
+
+        if (!ordersRes.error && !quotesRes.error && !productsRes.error) {
+          orders = (ordersRes.data || []).map((o: any) => ({
+            id: o.id,
+            orderNumber: o.order_number,
+            customerName: o.customer_name,
+            totalAmount: Number(o.total_amount) || 0,
+            orderStatus: o.order_status,
+            paymentStatus: o.payment_status,
+            createdAt: o.created_at,
+            items: (o.items || []).map((it: any) => ({
+              productName: it.product_name || '',
+              subtotal: Number(it.subtotal) || 0,
+            })),
+          }));
+
+          quotes = (quotesRes.data || []).map((q: any) => ({
+            id: q.id,
+            status: q.status,
+            totalQuotedAmount: Number(q.total_quoted_amount) || 0,
+          }));
+
+          products = (productsRes.data || []).map((p: any) => ({
+            id: p.id,
+            price: Number(p.price) || 0,
+            stock: Number(p.stock) || 0,
+            moq: Number(p.moq) || 1,
+          }));
+
+          activeProjectsCount = projectsRes.count || 0;
+          enquiriesCount = enquiriesRes.count || 0;
+          auditLogs = logsRes;
+          supabaseSuccess = true;
+        }
+      } catch (err) {
+        console.warn('Dashboard Supabase fetch error, falling back to local DB:', err);
+      }
+    }
+
+    if (!supabaseSuccess) {
+      const [allOrders, allQuotes, allProducts, allProjects, allEnquiries, allLogs] =
+        await Promise.all([
+          getOrders().catch(() => []),
+          getQuotes().catch(() => []),
+          getProducts().catch(() => []),
+          getProjects().catch(() => []),
+          getEnquiries().catch(() => []),
+          getAuditLogs(6).catch(() => []),
+        ]);
+
+      orders = allOrders;
+      quotes = allQuotes;
+      products = allProducts;
+      activeProjectsCount = allProjects.length;
+      enquiriesCount = allEnquiries.length;
+      auditLogs = allLogs;
+    }
+
+    // Filter orders by time range
+    const filteredOrders = orders.filter((o) => {
+      if (timeRange === 'ALL') return true;
+      const orderTime = new Date(o.createdAt).getTime();
+      const diffDays = (now - orderTime) / (1000 * 3600 * 24);
+      if (timeRange === '7D') return diffDays <= 7;
+      if (timeRange === '30D') return diffDays <= 30;
+      if (timeRange === '90D') return diffDays <= 90;
+      if (timeRange === '6M') return diffDays <= 180;
+      if (timeRange === '1Y') return diffDays <= 365;
+      return true;
+    });
+
+    // Executive KPIs
+    const periodRevenue = filteredOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const thisMonthRevenue = orders
+      .filter((o) => {
+        const d = new Date(o.createdAt);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      })
+      .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+
+    const activeOrdersCount = orders.filter(
+      (o) =>
+        o.orderStatus === 'Pending' ||
+        o.orderStatus === 'Confirmed' ||
+        o.orderStatus === 'Processing' ||
+        o.orderStatus === 'Packed' ||
+        o.orderStatus === 'Shipped'
+    ).length;
+
+    const pendingQuotesCount = quotes.filter((q) => q.status === 'Pending' || q.status === 'Under_Review').length;
+    const totalQuotesValuation = quotes.reduce((sum, q) => sum + (q.totalQuotedAmount || 0), 0);
+    const lowStockProductsCount = products.filter((p) => p.stock <= p.moq * 2 || p.stock < 10).length;
+    const totalInventoryValuation = products.reduce((sum, p) => sum + (p.price * p.stock || 0), 0);
+    const averageOrderValue = filteredOrders.length > 0 ? Math.round(periodRevenue / filteredOrders.length) : 0;
+
+    // Monthly Sales Graph (Last 6 intervals, timezone and year-boundary accurate)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const nowRef = new Date();
+    const intervals: Array<{ key: string; label: string; year: number; month: number; val: number }> = [];
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(nowRef.getFullYear(), nowRef.getMonth() - i, 1);
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      intervals.push({
+        key: `${y}-${m}`,
+        label: months[m],
+        year: y,
+        month: m,
+        val: 0,
+      });
+    }
+
+    const intervalMap = new Map(intervals.map((it) => [it.key, it]));
+
+    orders.forEach((o) => {
+      const od = new Date(o.createdAt);
+      const key = `${od.getFullYear()}-${od.getMonth()}`;
+      const item = intervalMap.get(key);
+      if (item) {
+        item.val += o.totalAmount || 0;
+      }
+    });
+
+    const maxVal = Math.max(...intervals.map((it) => it.val), 100000);
+    const salesGraphData = intervals.map((it) => ({
+      label: it.label,
+      val: it.val,
+      heightPercent: Math.max(12, Math.round((it.val / maxVal) * 100)),
+    }));
+
+    // Category Sales Breakdown
+    const catMap: { [key: string]: number } = {};
+    orders.forEach((o) => {
+      (o.items || []).forEach((it: any) => {
+        const cat = it.productName.includes('Marble') || it.productName.includes('Travertine')
+          ? 'Natural Stone'
+          : it.productName.includes('Veneer') || it.productName.includes('Oak')
+          ? 'Hardwood Veneers'
+          : it.productName.includes('Panel') || it.productName.includes('Acoustic')
+          ? 'Wall Panels'
+          : 'Architectural Materials';
+        catMap[cat] = (catMap[cat] || 0) + (it.subtotal || 0);
+      });
+    });
+
+    const totalCatSales = Object.values(catMap).reduce((a, b) => a + b, 0) || 1;
+    const categoryBreakdown = Object.entries(catMap).map(([name, amount]) => ({
+      name,
+      amount,
+      percent: Math.round((amount / totalCatSales) * 100),
+    }));
+
+    // Recent 5 orders and recent 6 activity logs
+    const recentOrders = orders.slice(0, 5).map((o) => ({
+      id: o.id,
+      orderNumber: o.orderNumber,
+      customerName: o.customerName,
+      totalAmount: o.totalAmount,
+      orderStatus: o.orderStatus,
+      paymentStatus: o.paymentStatus,
+      itemsCount: o.items?.length || 1,
+      createdAt: o.createdAt,
+    }));
+
+    const responseData = {
+      kpis: {
+        periodRevenue,
+        thisMonthRevenue,
+        periodOrdersCount: filteredOrders.length,
+        activeOrdersCount,
+        pendingQuotesCount,
+        totalQuotesCount: quotes.length,
+        totalQuotesValuation,
+        activeProjectsCount,
+        lowStockCount: lowStockProductsCount,
+        totalProductsCount: products.length,
+        totalInventoryValuation,
+        averageOrderValue,
+        enquiriesCount,
+      },
+      salesGraphData,
+      categoryBreakdown,
+      recentOrders,
+      recentActivity: auditLogs,
+    };
+
+    memoryCache.dashboardAnalytics.set(cacheKey, {
+      data: responseData,
+      timestamp: now,
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: responseData,
+    });
+  } catch (err: any) {
+    console.error('Dashboard analytics error:', err);
+    return NextResponse.json({ success: false, error: 'Failed to compute dashboard analytics' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-employees-route-ts"></a>24. `src/app/api/admin/employees/route.ts`
+
+> **Path**: `src/app/api/admin/employees/route.ts` | **Lines**: 63 | **Size**: 2.0 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { getAdmins, createEmployeeAdmin } from '@/lib/db';
+import { requireOwner } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const admins = await getAdmins();
+    return NextResponse.json(
+      { success: true, employees: admins },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Failed to fetch employees' }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { name, email, role, temporaryPassword, mustChangePassword } = body;
+
+    if (!name || !email) {
+      return NextResponse.json({ success: false, error: 'Full name and email are required' }, { status: 400 });
+    }
+
+    if (role && role !== 'employee') {
+      return NextResponse.json(
+        { success: false, error: 'Only employee role can be created' },
+        { status: 400 }
+      );
+    }
+
+    const secureTempPassword = temporaryPassword || `Temp#${crypto.randomBytes(4).toString('hex')}!`;
+    const newEmployee = await createEmployeeAdmin(
+      {
+        name,
+        email,
+        role: 'employee',
+        temporaryPassword: secureTempPassword,
+        mustChangePassword: mustChangePassword !== undefined ? mustChangePassword : true,
+      },
+      auth.admin
+    );
+
+    return NextResponse.json({
+      success: true,
+      employee: newEmployee,
+      message: 'Employee account created successfully.',
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Failed to create employee' }, { status: 400 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-employees-id-route-ts"></a>25. `src/app/api/admin/employees/[id]/route.ts`
+
+> **Path**: `src/app/api/admin/employees/[id]/route.ts` | **Lines**: 82 | **Size**: 2.7 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { getAdminById, updateEmployeeAdmin, deleteEmployeeAdmin, resetEmployeePassword } from '@/lib/db';
+import { requireOwner } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const admin = await getAdminById(params.id);
+    if (!admin) {
+      return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 });
+    }
+
+    const { passwordHash: _, ...safeAdmin } = admin;
+    return NextResponse.json(
+      { success: true, employee: safeAdmin },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { action, name, email, role, status, newPassword } = body;
+
+    // Handle Password Reset by Owner
+    if (action === 'reset_password' || newPassword) {
+      const resetPass = newPassword || `Reset#${crypto.randomBytes(4).toString('hex')}!`;
+      await resetEmployeePassword(params.id, resetPass, auth.admin);
+      return NextResponse.json({
+        success: true,
+        message: 'Employee password reset successfully. Password change required on next login.',
+      });
+    }
+
+    // Handle Profile / Role / Status Updates
+    const updated = await updateEmployeeAdmin(
+      params.id,
+      {
+        name,
+        email,
+        role,
+        status,
+      },
+      auth.admin
+    );
+
+    return NextResponse.json({
+      success: true,
+      employee: updated,
+      message: 'Employee details updated successfully.',
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Failed to update employee' }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    await deleteEmployeeAdmin(params.id, auth.admin);
+    return NextResponse.json({
+      success: true,
+      message: 'Employee account deleted successfully.',
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Failed to delete employee' }, { status: 400 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-search-route-ts"></a>26. `src/app/api/admin/search/route.ts`
+
+> **Path**: `src/app/api/admin/search/route.ts` | **Lines**: 236 | **Size**: 7.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { getServiceSupabase, isSupabaseConfigured } from '@/lib/supabase';
+import { getProducts, getOrders, getQuotes, getProjects, getServices, getCustomers, getEnquiries } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  const authResult = await requireAuthenticatedAdmin(req);
+  if ('response' in authResult) {
+    return authResult.response;
+  }
+
+  const query = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() || '';
+  if (!query || query.length < 2) {
+    return NextResponse.json({ success: true, results: [] });
+  }
+
+  try {
+    const results: Array<{
+      id: string;
+      title: string;
+      subtitle: string;
+      type: 'product' | 'order' | 'quote' | 'customer' | 'project' | 'service' | 'enquiry';
+      href: string;
+      badge?: string;
+    }> = [];
+
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const pattern = `%${query}%`;
+
+      const [prodRes, ordRes, qtRes, custRes, projRes, enqRes] = await Promise.all([
+        supabase
+          .from('products')
+          .select('id, name, sku, price, unit, stock')
+          .or(`name.ilike.${pattern},sku.ilike.${pattern},material.ilike.${pattern},brand.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('orders')
+          .select('id, order_number, customer_name, total_amount, order_status')
+          .or(`order_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},customer_phone.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('quotes')
+          .select('id, quote_number, customer_name, project_type, project_location, status')
+          .or(`quote_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},project_type.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('customers')
+          .select('id, full_name, email, phone')
+          .or(`full_name.ilike.${pattern},email.ilike.${pattern},phone.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('projects')
+          .select('id, title, project_type, location, year, is_published')
+          .or(`title.ilike.${pattern},location.ilike.${pattern},project_type.ilike.${pattern}`)
+          .limit(5),
+        supabase
+          .from('enquiries')
+          .select('id, name, email, subject, status')
+          .or(`name.ilike.${pattern},email.ilike.${pattern},subject.ilike.${pattern}`)
+          .limit(5),
+      ]);
+
+      // Map Products
+      (prodRes.data || []).forEach((p: any) => {
+        results.push({
+          id: p.id,
+          title: p.name,
+          subtitle: `SKU: ${p.sku} • ₹${Number(p.price).toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
+          type: 'product',
+          href: `/admin/products?id=${p.id}`,
+          badge: `${p.stock} in stock`,
+        });
+      });
+
+      // Map Orders
+      (ordRes.data || []).forEach((o: any) => {
+        results.push({
+          id: o.id,
+          title: `Order #${o.order_number}`,
+          subtitle: `${o.customer_name} • ₹${Number(o.total_amount).toLocaleString('en-IN')} • ${o.order_status}`,
+          type: 'order',
+          href: `/admin/orders?id=${o.id}`,
+          badge: o.order_status,
+        });
+      });
+
+      // Map Quotes
+      (qtRes.data || []).forEach((q: any) => {
+        results.push({
+          id: q.id,
+          title: `Quote #${q.quote_number || 'QT'} — ${q.customer_name}`,
+          subtitle: `${q.project_type || 'Architecture'} • ${q.project_location || 'Guwahati'} • ${q.status}`,
+          type: 'quote',
+          href: `/admin/quotes?id=${q.id}`,
+          badge: q.status,
+        });
+      });
+
+      // Map Customers
+      (custRes.data || []).forEach((c: any) => {
+        results.push({
+          id: c.id,
+          title: c.full_name,
+          subtitle: `${c.email} • ${c.phone || 'No phone'}`,
+          type: 'customer',
+          href: `/admin/customers?id=${c.id}`,
+          badge: 'Client',
+        });
+      });
+
+      // Map Projects
+      (projRes.data || []).forEach((pr: any) => {
+        results.push({
+          id: pr.id,
+          title: pr.title,
+          subtitle: `${pr.project_type} • ${pr.location} (${pr.year})`,
+          type: 'project',
+          href: `/admin/projects?id=${pr.id}`,
+          badge: pr.is_published ? 'Published' : 'Draft',
+        });
+      });
+
+      // Map Enquiries
+      (enqRes.data || []).forEach((e: any) => {
+        results.push({
+          id: e.id,
+          title: `Enquiry: ${e.name}`,
+          subtitle: `${e.subject} • ${e.email}`,
+          type: 'enquiry',
+          href: `/admin/quotes`,
+          badge: e.status,
+        });
+      });
+
+      return NextResponse.json({ success: true, results: results.slice(0, 20) });
+    }
+
+    // JSON / Memory Fallback
+    const [products, orders, quotes, projects, customers, enquiries] = await Promise.all([
+      getProducts().catch(() => []),
+      getOrders().catch(() => []),
+      getQuotes().catch(() => []),
+      getProjects().catch(() => []),
+      getCustomers().catch(() => []),
+      getEnquiries().catch(() => []),
+    ]);
+
+    for (const p of products) {
+      if (p.name.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query)) {
+        results.push({
+          id: p.id,
+          title: p.name,
+          subtitle: `SKU: ${p.sku} • ₹${p.price.toLocaleString('en-IN')}/${p.unit}`,
+          type: 'product',
+          href: `/admin/products?id=${p.id}`,
+          badge: `${p.stock} in stock`,
+        });
+      }
+    }
+
+    for (const o of orders) {
+      if (
+        (o.orderNumber && o.orderNumber.toLowerCase().includes(query)) ||
+        (o.customerName && o.customerName.toLowerCase().includes(query)) ||
+        (o.customerEmail && o.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: o.id,
+          title: `Order #${o.orderNumber}`,
+          subtitle: `${o.customerName} • ₹${o.totalAmount.toLocaleString('en-IN')} • ${o.orderStatus}`,
+          type: 'order',
+          href: `/admin/orders?id=${o.id}`,
+          badge: o.orderStatus,
+        });
+      }
+    }
+
+    for (const q of quotes) {
+      if (
+        (q.quoteNumber && q.quoteNumber.toLowerCase().includes(query)) ||
+        (q.customerName && q.customerName.toLowerCase().includes(query)) ||
+        (q.customerEmail && q.customerEmail.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: q.id,
+          title: `Quote #${q.quoteNumber || 'QT'} — ${q.customerName}`,
+          subtitle: `${q.projectType || 'Architecture'} • ${q.status}`,
+          type: 'quote',
+          href: `/admin/quotes?id=${q.id}`,
+          badge: q.status,
+        });
+      }
+    }
+
+    for (const c of customers) {
+      if (
+        (c.fullName && c.fullName.toLowerCase().includes(query)) ||
+        (c.email && c.email.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: c.id,
+          title: c.fullName,
+          subtitle: `${c.email} • ${c.phone || 'No phone'}`,
+          type: 'customer',
+          href: `/admin/customers?id=${c.id}`,
+          badge: 'Client',
+        });
+      }
+    }
+
+    for (const pr of projects) {
+      if (
+        (pr.title && pr.title.toLowerCase().includes(query)) ||
+        (pr.location && pr.location.toLowerCase().includes(query))
+      ) {
+        results.push({
+          id: pr.id,
+          title: pr.title,
+          subtitle: `${pr.projectType} • ${pr.location}`,
+          type: 'project',
+          href: `/admin/projects?id=${pr.id}`,
+          badge: pr.isPublished ? 'Published' : 'Draft',
+        });
+      }
+    }
+
+    return NextResponse.json({ success: true, results: results.slice(0, 20) });
+  } catch (err: any) {
+    console.error('Search query error:', err);
+    return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-export-route-ts"></a>27. `src/app/api/admin/export/route.ts`
+
+> **Path**: `src/app/api/admin/export/route.ts` | **Lines**: 125 | **Size**: 5.1 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { getOrders, getProducts, getQuotes, getCustomers, getEnquiries, getProjects } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+function escapeCsv(value: any): string {
+  if (value === null || value === undefined) return '""';
+  const str = String(value).replace(/"/g, '""');
+  return `"${str}"`;
+}
+
+export async function GET(req: NextRequest) {
+  const authResult = await requireAuthenticatedAdmin(req);
+  if ('response' in authResult) {
+    return authResult.response;
+  }
+
+  const type = req.nextUrl.searchParams.get('type') || 'orders';
+
+  try {
+    let csvData = '';
+    let filename = `balaji_${type}_${new Date().toISOString().slice(0, 10)}.csv`;
+
+    if (type === 'orders') {
+      const orders = await getOrders();
+      const headers = ['Order Number', 'Date', 'Customer Name', 'Customer Email', 'Phone', 'Total Amount', 'Status', 'Payment Method', 'Payment Status', 'Items Count'];
+      const rows = orders.map((o) => [
+        escapeCsv(o.orderNumber),
+        escapeCsv(new Date(o.createdAt).toISOString()),
+        escapeCsv(o.customerName),
+        escapeCsv(o.customerEmail),
+        escapeCsv(o.customerPhone),
+        escapeCsv(o.totalAmount),
+        escapeCsv(o.orderStatus),
+        escapeCsv(o.paymentMethod || 'Manual/UPI'),
+        escapeCsv(o.paymentStatus),
+        escapeCsv(o.items?.length || 0),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else if (type === 'products' || type === 'inventory') {
+      const products = await getProducts();
+      const headers = ['SKU', 'Name', 'Category', 'Price (INR)', 'Unit', 'Stock', 'MOQ', 'Purchase Mode', 'Published', 'Updated At'];
+      const rows = products.map((p) => [
+        escapeCsv(p.sku),
+        escapeCsv(p.name),
+        escapeCsv(p.subcategory || p.categorySlug || 'Material'),
+        escapeCsv(p.price),
+        escapeCsv(p.unit),
+        escapeCsv(p.stock),
+        escapeCsv(p.moq),
+        escapeCsv(p.purchaseMode),
+        escapeCsv(p.published ? 'Yes' : 'No'),
+        escapeCsv(new Date(p.updatedAt).toISOString()),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else if (type === 'quotes') {
+      const quotes = await getQuotes();
+      const headers = ['Quote Number', 'Date', 'Client Name', 'Email', 'Phone', 'Project Type', 'Estimated Budget', 'Status', 'Location'];
+      const rows = quotes.map((q) => [
+        escapeCsv(q.quoteNumber || 'QT'),
+        escapeCsv(new Date(q.createdAt).toISOString()),
+        escapeCsv(q.customerName),
+        escapeCsv(q.customerEmail),
+        escapeCsv(q.customerPhone),
+        escapeCsv(q.projectType || 'Interior & Architecture'),
+        escapeCsv(q.budgetRange || (q.totalQuotedAmount ? `₹${q.totalQuotedAmount}` : 'Custom')),
+        escapeCsv(q.status),
+        escapeCsv(q.projectLocation || 'Guwahati'),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else if (type === 'customers') {
+      const customers = await getCustomers();
+      const headers = ['Customer ID', 'Full Name', 'Email', 'Phone', 'Created At'];
+      const rows = customers.map((c: any) => [
+        escapeCsv(c.id),
+        escapeCsv(c.fullName),
+        escapeCsv(c.email),
+        escapeCsv(c.phone || ''),
+        escapeCsv(new Date(c.createdAt).toISOString()),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else if (type === 'enquiries') {
+      const enquiries = await getEnquiries();
+      const headers = ['ID', 'Date', 'Name', 'Email', 'Phone', 'Subject', 'Status', 'Message'];
+      const rows = enquiries.map((e) => [
+        escapeCsv(e.id),
+        escapeCsv(new Date(e.createdAt).toISOString()),
+        escapeCsv(e.name),
+        escapeCsv(e.email),
+        escapeCsv(e.phone || ''),
+        escapeCsv(e.subject),
+        escapeCsv(e.status),
+        escapeCsv(e.message),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else if (type === 'projects') {
+      const projects = await getProjects();
+      const headers = ['Title', 'Slug', 'Project Type', 'Location', 'Year', 'Area', 'Published'];
+      const rows = projects.map((pr) => [
+        escapeCsv(pr.title),
+        escapeCsv(pr.slug),
+        escapeCsv(pr.projectType),
+        escapeCsv(pr.location),
+        escapeCsv(pr.year),
+        escapeCsv(pr.area),
+        escapeCsv(pr.isPublished ? 'Published' : 'Draft'),
+      ]);
+      csvData = [headers.join(','), ...rows.map((r: any[]) => r.join(','))].join('\n');
+    } else {
+      return NextResponse.json({ success: false, error: 'Unsupported export type' }, { status: 400 });
+    }
+
+    return new NextResponse(csvData, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: 'Export generation failed' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-settings-route-ts"></a>28. `src/app/api/admin/settings/route.ts`
+
+> **Path**: `src/app/api/admin/settings/route.ts` | **Lines**: 79 | **Size**: 2.3 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getSiteSettings, updateSiteSettings, addAuditLog } from '@/lib/db';
+import { requireOwner } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const settings = await getSiteSettings();
+    return NextResponse.json(
+      { success: true, settings },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const partialData = await req.json();
+    if (!partialData || typeof partialData !== 'object') {
+      return NextResponse.json({ success: false, error: 'Invalid settings payload' }, { status: 400 });
+    }
+
+    const updated = await updateSiteSettings(partialData);
+
+    try {
+      await addAuditLog({
+        adminId: auth.admin.id,
+        adminEmail: auth.admin.email,
+        action: 'SITE_SETTINGS_UPDATED',
+        entity: 'SiteSettings',
+        details: {
+          modifiedKeys: Object.keys(partialData),
+          brandName: updated.brandName,
+        },
+      });
+    } catch (auditErr) {
+      console.warn('Audit log write notice:', auditErr);
+    }
+
+    // Invalidate customer-facing pages immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/checkout');
+      revalidatePath('/quote');
+      revalidatePath('/about');
+      revalidatePath('/contact');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, settings: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    console.error('Settings update error:', err);
+    return NextResponse.json({ success: false, error: err.message || 'Failed to update settings' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-upload-route-ts"></a>29. `src/app/api/admin/upload/route.ts`
+
+> **Path**: `src/app/api/admin/upload/route.ts` | **Lines**: 196 | **Size**: 6.1 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+import { getServiceSupabase, isSupabaseConfigured, isProduction } from '@/server/db/client';
+
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
+const ALLOWED_BUCKETS = new Set(['products', 'projects', 'brand', 'avatars']);
+const ALLOWED_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+  'image/svg+xml',
+]);
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+
+export const dynamic = 'force-dynamic';
+
+function validateImageMagicBytes(buffer: Buffer, extension: string): boolean {
+  if (buffer.length < 4) return false;
+
+  // SVG inspection (text XML or <svg) with security sanitization
+  if (extension === '.svg') {
+    const text = buffer.toString('utf8').toLowerCase();
+    const isSvg = text.includes('<svg') || text.includes('<?xml');
+    if (!isSvg) return false;
+
+    // Disallow executable script tags or malicious handlers
+    if (
+      text.includes('<script') ||
+      text.includes('onload=') ||
+      text.includes('onerror=') ||
+      text.includes('onclick=') ||
+      text.includes('javascript:') ||
+      text.includes('data:text/html')
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  // JPEG: FF D8 FF
+  if (extension === '.jpg' || extension === '.jpeg') {
+    return buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  }
+
+  // PNG: 89 50 4E 47
+  if (extension === '.png') {
+    return buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47;
+  }
+
+  // GIF: GIF87a or GIF89a
+  if (extension === '.gif') {
+    const header = buffer.slice(0, 4).toString('ascii');
+    return header === 'GIF8';
+  }
+
+  // WebP: RIFF ... WEBP
+  if (extension === '.webp') {
+    const riff = buffer.slice(0, 4).toString('ascii');
+    const webp = buffer.slice(8, 12).toString('ascii');
+    return riff === 'RIFF' && webp === 'WEBP';
+  }
+
+  // AVIF: contains ftypavif in first 20 bytes
+  if (extension === '.avif') {
+    return buffer.slice(4, 16).toString('ascii').includes('ftyp');
+  }
+
+  return true;
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const formData = await req.formData();
+    const file = formData.get('file') as File | null;
+    let bucket = (formData.get('bucket') as string) || 'products';
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      bucket = 'products';
+    }
+
+    if (!file) {
+      return NextResponse.json({ success: false, error: 'No image file provided' }, { status: 400 });
+    }
+
+    const rawExtension = path.extname(file.name) || '.jpg';
+    const extension = rawExtension.toLowerCase();
+
+    if (!ALLOWED_EXTENSIONS.has(extension)) {
+      return NextResponse.json(
+        { success: false, error: `Unsupported file extension (${extension}). Allowed: JPG, PNG, WebP, GIF, AVIF, SVG.` },
+        { status: 400 }
+      );
+    }
+
+    if (file.type && !ALLOWED_MIME_TYPES.has(file.type.toLowerCase())) {
+      return NextResponse.json(
+        { success: false, error: `Invalid MIME type (${file.type}). Allowed: images only.` },
+        { status: 400 }
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (buffer.length > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json(
+        { success: false, error: 'File exceeds maximum upload size of 10MB.' },
+        { status: 400 }
+      );
+    }
+
+    // Validate actual file content header (magic bytes)
+    if (!validateImageMagicBytes(buffer, extension)) {
+      return NextResponse.json(
+        { success: false, error: 'File content does not match the specified image format header or contains unsafe payload.' },
+        { status: 400 }
+      );
+    }
+
+    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
+
+    // 1. Authoritative Production Persistent Object Storage
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getServiceSupabase();
+
+        const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
+          contentType: file.type || 'image/jpeg',
+          upsert: true,
+        });
+
+        if (!error && data) {
+          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
+          if (publicUrlData && publicUrlData.publicUrl) {
+            return NextResponse.json({
+              success: true,
+              url: publicUrlData.publicUrl,
+              filename,
+              storage: 'supabase',
+            });
+          }
+        }
+
+        if (error) {
+          console.error('Supabase storage upload error:', error.message);
+          if (isProduction()) {
+            return NextResponse.json(
+              { success: false, error: `Persistent storage upload failed: ${error.message}` },
+              { status: 500 }
+            );
+          }
+        }
+      } catch (sbErr: any) {
+        console.error('Supabase storage exception:', sbErr.message);
+        if (isProduction()) {
+          return NextResponse.json(
+            { success: false, error: 'Storage service temporarily unavailable. Please retry.' },
+            { status: 500 }
+          );
+        }
+      }
+    } else if (isProduction()) {
+      return NextResponse.json(
+        { success: false, error: 'Production object storage is not configured.' },
+        { status: 500 }
+      );
+    }
+
+    // 2. Local Server Storage (ALLOWED ONLY IN DEVELOPMENT / LOCAL TEST)
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const filePath = path.join(uploadDir, filename);
+    fs.writeFileSync(filePath, buffer);
+
+    const publicUrl = `/uploads/${filename}`;
+    return NextResponse.json({
+      success: true,
+      url: publicUrl,
+      filename,
+      storage: 'local',
+    });
+  } catch (err: any) {
+    console.error('Upload route error:', err);
+    return NextResponse.json({ success: false, error: err.message || 'Server upload error' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-audit-logs-route-ts"></a>30. `src/app/api/admin/audit-logs/route.ts`
+
+> **Path**: `src/app/api/admin/audit-logs/route.ts` | **Lines**: 45 | **Size**: 1.4 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getAuditLogs } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const limit = Number(searchParams.get('limit') || 200);
+    const entity = searchParams.get('entity');
+    const search = searchParams.get('search')?.toLowerCase();
+
+    let logs = await getAuditLogs(limit);
+
+    if (entity && entity !== 'ALL') {
+      logs = logs.filter((l) => l.entity.toLowerCase() === entity.toLowerCase());
+    }
+
+    if (search) {
+      logs = logs.filter(
+        (l) =>
+          l.action.toLowerCase().includes(search) ||
+          l.adminEmail.toLowerCase().includes(search) ||
+          (l.entity && l.entity.toLowerCase().includes(search)) ||
+          (l.details && JSON.stringify(l.details).toLowerCase().includes(search))
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, logs },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Failed to fetch audit logs' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-notifications-test-route-ts"></a>31. `src/app/api/admin/notifications/test/route.ts`
+
+> **Path**: `src/app/api/admin/notifications/test/route.ts` | **Lines**: 18 | **Size**: 0.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireOwner } from '@/lib/auth';
+import { sendTestPushToAdmin } from '@/lib/push';
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwner(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const result = await sendTestPushToAdmin(auth.admin.id);
+    return NextResponse.json(result);
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-notifications-subscribe-route-ts"></a>32. `src/app/api/notifications/subscribe/route.ts`
+
+> **Path**: `src/app/api/notifications/subscribe/route.ts` | **Lines**: 47 | **Size**: 1.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { savePushSubscription, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push';
+
+export async function GET() {
+  const vapidPublicKey =
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ||
+    process.env.VAPID_PUBLIC_KEY ||
+    DEFAULT_VAPID_PUBLIC_KEY;
+  return NextResponse.json({
+    success: true,
+    vapidPublicKey,
+  });
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const authResult = await requireAuthenticatedAdmin(req);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const admin = authResult.admin;
+
+    const { subscription } = await req.json();
+    if (!subscription || !subscription.endpoint || !subscription.keys) {
+      return NextResponse.json({ success: false, error: 'Invalid subscription object' }, { status: 400 });
+    }
+
+    const userAgent = req.headers.get('user-agent') || undefined;
+
+    const result = await savePushSubscription({
+      endpoint: subscription.endpoint,
+      keys: subscription.keys,
+      adminId: admin.id,
+      userAgent,
+    });
+
+    if (!result.success) {
+      return NextResponse.json({ success: false, error: result.error }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, message: 'Push notification subscription registered in Supabase' });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-products-route-ts"></a>33. `src/app/api/products/route.ts`
+
+> **Path**: `src/app/api/products/route.ts` | **Lines**: 119 | **Size**: 3.8 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getProducts, createProduct, addAuditLog } from '@/lib/db';
+import { requirePermission } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const categoryId = searchParams.get('categoryId') || undefined;
+    const categorySlug = searchParams.get('category') || undefined;
+    const featuredOnly = searchParams.get('featured') === 'true';
+    const search = searchParams.get('search') || undefined;
+    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+
+    const products = await getProducts({
+      categoryId,
+      categorySlug,
+      featuredOnly,
+      search,
+      publishedOnly,
+    });
+
+    return NextResponse.json(
+      { products },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requirePermission(req, 'products.create');
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json();
+    if (!body.name || !body.sku || !body.price || !body.categoryId) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required product fields (name, sku, price, categoryId)' },
+        { status: 400 }
+      );
+    }
+
+    validateProductInput(body, false);
+
+    // Auto-generate slug if not provided
+    const slug =
+      body.slug ||
+      body.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
+    const newProduct = await createProduct({
+      name: body.name,
+      slug,
+      sku: body.sku,
+      brand: body.brand || 'Balaji Architect & Interiors',
+      categoryId: body.categoryId,
+      subcategory: body.subcategory || '',
+      description: body.description || '',
+      price: Number(body.price),
+      salePrice: body.salePrice ? Number(body.salePrice) : undefined,
+      unit: body.unit || 'sq ft',
+      moq: Number(body.moq) || 1,
+      stock: Number(body.stock) || 0,
+      purchaseMode: body.purchaseMode || 'BUY_NOW',
+      leadTime: body.leadTime || '3-5 business days',
+      dimensions: body.dimensions || '',
+      thickness: body.thickness || '',
+      material: body.material || '',
+      finish: body.finish || '',
+      color: body.color || '',
+      images: Array.isArray(body.images) ? body.images : [],
+      variants: Array.isArray(body.variants) ? body.variants : [],
+      isFeatured: Boolean(body.isFeatured),
+      isNew: Boolean(body.isNew),
+      isBestseller: Boolean(body.isBestseller),
+      published: body.published !== false,
+      tags: Array.isArray(body.tags) ? body.tags : [],
+      specifications: body.specifications || {},
+    });
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PRODUCT_CREATED',
+      entity: 'Product',
+      entityId: newProduct.id,
+      details: { name: newProduct.name, sku: newProduct.sku, price: newProduct.price },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json({ success: true, product: newProduct });
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-products-id-route-ts"></a>34. `src/app/api/products/[id]/route.ts`
+
+> **Path**: `src/app/api/products/[id]/route.ts` | **Lines**: 118 | **Size**: 3.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getProductById, updateProduct, deleteProduct, addAuditLog } from '@/lib/db';
+import { requirePermission, requireAuthenticatedAdmin } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const product = await getProductById(params.id);
+    if (!product) {
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+    }
+    return NextResponse.json(
+      { success: true, product },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requirePermission(req, 'products.update');
+  if ('response' in auth) return auth.response;
+
+  try {
+    const partialData = await req.json();
+    validateProductInput(partialData, true);
+    const updated = await updateProduct(params.id, partialData);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PRODUCT_UPDATED',
+      entity: 'Product',
+      entityId: params.id,
+      details: { modifiedKeys: Object.keys(partialData) },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, product: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requirePermission(req, 'products.delete');
+  if ('response' in auth) return auth.response;
+
+  try {
+    const success = await deleteProduct(params.id);
+    if (!success) {
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PRODUCT_DELETED',
+      entity: 'Product',
+      entityId: params.id,
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+      revalidatePath('/search');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Product deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-categories-route-ts"></a>35. `src/app/api/categories/route.ts`
+
+> **Path**: `src/app/api/categories/route.ts` | **Lines**: 79 | **Size**: 2.4 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getCategories, getAllCategoriesAdmin, createCategory, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const isAdmin = searchParams.get('admin') === 'true';
+
+    const categories = isAdmin ? await getAllCategoriesAdmin() : await getCategories();
+    return NextResponse.json(
+      { categories },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json();
+    if (!body.name) {
+      return NextResponse.json({ success: false, error: 'Category name is required' }, { status: 400 });
+    }
+
+    const slug =
+      body.slug ||
+      body.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
+    const newCategory = await createCategory({
+      name: body.name,
+      slug,
+      description: body.description || '',
+      imageUrl: body.imageUrl || '',
+      parentId: body.parentId || null,
+      sortOrder: Number(body.sortOrder) || 0,
+      isActive: body.isActive !== false,
+    });
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'CATEGORY_CREATED',
+      entity: 'Category',
+      entityId: newCategory.id,
+      details: { name: newCategory.name, slug: newCategory.slug },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json({ success: true, category: newCategory });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-categories-id-route-ts"></a>36. `src/app/api/categories/[id]/route.ts`
+
+> **Path**: `src/app/api/categories/[id]/route.ts` | **Lines**: 94 | **Size**: 2.8 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { updateCategory, deleteCategory, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const partialData = await req.json();
+    const updated = await updateCategory(params.id, partialData);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'CATEGORY_UPDATED',
+      entity: 'Category',
+      entityId: params.id,
+      details: { modifiedKeys: Object.keys(partialData) },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, category: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const success = await deleteCategory(params.id);
+    if (!success) {
+      return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'CATEGORY_DELETED',
+      entity: 'Category',
+      entityId: params.id,
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Category deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-orders-route-ts"></a>37. `src/app/api/orders/route.ts`
+
+> **Path**: `src/app/api/orders/route.ts` | **Lines**: 97 | **Size**: 3.2 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { createOrderAtomic, getOrders } from '@/lib/db';
+import { verifyAdminToken } from '@/lib/auth';
+import { sendNewOrderPush } from '@/lib/push';
+
+export async function GET(req: NextRequest) {
+  try {
+    const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+    const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+    const token = cookieToken || authHeader;
+
+    const admin = token ? verifyAdminToken(token) : null;
+    if (!admin) {
+      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
+    }
+
+    const orders = await getOrders();
+    return NextResponse.json(
+      { success: true, orders },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
+      return NextResponse.json(
+        { success: false, error: 'Customer name, email, and phone are required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!body.shippingAddress || !body.shippingAddress.addressLine1) {
+      return NextResponse.json(
+        { success: false, error: 'Valid delivery address is required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!Array.isArray(body.items) || body.items.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Order must contain at least one material/product.' },
+        { status: 400 }
+      );
+    }
+
+    // Process order with Server-Authoritative Price & Atomic Inventory Lock
+    const result = await createOrderAtomic({
+      customerName: body.customerName,
+      customerEmail: body.customerEmail,
+      customerPhone: body.customerPhone,
+      shippingAddress: body.shippingAddress,
+      billingAddress: body.billingAddress,
+      items: body.items,
+      paymentMethod: body.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+      notes: body.notes,
+      idempotencyKey: body.idempotencyKey,
+    });
+
+    if (!result.success || !result.order) {
+      return NextResponse.json({ success: false, error: result.error }, { status: 400 });
+    }
+
+    // Invalidate customer-facing stock & product caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/materials');
+      revalidatePath('/material/[slug]', 'page');
+      revalidatePath('/category/[slug]', 'page');
+      revalidatePath('/shop');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    // Trigger Realtime Web Push Notification to Admin devices
+    if (result.order) {
+      sendNewOrderPush(result.order).catch((pushErr) => {
+        console.warn('Order push notification dispatch notice:', pushErr);
+      });
+    }
+
+    return NextResponse.json({ success: true, order: result.order });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-orders-id-route-ts"></a>38. `src/app/api/orders/[id]/route.ts`
+
+> **Path**: `src/app/api/orders/[id]/route.ts` | **Lines**: 70 | **Size**: 2.1 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getOrderById, updateOrderStatus, addAuditLog } from '@/lib/db';
+import { requireAuthenticatedAdmin, requirePermission } from '@/lib/auth';
+import { formatErrorResponse } from '@/server/errors';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const order = await getOrderById(params.id);
+    if (!order) {
+      return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 });
+    }
+    return NextResponse.json({ success: true, order });
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requirePermission(req, 'orders.update_status');
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json();
+    const { orderStatus, paymentStatus, action, utrNumber, note } = body;
+
+    let targetPaymentStatus = paymentStatus;
+    let targetOrderStatus = orderStatus;
+
+    if (action === 'VERIFY_PAYMENT') {
+      targetPaymentStatus = 'Paid';
+    }
+
+    const updated = await updateOrderStatus(params.id, targetOrderStatus, targetPaymentStatus, {
+      actorEmail: auth.admin.email,
+      note,
+      utrNumber,
+    });
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 });
+    }
+
+    const auditAction = action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: auditAction,
+      entity: 'Order',
+      entityId: params.id,
+      details: {
+        orderStatus: targetOrderStatus,
+        paymentStatus: targetPaymentStatus,
+        utrNumber,
+        verifiedBy: auth.admin.email,
+        note,
+      },
+    });
+
+    return NextResponse.json({ success: true, order: updated });
+  } catch (err: any) {
+    return formatErrorResponse(err);
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-quotes-route-ts"></a>39. `src/app/api/quotes/route.ts`
+
+> **Path**: `src/app/api/quotes/route.ts` | **Lines**: 63 | **Size**: 2.2 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { createQuote, getQuotes, addAuditLog } from '@/lib/db';
+import { verifyAdminToken } from '@/lib/auth';
+import { sendNewQuotePush } from '@/lib/push';
+
+export async function GET(req: NextRequest) {
+  try {
+    const token = req.cookies.get('balaji_admin_session')?.value;
+    const admin = token ? verifyAdminToken(token) : null;
+    if (!admin) {
+      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
+    }
+
+    const quotes = await getQuotes();
+    return NextResponse.json({ success: true, quotes });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
+      return NextResponse.json(
+        { success: false, error: 'Name, email, and phone are required for quotation generation.' },
+        { status: 400 }
+      );
+    }
+
+    const newQuote = await createQuote({
+      customerName: body.customerName,
+      customerEmail: body.customerEmail,
+      customerPhone: body.customerPhone,
+      projectType: body.projectType || 'General Architectural Commission',
+      projectLocation: body.projectLocation || 'Unspecified',
+      estimatedTimeline: body.estimatedTimeline || 'Planning',
+      budgetRange: body.budgetRange || 'Flexible',
+      notes: body.notes || '',
+      items: Array.isArray(body.items) ? body.items : [],
+    });
+
+    await addAuditLog({
+      adminId: 'system',
+      adminEmail: 'quote@balaji.com',
+      action: 'QUOTE_SUBMITTED',
+      entity: 'Quote',
+      entityId: newQuote.id,
+      details: { quoteNumber: newQuote.quoteNumber, customer: newQuote.customerName },
+    });
+
+    // Trigger Realtime Web Push Notification for Admin devices
+    sendNewQuotePush(newQuote).catch((pushErr) => {
+      console.warn('Quote push notification dispatch notice:', pushErr);
+    });
+
+    return NextResponse.json({ success: true, quote: newQuote });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-quotes-id-route-ts"></a>40. `src/app/api/quotes/[id]/route.ts`
+
+> **Path**: `src/app/api/quotes/[id]/route.ts` | **Lines**: 45 | **Size**: 1.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getQuoteById, updateQuoteStatus, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const quote = await getQuoteById(params.id);
+    if (!quote) {
+      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
+    }
+    return NextResponse.json({ success: true, quote });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const { status, totalQuotedAmount, adminNotes } = await req.json();
+    const updated = await updateQuoteStatus(params.id, status, totalQuotedAmount, adminNotes);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'QUOTE_STATUS_UPDATED',
+      entity: 'Quote',
+      entityId: params.id,
+      details: { status, totalQuotedAmount },
+    });
+
+    return NextResponse.json({ success: true, quote: updated });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-quotes-id-convert-route-ts"></a>41. `src/app/api/quotes/[id]/convert/route.ts`
+
+> **Path**: `src/app/api/quotes/[id]/convert/route.ts` | **Lines**: 100 | **Size**: 3.3 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { getQuoteById, updateQuoteStatus, createOrderAtomic, addAuditLog } from '@/lib/db';
+import { requirePermission } from '@/lib/auth';
+import { formatErrorResponse } from '@/server/errors';
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requirePermission(req, 'quotes.convert');
+  if ('response' in auth) return auth.response;
+
+  try {
+    const quote = await getQuoteById(params.id);
+    if (!quote) {
+      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
+    }
+
+    if (quote.status === 'Converted_To_Order') {
+      return NextResponse.json(
+        { success: false, error: 'This quote has already been converted to an order.' },
+        { status: 409 }
+      );
+    }
+
+    // Map quote items to order items format
+    const orderItems = (quote.items || []).map((it) => ({
+      productId: it.productId || 'custom-material',
+      quantity: it.quantity || 1,
+      selectedColor: 'Custom Specification',
+      selectedFinish: 'Bespoke',
+    }));
+
+    if (orderItems.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Cannot convert a quote with no specified material items.' },
+        { status: 400 }
+      );
+    }
+
+    // Create the order idempotently using quote reference
+    const orderResult = await createOrderAtomic({
+      customerName: quote.customerName,
+      customerEmail: quote.customerEmail,
+      customerPhone: quote.customerPhone,
+      shippingAddress: {
+        fullName: quote.customerName,
+        phone: quote.customerPhone,
+        addressLine1: quote.projectLocation || 'Assam, India',
+        city: 'Guwahati',
+        state: 'Assam',
+        pincode: '781040',
+        country: 'India',
+      },
+      items: orderItems,
+      paymentMethod: 'Architectural Contract / Wire Transfer',
+      notes: `Converted from Quotation Dossier #${quote.quoteNumber}. Project Type: ${quote.projectType}.`,
+      idempotencyKey: `quote-conv-${quote.id}`,
+    });
+
+    if (!orderResult.success || !orderResult.order) {
+      return NextResponse.json(
+        { success: false, error: orderResult.error || 'Failed to generate order from quotation.' },
+        { status: 500 }
+      );
+    }
+
+    // Update Quote status to Converted_To_Order
+    await updateQuoteStatus(
+      quote.id,
+      'Converted_To_Order',
+      quote.totalQuotedAmount,
+      `Converted to Order #${orderResult.order.orderNumber} by ${auth.admin.email}`
+    );
+
+    // Audit the conversion
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'QUOTE_CONVERTED_TO_ORDER',
+      entity: 'Quote',
+      entityId: quote.id,
+      details: {
+        quoteNumber: quote.quoteNumber,
+        orderId: orderResult.order.id,
+        orderNumber: orderResult.order.orderNumber,
+        totalAmount: orderResult.order.totalAmount,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      order: orderResult.order,
+      message: `Quote #${quote.quoteNumber} successfully converted to Order #${orderResult.order.orderNumber}`,
+    });
+  } catch (err: any) {
+    console.error('Quote conversion error:', err);
+    return formatErrorResponse(err);
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-projects-route-ts"></a>42. `src/app/api/projects/route.ts`
+
+> **Path**: `src/app/api/projects/route.ts` | **Lines**: 91 | **Size**: 2.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getProjects, createProject, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const featuredOnly = searchParams.get('featured') === 'true';
+    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+
+    const projects = await getProjects({ featuredOnly, publishedOnly });
+    return NextResponse.json(
+      { projects },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json();
+    if (!body.title || !body.heroImage) {
+      return NextResponse.json(
+        { success: false, error: 'Project title and hero image are required' },
+        { status: 400 }
+      );
+    }
+
+    const slug =
+      body.slug ||
+      body.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
+    const newProject = await createProject({
+      title: body.title,
+      slug,
+      location: body.location || 'Mumbai',
+      year: body.year || new Date().getFullYear().toString(),
+      projectType: body.projectType || 'Residential Interiors',
+      area: body.area || '',
+      shortDescription: body.shortDescription || '',
+      description: body.description || '',
+      heroImage: body.heroImage,
+      gallery: Array.isArray(body.gallery) ? body.gallery : [],
+      designApproach: body.designApproach || '',
+      materialsUsed: Array.isArray(body.materialsUsed) ? body.materialsUsed : [],
+      beforeAfter: body.beforeAfter,
+      isPublished: body.isPublished !== false,
+      isFeatured: Boolean(body.isFeatured),
+      sortOrder: Number(body.sortOrder) || 0,
+      tags: Array.isArray(body.tags) ? body.tags : [],
+    });
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PROJECT_CREATED',
+      entity: 'Project',
+      entityId: newProject.id,
+      details: { title: newProject.title, slug: newProject.slug },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json({ success: true, project: newProject });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-projects-id-route-ts"></a>43. `src/app/api/projects/[id]/route.ts`
+
+> **Path**: `src/app/api/projects/[id]/route.ts` | **Lines**: 109 | **Size**: 3.2 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getProjectById, updateProject, deleteProject, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const project = await getProjectById(params.id);
+    if (!project) {
+      return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 });
+    }
+    return NextResponse.json(
+      { success: true, project },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const partialData = await req.json();
+    const updated = await updateProject(params.id, partialData);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PROJECT_UPDATED',
+      entity: 'Project',
+      entityId: params.id,
+      details: { modifiedKeys: Object.keys(partialData) },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, project: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const success = await deleteProject(params.id);
+    if (!success) {
+      return NextResponse.json({ success: false, error: 'Project not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'PROJECT_DELETED',
+      entity: 'Project',
+      entityId: params.id,
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/projects');
+      revalidatePath('/projects/[slug]', 'page');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Project deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-services-route-ts"></a>44. `src/app/api/services/route.ts`
+
+> **Path**: `src/app/api/services/route.ts` | **Lines**: 77 | **Size**: 2.3 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { getServices, createService, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const services = await getServices(publishedOnly);
+    return NextResponse.json(
+      { services },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const body = await req.json();
+    if (!body.title) {
+      return NextResponse.json({ success: false, error: 'Service title is required' }, { status: 400 });
+    }
+
+    const slug =
+      body.slug ||
+      body.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
+    const newService = await createService({
+      title: body.title,
+      slug,
+      shortDesc: body.shortDesc || '',
+      fullDesc: body.fullDesc || '',
+      iconName: body.iconName || 'Compass',
+      imageUrl: body.imageUrl || '',
+      deliverables: Array.isArray(body.deliverables) ? body.deliverables : [],
+      sortOrder: Number(body.sortOrder) || 0,
+      isPublished: body.isPublished !== false,
+    });
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'SERVICE_CREATED',
+      entity: 'Service',
+      entityId: newService.id,
+      details: { title: newService.title },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json({ success: true, service: newService });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-services-id-route-ts"></a>45. `src/app/api/services/[id]/route.ts`
+
+> **Path**: `src/app/api/services/[id]/route.ts` | **Lines**: 88 | **Size**: 2.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { updateService, deleteService, addAuditLog } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const partialData = await req.json();
+    const updated = await updateService(params.id, partialData);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'SERVICE_UPDATED',
+      entity: 'Service',
+      entityId: params.id,
+      details: { modifiedKeys: Object.keys(partialData) },
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, service: updated },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const success = await deleteService(params.id);
+    if (!success) {
+      return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
+    }
+
+    await addAuditLog({
+      adminId: auth.admin.id,
+      adminEmail: auth.admin.email,
+      action: 'SERVICE_DELETED',
+      entity: 'Service',
+      entityId: params.id,
+    });
+
+    // Invalidate customer-facing caches immediately
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/services');
+    } catch (revErr) {
+      console.warn('Revalidation notice:', revErr);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Service deleted successfully' },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-enquiries-route-ts"></a>46. `src/app/api/enquiries/route.ts`
+
+> **Path**: `src/app/api/enquiries/route.ts` | **Lines**: 51 | **Size**: 1.7 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { createEnquiry, getEnquiries, addAuditLog } from '@/lib/db';
+import { verifyAdminToken } from '@/lib/auth';
+import { sendNewEnquiryPush } from '@/lib/push';
+
+export async function GET(req: NextRequest) {
+  try {
+    const token = req.cookies.get('balaji_admin_session')?.value;
+    const admin = token ? verifyAdminToken(token) : null;
+    if (!admin) {
+      return NextResponse.json({ success: false, error: 'Unauthorized admin access' }, { status: 401 });
+    }
+
+    const enquiries = await getEnquiries();
+    return NextResponse.json({ success: true, enquiries });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    if (!body.name || !body.email || !body.phone || !body.message) {
+      return NextResponse.json(
+        { success: false, error: 'Name, email, phone, and message are required.' },
+        { status: 400 }
+      );
+    }
+
+    const newEnquiry = await createEnquiry({
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      subject: body.subject || 'Studio Consultation',
+      message: body.message,
+      source: body.source || 'Contact Form',
+    });
+
+    // Trigger Realtime Web Push Notification for Admin devices
+    sendNewEnquiryPush(newEnquiry).catch((pushErr) => {
+      console.warn('Enquiry push notification dispatch notice:', pushErr);
+    });
+
+    return NextResponse.json({ success: true, enquiry: newEnquiry });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-enquiries-id-route-ts"></a>47. `src/app/api/enquiries/[id]/route.ts`
+
+> **Path**: `src/app/api/enquiries/[id]/route.ts` | **Lines**: 24 | **Size**: 0.8 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { updateEnquiryStatus } from '@/lib/db';
+import { requireOwnerOrEmployee } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const auth = await requireOwnerOrEmployee(req);
+  if ('response' in auth) return auth.response;
+
+  try {
+    const { status } = await req.json();
+    const updated = await updateEnquiryStatus(params.id, status);
+
+    if (!updated) {
+      return NextResponse.json({ success: false, error: 'Enquiry not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, enquiry: updated });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+```
+
+---
+
+### <a id="src-server-auth-rbac-ts"></a>48. `src/server/auth/rbac.ts`
+
+> **Path**: `src/server/auth/rbac.ts` | **Lines**: 274 | **Size**: 7.2 KB
+
+```typescript
+import { AdminRole, AdminUser } from '@/types';
+import { ForbiddenError } from '../errors';
+
+// =============================================================
+// CENTRALIZED PERMISSIONS & ROLE-BASED ACCESS CONTROL (RBAC)
+// =============================================================
+
+export type Permission =
+  // Products
+  | 'products.read'
+  | 'products.create'
+  | 'products.update'
+  | 'products.delete'
+  | 'products.publish'
+  | 'products.write' // backward-compat alias
+  // Categories
+  | 'categories.read'
+  | 'categories.create'
+  | 'categories.update'
+  | 'categories.delete'
+  // Inventory
+  | 'inventory.read'
+  | 'inventory.adjust'
+  | 'inventory.write' // backward-compat alias
+  // Orders
+  | 'orders.read'
+  | 'orders.update_status'
+  | 'orders.cancel'
+  | 'orders.export'
+  | 'orders.write' // backward-compat alias
+  // Quotes
+  | 'quotes.read'
+  | 'quotes.update'
+  | 'quotes.convert'
+  | 'quotes.write' // backward-compat alias
+  // Projects
+  | 'projects.read'
+  | 'projects.create'
+  | 'projects.update'
+  | 'projects.delete'
+  | 'projects.publish'
+  | 'projects.write' // backward-compat alias
+  // Services
+  | 'services.read'
+  | 'services.create'
+  | 'services.update'
+  | 'services.delete'
+  | 'services.write' // backward-compat alias
+  // Customers
+  | 'customers.read'
+  // Employees (Owner / Super Admin only)
+  | 'employees.read'
+  | 'employees.create'
+  | 'employees.update'
+  | 'employees.disable'
+  | 'employees.reset_password'
+  | 'employees.delete'
+  | 'employees.write'
+  | 'owner.employee_management' // backward-compat alias
+  // Settings & CMS (Owner / Super Admin only)
+  | 'settings.read'
+  | 'settings.write'
+  | 'owner.settings' // backward-compat alias
+  // Payments (Owner / Super Admin only)
+  | 'payments.read'
+  | 'payments.write'
+  | 'owner.payment' // backward-compat alias
+  // Audit Logs (Owner / Super Admin only)
+  | 'audit.read'
+  | 'audit.export'
+  | 'owner.audit_logs' // backward-compat alias
+  // Analytics
+  | 'analytics.read'
+  // Notifications
+  | 'notifications.manage';
+
+const ALL_PERMISSIONS: Permission[] = [
+  'products.read',
+  'products.create',
+  'products.update',
+  'products.delete',
+  'products.publish',
+  'products.write',
+  'categories.read',
+  'categories.create',
+  'categories.update',
+  'categories.delete',
+  'inventory.read',
+  'inventory.adjust',
+  'inventory.write',
+  'orders.read',
+  'orders.update_status',
+  'orders.cancel',
+  'orders.export',
+  'orders.write',
+  'quotes.read',
+  'quotes.update',
+  'quotes.convert',
+  'quotes.write',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.delete',
+  'projects.publish',
+  'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
+  'services.delete',
+  'services.write',
+  'customers.read',
+  'employees.read',
+  'employees.create',
+  'employees.update',
+  'employees.disable',
+  'employees.reset_password',
+  'employees.delete',
+  'employees.write',
+  'owner.employee_management',
+  'settings.read',
+  'settings.write',
+  'owner.settings',
+  'payments.read',
+  'payments.write',
+  'owner.payment',
+  'audit.read',
+  'audit.export',
+  'owner.audit_logs',
+  'analytics.read',
+  'notifications.manage',
+];
+
+const EMPLOYEE_PERMISSIONS: Permission[] = [
+  'products.read',
+  'products.create',
+  'products.update',
+  'products.publish',
+  'products.write',
+  'categories.read',
+  'inventory.read',
+  'inventory.adjust',
+  'inventory.write',
+  'orders.read',
+  'orders.update_status',
+  'orders.cancel',
+  'orders.export',
+  'orders.write',
+  'quotes.read',
+  'quotes.update',
+  'quotes.convert',
+  'quotes.write',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.publish',
+  'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
+  'services.write',
+  'customers.read',
+  'analytics.read',
+];
+
+const EDITOR_PERMISSIONS: Permission[] = [
+  'products.read',
+  'products.create',
+  'products.update',
+  'products.publish',
+  'products.write',
+  'categories.read',
+  'categories.create',
+  'categories.update',
+  'projects.read',
+  'projects.create',
+  'projects.update',
+  'projects.publish',
+  'projects.write',
+  'services.read',
+  'services.create',
+  'services.update',
+  'services.write',
+];
+
+const VIEWER_PERMISSIONS: Permission[] = [
+  'products.read',
+  'categories.read',
+  'inventory.read',
+  'orders.read',
+  'quotes.read',
+  'projects.read',
+  'services.read',
+  'customers.read',
+  'analytics.read',
+];
+
+export const ROLE_PERMISSIONS: Record<AdminRole, Permission[]> = {
+  owner: ALL_PERMISSIONS,
+  super_admin: ALL_PERMISSIONS,
+  employee: EMPLOYEE_PERMISSIONS,
+  editor: EDITOR_PERMISSIONS,
+  viewer: VIEWER_PERMISSIONS,
+};
+
+export function hasPermission(role: AdminRole, permission: Permission): boolean {
+  const permissions = ROLE_PERMISSIONS[role] || [];
+  if (permissions.includes(permission)) return true;
+
+  // Backward compatibility alias checks
+  if (permission === 'products.write') {
+    return permissions.includes('products.create') || permissions.includes('products.update');
+  }
+  if (permission === 'orders.write') {
+    return permissions.includes('orders.update_status') || permissions.includes('orders.cancel');
+  }
+  if (permission === 'quotes.write') {
+    return permissions.includes('quotes.update') || permissions.includes('quotes.convert');
+  }
+  if (permission === 'owner.settings') {
+    return permissions.includes('settings.write');
+  }
+  if (permission === 'owner.payment') {
+    return permissions.includes('payments.write');
+  }
+  if (permission === 'owner.employee_management') {
+    return permissions.includes('employees.create') || permissions.includes('employees.update');
+  }
+  if (permission === 'owner.audit_logs') {
+    return permissions.includes('audit.read');
+  }
+
+  return false;
+}
+
+export function isOwner(admin: AdminUser): boolean {
+  return admin.role === 'owner' || admin.role === 'super_admin';
+}
+
+export function canManageSettings(admin: AdminUser): boolean {
+  return hasPermission(admin.role, 'settings.write');
+}
+
+export function canManageEmployees(admin: AdminUser): boolean {
+  return hasPermission(admin.role, 'employees.create');
+}
+
+export function canManageOrders(admin: AdminUser): boolean {
+  return hasPermission(admin.role, 'orders.update_status');
+}
+
+/**
+ * Protects Owner / Super Admin accounts from self-deletion, disabling, or downgrade.
+ */
+export function protectOwnerFromModification(
+  target: { id: string; role: AdminRole; email: string },
+  actor: { id: string; role: AdminRole; email: string },
+  action: 'delete' | 'disable' | 'downgrade' | 'reset_password'
+): void {
+  // Prevent any modification of super_admin/owner by non-owners
+  if ((target.role === 'owner' || target.role === 'super_admin') && !isOwner(actor as any)) {
+    throw new ForbiddenError('Only studio owners can manage owner or super_admin accounts');
+  }
+
+  // Prevent self-deletion or self-disabling
+  if (target.id === actor.id && (action === 'delete' || action === 'disable')) {
+    throw new ForbiddenError('Safety Protection: Studio owners cannot self-delete or disable their own account');
+  }
+
+  // Prevent primary principal architect Vikas Sir from ever being deleted or disabled
+  if (target.email.toLowerCase().includes('vicks@balaji.com') && (action === 'delete' || action === 'disable')) {
+    throw new ForbiddenError('Immutable Protection: The primary principal architect account cannot be disabled or deleted');
+  }
+}
+```
+
+---
+
+### <a id="src-lib-auth-ts"></a>49. `src/lib/auth.ts`
+
+> **Path**: `src/lib/auth.ts` | **Lines**: 276 | **Size**: 8.0 KB
+
+```typescript
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { NextRequest, NextResponse } from 'next/server';
+import { getAdminByEmail } from './db';
+import { AdminUser, AdminRole } from '@/types';
+import { Permission, hasPermission, isOwner } from '@/server/auth/rbac';
+import {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+  SessionTokenPayload,
+} from '@/server/auth/tokens';
+
+export {
+  signSessionToken,
+  verifySessionToken,
+  revokeAllSessionsForAdmin,
+  rotateSessionToken,
+};
+
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Critical Security Error: Missing JWT_SECRET environment variable.');
+    }
+    return 'development_only_jwt_secret_do_not_use_in_production_key';
+  }
+  return secret;
+}
+
+const SALT_ROUNDS = 10000;
+const KEY_LEN = 64;
+const DIGEST = 'sha512';
+
+/**
+ * Hashes a plaintext password using PBKDF2 with a random cryptographic salt.
+ * Returns format: "salt:hash"
+ */
+export function hashPassword(password: string): string {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const derivedKey = crypto.pbkdf2Sync(password, salt, SALT_ROUNDS, KEY_LEN, DIGEST);
+  return `${salt}:${derivedKey.toString('hex')}`;
+}
+
+/**
+ * Verifies a plaintext password against a stored "salt:hash" string using timing-safe comparison.
+ */
+export function verifyPassword(password: string, storedHash: string): boolean {
+  try {
+    const [salt, key] = storedHash.split(':');
+    if (!salt || !key) return false;
+    const derivedKey = crypto.pbkdf2Sync(password, salt, SALT_ROUNDS, KEY_LEN, DIGEST);
+    return crypto.timingSafeEqual(Buffer.from(key, 'hex'), derivedKey);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Strong password policy validator:
+ * Minimum 8 characters, requires at least one letter and one number or special symbol.
+ */
+export function isStrongPassword(password: string): { valid: boolean; reason?: string } {
+  if (!password || typeof password !== 'string') {
+    return { valid: false, reason: 'Password is required' };
+  }
+  if (password.length < 8) {
+    return { valid: false, reason: 'Password must be at least 8 characters long' };
+  }
+  if (!/[a-zA-Z]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one letter' };
+  }
+  if (!/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    return { valid: false, reason: 'Password must contain at least one number or symbol' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Generates a cryptographically random, secure temporary password
+ */
+export function generateSecureTemporaryPassword(prefix = 'Balaji'): string {
+  const randomChars = crypto.randomBytes(6).toString('base64').replace(/[^a-zA-Z0-9]/g, 'X');
+  return `${prefix}#${randomChars}!`;
+}
+
+export interface AdminTokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  mustChangePassword: boolean;
+}
+
+/**
+ * Signs an admin JWT session token (backward compatibility wrapper around signSessionToken)
+ */
+export function signAdminToken(payload: AdminTokenPayload): string {
+  return signSessionToken({
+    id: payload.id,
+    email: payload.email,
+    name: payload.name,
+    role: payload.role as AdminRole,
+    mustChangePassword: payload.mustChangePassword,
+  });
+}
+
+/**
+ * Verifies and decodes an admin JWT token, supporting all valid admin roles
+ */
+export function verifyAdminToken(token: string): AdminTokenPayload | null {
+  const session = verifySessionToken(token);
+  if (!session) return null;
+
+  const validRoles: AdminRole[] = ['owner', 'super_admin', 'employee', 'editor', 'viewer'];
+  if (validRoles.includes(session.role)) {
+    return {
+      id: session.id,
+      email: session.email,
+      name: session.name,
+      role: session.role,
+      mustChangePassword: session.mustChangePassword,
+    };
+  }
+  return null;
+}
+
+/**
+ * Extracts session token from cookie or Authorization header
+ */
+export function getAdminTokenFromRequest(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get('balaji_admin_session')?.value;
+  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+  return cookieToken || authHeader || null;
+}
+
+/**
+ * Authoritatively retrieves authenticated active admin from database
+ */
+export async function getAuthenticatedAdmin(req: NextRequest): Promise<AdminUser | null> {
+  const token = getAdminTokenFromRequest(req);
+  if (!token) return null;
+  const payload = verifyAdminToken(token);
+  if (!payload) return null;
+
+  try {
+    const admin = await getAdminByEmail(payload.email);
+    if (!admin) return null;
+    if (admin.status === 'disabled') return null;
+
+    const { passwordHash: _, ...safeAdmin } = admin;
+    return safeAdmin;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Enforces active admin session (any authorized admin role)
+ */
+export async function requireAuthenticatedAdmin(
+  req: NextRequest
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const admin = await getAuthenticatedAdmin(req);
+  if (!admin) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Authentication required. Please sign in to the studio portal.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      ),
+    };
+  }
+  return { admin };
+}
+
+/**
+ * Enforces granular server-side RBAC permission
+ */
+export async function requirePermission(
+  req: NextRequest,
+  permission: Permission
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  const allowed = hasPermission(auth.admin.role, permission);
+  if (!allowed) {
+    return {
+      response: NextResponse.json(
+        {
+          success: false,
+          error: `Access Denied: Your account role (${auth.admin.role}) lacks the required '${permission}' permission.`,
+          code: 'FORBIDDEN',
+        },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
+}
+
+/**
+ * Enforces Owner / Super Admin access only
+ */
+export async function requireOwner(
+  req: NextRequest
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!isOwner(auth.admin)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Only studio owners can perform this action.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
+}
+
+/**
+ * Backward compatibility alias for requireAuthenticatedAdmin
+ */
+export async function requireOwnerOrEmployee(
+  req: NextRequest
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  return requireAuthenticatedAdmin(req);
+}
+
+export async function requireRole(
+  req: NextRequest,
+  allowedRoles: AdminRole[]
+): Promise<{ admin: AdminUser } | { response: NextResponse }> {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth;
+
+  if (!allowedRoles.includes(auth.admin.role)) {
+    return {
+      response: NextResponse.json(
+        { success: false, error: 'Access Denied: Insufficient permissions.', code: 'FORBIDDEN' },
+        { status: 403 }
+      ),
+    };
+  }
+
+  return { admin: auth.admin };
+}
+
+// Customer Authentication Utilities
+export function getCustomerTokenFromRequest(req: NextRequest): string | null {
+  const cookieToken = req.cookies.get('balaji_customer_token')?.value || req.cookies.get('balaji_token')?.value;
+  const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
+  return cookieToken || authHeader || null;
+}
+
+export function signCustomerToken(payload: { id: string; email: string; name: string; role: 'customer'; provider?: string }): string {
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: '30d' });
+}
+
+export function verifyCustomerToken(token: string): { id: string; email: string; name: string; role: string; provider?: string } | null {
+  try {
+    const decoded = jwt.verify(token, getJwtSecret()) as any;
+    if (decoded && decoded.role === 'customer') {
+      return decoded;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+```
+
+---
+
+### <a id="src-server-db-client-ts"></a>50. `src/server/db/client.ts`
+
+> **Path**: `src/server/db/client.ts` | **Lines**: 273 | **Size**: 8.1 KB
+
+```typescript
+import fs from 'fs';
+import path from 'path';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import {
+  Product,
+  Category,
+  Project,
+  Service,
+  Order,
+  Quote,
+  Enquiry,
+  SiteSettings,
+  AuditLog,
+  AdminUser,
+} from '@/types';
+import {
+  initialCategories,
+  initialProducts,
+  initialProjects,
+  initialServices,
+  initialSiteSettings,
+  getInitialAdminSeed,
+} from '@/lib/seedData';
+import { DatabaseUnavailableError } from '../errors';
+
+// =============================================================
+// DATABASE STATE & FIXTURE INTERFACES (DEVELOPMENT / TEST ONLY)
+// =============================================================
+
+export interface DatabaseState {
+  admins: (AdminUser & { passwordHash: string })[];
+  categories: Category[];
+  products: Product[];
+  projects: Project[];
+  services: Service[];
+  orders: Order[];
+  quotes: Quote[];
+  enquiries: Enquiry[];
+  siteSettings: SiteSettings;
+  pushSubscriptions: any[];
+  auditLogs: AuditLog[];
+  customers?: any[];
+}
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const DB_FILE = path.join(DATA_DIR, 'db.json');
+
+let dbCache: DatabaseState | null = null;
+
+// =============================================================
+// ENVIRONMENT DETECTION & AUTHORITATIVE CONFIGURATION
+// =============================================================
+
+export function isProduction(): boolean {
+  return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build';
+}
+
+export function isSupabaseConfigured(): boolean {
+  if (process.env.NODE_ENV === 'test') {
+    return false;
+  }
+  if (supabaseReachability.lastChecked > 0 && !supabaseReachability.available) {
+    return false;
+  }
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return Boolean(url && key);
+}
+
+let supabaseReachability: { available: boolean; lastChecked: number } = { available: false, lastChecked: 0 };
+
+export async function isSupabaseAvailable(): Promise<boolean> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return false;
+  if (process.env.NODE_ENV === 'test') return false;
+
+  const now = Date.now();
+  if (now - supabaseReachability.lastChecked < 30000) {
+    return supabaseReachability.available;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 600);
+    const res = await fetch(url, { method: 'HEAD', signal: controller.signal }).catch(() => null);
+    clearTimeout(timeout);
+    const available = !!res;
+    supabaseReachability = { available, lastChecked: now };
+    return available;
+  } catch {
+    supabaseReachability = { available: false, lastChecked: now };
+    return false;
+  }
+}
+
+export function getServiceSupabase(): SupabaseClient {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+  if (!url || !key) {
+    throw new Error(
+      'Critical Database Error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.'
+    );
+  }
+
+  return createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+    global: {
+      fetch: (input, init) => {
+        return fetch(input, {
+          ...init,
+          signal: init?.signal || AbortSignal.timeout(3000),
+        });
+      },
+    },
+  });
+}
+
+/**
+ * Enforces that in production environments, the database MUST be Supabase.
+ * Prevents silent fallback to ephemeral or local files in production.
+ */
+export function ensureAuthoritativeDb(): void {
+  if (isProduction() && !isSupabaseConfigured()) {
+    throw new Error(
+      'Fatal Production Configuration Error: Supabase connection is required in production mode.'
+    );
+  }
+}
+
+export function isUUID(str: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
+}
+
+// =============================================================
+// HIGH-PERFORMANCE IN-MEMORY CACHE (WITH PURGE CONTROLS)
+// =============================================================
+
+export const CACHE_TTL_MS = 60 * 1000; // 60s TTL
+
+export interface MemoryCacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+export const memoryCache = {
+  settings: null as MemoryCacheEntry<SiteSettings> | null,
+  categories: null as MemoryCacheEntry<Category[]> | null,
+  categoriesAdmin: null as MemoryCacheEntry<Category[]> | null,
+  products: new Map<string, MemoryCacheEntry<Product[]>>(),
+  productByIdOrSlug: new Map<string, MemoryCacheEntry<Product | null>>(),
+  projects: new Map<string, MemoryCacheEntry<Project[]>>(),
+  projectByIdOrSlug: new Map<string, MemoryCacheEntry<Project | null>>(),
+  services: new Map<string, MemoryCacheEntry<Service[]>>(),
+  dashboardAnalytics: new Map<string, MemoryCacheEntry<any>>(),
+};
+
+export function invalidateMemoryCache(
+  scope: 'all' | 'products' | 'categories' | 'projects' | 'services' | 'settings' | 'orders' | 'quotes' | 'dashboard' = 'all'
+) {
+  if (scope === 'all' || scope === 'settings') {
+    memoryCache.settings = null;
+  }
+  if (scope === 'all' || scope === 'categories') {
+    memoryCache.categories = null;
+    memoryCache.categoriesAdmin = null;
+  }
+  if (scope === 'all' || scope === 'products') {
+    memoryCache.products.clear();
+    memoryCache.productByIdOrSlug.clear();
+    memoryCache.categories = null;
+    memoryCache.categoriesAdmin = null;
+  }
+  if (scope === 'all' || scope === 'projects') {
+    memoryCache.projects.clear();
+    memoryCache.projectByIdOrSlug.clear();
+  }
+  if (scope === 'all' || scope === 'services') {
+    memoryCache.services.clear();
+  }
+  if (scope === 'all' || scope === 'orders' || scope === 'quotes' || scope === 'dashboard') {
+    memoryCache.dashboardAnalytics.clear();
+  }
+}
+
+// =============================================================
+// DEVELOPMENT / TEST LOCAL FIXTURE STORE
+// =============================================================
+
+function ensureDbFile(): DatabaseState {
+  if (dbCache) return dbCache;
+
+  if (fs.existsSync(DB_FILE)) {
+    try {
+      const data = fs.readFileSync(DB_FILE, 'utf-8');
+      const parsed = JSON.parse(data);
+      dbCache = parsed;
+      return parsed;
+    } catch (err) {
+      console.error('Error reading local db.json fixture:', err);
+    }
+  }
+
+  const initialState: DatabaseState = {
+    admins: [
+      {
+        id: '2bd20632-00dd-4f48-84b4-6e526543c8d8',
+        email: 'vicks@balaji.com',
+        passwordHash:
+          '3903a96046ec99bc94100f812cfee1b2:e72fa457ba6ab3be8353defbdf61b4c243714f27acb2cbc20fd2232dc36e184bd6564345d66103f433154a166821c36b5e0a0b162aeddf378182678a830c7f5b',
+        name: 'Vikas Sir (Principal Architect)',
+        role: 'super_admin',
+        status: 'active',
+        mustChangePassword: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ],
+    categories: initialCategories,
+    products: initialProducts,
+    projects: initialProjects,
+    services: initialServices,
+    orders: [],
+    quotes: [],
+    enquiries: [],
+    siteSettings: initialSiteSettings,
+    pushSubscriptions: [],
+    auditLogs: [],
+  };
+
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(DB_FILE, JSON.stringify(initialState, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Failed to write local db.json fixture:', err);
+  }
+
+  dbCache = initialState;
+  return initialState;
+}
+
+export function resetDbCache(): void {
+  dbCache = null;
+}
+
+export function getDb(): DatabaseState {
+  if (dbCache) return dbCache;
+  return ensureDbFile();
+}
+
+export function saveDb(state: DatabaseState): void {
+  if (isProduction()) {
+    throw new DatabaseUnavailableError(
+      'Critical Safety Violation: Attempted to write to local db.json in production mode. Primary database connection is required.'
+    );
+  }
+  dbCache = state;
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(DB_FILE, JSON.stringify(state, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('Notice writing to local db.json fixture:', err);
+  }
+}
+```
+
+---
+
+### <a id="src-server-db-mappers-ts"></a>51. `src/server/db/mappers.ts`
+
+> **Path**: `src/server/db/mappers.ts` | **Lines**: 217 | **Size**: 7.1 KB
+
+```typescript
+import {
+  Product,
+  Category,
+  Project,
+  Service,
+  Order,
+  Quote,
+  Enquiry,
+  AdminUser,
+} from '@/types';
+
+// =============================================================
+// SUPABASE ROW MAPPERS (Database snake_case -> Domain camelCase)
+// =============================================================
+
+export function mapSupabaseProduct(
+  row: any,
+  categoryMap?: Map<string, { name: string; slug: string }>
+): Product {
+  const cat = categoryMap?.get(row.category_id);
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    sku: row.sku || '',
+    brand: row.brand || 'Balaji Architect & Interiors',
+    categoryId: row.category_id || '',
+    categoryName: cat?.name || row.categories?.name,
+    categorySlug: cat?.slug || row.categories?.slug,
+    subcategory: row.subcategory || '',
+    description: row.description || '',
+    price: Number(row.price || 0),
+    salePrice: row.sale_price !== null && row.sale_price !== undefined ? Number(row.sale_price) : undefined,
+    unit: row.unit || 'sq ft',
+    moq: Number(row.moq || 1),
+    stock: Number(row.stock || 0),
+    purchaseMode: row.purchase_mode || 'BOTH',
+    leadTime: row.lead_time || '2-3 Weeks',
+    dimensions: row.dimensions || '',
+    thickness: row.thickness || '',
+    material: row.material || '',
+    finish: row.finish || '',
+    color: row.color || '',
+    images: Array.isArray(row.images) ? row.images : [],
+    variants: Array.isArray(row.variants) ? row.variants : [],
+    isFeatured: Boolean(row.is_featured),
+    isNew: Boolean(row.is_new),
+    isBestseller: Boolean(row.is_bestseller),
+    published: Boolean(row.published !== false),
+    tags: Array.isArray(row.tags) ? row.tags : [],
+    specifications: row.specifications || {},
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
+  };
+}
+
+export function mapSupabaseCategory(row: any): Category {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    description: row.description || '',
+    imageUrl: row.image_url || '',
+    sortOrder: Number(row.sort_order || 0),
+    isActive: Boolean(row.is_active !== false),
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
+  };
+}
+
+export function mapSupabaseProject(row: any): Project {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    location: row.location || '',
+    year: row.year || String(new Date().getFullYear()),
+    area: row.area || '',
+    projectType: row.project_type || 'Residential Interiors',
+    shortDescription: row.short_description || '',
+    description: row.description || '',
+    heroImage: row.hero_image || '',
+    gallery: Array.isArray(row.gallery) ? row.gallery : [],
+    designApproach: row.design_approach || '',
+    materialsUsed: Array.isArray(row.materials_used) ? row.materials_used : [],
+    isFeatured: Boolean(row.is_featured),
+    isPublished: Boolean(row.is_published !== false),
+    sortOrder: Number(row.sort_order || 0),
+    tags: Array.isArray(row.tags) ? row.tags : [],
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
+  };
+}
+
+export function mapSupabaseService(row: any): Service {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    shortDesc: row.short_desc || '',
+    fullDesc: row.full_desc || '',
+    iconName: row.icon_name || 'Home',
+    imageUrl: row.image_url || '',
+    deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
+    sortOrder: Number(row.sort_order || 0),
+    isPublished: Boolean(row.is_published !== false),
+    createdAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || new Date().toISOString(),
+  };
+}
+
+export function mapSupabaseOrder(row: any): Order {
+  const items = (row.items || row.order_items || []).map((it: any) => ({
+    id: it.id,
+    orderId: it.order_id || row.id,
+    productId: it.product_id || '',
+    variantId: it.variant_id,
+    productName: it.product_name,
+    productSku: it.product_sku || '',
+    unit: it.unit || 'sq ft',
+    unitPrice: Number(it.unit_price || 0),
+    quantity: Number(it.quantity || 1),
+    subtotal: Number(it.subtotal || 0),
+    imageUrl: it.image_url || '',
+    selectedColor: it.selected_color,
+    selectedFinish: it.selected_finish,
+  }));
+
+  return {
+    id: row.id,
+    orderNumber: row.order_number,
+    customerId: row.customer_id,
+    customerName: row.customer_name,
+    customerEmail: row.customer_email,
+    customerPhone: row.customer_phone,
+    shippingAddress: row.shipping_address,
+    billingAddress: row.billing_address || row.shipping_address,
+    items,
+    subtotal: Number(row.subtotal || 0),
+    tax: Number(row.tax || 0),
+    shippingFee: Number(row.shipping_fee || 0),
+    discount: Number(row.discount || 0),
+    totalAmount: Number(row.total_amount || 0),
+    orderStatus: row.order_status,
+    paymentStatus: row.payment_status,
+    paymentMethod: row.payment_method || 'Balaji QR Payment (Balaji PG)',
+    transactionId: row.transaction_id,
+    utrNumber: row.utr_number,
+    notes: row.notes,
+    idempotencyKey: row.idempotency_key,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export function mapSupabaseQuote(row: any): Quote {
+  const items = (row.items || row.quote_items || []).map((it: any) => ({
+    id: it.id,
+    quoteId: it.quote_id || row.id,
+    productId: it.product_id,
+    productName: it.product_name,
+    dimensions: it.dimensions,
+    quantity: Number(it.quantity || 1),
+    unit: it.unit || 'sq ft',
+    estimatedUnitPrice: it.estimated_unit_price ? Number(it.estimated_unit_price) : undefined,
+    notes: it.notes,
+  }));
+
+  return {
+    id: row.id,
+    quoteNumber: row.quote_number,
+    customerName: row.customer_name,
+    customerEmail: row.customer_email,
+    customerPhone: row.customer_phone,
+    projectType: row.project_type,
+    projectLocation: row.project_location,
+    estimatedTimeline: row.estimated_timeline,
+    budgetRange: row.budget_range,
+    notes: row.notes || '',
+    items,
+    status: row.status || 'Pending',
+    totalQuotedAmount: row.total_quoted_amount ? Number(row.total_quoted_amount) : undefined,
+    adminNotes: row.admin_notes,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export function mapSupabaseEnquiry(row: any): Enquiry {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    phone: row.phone,
+    subject: row.subject,
+    message: row.message,
+    source: row.source || 'Contact Form',
+    status: row.status || 'New',
+    createdAt: row.created_at,
+  };
+}
+
+export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
+  return {
+    id: data.id,
+    email: data.email,
+    name: data.name,
+    role: data.role || 'employee',
+    status: data.status || 'active',
+    mustChangePassword: data.must_change_password !== false,
+    passwordHash: data.password_hash || data.passwordHash || '',
+    lastLoginAt: data.last_login_at || data.lastLoginAt,
+    createdAt: data.created_at || data.createdAt || new Date().toISOString(),
+    updatedAt: data.updated_at || data.updatedAt || new Date().toISOString(),
+  };
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-employees-ts"></a>52. `src/server/db/repositories/employees.ts`
+
+> **Path**: `src/server/db/repositories/employees.ts` | **Lines**: 390 | **Size**: 11.2 KB
+
+```typescript
+import crypto from 'crypto';
+import { AdminUser } from '@/types';
+import {
+  isSupabaseConfigured,
+  isSupabaseAvailable,
+  getServiceSupabase,
+  isUUID,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapAdminUser } from '../mappers';
+import { protectOwnerFromModification } from '../../auth/rbac';
+import { revokeAllSessionsForAdmin } from '../../auth/tokens';
+
+export async function getAdmins(): Promise<AdminUser[]> {
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: false });
+      if (!error && data && data.length > 0) {
+        return data.map((adm) => {
+          const { passwordHash: _, ...safe } = mapAdminUser(adm);
+          return safe;
+        });
+      }
+    } catch (err) {
+      console.warn('Supabase getAdmins notice:', err);
+    }
+  }
+
+  const db = getDb();
+  return db.admins.map((adm) => {
+    const { passwordHash: _, ...safe } = adm;
+    return safe;
+  });
+}
+
+export async function getAdminById(id: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
+      if (!error && data) {
+        const mapped = mapAdminUser(data);
+        if (!mapped.status) mapped.status = 'active';
+        return mapped;
+      }
+    } catch (err) {
+      console.warn('Supabase getAdminById notice:', err);
+    }
+  }
+
+  const db = getDb();
+  const found = db.admins.find((a) => a.id === id);
+  if (!found) return null;
+  return {
+    ...found,
+    status: found.status || 'active',
+    mustChangePassword: Boolean(found.mustChangePassword),
+  };
+}
+
+export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const { data, error } = await supabase.from('admins').select('*').eq('email', normalizedEmail).maybeSingle();
+      if (!error && data) {
+        const mapped = mapAdminUser(data);
+        if (!mapped.status) mapped.status = 'active';
+        return mapped;
+      }
+    } catch (err) {
+      console.warn('Supabase getAdminByEmail notice:', err);
+    }
+  }
+
+  const db = getDb();
+  const found = db.admins.find((a) => a.email.toLowerCase() === normalizedEmail);
+  if (!found) return null;
+  return {
+    ...found,
+    status: found.status || 'active',
+    mustChangePassword: Boolean(found.mustChangePassword),
+  };
+}
+
+export async function createEmployeeAdmin(
+  employeeData: {
+    email: string;
+    name: string;
+    passwordHash?: string;
+    role?: 'employee' | 'editor';
+    temporaryPassword?: string;
+    mustChangePassword?: boolean;
+  },
+  actor?: { id: string; email: string }
+): Promise<AdminUser> {
+  const normalizedEmail = employeeData.email.trim().toLowerCase();
+  const now = new Date().toISOString();
+
+  const existing = await getAdminByEmail(normalizedEmail);
+  if (existing) {
+    throw new Error('An account with this email address already exists in the system.');
+  }
+
+  const derivedHash =
+    employeeData.passwordHash ||
+    (employeeData.temporaryPassword ? hashBootstrapPassword(employeeData.temporaryPassword) : hashBootstrapPassword('Default#2026!'));
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: inserted, error } = await supabase
+      .from('admins')
+      .insert({
+        email: normalizedEmail,
+        name: employeeData.name,
+        password_hash: derivedHash,
+        role: employeeData.role || 'employee',
+        status: 'active',
+        must_change_password: employeeData.mustChangePassword !== undefined ? employeeData.mustChangePassword : true,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      throw new Error(`Failed to create employee account: ${error?.message || 'Database error'}`);
+    }
+
+    const mapped = mapAdminUser(inserted);
+    const { passwordHash: _, ...safeAdmin } = mapped;
+    return safeAdmin;
+  }
+
+  const db = getDb();
+  const newAdmin: AdminUser & { passwordHash: string } = {
+    id: `admin-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    email: normalizedEmail,
+    name: employeeData.name,
+    passwordHash: derivedHash,
+    role: employeeData.role || 'employee',
+    status: 'active',
+    mustChangePassword: employeeData.mustChangePassword !== undefined ? employeeData.mustChangePassword : true,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  db.admins.push(newAdmin);
+  saveDb(db);
+  const { passwordHash: _, ...safeAdmin } = newAdmin;
+  return safeAdmin;
+}
+
+export async function updateEmployeeAdmin(
+  id: string,
+  partialData: {
+    email?: string;
+    name?: string;
+    role?: 'employee' | 'editor';
+    status?: 'active' | 'disabled';
+    mustChangePassword?: boolean;
+  },
+  actor?: { id: string; email: string; role?: any }
+): Promise<AdminUser | null> {
+  const current = await getAdminById(id);
+  if (!current) return null;
+
+  if (actor) {
+    protectOwnerFromModification(
+      current as any,
+      actor as any,
+      partialData.status === 'disabled' ? 'disable' : 'downgrade'
+    );
+  }
+
+  // If status is being disabled, immediately revoke all active sessions
+  if (partialData.status === 'disabled') {
+    revokeAllSessionsForAdmin(id);
+  }
+
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const updates: any = { updated_at: now };
+    if (partialData.email !== undefined) updates.email = partialData.email.trim().toLowerCase();
+    if (partialData.name !== undefined) updates.name = partialData.name;
+    if (partialData.role !== undefined) updates.role = partialData.role;
+    if (partialData.status !== undefined) updates.status = partialData.status;
+    if (partialData.mustChangePassword !== undefined) updates.must_change_password = partialData.mustChangePassword;
+
+    const { data: updated, error } = await supabase
+      .from('admins')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw new Error(`Failed to update account: ${error.message}`);
+    const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
+    return safeAdmin;
+  }
+
+  const db = getDb();
+  const index = db.admins.findIndex((a) => a.id === id);
+  if (index === -1) return null;
+
+  db.admins[index] = {
+    ...db.admins[index],
+    ...partialData,
+    updatedAt: now,
+  };
+  saveDb(db);
+  const { passwordHash: _, ...safeAdmin } = db.admins[index];
+  return safeAdmin;
+}
+
+export async function deleteEmployeeAdmin(
+  id: string,
+  actor?: { id: string; email: string; role?: any }
+): Promise<boolean> {
+  const target = await getAdminById(id);
+  if (!target) return false;
+
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'delete');
+  }
+
+  // Revoke any active sessions
+  revokeAllSessionsForAdmin(id);
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('admins').delete().eq('id', id);
+    if (error) throw new Error(`Failed to delete employee account: ${error.message}`);
+    return true;
+  }
+
+  const db = getDb();
+  const initialLength = db.admins.length;
+  db.admins = db.admins.filter((a) => a.id !== id);
+  if (db.admins.length < initialLength) {
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export async function resetEmployeePassword(
+  id: string,
+  temporaryPasswordOrHash: string,
+  actor?: { id: string; email: string; role?: any }
+): Promise<boolean> {
+  const target = await getAdminById(id);
+  if (!target) return false;
+
+  if (actor) {
+    protectOwnerFromModification(target as any, actor as any, 'reset_password');
+  }
+
+  // Derive PBKDF2 hash if plaintext was supplied
+  const derivedHash = temporaryPasswordOrHash.includes(':')
+    ? temporaryPasswordOrHash
+    : hashBootstrapPassword(temporaryPasswordOrHash);
+
+  // Revoke all previous active sessions
+  revokeAllSessionsForAdmin(id);
+
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase
+      .from('admins')
+      .update({
+        password_hash: derivedHash,
+        must_change_password: true,
+        updated_at: now,
+      })
+      .eq('id', id);
+
+    if (error) throw new Error(`Failed to reset password: ${error.message}`);
+    return true;
+  }
+
+  const db = getDb();
+  const adm = db.admins.find((a) => a.id === id);
+  if (adm) {
+    adm.passwordHash = derivedHash;
+    adm.mustChangePassword = true;
+    adm.updatedAt = now;
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export async function updateAdminPassword(
+  adminId: string,
+  newPasswordHash: string
+): Promise<boolean> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('admins').update({
+      password_hash: newPasswordHash,
+      must_change_password: false,
+      updated_at: now,
+    });
+
+    if (isUUID(adminId)) {
+      query = query.eq('id', adminId);
+    } else {
+      query = query.eq('email', adminId.trim().toLowerCase());
+    }
+
+    const { error } = await query;
+    if (error) throw new Error(`Failed to update password: ${error.message}`);
+    return true;
+  }
+
+  const db = getDb();
+  const admin = db.admins.find(
+    (a) => a.id === adminId || a.email.toLowerCase() === adminId.trim().toLowerCase()
+  );
+  if (admin) {
+    admin.passwordHash = newPasswordHash;
+    admin.mustChangePassword = false;
+    admin.updatedAt = now;
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export async function recordAdminLogin(adminId: string): Promise<void> {
+  const now = new Date().toISOString();
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      let query = supabase.from('admins').update({ last_login_at: now, updated_at: now });
+      if (isUUID(adminId)) {
+        query = query.eq('id', adminId);
+      } else {
+        query = query.eq('email', adminId);
+      }
+      await query;
+      return;
+    } catch (err) {
+      console.warn('Supabase recordAdminLogin notice:', err);
+    }
+  }
+
+  const db = getDb();
+  const adm = db.admins.find((a) => a.id === adminId || a.email === adminId);
+  if (adm) {
+    adm.lastLoginAt = now;
+    saveDb(db);
+  }
+}
+
+function hashBootstrapPassword(password: string): string {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const derivedKey = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512');
+  return `${salt}:${derivedKey.toString('hex')}`;
+}
+
+export async function bootstrapInitialEmployee(): Promise<void> {
+  const existing = await getAdminByEmail('employee@balaji.com');
+  if (!existing) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
+      const hash = hashBootstrapPassword(initialTempPass);
+      await supabase.from('admins').insert({
+        email: 'employee@balaji.com',
+        name: 'Balaji Studio Associate',
+        password_hash: hash,
+        role: 'employee',
+        must_change_password: true,
+      });
+    }
+  }
+}
+
+```
+
+---
+
+### <a id="src-server-db-repositories-audit-ts"></a>53. `src/server/db/repositories/audit.ts`
+
+> **Path**: `src/server/db/repositories/audit.ts` | **Lines**: 88 | **Size**: 2.3 KB
+
+```typescript
+import { AuditLog } from '@/types';
+import {
+  isSupabaseConfigured,
+  isSupabaseAvailable,
+  getServiceSupabase,
+  isUUID,
+  getDb,
+  saveDb,
+} from '../client';
+
+export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
+  const now = new Date().toISOString();
+
+  if (await isSupabaseAvailable()) {
+    try {
+      const supabase = getServiceSupabase();
+      const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
+
+      const { data, error } = await supabase
+        .from('audit_logs')
+        .insert({
+          admin_id: adminIdToUse,
+          admin_email: entry.adminEmail,
+          action: entry.action,
+          entity: entry.entity,
+          entity_id: entry.entityId,
+          details: entry.details || null,
+          created_at: now,
+        })
+        .select()
+        .single();
+
+      if (!error && data) {
+        return {
+          id: data.id,
+          adminId: data.admin_id || 'system',
+          adminEmail: data.admin_email,
+          action: data.action,
+          entity: data.entity,
+          entityId: data.entity_id,
+          details: data.details,
+          createdAt: data.created_at,
+        };
+      }
+    } catch (err) {
+      console.warn('Supabase addAuditLog notice:', err);
+    }
+  }
+
+  const db = getDb();
+  const log: AuditLog = {
+    ...entry,
+    id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    createdAt: now,
+  };
+  db.auditLogs.unshift(log);
+  if (db.auditLogs.length > 500) db.auditLogs.pop();
+  saveDb(db);
+  return log;
+}
+
+export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase
+      .from('audit_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    const { data, error } = await query;
+    if (error) throw new Error(`Failed to load audit logs: ${error.message}`);
+    return (data || []).map((l: any) => ({
+      id: l.id,
+      adminId: l.admin_id || 'system',
+      adminEmail: l.admin_email,
+      action: l.action,
+      entity: l.entity,
+      entityId: l.entity_id,
+      details: l.details,
+      createdAt: l.created_at,
+    }));
+  }
+
+  const db = getDb();
+  return db.auditLogs.slice(offset, offset + limit);
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-orders-ts"></a>54. `src/server/db/repositories/orders.ts`
+
+> **Path**: `src/server/db/repositories/orders.ts` | **Lines**: 267 | **Size**: 7.9 KB
+
+```typescript
+import crypto from 'crypto';
+import { Order, OrderStatus, PaymentStatus } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  isUUID,
+  invalidateMemoryCache,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseOrder } from '../mappers';
+import { cancelOrderAtomic } from '../transactions/orders';
+import { validateOrderStatusTransition } from '../../validation/schemas';
+
+export async function getOrders(options?: {
+  limit?: number;
+  offset?: number;
+  status?: OrderStatus;
+}): Promise<Order[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase
+      .from('orders')
+      .select('*, items:order_items(*)')
+      .order('created_at', { ascending: false });
+
+    if (options?.status) {
+      query = query.eq('order_status', options.status);
+    }
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+    if (options?.offset) {
+      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error('Supabase getOrders error:', error);
+      throw new Error(`Failed to load orders from database: ${error.message}`);
+    }
+
+    return (data || []).map(mapSupabaseOrder);
+  }
+
+  const db = getDb();
+  let list = [...db.orders];
+  if (options?.status) {
+    list = list.filter((o) => o.orderStatus === options.status);
+  }
+  if (options?.offset) {
+    list = list.slice(options.offset);
+  }
+  if (options?.limit) {
+    list = list.slice(0, options.limit);
+  }
+  return list;
+}
+
+export async function getOrderById(id: string): Promise<Order | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('orders').select('*, items:order_items(*)');
+
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('order_number', id);
+    }
+
+    const { data, error } = await query.maybeSingle();
+    if (error) {
+      console.error('Supabase getOrderById error:', error);
+      throw new Error(`Database error loading order ${id}: ${error.message}`);
+    }
+    return data ? mapSupabaseOrder(data) : null;
+  }
+
+  const db = getDb();
+  return db.orders.find((o) => o.id === id || o.orderNumber === id) || null;
+}
+
+export async function getCustomerOrders(email: string): Promise<Order[]> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*, items:order_items(*)')
+      .ilike('customer_email', normalizedEmail)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to load customer orders:', error.message);
+      return [];
+    }
+    return (orders || []).map(mapSupabaseOrder);
+  }
+
+  const db = getDb();
+  return db.orders.filter(
+    (o) => o.customerEmail.toLowerCase().trim() === normalizedEmail
+  );
+}
+
+export async function updateOrderStatus(
+  id: string,
+  orderStatus?: Order['orderStatus'],
+  paymentStatus?: Order['paymentStatus'],
+  options?: {
+    actorEmail?: string;
+    note?: string;
+    utrNumber?: string;
+  }
+): Promise<Order | null> {
+  const currentOrder = await getOrderById(id);
+  if (!currentOrder) return null;
+
+  // Enforce formal order state machine
+  if (orderStatus) {
+    validateOrderStatusTransition(currentOrder.orderStatus, orderStatus);
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    // If transitioning to Cancelled, use single-transaction atomic cancellation
+    if (orderStatus === 'Cancelled') {
+      return cancelOrderAtomic(currentOrder.id, options);
+    }
+
+    const updates: any = { updated_at: new Date().toISOString() };
+    if (orderStatus) updates.order_status = orderStatus;
+    if (paymentStatus) updates.payment_status = paymentStatus;
+    if (options?.utrNumber || options?.note) {
+      const existingNotes = currentOrder.notes || '';
+      const utrTag = options.utrNumber ? `[UTR:${options.utrNumber}]` : '';
+      const noteTag = options.note ? `[NOTE:${options.note}]` : '';
+      updates.notes = [existingNotes, utrTag, noteTag].filter(Boolean).join('\n');
+    }
+
+    let query = supabase.from('orders').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('order_number', id);
+    }
+
+    const { data, error } = await query.select('*, items:order_items(*)').maybeSingle();
+    if (error) {
+      console.error('Supabase updateOrderStatus error:', error);
+      throw new Error(`Failed to update order status: ${error.message}`);
+    }
+    if (!data) return null;
+
+    if (orderStatus && orderStatus !== currentOrder.orderStatus) {
+      try {
+        await supabase.from('order_status_history').insert({
+          order_id: data.id,
+          from_status: currentOrder.orderStatus,
+          to_status: orderStatus,
+          actor_email: options?.actorEmail || 'system',
+          note: options?.note || null,
+        });
+      } catch (histErr) {
+        console.warn('Status history insert notice:', histErr);
+      }
+    }
+
+    return mapSupabaseOrder(data);
+  }
+
+  // Development / Test Local Fallback
+  const db = getDb();
+  const index = db.orders.findIndex((o) => o.id === id || o.orderNumber === id);
+  if (index === -1) return null;
+
+  const ord = db.orders[index];
+  if (orderStatus) ord.orderStatus = orderStatus;
+  if (paymentStatus) ord.paymentStatus = paymentStatus;
+  if (options?.utrNumber) {
+    ord.utrNumber = options.utrNumber;
+  }
+  ord.updatedAt = new Date().toISOString();
+  saveDb(db);
+  return ord;
+}
+
+export async function createOrder(
+  order: Omit<Order, 'id' | 'orderNumber' | 'createdAt' | 'updatedAt'>
+): Promise<Order> {
+  const now = new Date().toISOString();
+  const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    const { data: ord, error: ordErr } = await supabase
+      .from('orders')
+      .insert({
+        order_number: orderNumber,
+        customer_name: order.customerName,
+        customer_email: order.customerEmail,
+        customer_phone: order.customerPhone,
+        shipping_address: order.shippingAddress,
+        billing_address: order.billingAddress || order.shippingAddress,
+        subtotal: order.subtotal,
+        tax: order.tax,
+        shipping_fee: order.shippingFee,
+        discount: order.discount,
+        total_amount: order.totalAmount,
+        order_status: order.orderStatus || 'Confirmed',
+        payment_status: order.paymentStatus || 'Submitted',
+        payment_method: order.paymentMethod,
+        notes: order.notes,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (ordErr || !ord) {
+      throw new Error(`Failed to create order: ${ordErr?.message || 'Database error'}`);
+    }
+
+    if (order.items && order.items.length > 0) {
+      const itemsPayload = order.items.map((it) => ({
+        order_id: ord.id,
+        product_id: it.productId,
+        variant_id: it.variantId || null,
+        product_name: it.productName,
+        product_sku: it.productSku,
+        unit: it.unit,
+        unit_price: it.unitPrice,
+        quantity: it.quantity,
+        subtotal: it.subtotal,
+        image_url: it.imageUrl || null,
+        selected_color: it.selectedColor || null,
+        selected_finish: it.selectedFinish || null,
+      }));
+
+      await supabase.from('order_items').insert(itemsPayload);
+    }
+
+    const { data: fullOrder } = await supabase
+      .from('orders')
+      .select('*, items:order_items(*)')
+      .eq('id', ord.id)
+      .single();
+
+    invalidateMemoryCache('products');
+    return mapSupabaseOrder(fullOrder || ord);
+  }
+
+  const db = getDb();
+  const newOrder: Order = {
+    ...order,
+    id: `ord-${Date.now()}`,
+    orderNumber,
+    createdAt: now,
+    updatedAt: now,
+  };
+  db.orders.unshift(newOrder);
+  saveDb(db);
+  return newOrder;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-quotes-ts"></a>55. `src/server/db/repositories/quotes.ts`
+
+> **Path**: `src/server/db/repositories/quotes.ts` | **Lines**: 211 | **Size**: 6.3 KB
+
+```typescript
+import crypto from 'crypto';
+import { Quote, QuoteStatus } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  isUUID,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseQuote } from '../mappers';
+
+export async function createQuote(quoteData: {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  projectType: string;
+  projectLocation: string;
+  estimatedTimeline: string;
+  budgetRange: string;
+  notes: string;
+  items?: {
+    productId?: string;
+    productName: string;
+    dimensions?: string;
+    quantity: number;
+    unit: any;
+    notes?: string;
+  }[];
+}): Promise<Quote> {
+  const quoteNumber = `QT-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString('hex').toUpperCase()}`;
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: quoteRow, error } = await supabase
+      .from('quotes')
+      .insert({
+        quote_number: quoteNumber,
+        customer_name: quoteData.customerName,
+        customer_email: quoteData.customerEmail,
+        customer_phone: quoteData.customerPhone,
+        project_type: quoteData.projectType,
+        project_location: quoteData.projectLocation,
+        estimated_timeline: quoteData.estimatedTimeline,
+        budget_range: quoteData.budgetRange,
+        notes: quoteData.notes || '',
+        status: 'Pending',
+      })
+      .select()
+      .single();
+
+    if (error || !quoteRow) throw new Error(`Failed to create quote: ${error?.message}`);
+
+    if (quoteData.items && quoteData.items.length > 0) {
+      const qItems = quoteData.items.map((it) => ({
+        quote_id: quoteRow.id,
+        product_id: it.productId && isUUID(it.productId) ? it.productId : null,
+        product_name: it.productName,
+        dimensions: it.dimensions || null,
+        quantity: it.quantity,
+        unit: it.unit || 'sq ft',
+        notes: it.notes || null,
+      }));
+      const { error: itemsErr } = await supabase.from('quote_items').insert(qItems);
+      if (itemsErr) {
+        await supabase.from('quotes').delete().eq('id', quoteRow.id);
+        throw new Error(`Failed to save quote items: ${itemsErr.message}`);
+      }
+    }
+
+    const { data: fullQuote } = await supabase
+      .from('quotes')
+      .select('*, items:quote_items(*)')
+      .eq('id', quoteRow.id)
+      .single();
+
+    return mapSupabaseQuote(fullQuote);
+  }
+
+  const db = getDb();
+  const quoteId = `qt-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const quoteItems = (quoteData.items || []).map((it) => ({
+    id: `qti-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    quoteId,
+    productId: it.productId,
+    productName: it.productName,
+    dimensions: it.dimensions,
+    quantity: it.quantity,
+    unit: it.unit,
+    notes: it.notes,
+  }));
+
+  const newQuote: Quote = {
+    id: quoteId,
+    quoteNumber,
+    customerName: quoteData.customerName,
+    customerEmail: quoteData.customerEmail,
+    customerPhone: quoteData.customerPhone,
+    projectType: quoteData.projectType,
+    projectLocation: quoteData.projectLocation,
+    estimatedTimeline: quoteData.estimatedTimeline,
+    budgetRange: quoteData.budgetRange,
+    notes: quoteData.notes,
+    items: quoteItems,
+    status: 'Pending',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  db.quotes.unshift(newQuote);
+  saveDb(db);
+  return newQuote;
+}
+
+export async function getQuotes(options?: {
+  limit?: number;
+  offset?: number;
+  status?: QuoteStatus;
+}): Promise<Quote[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase
+      .from('quotes')
+      .select('*, items:quote_items(*)')
+      .order('created_at', { ascending: false });
+
+    if (options?.status) {
+      query = query.eq('status', options.status);
+    }
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+    if (options?.offset) {
+      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+    }
+
+    const { data, error } = await query;
+    if (error) throw new Error(`Failed to load quotes: ${error.message}`);
+    return (data || []).map(mapSupabaseQuote);
+  }
+
+  const db = getDb();
+  let list = [...db.quotes].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  if (options?.status) {
+    list = list.filter((q) => q.status === options.status);
+  }
+  if (options?.offset) {
+    list = list.slice(options.offset);
+  }
+  if (options?.limit) {
+    list = list.slice(0, options.limit);
+  }
+  return list;
+}
+
+export async function getQuoteById(id: string): Promise<Quote | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('quotes').select('*, items:quote_items(*)');
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('quote_number', id);
+    }
+    const { data, error } = await query.maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
+    return mapSupabaseQuote(data);
+  }
+
+  const db = getDb();
+  return db.quotes.find((q) => q.id === id || q.quoteNumber === id) || null;
+}
+
+export async function updateQuoteStatus(
+  id: string,
+  status: Quote['status'],
+  totalQuotedAmount?: number,
+  adminNotes?: string
+): Promise<Quote | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const updates: any = { status, updated_at: new Date().toISOString() };
+    if (totalQuotedAmount !== undefined) updates.total_quoted_amount = totalQuotedAmount;
+    if (adminNotes !== undefined) updates.admin_notes = adminNotes;
+
+    let query = supabase.from('quotes').update(updates);
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('quote_number', id);
+    }
+
+    const { data, error } = await query.select('*, items:quote_items(*)').maybeSingle();
+    if (error) throw new Error(`Failed to update quote status: ${error.message}`);
+    if (!data) return null;
+    return mapSupabaseQuote(data);
+  }
+
+  const db = getDb();
+  const quote = db.quotes.find((q) => q.id === id || q.quoteNumber === id);
+  if (!quote) return null;
+  quote.status = status;
+  if (totalQuotedAmount !== undefined) quote.totalQuotedAmount = totalQuotedAmount;
+  if (adminNotes !== undefined) quote.adminNotes = adminNotes;
+  quote.updatedAt = new Date().toISOString();
+  saveDb(db);
+  return quote;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-products-ts"></a>56. `src/server/db/repositories/products.ts`
+
+> **Path**: `src/server/db/repositories/products.ts` | **Lines**: 419 | **Size**: 14.1 KB
+
+```typescript
+import crypto from 'crypto';
+import { Product } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+  invalidateMemoryCache,
+  CACHE_TTL_MS,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseProduct } from '../mappers';
+import { ConflictError, ValidationError } from '../../errors';
+
+export async function getProducts(options?: {
+  categoryId?: string;
+  categorySlug?: string;
+  publishedOnly?: boolean;
+  featuredOnly?: boolean;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<Product[]> {
+  const cacheKey = JSON.stringify(options || {});
+  const now = Date.now();
+  const cached = memoryCache.products.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    let query = supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .order('created_at', { ascending: false });
+
+    if (options?.publishedOnly) {
+      query = query.eq('published', true);
+    }
+    if (options?.featuredOnly) {
+      query = query.eq('is_featured', true);
+    }
+    if (options?.categoryId) {
+      query = query.eq('category_id', options.categoryId);
+    }
+    if (options?.categorySlug) {
+      // Resolve category ID by slug or filter via join
+      const { data: cat } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', options.categorySlug)
+        .maybeSingle();
+      if (cat?.id) {
+        query = query.eq('category_id', cat.id);
+      }
+    }
+    if (options?.search) {
+      const term = `%${options.search}%`;
+      query = query.or(`name.ilike.${term},sku.ilike.${term},material.ilike.${term},description.ilike.${term}`);
+    }
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+    if (options?.offset) {
+      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error('Supabase getProducts error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase host unreachable. Serving static catalog fixture.');
+      } else {
+        throw new Error(`Failed to load products from database: ${error.message}`);
+      }
+    } else {
+      const products = (data || []).map((row) => mapSupabaseProduct(row));
+      memoryCache.products.set(cacheKey, { data: products, timestamp: now });
+      return products;
+    }
+  }
+
+  // Development / Test Local Fallback
+  const db = getDb();
+  let result = [...db.products];
+
+  if (options?.publishedOnly) {
+    result = result.filter((p) => p.published);
+  }
+  if (options?.featuredOnly) {
+    result = result.filter((p) => p.isFeatured);
+  }
+  if (options?.categoryId) {
+    result = result.filter((p) => p.categoryId === options.categoryId);
+  }
+  if (options?.categorySlug) {
+    const targetCat = db.categories.find((c) => c.slug === options.categorySlug);
+    if (targetCat) {
+      result = result.filter((p) => p.categoryId === targetCat.id);
+    }
+  }
+  if (options?.search) {
+    const term = options.search.toLowerCase();
+    result = result.filter(
+      (p) =>
+        p.name.toLowerCase().includes(term) ||
+        p.sku.toLowerCase().includes(term) ||
+        p.material?.toLowerCase().includes(term) ||
+        p.description.toLowerCase().includes(term)
+    );
+  }
+  if (options?.offset) {
+    result = result.slice(options.offset);
+  }
+  if (options?.limit) {
+    result = result.slice(0, options.limit);
+  }
+
+  memoryCache.products.set(cacheKey, { data: result, timestamp: now });
+  return result;
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
+  const now = Date.now();
+  const cached = memoryCache.productByIdOrSlug.get(`id:${id}`);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase getProductById error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn(`Supabase unreachable. Falling back to fixture for product ${id}.`);
+      } else {
+        throw new Error(`Database error retrieving product ${id}: ${error.message}`);
+      }
+    } else {
+      const product = data ? mapSupabaseProduct(data) : null;
+      memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
+      if (product) {
+        memoryCache.productByIdOrSlug.set(`slug:${product.slug}`, { data: product, timestamp: now });
+      }
+      return product;
+    }
+  }
+
+  const db = getDb();
+  const product = db.products.find((p) => p.id === id) || null;
+  memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
+  return product;
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const now = Date.now();
+  const cached = memoryCache.productByIdOrSlug.get(`slug:${slug}`);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .eq('slug', slug)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase getProductBySlug error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn(`Supabase unreachable. Falling back to fixture for product slug ${slug}.`);
+      } else {
+        throw new Error(`Database error retrieving product slug ${slug}: ${error.message}`);
+      }
+    } else {
+      const product = data ? mapSupabaseProduct(data) : null;
+      memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
+      if (product) {
+        memoryCache.productByIdOrSlug.set(`id:${product.id}`, { data: product, timestamp: now });
+      }
+      return product;
+    }
+  }
+
+  const db = getDb();
+  const product = db.products.find((p) => p.slug === slug) || null;
+  memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
+  return product;
+}
+
+export async function getProductBySku(sku: string): Promise<Product | null> {
+  const normalized = sku.trim();
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, categories(name, slug)')
+      .eq('sku', normalized)
+      .maybeSingle();
+
+    if (!error && data) {
+      return mapSupabaseProduct(data);
+    }
+  }
+
+  const db = getDb();
+  return db.products.find((p) => p.sku.toLowerCase() === normalized.toLowerCase()) || null;
+}
+
+export async function createProduct(
+  data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Product> {
+  const now = new Date().toISOString();
+
+  // Enforce unique SKU
+  if (data.sku) {
+    const existing = await getProductBySku(data.sku);
+    if (existing) {
+      throw new ConflictError(`A product with SKU '${data.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock
+  if (data.stock !== undefined && (data.stock < 0 || isNaN(Number(data.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    const dbPayload: any = {
+      name: data.name,
+      slug: data.slug,
+      sku: data.sku,
+      brand: data.brand || 'Balaji Architect & Interiors',
+      category_id: data.categoryId || null,
+      subcategory: data.subcategory || null,
+      description: data.description || '',
+      price: data.price,
+      sale_price: data.salePrice !== undefined ? data.salePrice : null,
+      unit: data.unit,
+      moq: data.moq || 1,
+      stock: data.stock !== undefined ? data.stock : 0,
+      purchase_mode: data.purchaseMode || 'BOTH',
+      lead_time: data.leadTime || '2-3 Weeks',
+      dimensions: data.dimensions || null,
+      thickness: data.thickness || null,
+      material: data.material || null,
+      finish: data.finish || null,
+      color: data.color || null,
+      images: data.images || [],
+      variants: data.variants || [],
+      is_featured: Boolean(data.isFeatured),
+      is_new: Boolean(data.isNew),
+      is_bestseller: Boolean(data.isBestseller),
+      published: data.published !== false,
+      tags: data.tags || [],
+      specifications: data.specifications || {},
+      created_at: now,
+      updated_at: now,
+    };
+
+    const { data: inserted, error } = await supabase
+      .from('products')
+      .insert(dbPayload)
+      .select('*, categories(name, slug)')
+      .single();
+
+    if (error || !inserted) {
+      console.error('Supabase createProduct error:', error);
+      throw new Error(`Failed to create product in database: ${error?.message || 'Unknown database error'}`);
+    }
+
+    invalidateMemoryCache('products');
+    return mapSupabaseProduct(inserted);
+  }
+
+  // Development / Test Local Fallback
+  const db = getDb();
+  const newProduct: Product = {
+    ...data,
+    id: `prod-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  db.products.unshift(newProduct);
+  saveDb(db);
+  invalidateMemoryCache('products');
+  return newProduct;
+}
+
+export async function updateProduct(
+  id: string,
+  partialData: Partial<Product>
+): Promise<Product | null> {
+  const now = new Date().toISOString();
+
+  // Enforce unique SKU if modified
+  if (partialData.sku) {
+    const existing = await getProductBySku(partialData.sku);
+    if (existing && existing.id !== id) {
+      throw new ConflictError(`A product with SKU '${partialData.sku}' already exists in the catalog.`);
+    }
+  }
+
+  // Enforce non-negative stock if modified
+  if (partialData.stock !== undefined && (partialData.stock < 0 || isNaN(Number(partialData.stock)))) {
+    throw new ValidationError('Stock quantity cannot be negative.');
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    const updates: any = { updated_at: now };
+    if (partialData.name !== undefined) updates.name = partialData.name;
+    if (partialData.slug !== undefined) updates.slug = partialData.slug;
+    if (partialData.sku !== undefined) updates.sku = partialData.sku;
+    if (partialData.brand !== undefined) updates.brand = partialData.brand;
+    if (partialData.categoryId !== undefined) updates.category_id = partialData.categoryId || null;
+    if (partialData.subcategory !== undefined) updates.subcategory = partialData.subcategory;
+    if (partialData.description !== undefined) updates.description = partialData.description;
+    if (partialData.price !== undefined) updates.price = partialData.price;
+    if (partialData.salePrice !== undefined) updates.sale_price = partialData.salePrice;
+    if (partialData.unit !== undefined) updates.unit = partialData.unit;
+    if (partialData.moq !== undefined) updates.moq = partialData.moq;
+    if (partialData.stock !== undefined) updates.stock = partialData.stock;
+    if (partialData.purchaseMode !== undefined) updates.purchase_mode = partialData.purchaseMode;
+    if (partialData.leadTime !== undefined) updates.lead_time = partialData.leadTime;
+    if (partialData.dimensions !== undefined) updates.dimensions = partialData.dimensions;
+    if (partialData.thickness !== undefined) updates.thickness = partialData.thickness;
+    if (partialData.material !== undefined) updates.material = partialData.material;
+    if (partialData.finish !== undefined) updates.finish = partialData.finish;
+    if (partialData.color !== undefined) updates.color = partialData.color;
+    if (partialData.images !== undefined) updates.images = partialData.images;
+    if (partialData.variants !== undefined) updates.variants = partialData.variants;
+    if (partialData.isFeatured !== undefined) updates.is_featured = partialData.isFeatured;
+    if (partialData.isNew !== undefined) updates.is_new = partialData.isNew;
+    if (partialData.isBestseller !== undefined) updates.is_bestseller = partialData.isBestseller;
+    if (partialData.published !== undefined) updates.published = partialData.published;
+    if (partialData.tags !== undefined) updates.tags = partialData.tags;
+    if (partialData.specifications !== undefined) updates.specifications = partialData.specifications;
+
+    const { data: updated, error } = await supabase
+      .from('products')
+      .update(updates)
+      .eq('id', id)
+      .select('*, categories(name, slug)')
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase updateProduct error:', error);
+      throw new Error(`Failed to update product ${id}: ${error.message}`);
+    }
+
+    invalidateMemoryCache('products');
+    return updated ? mapSupabaseProduct(updated) : null;
+  }
+
+  // Development / Test Local Fallback
+  const db = getDb();
+  const index = db.products.findIndex((p) => p.id === id);
+  if (index === -1) return null;
+
+  db.products[index] = {
+    ...db.products[index],
+    ...partialData,
+    updatedAt: now,
+  };
+  saveDb(db);
+  invalidateMemoryCache('products');
+  return db.products[index];
+}
+
+export async function deleteProduct(id: string): Promise<boolean> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('products').delete().eq('id', id);
+    if (error) {
+      console.error('Supabase deleteProduct error:', error);
+      throw new Error(`Failed to delete product ${id}: ${error.message}`);
+    }
+    invalidateMemoryCache('products');
+    return true;
+  }
+
+  const db = getDb();
+  const initialLength = db.products.length;
+  db.products = db.products.filter((p) => p.id !== id);
+  if (db.products.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('products');
+    return true;
+  }
+  return false;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-categories-ts"></a>57. `src/server/db/repositories/categories.ts`
+
+> **Path**: `src/server/db/repositories/categories.ts` | **Lines**: 273 | **Size**: 8.5 KB
+
+```typescript
+import crypto from 'crypto';
+import { Category } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+  invalidateMemoryCache,
+  CACHE_TTL_MS,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseCategory } from '../mappers';
+import { ConflictError } from '../../errors';
+
+export async function getCategories(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categories && now - memoryCache.categories.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categories.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const [catsRes, prodsRes] = await Promise.all([
+      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
+      supabase.from('products').select('category_id, published'),
+    ]);
+
+    if (catsRes.error) {
+      console.error('Supabase getCategories error:', catsRes.error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        catsRes.error.message?.includes('fetch failed') ||
+        catsRes.error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase unreachable. Falling back to categories fixture.');
+      } else {
+        throw new Error(`Database error retrieving categories: ${catsRes.error.message}`);
+      }
+    } else {
+      const prodCounts = new Map<string, number>();
+      (prodsRes.data || []).forEach((p: any) => {
+        if (p.published && p.category_id) {
+          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
+        }
+      });
+
+      const categories = (catsRes.data || [])
+        .filter((c: any) => c.is_active !== false)
+        .map((c: any) => ({
+          ...mapSupabaseCategory(c),
+          productCount: prodCounts.get(c.id) || 0,
+        }));
+
+      memoryCache.categories = { data: categories, timestamp: now };
+      return categories;
+    }
+  }
+
+  const db = getDb();
+  const prodCounts = new Map<string, number>();
+  (db.products || []).forEach((p) => {
+    if (p.published && p.categoryId) {
+      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
+    }
+  });
+
+  const active = db.categories
+    .filter((c) => c.isActive !== false)
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((c) => ({
+      ...c,
+      productCount: prodCounts.get(c.id) || 0,
+    }));
+
+  memoryCache.categories = { data: active, timestamp: now };
+  return active;
+}
+
+export async function getAllCategoriesAdmin(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categoriesAdmin.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const [catsRes, prodsRes] = await Promise.all([
+      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
+      supabase.from('products').select('category_id'),
+    ]);
+
+    if (catsRes.error) {
+      console.error('Supabase getAllCategoriesAdmin error:', catsRes.error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        catsRes.error.message?.includes('fetch failed') ||
+        catsRes.error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase unreachable. Falling back to admin categories fixture.');
+      } else {
+        throw new Error(`Database error loading admin categories: ${catsRes.error.message}`);
+      }
+    } else {
+      const prodCounts = new Map<string, number>();
+      (prodsRes.data || []).forEach((p: any) => {
+        if (p.category_id) {
+          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
+        }
+      });
+
+      const categories = (catsRes.data || []).map((c: any) => ({
+        ...mapSupabaseCategory(c),
+        productCount: prodCounts.get(c.id) || 0,
+      }));
+
+      memoryCache.categoriesAdmin = { data: categories, timestamp: now };
+      return categories;
+    }
+  }
+
+  const db = getDb();
+  const prodCounts = new Map<string, number>();
+  (db.products || []).forEach((p) => {
+    if (p.categoryId) {
+      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
+    }
+  });
+
+  const categories = db.categories
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((c) => ({
+      ...c,
+      productCount: prodCounts.get(c.id) || 0,
+    }));
+
+  memoryCache.categoriesAdmin = { data: categories, timestamp: now };
+  return categories;
+}
+
+export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+  const categories = await getCategories();
+  return categories.find((c) => c.slug === slug) || null;
+}
+
+export async function createCategory(
+  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Category> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: inserted, error } = await supabase
+      .from('categories')
+      .insert({
+        name: data.name,
+        slug: data.slug,
+        description: data.description || '',
+        image_url: data.imageUrl || '',
+        sort_order: data.sortOrder || 0,
+        is_active: data.isActive !== false,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      console.error('Supabase createCategory error:', error);
+      throw new Error(`Failed to create category: ${error?.message || 'Database error'}`);
+    }
+
+    invalidateMemoryCache('categories');
+    return mapSupabaseCategory(inserted);
+  }
+
+  const db = getDb();
+  const newCat: Category = {
+    ...data,
+    id: `cat-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    createdAt: now,
+    updatedAt: now,
+  };
+  db.categories.push(newCat);
+  saveDb(db);
+  invalidateMemoryCache('categories');
+  return newCat;
+}
+
+export async function updateCategory(
+  id: string,
+  partial: Partial<Category>
+): Promise<Category | null> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const updates: any = { updated_at: now };
+    if (partial.name !== undefined) updates.name = partial.name;
+    if (partial.slug !== undefined) updates.slug = partial.slug;
+    if (partial.description !== undefined) updates.description = partial.description;
+    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
+    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
+    if (partial.isActive !== undefined) updates.is_active = partial.isActive;
+
+    const { data: updated, error } = await supabase
+      .from('categories')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase updateCategory error:', error);
+      throw new Error(`Failed to update category ${id}: ${error.message}`);
+    }
+
+    invalidateMemoryCache('categories');
+    return updated ? mapSupabaseCategory(updated) : null;
+  }
+
+  const db = getDb();
+  const index = db.categories.findIndex((c) => c.id === id);
+  if (index === -1) return null;
+
+  db.categories[index] = {
+    ...db.categories[index],
+    ...partial,
+    updatedAt: now,
+  };
+  saveDb(db);
+  invalidateMemoryCache('categories');
+  return db.categories[index];
+}
+
+export async function deleteCategory(id: string): Promise<boolean> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+
+    // Prevent deletion if products depend on this category
+    const { count, error: countErr } = await supabase
+      .from('products')
+      .select('id', { count: 'exact', head: true })
+      .eq('category_id', id);
+
+    if (!countErr && (count || 0) > 0) {
+      throw new ConflictError(`Cannot delete category: There are ${count} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+    }
+
+    const { error } = await supabase.from('categories').delete().eq('id', id);
+    if (error) {
+      console.error('Supabase deleteCategory error:', error);
+      throw new Error(`Failed to delete category ${id}: ${error.message}`);
+    }
+    invalidateMemoryCache('categories');
+    return true;
+  }
+
+  const db = getDb();
+  const prodCount = db.products.filter((p) => p.categoryId === id).length;
+  if (prodCount > 0) {
+    throw new ConflictError(`Cannot delete category: There are ${prodCount} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+  }
+
+  const initialLength = db.categories.length;
+  db.categories = db.categories.filter((c) => c.id !== id);
+  if (db.categories.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('categories');
+    return true;
+  }
+  return false;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-projects-ts"></a>58. `src/server/db/repositories/projects.ts`
+
+> **Path**: `src/server/db/repositories/projects.ts` | **Lines**: 297 | **Size**: 9.8 KB
+
+```typescript
+import crypto from 'crypto';
+import { Project } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+  invalidateMemoryCache,
+  CACHE_TTL_MS,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseProject } from '../mappers';
+
+export async function getProjects(options?: {
+  publishedOnly?: boolean;
+  featuredOnly?: boolean;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<Project[]> {
+  const cacheKey = JSON.stringify(options || {});
+  const now = Date.now();
+  const cached = memoryCache.projects.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('projects').select('*').order('sort_order', { ascending: true });
+
+    if (options?.publishedOnly) {
+      query = query.eq('is_published', true);
+    }
+    if (options?.featuredOnly) {
+      query = query.eq('is_featured', true);
+    }
+    if (options?.search) {
+      const term = `%${options.search}%`;
+      query = query.or(`title.ilike.${term},location.ilike.${term},project_type.ilike.${term},short_description.ilike.${term}`);
+    }
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+    if (options?.offset) {
+      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error('Supabase getProjects error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase unreachable. Falling back to projects fixture.');
+      } else {
+        throw new Error(`Failed to load projects from database: ${error.message}`);
+      }
+    } else {
+      const projects = (data || []).map(mapSupabaseProject);
+      memoryCache.projects.set(cacheKey, { data: projects, timestamp: now });
+      return projects;
+    }
+  }
+
+  const db = getDb();
+  let result = [...db.projects];
+  if (options?.publishedOnly) {
+    result = result.filter((p) => p.isPublished);
+  }
+  if (options?.featuredOnly) {
+    result = result.filter((p) => p.isFeatured);
+  }
+  if (options?.search) {
+    const term = options.search.toLowerCase();
+    result = result.filter(
+      (p) =>
+        p.title.toLowerCase().includes(term) ||
+        p.location.toLowerCase().includes(term) ||
+        p.projectType.toLowerCase().includes(term) ||
+        p.shortDescription.toLowerCase().includes(term)
+    );
+  }
+  if (options?.offset) {
+    result = result.slice(options.offset);
+  }
+  if (options?.limit) {
+    result = result.slice(0, options.limit);
+  }
+
+  memoryCache.projects.set(cacheKey, { data: result, timestamp: now });
+  return result;
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const now = Date.now();
+  const cached = memoryCache.projectByIdOrSlug.get(`slug:${slug}`);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).maybeSingle();
+    if (error) {
+      console.error('Supabase getProjectBySlug error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn(`Supabase unreachable. Falling back to projects fixture for slug ${slug}.`);
+      } else {
+        throw new Error(`Database error loading project ${slug}: ${error.message}`);
+      }
+    } else {
+      const project = data ? mapSupabaseProject(data) : null;
+      memoryCache.projectByIdOrSlug.set(`slug:${slug}`, { data: project, timestamp: now });
+      return project;
+    }
+  }
+
+  const db = getDb();
+  const project = db.projects.find((p) => p.slug === slug) || null;
+  memoryCache.projectByIdOrSlug.set(`slug:${slug}`, { data: project, timestamp: now });
+  return project;
+}
+
+export async function getProjectById(id: string): Promise<Project | null> {
+  const now = Date.now();
+  const cached = memoryCache.projectByIdOrSlug.get(`id:${id}`);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase.from('projects').select('*').eq('id', id).maybeSingle();
+    if (error) {
+      console.error('Supabase getProjectById error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn(`Supabase unreachable. Falling back to projects fixture for id ${id}.`);
+      } else {
+        throw new Error(`Database error loading project ${id}: ${error.message}`);
+      }
+    } else {
+      const project = data ? mapSupabaseProject(data) : null;
+      memoryCache.projectByIdOrSlug.set(`id:${id}`, { data: project, timestamp: now });
+      return project;
+    }
+  }
+
+  const db = getDb();
+  const project = db.projects.find((p) => p.id === id) || null;
+  memoryCache.projectByIdOrSlug.set(`id:${id}`, { data: project, timestamp: now });
+  return project;
+}
+
+export async function createProject(
+  data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Project> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: inserted, error } = await supabase
+      .from('projects')
+      .insert({
+        title: data.title,
+        slug: data.slug,
+        location: data.location || '',
+        year: data.year || String(new Date().getFullYear()),
+        area: data.area || '',
+        project_type: data.projectType,
+        short_description: data.shortDescription || '',
+        description: data.description || '',
+        hero_image: data.heroImage || '',
+        gallery: data.gallery || [],
+        design_approach: data.designApproach || '',
+        materials_used: data.materialsUsed || [],
+        is_featured: Boolean(data.isFeatured),
+        is_published: data.isPublished !== false,
+        sort_order: data.sortOrder || 0,
+        tags: data.tags || [],
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      console.error('Supabase createProject error:', error);
+      throw new Error(`Failed to create project: ${error?.message}`);
+    }
+
+    invalidateMemoryCache('projects');
+    return mapSupabaseProject(inserted);
+  }
+
+  const db = getDb();
+  const newProj: Project = {
+    ...data,
+    id: `proj-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    createdAt: now,
+    updatedAt: now,
+  };
+  db.projects.unshift(newProj);
+  saveDb(db);
+  invalidateMemoryCache('projects');
+  return newProj;
+}
+
+export async function updateProject(
+  id: string,
+  partial: Partial<Project>
+): Promise<Project | null> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const updates: any = { updated_at: now };
+    if (partial.title !== undefined) updates.title = partial.title;
+    if (partial.slug !== undefined) updates.slug = partial.slug;
+    if (partial.location !== undefined) updates.location = partial.location;
+    if (partial.year !== undefined) updates.year = partial.year;
+    if (partial.area !== undefined) updates.area = partial.area;
+    if (partial.projectType !== undefined) updates.project_type = partial.projectType;
+    if (partial.shortDescription !== undefined) updates.short_description = partial.shortDescription;
+    if (partial.description !== undefined) updates.description = partial.description;
+    if (partial.heroImage !== undefined) updates.hero_image = partial.heroImage;
+    if (partial.gallery !== undefined) updates.gallery = partial.gallery;
+    if (partial.designApproach !== undefined) updates.design_approach = partial.designApproach;
+    if (partial.materialsUsed !== undefined) updates.materials_used = partial.materialsUsed;
+    if (partial.isFeatured !== undefined) updates.is_featured = partial.isFeatured;
+    if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
+    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
+    if (partial.tags !== undefined) updates.tags = partial.tags;
+
+    const { data: updated, error } = await supabase
+      .from('projects')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase updateProject error:', error);
+      throw new Error(`Failed to update project ${id}: ${error.message}`);
+    }
+
+    invalidateMemoryCache('projects');
+    return updated ? mapSupabaseProject(updated) : null;
+  }
+
+  const db = getDb();
+  const index = db.projects.findIndex((p) => p.id === id);
+  if (index === -1) return null;
+
+  db.projects[index] = {
+    ...db.projects[index],
+    ...partial,
+    updatedAt: now,
+  };
+  saveDb(db);
+  invalidateMemoryCache('projects');
+  return db.projects[index];
+}
+
+export async function deleteProject(id: string): Promise<boolean> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('projects').delete().eq('id', id);
+    if (error) {
+      console.error('Supabase deleteProject error:', error);
+      throw new Error(`Failed to delete project ${id}: ${error.message}`);
+    }
+    invalidateMemoryCache('projects');
+    return true;
+  }
+
+  const db = getDb();
+  const initialLength = db.projects.length;
+  db.projects = db.projects.filter((p) => p.id !== id);
+  if (db.projects.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('projects');
+    return true;
+  }
+  return false;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-services-ts"></a>59. `src/server/db/repositories/services.ts`
+
+> **Path**: `src/server/db/repositories/services.ts` | **Lines**: 176 | **Size**: 5.4 KB
+
+```typescript
+import crypto from 'crypto';
+import { Service } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+  invalidateMemoryCache,
+  CACHE_TTL_MS,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseService } from '../mappers';
+
+export async function getServices(publishedOnly = true): Promise<Service[]> {
+  const cacheKey = `pub:${publishedOnly}`;
+  const now = Date.now();
+  const cached = memoryCache.services.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('services').select('*').order('sort_order', { ascending: true });
+    if (publishedOnly) {
+      query = query.eq('is_published', true);
+    }
+    const { data, error } = await query;
+    if (error) {
+      console.error('Supabase getServices error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase unreachable. Falling back to services fixture.');
+      } else {
+        throw new Error(`Database error loading services: ${error.message}`);
+      }
+    } else {
+      const services = (data || []).map(mapSupabaseService);
+      memoryCache.services.set(cacheKey, { data: services, timestamp: now });
+      return services;
+    }
+  }
+
+  const db = getDb();
+  const result = publishedOnly ? db.services.filter((s) => s.isPublished !== false) : db.services;
+  memoryCache.services.set(cacheKey, { data: result, timestamp: now });
+  return result;
+}
+
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const services = await getServices(false);
+  return services.find((s) => s.slug === slug) || null;
+}
+
+export async function createService(
+  data: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Service> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: inserted, error } = await supabase
+      .from('services')
+      .insert({
+        title: data.title,
+        slug: data.slug,
+        short_desc: data.shortDesc || '',
+        full_desc: data.fullDesc || '',
+        icon_name: data.iconName || 'Home',
+        image_url: data.imageUrl || '',
+        deliverables: data.deliverables || [],
+        sort_order: data.sortOrder || 0,
+        is_published: data.isPublished !== false,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      console.error('Supabase createService error:', error);
+      throw new Error(`Failed to create architectural service: ${error?.message}`);
+    }
+
+    invalidateMemoryCache('services');
+    return mapSupabaseService(inserted);
+  }
+
+  const db = getDb();
+  const newSrv: Service = {
+    ...data,
+    id: `srv-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    createdAt: now,
+    updatedAt: now,
+  };
+  db.services.push(newSrv);
+  saveDb(db);
+  invalidateMemoryCache('services');
+  return newSrv;
+}
+
+export async function updateService(
+  id: string,
+  partial: Partial<Service>
+): Promise<Service | null> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const updates: any = { updated_at: now };
+    if (partial.title !== undefined) updates.title = partial.title;
+    if (partial.slug !== undefined) updates.slug = partial.slug;
+    if (partial.shortDesc !== undefined) updates.short_desc = partial.shortDesc;
+    if (partial.fullDesc !== undefined) updates.full_desc = partial.fullDesc;
+    if (partial.iconName !== undefined) updates.icon_name = partial.iconName;
+    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
+    if (partial.deliverables !== undefined) updates.deliverables = partial.deliverables;
+    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
+    if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
+
+    const { data: updated, error } = await supabase
+      .from('services')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase updateService error:', error);
+      throw new Error(`Failed to update service ${id}: ${error.message}`);
+    }
+
+    invalidateMemoryCache('services');
+    return updated ? mapSupabaseService(updated) : null;
+  }
+
+  const db = getDb();
+  const index = db.services.findIndex((s) => s.id === id);
+  if (index === -1) return null;
+
+  db.services[index] = {
+    ...db.services[index],
+    ...partial,
+    updatedAt: now,
+  };
+  saveDb(db);
+  invalidateMemoryCache('services');
+  return db.services[index];
+}
+
+export async function deleteService(id: string): Promise<boolean> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('services').delete().eq('id', id);
+    if (error) {
+      console.error('Supabase deleteService error:', error);
+      throw new Error(`Failed to delete service ${id}: ${error.message}`);
+    }
+    invalidateMemoryCache('services');
+    return true;
+  }
+
+  const db = getDb();
+  const initialLength = db.services.length;
+  db.services = db.services.filter((s) => s.id !== id);
+  if (db.services.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('services');
+    return true;
+  }
+  return false;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-settings-ts"></a>60. `src/server/db/repositories/settings.ts`
+
+> **Path**: `src/server/db/repositories/settings.ts` | **Lines**: 191 | **Size**: 7.1 KB
+
+```typescript
+import { SiteSettings, PublicSiteSettings } from '@/types';
+import { initialSiteSettings } from '@/lib/seedData';
+import { validatePaymentSettings } from '../../validation/schemas';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  memoryCache,
+  invalidateMemoryCache,
+  CACHE_TTL_MS,
+  getDb,
+  saveDb,
+} from '../client';
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const now = Date.now();
+  if (memoryCache.settings && now - memoryCache.settings.timestamp < CACHE_TTL_MS) {
+    return memoryCache.settings.data;
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('site_settings')
+      .select('*')
+      .eq('key', 'general')
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase getSiteSettings error:', error);
+      if (
+        process.env.NEXT_PHASE === 'phase-production-build' ||
+        error.message?.includes('fetch failed') ||
+        error.message?.includes('ENOTFOUND')
+      ) {
+        console.warn('Supabase unreachable. Falling back to default site settings.');
+        const fallbackDb = getDb();
+        return {
+          ...initialSiteSettings,
+          ...(fallbackDb.siteSettings || {}),
+          gstinNumber: fallbackDb.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
+        };
+      }
+      throw new Error(`Failed to fetch site settings: ${error.message}`);
+    }
+
+    let result = initialSiteSettings;
+    if (data && data.value) {
+      const v = data.value;
+      result = {
+        ...initialSiteSettings,
+        ...v,
+        brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
+        brandSubtitle: v.brandSubtitle || initialSiteSettings.brandSubtitle,
+        logoUrl: v.logoUrl || v.logo || initialSiteSettings.logoUrl || '/logo.png',
+        tagline: v.tagline || initialSiteSettings.tagline,
+        architectName: v.architectName || initialSiteSettings.architectName,
+        establishedYear: v.establishedYear || initialSiteSettings.establishedYear,
+        googleRating: v.googleRating || initialSiteSettings.googleRating,
+        contactEmail: v.contactEmail || v.supportEmail || initialSiteSettings.contactEmail,
+        contactPhone: v.contactPhone || v.supportPhone || initialSiteSettings.contactPhone,
+        whatsappNumber: v.whatsappNumber || initialSiteSettings.whatsappNumber,
+        businessHours: v.businessHours || initialSiteSettings.businessHours,
+        studioAddress: v.studioAddress || initialSiteSettings.studioAddress,
+        city: v.city || initialSiteSettings.city,
+        state: v.state || initialSiteSettings.state,
+        country: v.country || initialSiteSettings.country,
+        pincode: v.pincode || initialSiteSettings.pincode,
+        currency: v.currency || initialSiteSettings.currency,
+        currencySymbol: v.currencySymbol || initialSiteSettings.currencySymbol,
+        taxRatePercent: Number(v.taxRatePercent !== undefined ? v.taxRatePercent : initialSiteSettings.taxRatePercent),
+        freeShippingThreshold: Number(
+          v.freeShippingThreshold !== undefined ? v.freeShippingThreshold : initialSiteSettings.freeShippingThreshold
+        ),
+        standardShippingFee: Number(
+          v.standardShippingFee !== undefined ? v.standardShippingFee : initialSiteSettings.standardShippingFee
+        ),
+        gstinNumber: v.gstinNumber || initialSiteSettings.gstinNumber,
+        minOrderValue: Number(v.minOrderValue !== undefined ? v.minOrderValue : initialSiteSettings.minOrderValue),
+        socialInstagram: v.socialInstagram || initialSiteSettings.socialInstagram,
+        socialPinterest: v.socialPinterest || initialSiteSettings.socialPinterest,
+        socialLinkedin: v.socialLinkedin || initialSiteSettings.socialLinkedin,
+        socialFacebook: v.socialFacebook || initialSiteSettings.socialFacebook,
+        announcementBanner: {
+          enabled:
+            v.announcementBanner?.enabled !== undefined
+              ? v.announcementBanner.enabled
+              : initialSiteSettings.announcementBanner?.enabled ?? true,
+          text: v.announcementBanner?.text || initialSiteSettings.announcementBanner?.text || '',
+          linkUrl: v.announcementBanner?.linkUrl || initialSiteSettings.announcementBanner?.linkUrl || '/quote',
+        },
+        homepage: {
+          ...initialSiteSettings.homepage,
+          ...(v.homepage || {}),
+        },
+        paymentGateway: {
+          ...initialSiteSettings.paymentGateway,
+          ...(v.paymentGateway || {}),
+        },
+      };
+    }
+    memoryCache.settings = { data: result, timestamp: now };
+    return result;
+  }
+
+  const db = getDb();
+  const mergedSettings: SiteSettings = {
+    ...initialSiteSettings,
+    ...(db.siteSettings || {}),
+    gstinNumber: db.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
+  };
+  return mergedSettings;
+}
+
+/**
+ * Returns public-safe site settings DTO.
+ * Explicitly excludes internal financial secrets (e.g. gstinNumber).
+ */
+export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
+  const full = await getSiteSettings();
+  return {
+    brandName: full.brandName,
+    brandSubtitle: full.brandSubtitle,
+    logoUrl: full.logoUrl,
+    tagline: full.tagline,
+    architectName: full.architectName,
+    establishedYear: full.establishedYear,
+    googleRating: full.googleRating,
+    contactEmail: full.contactEmail,
+    contactPhone: full.contactPhone,
+    whatsappNumber: full.whatsappNumber,
+    businessHours: full.businessHours,
+    studioAddress: full.studioAddress,
+    city: full.city,
+    state: full.state,
+    country: full.country,
+    pincode: full.pincode,
+    currency: full.currency,
+    currencySymbol: full.currencySymbol,
+    socialInstagram: full.socialInstagram,
+    socialPinterest: full.socialPinterest,
+    socialLinkedin: full.socialLinkedin,
+    socialFacebook: full.socialFacebook,
+    announcementBanner: full.announcementBanner,
+    homepage: full.homepage,
+    paymentGateway: full.paymentGateway,
+    taxRatePercent: full.taxRatePercent,
+    freeShippingThreshold: full.freeShippingThreshold,
+    standardShippingFee: full.standardShippingFee,
+    minOrderValue: full.minOrderValue,
+  };
+}
+
+export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
+  if (partial.paymentGateway) {
+    validatePaymentSettings(partial.paymentGateway);
+  }
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const current = await getSiteSettings();
+    const merged = { ...current, ...partial };
+
+    const { data, error } = await supabase
+      .from('site_settings')
+      .upsert(
+        {
+          key: 'general',
+          value: merged,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'key' }
+      )
+      .select()
+      .single();
+
+    if (error || !data) {
+      console.error('Supabase updateSiteSettings error:', error);
+      throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
+    }
+
+    invalidateMemoryCache('settings');
+    return merged;
+  }
+
+  const db = getDb();
+  db.siteSettings = { ...db.siteSettings, ...partial };
+  saveDb(db);
+  invalidateMemoryCache('settings');
+  return db.siteSettings;
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-customers-ts"></a>61. `src/server/db/repositories/customers.ts`
+
+> **Path**: `src/server/db/repositories/customers.ts` | **Lines**: 168 | **Size**: 4.4 KB
+
+```typescript
+import crypto from 'crypto';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  getDb,
+} from '../client';
+
+export interface CustomerRecord {
+  id: string;
+  email: string;
+  fullName: string;
+  phone?: string;
+  isGuest: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function upsertCustomer(input: {
+  email: string;
+  fullName: string;
+  phone?: string;
+  isGuest?: boolean;
+}): Promise<CustomerRecord> {
+  const normalizedEmail = input.email.trim().toLowerCase();
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: existing } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    if (existing) {
+      const updates: any = { updated_at: now };
+      if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
+        updates.full_name = input.fullName;
+      }
+      if (input.phone && !existing.phone) {
+        updates.phone = input.phone;
+      }
+      if (input.isGuest === false && existing.is_guest) {
+        updates.is_guest = false;
+      }
+
+      const { data: updated } = await supabase
+        .from('customers')
+        .update(updates)
+        .eq('id', existing.id)
+        .select()
+        .single();
+
+      const res = updated || existing;
+      return {
+        id: res.id,
+        email: res.email,
+        fullName: res.full_name,
+        phone: res.phone,
+        isGuest: res.is_guest,
+        createdAt: res.created_at,
+        updatedAt: res.updated_at,
+      };
+    }
+
+    const { data: inserted, error } = await supabase
+      .from('customers')
+      .insert({
+        email: normalizedEmail,
+        full_name: input.fullName || 'Client',
+        phone: input.phone || null,
+        is_guest: input.isGuest !== undefined ? input.isGuest : false,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      return {
+        id: crypto.randomUUID(),
+        email: normalizedEmail,
+        fullName: input.fullName || 'Client',
+        phone: input.phone,
+        isGuest: input.isGuest || false,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }
+
+    return {
+      id: inserted.id,
+      email: inserted.email,
+      fullName: inserted.full_name,
+      phone: inserted.phone,
+      isGuest: inserted.is_guest,
+      createdAt: inserted.created_at,
+      updatedAt: inserted.updated_at,
+    };
+  }
+
+  return {
+    id: `cust-${Date.now()}`,
+    email: normalizedEmail,
+    fullName: input.fullName || 'Client',
+    phone: input.phone,
+    isGuest: input.isGuest || false,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRecord[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data, error } = await supabase
+      .from('customers')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    if (error) {
+      console.error('Failed to fetch customers:', error.message);
+      return [];
+    }
+    return (data || []).map((c: any) => ({
+      id: c.id,
+      email: c.email,
+      fullName: c.full_name,
+      phone: c.phone || '',
+      isGuest: c.is_guest || false,
+      createdAt: c.created_at,
+      updatedAt: c.updated_at,
+    }));
+  }
+
+  const db = getDb();
+  const rawCustomers = (db as any).customers || [];
+  if (rawCustomers.length > 0) {
+    return rawCustomers.slice(offset, offset + limit).map((c: any) => ({
+      id: c.id,
+      email: c.email,
+      fullName: c.fullName || c.full_name || 'Client',
+      phone: c.phone || '',
+      isGuest: c.isGuest || false,
+      createdAt: c.createdAt || new Date().toISOString(),
+      updatedAt: c.updatedAt || new Date().toISOString(),
+    }));
+  }
+
+  // Derive unique customer list from orders if not standalone
+  const customerMap = new Map<string, CustomerRecord>();
+  db.orders.forEach((o) => {
+    if (o.customerEmail && !customerMap.has(o.customerEmail.toLowerCase())) {
+      customerMap.set(o.customerEmail.toLowerCase(), {
+        id: `cust-${o.id}`,
+        email: o.customerEmail,
+        fullName: o.customerName,
+        phone: o.customerPhone,
+        isGuest: false,
+        createdAt: o.createdAt,
+        updatedAt: o.updatedAt || o.createdAt,
+      });
+    }
+  });
+  return Array.from(customerMap.values()).slice(offset, offset + limit);
+}
+```
+
+---
+
+### <a id="src-server-db-repositories-enquiries-ts"></a>62. `src/server/db/repositories/enquiries.ts`
+
+> **Path**: `src/server/db/repositories/enquiries.ts` | **Lines**: 108 | **Size**: 2.8 KB
+
+```typescript
+import crypto from 'crypto';
+import { Enquiry } from '@/types';
+import {
+  isSupabaseConfigured,
+  getServiceSupabase,
+  isUUID,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseEnquiry } from '../mappers';
+
+export async function createEnquiry(
+  data: Omit<Enquiry, 'id' | 'createdAt' | 'status'>
+): Promise<Enquiry> {
+  const now = new Date().toISOString();
+
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    const { data: inserted, error } = await supabase
+      .from('enquiries')
+      .insert({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        subject: data.subject,
+        message: data.message,
+        source: data.source || 'Contact Form',
+        status: 'New',
+        created_at: now,
+      })
+      .select()
+      .single();
+
+    if (error || !inserted) {
+      console.error('Supabase createEnquiry error:', error);
+      throw new Error(`Failed to submit enquiry: ${error?.message || 'Database error'}`);
+    }
+
+    return mapSupabaseEnquiry(inserted);
+  }
+
+  const db = getDb();
+  const newEnq: Enquiry = {
+    ...data,
+    id: `enq-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    status: 'New',
+    createdAt: now,
+  };
+  db.enquiries.unshift(newEnq);
+  saveDb(db);
+  return newEnq;
+}
+
+export async function getEnquiries(options?: {
+  limit?: number;
+  offset?: number;
+}): Promise<Enquiry[]> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('enquiries').select('*').order('created_at', { ascending: false });
+    if (options?.limit) {
+      query = query.limit(options.limit);
+    }
+    if (options?.offset) {
+      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
+    }
+    const { data, error } = await query;
+    if (error) throw new Error(`Failed to load enquiries: ${error.message}`);
+    return (data || []).map(mapSupabaseEnquiry);
+  }
+
+  const db = getDb();
+  let list = [...db.enquiries];
+  if (options?.offset) {
+    list = list.slice(options.offset);
+  }
+  if (options?.limit) {
+    list = list.slice(0, options.limit);
+  }
+  return list;
+}
+
+export async function updateEnquiryStatus(
+  id: string,
+  status: Enquiry['status']
+): Promise<Enquiry | null> {
+  if (isSupabaseConfigured()) {
+    const supabase = getServiceSupabase();
+    let query = supabase.from('enquiries').update({ status }).select();
+    if (isUUID(id)) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('id', id);
+    }
+    const { data, error } = await query.maybeSingle();
+    if (error) throw new Error(`Failed to update enquiry status: ${error.message}`);
+    if (!data) return null;
+    return mapSupabaseEnquiry(data);
+  }
+
+  const db = getDb();
+  const enq = db.enquiries.find((e) => e.id === id);
+  if (!enq) return null;
+  enq.status = status;
+  saveDb(db);
+  return enq;
+}
+```
+
+---
+
+### <a id="src-server-db-transactions-orders-ts"></a>63. `src/server/db/transactions/orders.ts`
+
+> **Path**: `src/server/db/transactions/orders.ts` | **Lines**: 237 | **Size**: 7.1 KB
+
+```typescript
+import crypto from 'crypto';
+import { Order, OrderStatus, PaymentStatus } from '@/types';
+import {
+  isSupabaseConfigured,
+  isProduction,
+  getServiceSupabase,
+  invalidateMemoryCache,
+  isUUID,
+  getDb,
+  saveDb,
+} from '../client';
+import { mapSupabaseOrder } from '../mappers';
+
+export interface CreateOrderData {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: any;
+  billingAddress?: any;
+  items: {
+    productId: string;
+    variantId?: string;
+    quantity: number;
+    selectedColor?: string;
+    selectedFinish?: string;
+  }[];
+  paymentMethod: string;
+  notes?: string;
+  idempotencyKey?: string;
+}
+
+/**
+ * Executes a single-transaction atomic checkout.
+ * Enforces PostgreSQL create_order_atomic RPC as the sole production path.
+ * Strict database idempotency on orders.idempotency_key.
+ */
+export async function createOrderAtomic(
+  orderData: CreateOrderData
+): Promise<{ success: boolean; order?: Order; error?: string }> {
+  if (!isSupabaseConfigured()) {
+    if (isProduction()) {
+      return {
+        success: false,
+        error: 'Critical Database Error: Supabase connection required for production orders.',
+      };
+    }
+    // Isolated unit test execution
+    const db = getDb();
+
+    // Test idempotency check
+    if (orderData.idempotencyKey) {
+      const existing = db.orders.find((o) => o.idempotencyKey === orderData.idempotencyKey);
+      if (existing) {
+        return { success: true, order: existing };
+      }
+    }
+
+    const orderItems: any[] = [];
+    let subtotal = 0;
+
+    // Validate products and stock
+    for (const item of orderData.items) {
+      const product = db.products.find((p) => p.id === item.productId);
+      if (!product) {
+        return { success: false, error: `Product not found: ${item.productId}` };
+      }
+      if (product.stock < item.quantity) {
+        return {
+          success: false,
+          error: `Insufficient stock for ${product.name}. Requested: ${item.quantity}, Available: ${product.stock}`,
+        };
+      }
+      const unitPrice = product.salePrice ?? product.price;
+      const itemSubtotal = unitPrice * item.quantity;
+      subtotal += itemSubtotal;
+      orderItems.push({
+        id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        productId: product.id,
+        productName: product.name,
+        sku: product.sku,
+        quantity: item.quantity,
+        unitPrice,
+        subtotal: itemSubtotal,
+        imageUrl: product.images?.[0] || '',
+        selectedColor: item.selectedColor,
+        selectedFinish: item.selectedFinish,
+      });
+    }
+
+    // Decrement stock in test store
+    for (const item of orderData.items) {
+      const product = db.products.find((p) => p.id === item.productId);
+      if (product) {
+        product.stock -= item.quantity;
+      }
+    }
+
+    const tax = Math.round(subtotal * 0.18);
+    const totalAmount = subtotal + tax;
+    const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    const newOrder: Order = {
+      id: `ord-${Date.now()}`,
+      orderNumber,
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail,
+      customerPhone: orderData.customerPhone,
+      shippingAddress: orderData.shippingAddress,
+      billingAddress: orderData.billingAddress || orderData.shippingAddress,
+      items: orderItems,
+      subtotal,
+      tax,
+      shippingFee: 0,
+      discount: 0,
+      totalAmount,
+      orderStatus: 'Confirmed',
+      paymentStatus: 'Submitted',
+      paymentMethod: orderData.paymentMethod,
+      notes: orderData.notes,
+      idempotencyKey: orderData.idempotencyKey,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    db.orders.unshift(newOrder);
+    saveDb(db);
+    invalidateMemoryCache('products');
+    invalidateMemoryCache('orders');
+    return { success: true, order: newOrder };
+  }
+
+  const supabase = getServiceSupabase();
+
+  // 1. Authoritative Database Idempotency Check on orders.idempotency_key
+  if (orderData.idempotencyKey) {
+    try {
+      const { data: existingOrder, error: idemErr } = await supabase
+        .from('orders')
+        .select('*, items:order_items(*)')
+        .eq('idempotency_key', orderData.idempotencyKey)
+        .maybeSingle();
+
+      if (!idemErr && existingOrder) {
+        return { success: true, order: mapSupabaseOrder(existingOrder) };
+      }
+    } catch (idemQueryErr) {
+      console.warn('Idempotency query notice:', idemQueryErr);
+    }
+  }
+
+  // 2. Authoritative Single-Transaction Database RPC
+  try {
+    const { data: rpcOrder, error: rpcError } = await supabase.rpc('create_order_atomic', {
+      p_order_data: {
+        customerName: orderData.customerName,
+        customerEmail: orderData.customerEmail,
+        customerPhone: orderData.customerPhone,
+        shippingAddress: orderData.shippingAddress,
+        billingAddress: orderData.billingAddress || orderData.shippingAddress,
+        items: orderData.items,
+        paymentMethod: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+        notes: orderData.notes || '',
+        idempotencyKey: orderData.idempotencyKey || null,
+      },
+    });
+
+    if (!rpcError && rpcOrder) {
+      invalidateMemoryCache('products');
+      return {
+        success: true,
+        order: mapSupabaseOrder(rpcOrder),
+      };
+    }
+
+    if (rpcError) {
+      console.error('Database create_order_atomic RPC error:', rpcError);
+      return {
+        success: false,
+        error: rpcError.message || 'Failed to place order due to inventory or database conflict.',
+      };
+    }
+  } catch (err: any) {
+    console.error('create_order_atomic RPC exception:', err?.message);
+    return {
+      success: false,
+      error: 'Checkout is temporarily unavailable. Please try again.',
+    };
+  }
+
+  return {
+    success: false,
+    error: 'Checkout is temporarily unavailable. Please try again.',
+  };
+}
+
+/**
+ * Executes a single-transaction cancellation RPC.
+ * Prevents double stock restoration and logs audit history.
+ */
+export async function cancelOrderAtomic(
+  orderId: string,
+  options?: { actorEmail?: string; note?: string }
+): Promise<Order | null> {
+  if (!isSupabaseConfigured()) {
+    const db = getDb();
+    const ord = db.orders.find((o) => o.id === orderId);
+    if (!ord) return null;
+    ord.orderStatus = 'Cancelled';
+    ord.updatedAt = new Date().toISOString();
+    saveDb(db);
+    return ord;
+  }
+
+  const supabase = getServiceSupabase();
+
+  try {
+    const { data: cancelledOrder, error: cancelErr } = await supabase.rpc('cancel_order_atomic', {
+      p_order_id: orderId,
+      p_actor_email: options?.actorEmail || 'system',
+      p_note: options?.note || 'Order cancelled',
+    });
+
+    if (!cancelErr && cancelledOrder) {
+      invalidateMemoryCache('products');
+      return mapSupabaseOrder(cancelledOrder);
+    }
+
+    if (cancelErr) {
+      console.error('cancel_order_atomic RPC error:', cancelErr);
+      throw new Error(`Failed to cancel order atomically: ${cancelErr.message}`);
+    }
+  } catch (err: any) {
+    console.error('cancel_order_atomic execution notice:', err.message);
+    throw err;
+  }
+
+  return null;
+}
+```
+
+---
+
+### <a id="src-server-db-index-ts"></a>64. `src/server/db/index.ts`
+
+> **Path**: `src/server/db/index.ts` | **Lines**: 5 | **Size**: 0.1 KB
+
+```typescript
+export * from './client';
+export * from './mappers';
+export * from './repositories';
+export * from './transactions/orders';
+```
+
+---
+
+### <a id="src-lib-db-ts"></a>65. `src/lib/db.ts`
+
+> **Path**: `src/lib/db.ts` | **Lines**: 13 | **Size**: 0.4 KB
+
+```typescript
+/**
+ * BALAJI ARCHITECT & INTERIORS — AUTHORITATIVE DATABASE ACCESS FACADE
+ *
+ * This module re-exports domain repositories, single-transaction atomic RPCs,
+ * and database client utilities from `@/server/db`.
+ *
+ * Preserves 100% backward compatibility for all pages and components while
+ * enforcing separation of concerns, single source of truth, and zero silent
+ * local file fallbacks in production.
+ */
+
+export * from '@/server/db';
+```
+
+---
+
+### <a id="src-lib-supabase-ts"></a>66. `src/lib/supabase.ts`
+
+> **Path**: `src/lib/supabase.ts` | **Lines**: 32 | **Size**: 1.0 KB
+
+```typescript
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+
+export const supabase =
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : (null as any);
+
+export function isSupabaseConfigured(): boolean {
+  return Boolean(
+    (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) &&
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
+
+export function getServiceSupabase() {
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceKey) {
+    throw new Error(
+      'Supabase configuration error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in environment variables.'
+    );
+  }
+  return createClient(supabaseUrl, serviceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+}
+```
+
+---
+
+### <a id="src-types-index-ts"></a>67. `src/types/index.ts`
+
+> **Path**: `src/types/index.ts` | **Lines**: 447 | **Size**: 9.1 KB
+
+```typescript
+export type UnitType =
+  | 'sq ft'
+  | 'sq m'
+  | 'sheet'
+  | 'piece'
+  | 'box'
+  | 'meter'
+  | 'running foot'
+  | 'roll'
+  | 'set'
+  | 'unit';
+
+export type PurchaseMode = 'BUY_NOW' | 'REQUEST_QUOTE' | 'BOTH' | 'UNAVAILABLE';
+
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  sku: string;
+  name: string;
+  color?: string;
+  finish?: string;
+  thickness?: string;
+  size?: string;
+  priceModifier: number; // e.g. +150
+  stock: number;
+  imageUrl?: string;
+  createdAt?: string;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  sku: string;
+  brand: string;
+  categoryId: string;
+  categoryName?: string;
+  categorySlug?: string;
+  subcategory?: string;
+  description: string;
+  price: number;
+  salePrice?: number;
+  unit: UnitType;
+  moq: number; // Minimum Order Quantity
+  stock: number;
+  purchaseMode: PurchaseMode;
+  leadTime: string; // e.g. "3-5 business days" or "Made to order (2-3 weeks)"
+  dimensions?: string;
+  thickness?: string;
+  material?: string;
+  finish?: string;
+  color?: string;
+  images: string[];
+  variants?: ProductVariant[];
+  isFeatured: boolean;
+  isNew: boolean;
+  isBestseller: boolean;
+  published: boolean;
+  tags: string[];
+  specifications: Record<string, string>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  imageUrl?: string;
+  parentId?: string | null;
+  sortOrder: number;
+  isActive: boolean;
+  productCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ProjectType =
+  | 'Residential Interiors'
+  | 'Architecture & Villa'
+  | 'Commercial & Studio'
+  | 'Hospitality & Luxury Dining'
+  | 'Penthouse & Estate'
+  | 'Custom Spatial Design';
+
+export interface ProjectMaterialRef {
+  materialId?: string;
+  materialName: string;
+  category: string;
+  imageUrl?: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  slug: string;
+  location: string;
+  year: string;
+  projectType: ProjectType;
+  area: string; // e.g. "6,500 sq ft"
+  shortDescription: string;
+  description: string;
+  heroImage: string;
+  gallery: string[];
+  designApproach: string;
+  materialsUsed: ProjectMaterialRef[];
+  beforeAfter?: {
+    beforeImage?: string;
+    afterImage?: string;
+    description?: string;
+  };
+  isPublished: boolean;
+  isFeatured: boolean;
+  sortOrder: number;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Service {
+  id: string;
+  title: string;
+  slug: string;
+  shortDesc: string;
+  fullDesc: string;
+  iconName: string;
+  imageUrl: string;
+  deliverables: string[];
+  sortOrder: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Customer {
+  id: string;
+  email: string;
+  phone: string;
+  fullName: string;
+  isGuest: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Address {
+  id: string;
+  customerId?: string;
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+  isDefault?: boolean;
+}
+
+export type OrderStatus =
+  | 'Pending'
+  | 'Confirmed'
+  | 'Processing'
+  | 'Packed'
+  | 'Shipped'
+  | 'Delivered'
+  | 'Cancelled';
+
+export type PaymentStatus =
+  | 'Pending'
+  | 'Submitted'
+  | 'Paid'
+  | 'Failed'
+  | 'Refunded';
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  variantId?: string;
+  productName: string;
+  productSku: string;
+  unit: UnitType;
+  unitPrice: number;
+  quantity: number;
+  subtotal: number;
+  imageUrl?: string;
+  selectedColor?: string;
+  selectedFinish?: string;
+}
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  customerId?: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: Address;
+  billingAddress?: Address;
+  items: OrderItem[];
+  subtotal: number;
+  tax: number;
+  shippingFee: number;
+  discount: number;
+  totalAmount: number;
+  orderStatus: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentMethod: string;
+  transactionId?: string;
+  utrNumber?: string;
+  notes?: string;
+  idempotencyKey?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaymentGatewaySettings {
+  enabled: boolean;
+  gatewayName: string; // 'Balaji PG'
+  methodName: string; // 'Balaji QR Payment'
+  upiId: string; // '6000149918@fam'
+  merchantName: string; // 'Balaji Architect & Interiors'
+  instructions: string;
+  qrExpiryMinutes: number; // 10
+  enableGPay: boolean;
+  enablePhonePe: boolean;
+  enablePaytm: boolean;
+  enableBhim: boolean;
+  enableCred: boolean;
+  enableAmazonPay: boolean;
+  requireUtr: boolean;
+}
+
+export type QuoteStatus =
+  | 'Pending'
+  | 'Under_Review'
+  | 'Quotation_Sent'
+  | 'Approved'
+  | 'Rejected'
+  | 'Converted_To_Order';
+
+export interface QuoteItem {
+  id: string;
+  quoteId: string;
+  productId?: string;
+  productName: string;
+  dimensions?: string;
+  quantity: number;
+  unit: UnitType;
+  estimatedUnitPrice?: number;
+  notes?: string;
+}
+
+export interface Quote {
+  id: string;
+  quoteNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  projectType: string;
+  projectLocation: string;
+  estimatedTimeline: string;
+  budgetRange: string;
+  notes: string;
+  items: QuoteItem[];
+  status: QuoteStatus;
+  totalQuotedAmount?: number;
+  adminNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Enquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  source: string; // e.g. "Contact Page", "Project Case Study", "Footer"
+  status: 'New' | 'Read' | 'Followed_Up' | 'Archived';
+  createdAt: string;
+}
+
+export type AdminRole = 'owner' | 'employee' | 'super_admin' | 'editor' | 'viewer';
+export type AdminStatus = 'active' | 'disabled';
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  status: AdminStatus;
+  mustChangePassword: boolean;
+  lastLoginAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface HomepageSettings {
+  heroEyebrow?: string;
+  heroHeadingLine1?: string;
+  heroHeadingLine2?: string;
+  heroHeadingLine3?: string;
+  heroDescription?: string;
+  heroImageUrl?: string;
+  heroPrimaryBtnText?: string;
+  heroPrimaryBtnLink?: string;
+  heroSecondaryBtnText?: string;
+  heroSecondaryBtnLink?: string;
+  trustBadge1?: string;
+  trustBadge2?: string;
+  trustBadge3?: string;
+  trustBadge4?: string;
+  introEyebrow?: string;
+  introHeading?: string;
+  introParagraph1?: string;
+  introParagraph2?: string;
+  introImageUrl?: string;
+  stat1Value?: string;
+  stat1Label?: string;
+  stat2Value?: string;
+  stat2Label?: string;
+  stat3Value?: string;
+  stat3Label?: string;
+  ctaHeading?: string;
+  ctaDescription?: string;
+  ctaBtnText?: string;
+  ctaBtnLink?: string;
+}
+
+export interface SiteSettings {
+  brandName: string;
+  brandSubtitle?: string;
+  tagline: string;
+  architectName?: string;
+  establishedYear?: string;
+  googleRating?: string;
+  logoUrl?: string;
+  contactEmail: string;
+  contactPhone: string;
+  whatsappNumber?: string;
+  businessHours?: string;
+  studioAddress: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  currency: string;
+  currencySymbol: string;
+  taxRatePercent: number;
+  standardShippingFee: number;
+  freeShippingThreshold: number;
+  gstinNumber?: string;
+  minOrderValue?: number;
+  socialInstagram: string;
+  socialPinterest: string;
+  socialLinkedin: string;
+  socialFacebook?: string;
+  announcementBanner?: {
+    enabled: boolean;
+    text: string;
+    linkUrl?: string;
+  };
+  homepage?: HomepageSettings;
+  paymentGateway?: PaymentGatewaySettings;
+}
+
+export interface AuditLog {
+  id: string;
+  adminId: string;
+  adminEmail: string;
+  action: string;
+  entity: string;
+  entityId?: string;
+  details?: Record<string, any>;
+  ipAddress?: string;
+  createdAt: string;
+}
+
+export interface CartItem {
+  productId: string;
+  variantId?: string;
+  product: Product;
+  variant?: ProductVariant;
+  quantity: number;
+  unitPrice: number;
+}
+
+// =============================================================
+// DOMAIN DTOs & API CONTRACT TYPES
+// =============================================================
+
+export type PublicSiteSettings = Omit<SiteSettings, 'gstinNumber'>;
+
+export type StockAdjustmentReason =
+  | 'ORDER'
+  | 'RESTOCK'
+  | 'MANUAL_ADJUSTMENT'
+  | 'RETURN'
+  | 'DAMAGE'
+  | 'CORRECTION'
+  | 'OTHER';
+
+export interface StockAdjustmentRecord {
+  id?: string;
+  productId: string;
+  oldStock: number;
+  newStock: number;
+  reason: StockAdjustmentReason;
+  actor: string;
+  timestamp: string;
+}
+
+export interface CreateOrderInputDTO {
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: Address;
+  billingAddress?: Address;
+  items: {
+    productId: string;
+    variantId?: string;
+    quantity: number;
+    selectedColor?: string;
+    selectedFinish?: string;
+  }[];
+  paymentMethod: string;
+  notes?: string;
+  idempotencyKey?: string;
+}
+
+export interface ApiResponseSuccess<T> {
+  success: true;
+  data?: T;
+  [key: string]: any;
+}
+
+export interface ApiResponseError {
+  success: false;
+  error: string;
+  code?: string;
+}
+
+export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
+```
+
+---
+
+### <a id="src-lib-push-client-ts"></a>68. `src/lib/push-client.ts`
+
+> **Path**: `src/lib/push-client.ts` | **Lines**: 14 | **Size**: 0.5 KB
+
+```typescript
+export const DEFAULT_VAPID_PUBLIC_KEY =
+  'BHsG3ouw3YgPO_jlPvdNIBFISisslHHm-vxyMHmCRswNnDQxTBCZTLR2qRAQvNOC-avolJ61etGkPrNJV4MpxTE';
+
+export function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+```
+
+---
+
+### <a id="src-lib-seeddata-ts"></a>69. `src/lib/seedData.ts`
+
+> **Path**: `src/lib/seedData.ts` | **Lines**: 838 | **Size**: 36.2 KB
+
+```typescript
+import { hashPassword } from './auth';
+import { Category, Product, Project, Service, SiteSettings } from '@/types';
+
+export const initialSiteSettings: SiteSettings = {
+  brandName: 'BALAJI ARCHITECT & INTERIORS',
+  brandSubtitle: 'ARCHITECTURE • INTERIORS • MATERIALS',
+  tagline: 'Crafted spaces, luxury architecture, and considered materials for timeless living.',
+  architectName: 'Vikas Sir (Principal Architect)',
+  establishedYear: '2014',
+  googleRating: '★ 5.0 (22 Google Reviews)',
+  logoUrl: '/logo.png',
+  contactEmail: 'atelier@balaji-interior.com',
+  contactPhone: '+91 70029 48484',
+  whatsappNumber: '+91 70029 48484',
+  businessHours: 'Mon - Sat: 10:00 AM - 7:00 PM (IST)',
+  studioAddress: 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040',
+  city: 'Guwahati',
+  state: 'Assam',
+  country: 'India',
+  pincode: '781040',
+  currency: 'INR',
+  currencySymbol: '₹',
+  taxRatePercent: 18,
+  standardShippingFee: 1500,
+  freeShippingThreshold: 50000,
+  gstinNumber: '18AAECB4848F1ZX',
+  minOrderValue: 0,
+  socialInstagram: 'https://instagram.com/balajiatelier',
+  socialPinterest: 'https://pinterest.com/balajiatelier',
+  socialLinkedin: 'https://linkedin.com/company/balaji-atelier',
+  socialFacebook: 'https://facebook.com/balajiarchitects',
+  announcementBanner: {
+    enabled: true,
+    text: 'Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions',
+    linkUrl: '/quote',
+  },
+  homepage: {
+    heroEyebrow: 'Architecture • Interior Studio • Material Curation',
+    heroHeadingLine1: 'INTERIORS.',
+    heroHeadingLine2: 'ARCHITECTURE.',
+    heroHeadingLine3: 'MATERIALS.',
+    heroDescription:
+      'Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.',
+    heroImageUrl:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90',
+    heroPrimaryBtnText: 'Explore Projects',
+    heroPrimaryBtnLink: '/projects',
+    heroSecondaryBtnText: 'Explore Materials',
+    heroSecondaryBtnLink: '/materials',
+    trustBadge1: '★ 5.0 (22 Google Reviews)',
+    trustBadge2: 'Guwahati Studio Office',
+    trustBadge3: 'Turnkey Architecture',
+    trustBadge4: 'Pan-India Material Logistics',
+    introEyebrow: 'The Atelier Philosophy',
+    introHeading: 'Restraint is the ultimate form of luxury.',
+    introParagraph1:
+      'Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.',
+    introParagraph2:
+      'Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.',
+    introImageUrl:
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    stat1Value: '14+',
+    stat1Label: 'Years of Practice',
+    stat2Value: '180+',
+    stat2Label: 'Projects Handed Over',
+    stat3Value: '22+',
+    stat3Label: 'Global Quarry Partners',
+    ctaHeading: 'Commission an Architectural Dialogue',
+    ctaDescription:
+      'Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.',
+    ctaBtnText: 'Request Consultation & Quote',
+    ctaBtnLink: '/quote',
+  },
+  paymentGateway: {
+    enabled: true,
+    gatewayName: 'Balaji PG',
+    methodName: 'Balaji QR Payment',
+    upiId: '6000149918@fam',
+    merchantName: 'Balaji Architect & Interiors',
+    instructions:
+      '1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee "Balaji Architect & Interiors" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.',
+    qrExpiryMinutes: 10,
+    enableGPay: true,
+    enablePhonePe: true,
+    enablePaytm: true,
+    enableBhim: true,
+    enableCred: true,
+    enableAmazonPay: true,
+    requireUtr: true,
+  },
+};
+
+export const initialCategories: Category[] = [
+  {
+    id: 'cat-stone',
+    name: 'Natural Stone & Marble',
+    slug: 'natural-stone-marble',
+    description: 'Quarried Italian marbles, honed travertines, and architectural granites with bespoke cut-to-size options.',
+    imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 1,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-wood',
+    name: 'Hardwood & Architectural Veneers',
+    slug: 'hardwood-veneers',
+    description: 'Sustainably harvested smoked oaks, European walnuts, and natural fluted timber panels.',
+    imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 2,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-panels',
+    name: 'Wall Panels & Acoustic Surfaces',
+    slug: 'wall-panels-acoustic',
+    description: 'Linear slatted wall systems, architectural micro-cement claddings, and acoustic linen textures.',
+    imageUrl: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 3,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-porcelain',
+    name: 'Large Format Porcelain Slabs',
+    slug: 'porcelain-slabs',
+    description: 'Monolithic sintered stone slabs for luxury countertops, bookmatched feature walls, and seamless floors.',
+    imageUrl: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 4,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-lighting',
+    name: 'Architectural Lighting',
+    slug: 'architectural-lighting',
+    description: 'Sculptural unlacquered brass pendants, minimal linear sconces, and recessed gallery luminescence.',
+    imageUrl: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 5,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-hardware',
+    name: 'Bespoke Hardware & Pulls',
+    slug: 'bespoke-hardware',
+    description: 'Solid forged bronze handles, knurled cabinet pulls, and precision-engineered architectural pivots.',
+    imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 6,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'cat-furniture',
+    name: 'Atelier Furniture & Objects',
+    slug: 'atelier-furniture',
+    description: 'Limited edition travertine monoliths, solid oak dining tables, and tailored bouclé seating.',
+    imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+    sortOrder: 7,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+export const initialProducts: Product[] = [
+  {
+    id: 'prod-travertine-slab',
+    name: 'Romano Classico Vein-Cut Travertine',
+    slug: 'romano-classico-travertine',
+    sku: 'MAT-STN-001',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-stone',
+    categoryName: 'Natural Stone & Marble',
+    categorySlug: 'natural-stone-marble',
+    subcategory: 'Honed Travertine',
+    description: 'Authentic Italian vein-cut travertine quarried in Tivoli. Honed to a velvety matte tactile finish with natural open pores lightly filled for lasting resilience in high-end living spaces and bath suites.',
+    price: 850,
+    salePrice: 780,
+    unit: 'sq ft',
+    moq: 100,
+    stock: 2400,
+    purchaseMode: 'BOTH',
+    leadTime: '5-7 business days',
+    dimensions: '2400mm x 1200mm slab / custom tile sizes',
+    thickness: '20mm',
+    material: 'Natural Travertine',
+    finish: 'Honed Matte',
+    color: 'Warm Ivory / Biscuit',
+    images: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+    ],
+    variants: [
+      {
+        id: 'var-trav-20mm',
+        productId: 'prod-travertine-slab',
+        sku: 'MAT-STN-001-20',
+        name: '20mm Slab - Honed',
+        finish: 'Honed',
+        thickness: '20mm',
+        priceModifier: 0,
+        stock: 1800,
+      },
+      {
+        id: 'var-trav-30mm',
+        productId: 'prod-travertine-slab',
+        sku: 'MAT-STN-001-30',
+        name: '30mm Slab - Polished Matte',
+        finish: 'Polished Matte',
+        thickness: '30mm',
+        priceModifier: 190,
+        stock: 600,
+      },
+    ],
+    isFeatured: true,
+    isNew: false,
+    isBestseller: true,
+    published: true,
+    tags: ['Stone', 'Travertine', 'Flooring', 'Wall Cladding', 'Luxury Bath'],
+    specifications: {
+      'Origin': 'Tivoli, Italy',
+      'Compressive Strength': '112 MPa',
+      'Water Absorption': '< 0.8%',
+      'Application': 'Indoor flooring, feature walls, bathroom surrounds',
+      'Edge Detail': 'Straight rectified / custom bullnose on request',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-smoked-oak-flooring',
+    name: 'Smoked European White Oak Wide Plank',
+    slug: 'smoked-european-oak-flooring',
+    sku: 'MAT-WOD-002',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-wood',
+    categoryName: 'Hardwood & Architectural Veneers',
+    categorySlug: 'hardwood-veneers',
+    subcategory: 'Engineered Hardwood',
+    description: 'Slow-smoked French white oak planks with a triple-brushed wire texture and invisible natural UV polyurethane oil finish. Engineered with a multi-layer birch ply core for dimensional stability in humid climates.',
+    price: 620,
+    unit: 'sq ft',
+    moq: 150,
+    stock: 3500,
+    purchaseMode: 'BUY_NOW',
+    leadTime: '3-5 business days',
+    dimensions: '2200mm L x 220mm W',
+    thickness: '15mm (4mm top wear layer)',
+    material: 'European White Oak & Baltic Birch',
+    finish: 'Natural Ultra-Matte Oil',
+    color: 'Muted Earth Brown',
+    images: [
+      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80',
+    ],
+    variants: [
+      {
+        id: 'var-oak-smoked',
+        productId: 'prod-smoked-oak-flooring',
+        sku: 'MAT-WOD-002-SMK',
+        name: 'Smoked Natural',
+        color: 'Warm Umber',
+        finish: 'Wire Brushed',
+        priceModifier: 0,
+        stock: 2200,
+      },
+      {
+        id: 'var-oak-raw',
+        productId: 'prod-smoked-oak-flooring',
+        sku: 'MAT-WOD-002-RAW',
+        name: 'Raw Nordic Sand',
+        color: 'Light Biscuit',
+        finish: 'Smooth Matte',
+        priceModifier: 40,
+        stock: 1300,
+      },
+    ],
+    isFeatured: true,
+    isNew: true,
+    isBestseller: true,
+    published: true,
+    tags: ['Wood', 'Flooring', 'Oak', 'Wide Plank', 'Living Room'],
+    specifications: {
+      'Grade': 'Select Architectural ABC',
+      'Core': '11-ply Cross-Grain Baltic Birch',
+      'Bevel': 'Micro-bevel on 4 sides',
+      'Installation': 'Tongue & Groove / Glue-down or Floating',
+      'Underfloor Heating Compatible': 'Yes, up to 27°C',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-fluted-acoustic-panel',
+    name: 'Acoustic Fluted Walnut Wall Panel',
+    slug: 'acoustic-fluted-walnut-panel',
+    sku: 'MAT-PNL-003',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-panels',
+    categoryName: 'Wall Panels & Acoustic Surfaces',
+    categorySlug: 'wall-panels-acoustic',
+    subcategory: 'Acoustic Cladding',
+    description: 'Precision-milled American walnut slats affixed to a recycled high-density acoustic PET felt backing. Elevates room acoustics while introducing warm architectural rhythm to master bedrooms and private cinema suites.',
+    price: 14500,
+    salePrice: 13200,
+    unit: 'sheet',
+    moq: 2,
+    stock: 85,
+    purchaseMode: 'BUY_NOW',
+    leadTime: '3-4 business days',
+    dimensions: '2400mm H x 600mm W x 22mm D',
+    thickness: '22mm',
+    material: 'Natural American Walnut & Recycled Felt',
+    finish: 'Silky Natural Wax Oil',
+    color: 'Deep Espresso Walnut',
+    images: [
+      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: true,
+    isNew: true,
+    isBestseller: false,
+    published: true,
+    tags: ['Acoustic', 'Wall Panels', 'Walnut', 'Fluted', 'Bedrooms'],
+    specifications: {
+      'NRC Rating': '0.85 Sound Absorption',
+      'Fire Rating': 'Class B-s1, d0 (Flame Retardant)',
+      'Mounting': 'Concealed screw or polyurethane construction adhesive',
+      'Slat Spacing': '13mm width with 14mm felt reveals',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-calacatta-porcelain',
+    name: 'Calacatta Vagli Sintered Porcelain Slab',
+    slug: 'calacatta-vagli-porcelain-slab',
+    sku: 'MAT-POR-004',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-porcelain',
+    categoryName: 'Large Format Porcelain Slabs',
+    categorySlug: 'porcelain-slabs',
+    subcategory: 'Continuous Bookmatched Slabs',
+    description: 'Continuous vein-matched sintered ceramic slab with deep golden and slate veins on an ultra-clean warm white background. 100% stain, heat, and scratch proof for demanding culinary islands and master vanities.',
+    price: 1100,
+    unit: 'sq ft',
+    moq: 50,
+    stock: 1200,
+    purchaseMode: 'BOTH',
+    leadTime: '7-10 business days',
+    dimensions: '3200mm x 1600mm',
+    thickness: '12mm / 20mm',
+    material: 'Sintered Ceramic Porcelain',
+    finish: 'Silk Touch Satin',
+    color: 'Pure White with Gold & Charcoal Veining',
+    images: [
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: false,
+    isNew: false,
+    isBestseller: true,
+    published: true,
+    tags: ['Kitchen Countertop', 'Porcelain Slab', 'Bookmatched', 'Island Counter'],
+    specifications: {
+      'Porosity': '0.01% (Zero Porosity)',
+      'Thermal Shock': 'Resistant to direct pans up to 400°C',
+      'UV Stability': 'Fade proof for indoor and outdoor loggias',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-monolith-coffee-table',
+    name: 'Brutalist Travertine Monolith Coffee Table',
+    slug: 'brutalist-travertine-coffee-table',
+    sku: 'FUR-TBL-005',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-furniture',
+    categoryName: 'Atelier Furniture & Objects',
+    categorySlug: 'atelier-furniture',
+    subcategory: 'Sculptural Tables',
+    description: 'Sculpted from a single block of Tuscan Romano travertine. Defined by raw chiseled edges contrasting with a silky hand-honed flat surface. Each table is an individual architectural sculpture numbered by the studio.',
+    price: 185000,
+    unit: 'piece',
+    moq: 1,
+    stock: 4,
+    purchaseMode: 'BUY_NOW',
+    leadTime: 'Made to order (2-3 weeks)',
+    dimensions: '1400mm L x 800mm W x 360mm H',
+    thickness: '120mm solid block perimeter',
+    material: 'Solid Honed Travertine Stone',
+    finish: 'Natural Matte Wax Sealed',
+    color: 'Ivory Travertine',
+    images: [
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: true,
+    isNew: true,
+    isBestseller: false,
+    published: true,
+    tags: ['Furniture', 'Coffee Table', 'Travertine', 'Sculptural', 'Living Room'],
+    specifications: {
+      'Weight': '115 kg',
+      'Craftsmanship': 'Hand-chiseled perimeter with CNC planar accuracy',
+      'Care': 'Wipe with damp cloth and pH neutral stone cleanser',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-linear-bronze-pendant',
+    name: 'Kanso Linear Brushed Bronze Chandelier',
+    slug: 'kanso-linear-bronze-chandelier',
+    sku: 'LGT-PEN-006',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-lighting',
+    categoryName: 'Architectural Lighting',
+    categorySlug: 'architectural-lighting',
+    subcategory: 'Suspension Lighting',
+    description: 'A monolithic 1.8-meter solid extruded bronze fixture housing warm 2700K museum-grade CRI 97+ LED arrays diffused through frosted Japanese alabaster glass. Dimmable via DALI and TRIAC protocols.',
+    price: 88000,
+    unit: 'set',
+    moq: 1,
+    stock: 12,
+    purchaseMode: 'BUY_NOW',
+    leadTime: '5-7 business days',
+    dimensions: '1800mm L x 60mm W x 80mm H (Suspension up to 2500mm)',
+    material: 'Solid Extruded Bronze & Cast Alabaster',
+    finish: 'Hand-Rubbed Aged Bronze',
+    color: 'Antique Bronze',
+    images: [
+      'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: true,
+    isNew: false,
+    isBestseller: true,
+    published: true,
+    tags: ['Lighting', 'Bronze', 'Dining Table Chandelier', 'Minimalist'],
+    specifications: {
+      'Luminous Flux': '4,200 Lumens',
+      'Color Temperature': '2700K Warm Architectural Glow',
+      'Color Rendering Index': 'CRI 98',
+      'Voltage': '220-240V AC 50/60Hz',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-knurled-bronze-hardware',
+    name: 'Bespoke Knurled Bronze Door Lever & Escutcheon Set',
+    slug: 'bespoke-knurled-bronze-door-lever',
+    sku: 'HRD-LVR-007',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-hardware',
+    categoryName: 'Bespoke Hardware & Pulls',
+    categorySlug: 'bespoke-hardware',
+    subcategory: 'Architectural Door Hardware',
+    description: 'Machined from solid naval brass billets and finished with a dark antique bronze patina that deepens with use. Features a precision cross-hatch diamond knurled barrel for a reassuring tactile grip on heavy entrance doors.',
+    price: 9500,
+    salePrice: 8600,
+    unit: 'set',
+    moq: 2,
+    stock: 65,
+    purchaseMode: 'BUY_NOW',
+    leadTime: '2-3 business days',
+    dimensions: '150mm Lever x 52mm Rose',
+    material: 'Solid Forged Naval Brass',
+    finish: 'Unlacquered Living Bronze Patina',
+    color: 'Dark Antique Bronze',
+    images: [
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: false,
+    isNew: true,
+    isBestseller: true,
+    published: true,
+    tags: ['Door Hardware', 'Bronze Handles', 'Knurled Brass', 'Luxury Entrance'],
+    specifications: {
+      'Mechanism': 'Heavy duty sprung return rose with ball-bearing hub',
+      'Spindle': '8mm solid steel standard',
+      'Door Thickness Fit': '38mm to 55mm solid timber doors',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod-custom-millwork-veneer',
+    name: 'Smoked Santos Rosewood Architectural Veneer',
+    slug: 'smoked-santos-rosewood-veneer',
+    sku: 'MAT-VNR-008',
+    brand: 'Balaji Architect & Interiors',
+    categoryId: 'cat-wood',
+    categoryName: 'Hardwood & Architectural Veneers',
+    categorySlug: 'hardwood-veneers',
+    subcategory: 'Natural Wood Veneer',
+    description: 'Sequenced architectural flitch veneer with rich espresso cathedrals and bronze undertones. Backed with non-woven fleece for seamless pressing onto curved cabinetry and bespoke wardrobes.',
+    price: 320,
+    unit: 'sq ft',
+    moq: 200,
+    stock: 4200,
+    purchaseMode: 'REQUEST_QUOTE',
+    leadTime: '7-10 business days',
+    dimensions: '3050mm L x 1250mm W',
+    thickness: '0.6mm',
+    material: 'Natural Santos Rosewood',
+    finish: 'Raw Unfinished (Ready for matte polyurethane or hardwax)',
+    color: 'Rich Espresso & Bronze Striations',
+    images: [
+      'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80',
+    ],
+    isFeatured: false,
+    isNew: false,
+    isBestseller: false,
+    published: true,
+    tags: ['Veneer', 'Rosewood', 'Wardrobes', 'Wall Paneling', 'Joinery'],
+    specifications: {
+      'Cut': 'Crown Cut & Quarter Cut Bookmatched',
+      'Moisture Content': '8-12%',
+      'Sustainably Certified': 'FSC 100% Controlled Harvest',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+export const initialProjects: Project[] = [
+  {
+    id: 'proj-sanctuary-alibaug',
+    title: 'The Sanctuary at Alibaug',
+    slug: 'the-sanctuary-at-alibaug',
+    location: 'Awas Coast, Alibaug',
+    year: '2025',
+    projectType: 'Architecture & Villa',
+    area: '8,200 sq ft',
+    shortDescription: 'A monolithic coastal retreat grounded in honed Tivoli travertine, smoked French oak, and frameless pocketing glass walls connecting lush banyan groves.',
+    description: 'Designed as a timeless multi-generational weekend villa, The Sanctuary is configured around a central reflecting pool framed by board-formed concrete and warm Italian travertine. Every interior element was custom designed and fabricated by Balaji Architect & Interiors, ensuring unbroken harmony between raw architectural mass and delicate tactile finishes.',
+    heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'Our approach balanced heavy thermal mass walls with delicate bronze joinery and natural woven linens, allowing sea breezes to filter through while maintaining deep shade and thermal comfort.',
+    materialsUsed: [
+      {
+        materialId: 'prod-travertine-slab',
+        materialName: 'Romano Classico Vein-Cut Travertine',
+        category: 'Natural Stone',
+        imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80',
+      },
+      {
+        materialId: 'prod-smoked-oak-flooring',
+        materialName: 'Smoked European White Oak Wide Plank',
+        category: 'Timber',
+        imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80',
+      },
+      {
+        materialId: 'prod-linear-bronze-pendant',
+        materialName: 'Kanso Linear Brushed Bronze Chandelier',
+        category: 'Lighting',
+        imageUrl: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80',
+      },
+    ],
+    isPublished: true,
+    isFeatured: true,
+    sortOrder: 1,
+    tags: ['Villa', 'Coastal', 'Travertine', 'Minimalist Luxury', 'Turnkey Execution'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'proj-pavilion-worli',
+    title: 'Pavilion of Light',
+    slug: 'pavilion-of-light-worli',
+    location: 'Worli Seaface, Mumbai',
+    year: '2024',
+    projectType: 'Penthouse & Estate',
+    area: '5,400 sq ft',
+    shortDescription: 'An expansive sea-facing sky penthouse wrapped in acoustic fluted walnut paneling, Calacatta Vagli porcelain, and custom patinated bronze millwork.',
+    description: 'Perched high above the Arabian Sea, this sky residence explores how sunlight behaves across contrasting textures. The public salon flows seamlessly from honed stone floors to floor-to-ceiling smoked walnut millwork housing a curated collection of modern sculpture.',
+    heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'We eradicated unnecessary visual clutter, replacing drywall partitions with sliding fluted acoustic timber screens that allow the living space to transform dynamically from open gallery to private entertaining salon.',
+    materialsUsed: [
+      {
+        materialId: 'prod-fluted-acoustic-panel',
+        materialName: 'Acoustic Fluted Walnut Wall Panel',
+        category: 'Acoustic Cladding',
+        imageUrl: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80',
+      },
+      {
+        materialId: 'prod-calacatta-porcelain',
+        materialName: 'Calacatta Vagli Sintered Porcelain Slab',
+        category: 'Sintered Stone',
+        imageUrl: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=400&q=80',
+      },
+    ],
+    isPublished: true,
+    isFeatured: true,
+    sortOrder: 2,
+    tags: ['Penthouse', 'Mumbai', 'Walnut', 'Sea View', 'Interior Design'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'proj-maison-brutaliste',
+    title: 'Maison Brutaliste',
+    slug: 'maison-brutaliste-delhi',
+    location: 'Chhatarpur Farms, New Delhi',
+    year: '2025',
+    projectType: 'Residential Interiors',
+    area: '11,000 sq ft',
+    shortDescription: 'A bold sculptural private residence contrasting raw architectural board-formed concrete with refined brushed bronze and lush interior courtyard gardens.',
+    description: 'Conceived as an inward-looking sanctuary shielded from urban noise, Maison Brutaliste features soaring 6-meter ceilings and rhythmic colonnades that capture changing light across the seasons.',
+    heroImage: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'The project demonstrates our philosophy of material honesty—every concrete pour, timber grain, and bronze joint is left exposed to celebrate true construction craftsmanship.',
+    materialsUsed: [
+      {
+        materialId: 'prod-travertine-slab',
+        materialName: 'Romano Classico Vein-Cut Travertine',
+        category: 'Stone',
+      },
+      {
+        materialId: 'prod-knurled-bronze-hardware',
+        materialName: 'Bespoke Knurled Bronze Door Lever',
+        category: 'Hardware',
+      },
+    ],
+    isPublished: true,
+    isFeatured: true,
+    sortOrder: 3,
+    tags: ['Brutalist', 'Private Residence', 'Delhi', 'Concrete & Bronze'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'proj-monolith-studio',
+    title: 'The Monolith Design Headquarters',
+    slug: 'the-monolith-design-headquarters',
+    location: 'Indiranagar, Bengaluru',
+    year: '2024',
+    projectType: 'Commercial & Studio',
+    area: '4,200 sq ft',
+    shortDescription: 'A serene creative studio for an international fashion house featuring modular walnut workstations and monolithic stone meeting pods.',
+    description: 'Balaji Architect & Interiors was commissioned to rethink modern creative workspace architecture. We crafted quiet acoustic alcoves and an open library of tactile material specimens to inspire daily design exploration.',
+    heroImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'Focus on high acoustic performance and calm ambient illumination to support deep creative focus.',
+    materialsUsed: [
+      {
+        materialId: 'prod-fluted-acoustic-panel',
+        materialName: 'Acoustic Fluted Walnut Wall Panel',
+        category: 'Acoustics',
+      },
+    ],
+    isPublished: true,
+    isFeatured: false,
+    sortOrder: 4,
+    tags: ['Studio', 'Workplace', 'Bengaluru', 'Commercial'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'proj-aura-hyderabad',
+    title: 'Aura Residence',
+    slug: 'aura-residence-hyderabad',
+    location: 'Jubilee Hills, Hyderabad',
+    year: '2025',
+    projectType: 'Residential Interiors',
+    area: '6,800 sq ft',
+    shortDescription: 'An understated private residence balancing traditional Deccan courtyard typologies with razor-sharp modern detailing.',
+    description: 'Every room in Aura Residence is composed around intimate landscaped lightwells. Custom unlacquered bronze partitions and vein-matched marble floors foster a feeling of continuous calm.',
+    heroImage: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'Integration of passive ventilation, natural daylight, and enduring local granite masonry.',
+    materialsUsed: [],
+    isPublished: true,
+    isFeatured: true,
+    sortOrder: 5,
+    tags: ['Courtyard House', 'Hyderabad', 'Luxury Interior'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'proj-kyoto-tea-dine',
+    title: 'Kyoto Tea & Dine Atelier',
+    slug: 'kyoto-tea-dine-atelier',
+    location: 'Pali Hill, Bandra West, Mumbai',
+    year: '2024',
+    projectType: 'Hospitality & Luxury Dining',
+    area: '3,900 sq ft',
+    shortDescription: 'An intimate omakase and artisanal tea lounge celebrated for its charred Shou Sugi Ban cedar walls and monolithic travertine bar.',
+    description: 'Designed as a multisensory journey, guests transition through a tranquil rock garden into an ambient dining room anchored by an 8-meter solid stone counter illuminated by custom linear bronze fixtures.',
+    heroImage: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80',
+    ],
+    designApproach: 'Minimalist Japanese wabi-sabi principles interpreted through contemporary Indian stone craftsmanship.',
+    materialsUsed: [
+      {
+        materialId: 'prod-linear-bronze-pendant',
+        materialName: 'Kanso Linear Brushed Bronze Chandelier',
+        category: 'Lighting',
+      },
+    ],
+    isPublished: true,
+    isFeatured: false,
+    sortOrder: 6,
+    tags: ['Hospitality', 'Restaurant', 'Bandra', 'Dining'],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+export const initialServices: Service[] = [
+  {
+    id: 'srv-interior-architecture',
+    title: 'Interior Architecture & Space Planning',
+    slug: 'interior-architecture-space-planning',
+    shortDesc: 'Comprehensive spatial reconfiguration, structural alignment, and architectural interior detailing for luxury residences and estates.',
+    fullDesc: 'We re-engineer spatial flows from first principles, taking into account natural daylight vectors, sightlines, acoustics, and structural integration. Our drawings cover full architectural CAD & BIM sets, reflected ceiling plans, MEP coordination, and micro-detailed millwork joinery.',
+    iconName: 'Compass',
+    imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    deliverables: [
+      'Concept spatial diagrams & 3D volumetric studies',
+      'Full architectural interior blueprint packages',
+      'Reflected ceiling & architectural lighting plans',
+      'Custom door, window, and wall assembly details',
+      'Statutory & structural consultant coordination',
+    ],
+    sortOrder: 1,
+    isPublished: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'srv-turnkey-execution',
+    title: 'Turnkey Luxury Execution',
+    slug: 'turnkey-luxury-execution',
+    shortDesc: 'End-to-end master project management, artisan craftsmanship, and on-site engineering from bare shell to final handover.',
+    fullDesc: 'Our dedicated site engineering and project management division oversees every phase of construction. We ensure absolute adherence to millimeter tolerances, material integrity, and promised delivery timelines.',
+    iconName: 'ShieldCheck',
+    imageUrl: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+    deliverables: [
+      'Dedicated on-site architectural project manager',
+      'Daily photographic progress tracking & Gantt charts',
+      'Master artisan supervision (masonry, carpentry, stone finishing)',
+      'Rigorous multi-stage QA and snag resolution',
+      'Comprehensive maintenance manuals & warranty portfolio',
+    ],
+    sortOrder: 2,
+    isPublished: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'srv-material-consultation',
+    title: 'Material Curation & Sourcing Advisory',
+    slug: 'material-curation-sourcing',
+    shortDesc: 'Global stone quarry selection, certified timber procurement, and bespoke surface formulation tailored to project climate.',
+    fullDesc: 'Leveraging our direct relationships with European quarries and master timber mills, we curate bespoke material palettes that age gracefully. We conduct rigorous laboratory testing for water absorption, hardness, and thermal behavior.',
+    iconName: 'Layers',
+    imageUrl: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+    deliverables: [
+      'Physical tactile sample trays & curated finish moodboards',
+      'Direct quarry inspection and slab block selection',
+      'Full technical specification sheets & maintenance protocols',
+      'Contractor procurement schedules and MOQ optimization',
+    ],
+    sortOrder: 3,
+    isPublished: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'srv-custom-furniture',
+    title: 'Bespoke Furniture & Custom Millwork',
+    slug: 'bespoke-furniture-custom-millwork',
+    shortDesc: 'Limited edition furniture, sculptural stone monoliths, and precision-engineered architectural cabinetry handcrafted in our studio.',
+    fullDesc: 'Every piece is drafted specifically for its designated space, utilizing select hardwoods, hand-poured bronze castings, and monolithic natural stones.',
+    iconName: 'Armchair',
+    imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+    deliverables: [
+      '1:1 scale ergonomic prototypes and timber mockups',
+      'Hand-selected natural flitch veneer matching',
+      'Integrated soft-close concealed hardware engineering',
+      'Numbered certificate of atelier authenticity',
+    ],
+    sortOrder: 4,
+    isPublished: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+/**
+ * Returns initial admin account with email vicks@balaji.com
+ * and must_change_password: true.
+ * Note: Password is never stored in plaintext!
+ */
+export function getInitialAdminSeed() {
+  return {
+    id: '2bd20632-00dd-4f48-84b4-6e526543c8d8',
+    email: 'vicks@balaji.com',
+    passwordHash: hashPassword('v****@********'),
+    name: 'Vikas Sir (Principal Architect)',
+    role: 'super_admin' as const,
+    mustChangePassword: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+```
+
+---
+
+### <a id="supabase-schema-sql"></a>70. `supabase/schema.sql`
+
+> **Path**: `supabase/schema.sql` | **Lines**: 763 | **Size**: 26.9 KB
+
+```sql
+-- ============================================================
+-- BALAJI ATELIER — LUXURY INTERIOR & ARCHITECTURE PLATFORM
+-- PRODUCTION DATABASE SCHEMA WITH ROW LEVEL SECURITY (RLS)
+-- ============================================================
+
+-- 1. ADMINS TABLE
+CREATE TABLE IF NOT EXISTS admins (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'super_admin',
+    must_change_password BOOLEAN NOT NULL DEFAULT true,
+    last_login_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 2. CATEGORIES TABLE
+CREATE TABLE IF NOT EXISTS categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    description TEXT,
+    image_url TEXT,
+    parent_id UUID REFERENCES categories(id) ON DELETE SET NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 3. PRODUCTS TABLE
+CREATE TABLE IF NOT EXISTS products (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    sku TEXT UNIQUE NOT NULL,
+    brand TEXT NOT NULL DEFAULT 'Balaji Atelier',
+    category_id UUID REFERENCES categories(id) ON DELETE RESTRICT,
+    subcategory TEXT,
+    description TEXT NOT NULL,
+    price NUMERIC(12, 2) NOT NULL CHECK (price >= 0),
+    sale_price NUMERIC(12, 2) CHECK (sale_price >= 0),
+    unit TEXT NOT NULL DEFAULT 'sq ft',
+    moq INT NOT NULL DEFAULT 1 CHECK (moq >= 1),
+    stock INT NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    purchase_mode TEXT NOT NULL DEFAULT 'BUY_NOW',
+    lead_time TEXT NOT NULL DEFAULT '3-5 business days',
+    dimensions TEXT,
+    thickness TEXT,
+    material TEXT,
+    finish TEXT,
+    color TEXT,
+    images JSONB NOT NULL DEFAULT '[]'::jsonb,
+    is_featured BOOLEAN NOT NULL DEFAULT false,
+    is_new BOOLEAN NOT NULL DEFAULT false,
+    is_bestseller BOOLEAN NOT NULL DEFAULT false,
+    published BOOLEAN NOT NULL DEFAULT true,
+    tags TEXT[] NOT NULL DEFAULT '{}',
+    specifications JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 4. PRODUCT VARIANTS TABLE
+CREATE TABLE IF NOT EXISTS product_variants (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    sku TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    color TEXT,
+    finish TEXT,
+    thickness TEXT,
+    size TEXT,
+    price_modifier NUMERIC(12, 2) NOT NULL DEFAULT 0,
+    stock INT NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    image_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 5. COLLECTIONS TABLE
+CREATE TABLE IF NOT EXISTS collections (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    description TEXT,
+    cover_image TEXT,
+    is_published BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 6. INVENTORY TABLE
+CREATE TABLE IF NOT EXISTS inventory (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    variant_id UUID REFERENCES product_variants(id) ON DELETE CASCADE,
+    stock_on_hand INT NOT NULL DEFAULT 0 CHECK (stock_on_hand >= 0),
+    stock_reserved INT NOT NULL DEFAULT 0 CHECK (stock_reserved >= 0),
+    stock_available INT NOT NULL DEFAULT 0 CHECK (stock_available >= 0),
+    low_stock_threshold INT NOT NULL DEFAULT 5,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (product_id, variant_id)
+);
+
+-- 7. PROJECTS (PORTFOLIO) TABLE
+CREATE TABLE IF NOT EXISTS projects (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    location TEXT NOT NULL,
+    year TEXT NOT NULL,
+    project_type TEXT NOT NULL,
+    area TEXT NOT NULL,
+    short_description TEXT NOT NULL,
+    description TEXT NOT NULL,
+    hero_image TEXT NOT NULL,
+    gallery JSONB NOT NULL DEFAULT '[]'::jsonb,
+    design_approach TEXT NOT NULL,
+    materials_used JSONB NOT NULL DEFAULT '[]'::jsonb,
+    before_after JSONB DEFAULT '{}'::jsonb,
+    is_published BOOLEAN NOT NULL DEFAULT true,
+    is_featured BOOLEAN NOT NULL DEFAULT false,
+    sort_order INT NOT NULL DEFAULT 0,
+    tags TEXT[] NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 8. SERVICES TABLE
+CREATE TABLE IF NOT EXISTS services (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    short_desc TEXT NOT NULL,
+    full_desc TEXT NOT NULL,
+    icon_name TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    deliverables JSONB NOT NULL DEFAULT '[]'::jsonb,
+    sort_order INT NOT NULL DEFAULT 0,
+    is_published BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 9. CUSTOMERS TABLE
+CREATE TABLE IF NOT EXISTS customers (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT UNIQUE NOT NULL,
+    phone TEXT,
+    full_name TEXT NOT NULL,
+    is_guest BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 10. ADDRESSES TABLE
+CREATE TABLE IF NOT EXISTS addresses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
+    full_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    address_line1 TEXT NOT NULL,
+    address_line2 TEXT,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    pincode TEXT NOT NULL,
+    country TEXT NOT NULL DEFAULT 'India',
+    is_default BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 11. ORDERS TABLE
+CREATE TABLE IF NOT EXISTS orders (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_number TEXT UNIQUE NOT NULL,
+    customer_id UUID REFERENCES customers(id) ON DELETE SET NULL,
+    customer_name TEXT NOT NULL,
+    customer_email TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    shipping_address JSONB NOT NULL,
+    billing_address JSONB,
+    subtotal NUMERIC(12, 2) NOT NULL CHECK (subtotal >= 0),
+    tax NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (tax >= 0),
+    shipping_fee NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (shipping_fee >= 0),
+    discount NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (discount >= 0),
+    total_amount NUMERIC(12, 2) NOT NULL CHECK (total_amount >= 0),
+    order_status TEXT NOT NULL DEFAULT 'Pending',
+    payment_status TEXT NOT NULL DEFAULT 'Pending',
+    payment_method TEXT NOT NULL DEFAULT 'Card',
+    notes TEXT,
+    idempotency_key TEXT UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 12. ORDER ITEMS TABLE
+CREATE TABLE IF NOT EXISTS order_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id UUID REFERENCES products(id) ON DELETE SET NULL,
+    variant_id UUID REFERENCES product_variants(id) ON DELETE SET NULL,
+    product_name TEXT NOT NULL,
+    product_sku TEXT NOT NULL,
+    unit TEXT NOT NULL,
+    unit_price NUMERIC(12, 2) NOT NULL CHECK (unit_price >= 0),
+    quantity INT NOT NULL CHECK (quantity > 0),
+    subtotal NUMERIC(12, 2) NOT NULL CHECK (subtotal >= 0),
+    image_url TEXT,
+    selected_color TEXT,
+    selected_finish TEXT
+);
+
+-- 13. QUOTES TABLE
+CREATE TABLE IF NOT EXISTS quotes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    quote_number TEXT UNIQUE NOT NULL,
+    customer_name TEXT NOT NULL,
+    customer_email TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    project_type TEXT NOT NULL,
+    project_location TEXT NOT NULL,
+    estimated_timeline TEXT NOT NULL,
+    budget_range TEXT NOT NULL,
+    notes TEXT,
+    status TEXT NOT NULL DEFAULT 'Pending',
+    total_quoted_amount NUMERIC(12, 2),
+    admin_notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 14. QUOTE ITEMS TABLE
+CREATE TABLE IF NOT EXISTS quote_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    quote_id UUID NOT NULL REFERENCES quotes(id) ON DELETE CASCADE,
+    product_id UUID REFERENCES products(id) ON DELETE SET NULL,
+    product_name TEXT NOT NULL,
+    dimensions TEXT,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unit TEXT NOT NULL,
+    estimated_unit_price NUMERIC(12, 2),
+    notes TEXT
+);
+
+-- 15. ENQUIRIES TABLE
+CREATE TABLE IF NOT EXISTS enquiries (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    message TEXT NOT NULL,
+    source TEXT NOT NULL DEFAULT 'Contact Page',
+    status TEXT NOT NULL DEFAULT 'New',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 16. SITE SETTINGS TABLE
+CREATE TABLE IF NOT EXISTS site_settings (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 17. NOTIFICATION SUBSCRIPTIONS TABLE
+CREATE TABLE IF NOT EXISTS notification_subscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    endpoint TEXT UNIQUE NOT NULL,
+    keys JSONB NOT NULL,
+    user_agent TEXT,
+    admin_id UUID REFERENCES admins(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 18. AUDIT LOGS TABLE
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    admin_id UUID REFERENCES admins(id) ON DELETE SET NULL,
+    admin_email TEXT NOT NULL,
+    action TEXT NOT NULL,
+    entity TEXT NOT NULL,
+    entity_id TEXT,
+    details JSONB,
+    ip_address TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 19. ORDER STATUS HISTORY TABLE
+CREATE TABLE IF NOT EXISTS order_status_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+    from_status TEXT,
+    to_status TEXT NOT NULL,
+    actor_id UUID REFERENCES admins(id) ON DELETE SET NULL,
+    actor_email TEXT,
+    note TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 20. PAYMENT HISTORY TABLE
+CREATE TABLE IF NOT EXISTS payment_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+    status TEXT NOT NULL,
+    amount NUMERIC NOT NULL,
+    utr_number TEXT,
+    payment_method TEXT NOT NULL,
+    actor_email TEXT,
+    note TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================
+-- INDEXES FOR MAXIMUM QUERY PERFORMANCE
+-- ============================================================
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
+CREATE INDEX IF NOT EXISTS idx_products_slug ON products(slug);
+CREATE INDEX IF NOT EXISTS idx_products_sku ON products(sku);
+CREATE INDEX IF NOT EXISTS idx_products_published ON products(published);
+CREATE INDEX IF NOT EXISTS idx_projects_slug ON projects(slug);
+CREATE INDEX IF NOT EXISTS idx_projects_published ON projects(is_published);
+CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(order_status);
+CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
+CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON orders(customer_email);
+CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_quotes_status ON quotes(status);
+CREATE INDEX IF NOT EXISTS idx_quotes_customer_email ON quotes(customer_email);
+CREATE INDEX IF NOT EXISTS idx_quotes_created_at ON quotes(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_order_status_history_order ON order_status_history(order_id);
+CREATE INDEX IF NOT EXISTS idx_payment_history_order ON payment_history(order_id);
+
+-- ============================================================
+-- ENABLE ROW LEVEL SECURITY (RLS) ON ALL TABLES
+-- ============================================================
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE product_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE collections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE addresses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE quotes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE quote_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE enquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notification_subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_status_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payment_history ENABLE ROW LEVEL SECURITY;
+
+-- ============================================================
+-- RLS POLICIES (PUBLIC READ & STRICT MUTATION ISOLATION)
+-- ============================================================
+
+-- 1. Categories: Public can read active categories
+CREATE POLICY "Public categories read" ON categories
+    FOR SELECT USING (is_active = true);
+
+-- 2. Products: Public can read published products
+CREATE POLICY "Public products read" ON products
+    FOR SELECT USING (published = true);
+
+-- 3. Product Variants: Public can read all variants
+CREATE POLICY "Public variants read" ON product_variants
+    FOR SELECT USING (true);
+
+-- 4. Collections: Public can read published collections
+CREATE POLICY "Public collections read" ON collections
+    FOR SELECT USING (is_published = true);
+
+-- 5. Projects: Public can read published portfolio projects
+CREATE POLICY "Public projects read" ON projects
+    FOR SELECT USING (is_published = true);
+
+-- 6. Services: Public can read published services
+CREATE POLICY "Public services read" ON services
+    FOR SELECT USING (is_published = true);
+
+-- 7. Site Settings: Direct table access restricted to server service role; public reads are served securely via sanitized /api/settings endpoint
+CREATE POLICY "Service role site settings read" ON site_settings
+    FOR SELECT TO service_role USING (true);
+
+-- 8. Orders: Public can submit new orders
+CREATE POLICY "Public can create orders" ON orders
+    FOR INSERT WITH CHECK (true);
+
+-- 9. Order Items: Public can insert items during checkout
+CREATE POLICY "Public can create order items" ON order_items
+    FOR INSERT WITH CHECK (true);
+
+-- 10. Quotes: Public can submit quote requests
+CREATE POLICY "Public can create quotes" ON quotes
+    FOR INSERT WITH CHECK (true);
+
+-- 11. Quote Items: Public can insert quote items
+CREATE POLICY "Public can create quote items" ON quote_items
+    FOR INSERT WITH CHECK (true);
+
+-- 12. Enquiries: Public can submit contact messages
+CREATE POLICY "Public can create enquiries" ON enquiries
+    FOR INSERT WITH CHECK (true);
+
+-- 13. Push Subscriptions: Public/Admin can register endpoints
+CREATE POLICY "Public can register push endpoints" ON notification_subscriptions
+    FOR INSERT WITH CHECK (true);
+
+-- ============================================================
+-- ATOMIC STOCK PROCEDURES
+-- ============================================================
+CREATE OR REPLACE FUNCTION decrement_stock_atomic(p_product_id UUID, p_quantity INT)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_rows_affected INT;
+BEGIN
+    UPDATE products
+    SET stock = stock - p_quantity,
+        updated_at = NOW()
+    WHERE id = p_product_id AND stock >= p_quantity;
+
+    GET DIAGNOSTICS v_rows_affected = ROW_COUNT;
+    RETURN v_rows_affected > 0;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION increment_stock_atomic(p_product_id UUID, p_quantity INT)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE products
+    SET stock = stock + p_quantity,
+        updated_at = NOW()
+    WHERE id = p_product_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 3. ATOMIC ORDER CREATION (Single Database Transaction)
+CREATE OR REPLACE FUNCTION create_order_atomic(p_order_data JSONB)
+RETURNS JSONB AS $$
+DECLARE
+    v_idempotency_key TEXT;
+    v_existing_order JSONB;
+    v_order_id UUID;
+    v_order_number TEXT;
+    v_subtotal NUMERIC := 0;
+    v_tax_rate NUMERIC := 0.18;
+    v_tax NUMERIC := 0;
+    v_shipping_fee NUMERIC := 1500;
+    v_free_shipping_threshold NUMERIC := 50000;
+    v_total_amount NUMERIC := 0;
+    v_item JSONB;
+    v_product RECORD;
+    v_variant RECORD;
+    v_item_price NUMERIC;
+    v_item_subtotal NUMERIC;
+    v_created_order JSONB;
+BEGIN
+    -- 1. Check Idempotency Key
+    v_idempotency_key := p_order_data->>'idempotencyKey';
+    IF v_idempotency_key IS NOT NULL AND v_idempotency_key <> '' THEN
+        SELECT jsonb_build_object(
+            'id', o.id,
+            'order_number', o.order_number,
+            'customer_name', o.customer_name,
+            'customer_email', o.customer_email,
+            'customer_phone', o.customer_phone,
+            'shipping_address', o.shipping_address,
+            'billing_address', o.billing_address,
+            'subtotal', o.subtotal,
+            'tax', o.tax,
+            'shipping_fee', o.shipping_fee,
+            'discount', o.discount,
+            'total_amount', o.total_amount,
+            'order_status', o.order_status,
+            'payment_status', o.payment_status,
+            'payment_method', o.payment_method,
+            'notes', o.notes,
+            'idempotency_key', o.idempotency_key,
+            'created_at', o.created_at,
+            'updated_at', o.updated_at,
+            'items', COALESCE(jsonb_agg(to_jsonb(oi)), '[]'::jsonb)
+        ) INTO v_existing_order
+        FROM orders o
+        LEFT JOIN order_items oi ON oi.order_id = o.id
+        WHERE o.idempotency_key = v_idempotency_key
+        GROUP BY o.id;
+
+        IF v_existing_order IS NOT NULL THEN
+            RETURN v_existing_order;
+        END IF;
+    END IF;
+
+    -- 2. Validate Items, Published State, and Reserve Stock Atomically
+    FOR v_item IN SELECT * FROM jsonb_array_elements(p_order_data->'items')
+    LOOP
+        SELECT * INTO v_product
+        FROM products
+        WHERE id = (v_item->>'productId')::UUID
+        FOR UPDATE;
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Product with ID % not found', (v_item->>'productId');
+        END IF;
+
+        IF NOT v_product.published THEN
+            RAISE EXCEPTION 'Product "%" is currently not available for purchase', v_product.name;
+        END IF;
+
+        IF v_product.stock < (v_item->>'quantity')::INT THEN
+            RAISE EXCEPTION 'Insufficient stock for "%". Available: %, Requested: %', 
+                v_product.name, v_product.stock, (v_item->>'quantity')::INT;
+        END IF;
+
+        -- Check Variant if provided
+        IF (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN
+            SELECT * INTO v_variant
+            FROM product_variants
+            WHERE id = (v_item->>'variantId')::UUID
+            FOR UPDATE;
+
+            IF FOUND THEN
+                IF v_variant.stock IS NOT NULL AND v_variant.stock > 0 AND v_variant.stock < (v_item->>'quantity')::INT THEN
+                    RAISE EXCEPTION 'Insufficient variant stock for "% - %". Available: %, Requested: %',
+                        v_product.name, v_variant.name, v_variant.stock, (v_item->>'quantity')::INT;
+                END IF;
+                IF v_variant.stock IS NOT NULL AND v_variant.stock >= (v_item->>'quantity')::INT THEN
+                    UPDATE product_variants
+                    SET stock = stock - (v_item->>'quantity')::INT
+                    WHERE id = v_variant.id;
+                END IF;
+            END IF;
+        END IF;
+
+        -- Decrement product stock atomically
+        UPDATE products
+        SET stock = stock - (v_item->>'quantity')::INT,
+            updated_at = NOW()
+        WHERE id = v_product.id;
+
+        -- Authoritative price calculation
+        v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        IF v_variant.id IS NOT NULL AND v_variant.price_modifier IS NOT NULL THEN
+            v_item_price := v_item_price + v_variant.price_modifier;
+        END IF;
+        v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
+        v_subtotal := v_subtotal + v_item_subtotal;
+    END LOOP;
+
+    -- 3. Calculate Taxes and Shipping
+    v_tax := ROUND(v_subtotal * v_tax_rate);
+    IF v_subtotal >= v_free_shipping_threshold THEN
+        v_shipping_fee := 0;
+    END IF;
+    v_total_amount := v_subtotal + v_tax + v_shipping_fee;
+
+    -- 4. Generate Collision-Safe Order Number
+    v_order_number := 'BAL-' || UPPER(TO_HEX(EXTRACT(EPOCH FROM NOW())::BIGINT)) || '-' || UPPER(SUBSTRING(MD5(RANDOM()::TEXT) FROM 1 FOR 6));
+
+    -- 5. Insert Order Record
+    INSERT INTO orders (
+        order_number,
+        customer_name,
+        customer_email,
+        customer_phone,
+        shipping_address,
+        billing_address,
+        subtotal,
+        tax,
+        shipping_fee,
+        discount,
+        total_amount,
+        order_status,
+        payment_status,
+        payment_method,
+        notes,
+        idempotency_key,
+        created_at,
+        updated_at
+    ) VALUES (
+        v_order_number,
+        p_order_data->>'customerName',
+        p_order_data->>'customerEmail',
+        p_order_data->>'customerPhone',
+        p_order_data->'shippingAddress',
+        COALESCE(p_order_data->'billingAddress', p_order_data->'shippingAddress'),
+        v_subtotal,
+        v_tax,
+        v_shipping_fee,
+        0,
+        v_total_amount,
+        'Confirmed',
+        'Submitted',
+        COALESCE(p_order_data->>'paymentMethod', 'Balaji QR Payment (Balaji PG)'),
+        COALESCE(p_order_data->>'notes', ''),
+        v_idempotency_key,
+        NOW(),
+        NOW()
+    ) RETURNING id INTO v_order_id;
+
+    -- 6. Insert Order Items
+    FOR v_item IN SELECT * FROM jsonb_array_elements(p_order_data->'items')
+    LOOP
+        SELECT * INTO v_product FROM products WHERE id = (v_item->>'productId')::UUID;
+        v_item_price := COALESCE(v_product.sale_price, v_product.price);
+        IF (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN
+            SELECT * INTO v_variant FROM product_variants WHERE id = (v_item->>'variantId')::UUID;
+            IF FOUND AND v_variant.price_modifier IS NOT NULL THEN
+                v_item_price := v_item_price + v_variant.price_modifier;
+            END IF;
+        END IF;
+        v_item_subtotal := v_item_price * (v_item->>'quantity')::INT;
+
+        INSERT INTO order_items (
+            order_id,
+            product_id,
+            variant_id,
+            product_name,
+            product_sku,
+            unit,
+            unit_price,
+            quantity,
+            subtotal,
+            image_url,
+            selected_color,
+            selected_finish
+        ) VALUES (
+            v_order_id,
+            v_product.id,
+            CASE WHEN (v_item->>'variantId') IS NOT NULL AND (v_item->>'variantId') <> '' THEN (v_item->>'variantId')::UUID ELSE NULL END,
+            v_product.name,
+            v_product.sku,
+            v_product.unit,
+            v_item_price,
+            (v_item->>'quantity')::INT,
+            v_item_subtotal,
+            CASE WHEN jsonb_array_length(to_jsonb(v_product.images)) > 0 THEN v_product.images[1] ELSE '' END,
+            COALESCE(v_item->>'selectedColor', v_product.color),
+            COALESCE(v_item->>'selectedFinish', v_product.finish)
+        );
+    END LOOP;
+
+    -- 7. Upsert Customer Record
+    INSERT INTO customers (email, full_name, phone, is_guest, created_at, updated_at)
+    VALUES (
+        LOWER(TRIM(p_order_data->>'customerEmail')),
+        p_order_data->>'customerName',
+        p_order_data->>'customerPhone',
+        FALSE,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (email) DO UPDATE
+    SET full_name = EXCLUDED.full_name,
+        phone = COALESCE(customers.phone, EXCLUDED.phone),
+        updated_at = NOW();
+
+    -- 8. Return Full Order with Items
+    SELECT jsonb_build_object(
+        'id', o.id,
+        'order_number', o.order_number,
+        'customer_name', o.customer_name,
+        'customer_email', o.customer_email,
+        'customer_phone', o.customer_phone,
+        'shipping_address', o.shipping_address,
+        'billing_address', o.billing_address,
+        'subtotal', o.subtotal,
+        'tax', o.tax,
+        'shipping_fee', o.shipping_fee,
+        'discount', o.discount,
+        'total_amount', o.total_amount,
+        'order_status', o.order_status,
+        'payment_status', o.payment_status,
+        'payment_method', o.payment_method,
+        'notes', o.notes,
+        'idempotency_key', o.idempotency_key,
+        'created_at', o.created_at,
+        'updated_at', o.updated_at,
+        'items', COALESCE(jsonb_agg(to_jsonb(oi)), '[]'::jsonb)
+    ) INTO v_created_order
+    FROM orders o
+    LEFT JOIN order_items oi ON oi.order_id = o.id
+    WHERE o.id = v_order_id
+    GROUP BY o.id;
+
+    RETURN v_created_order;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 4. ATOMIC ORDER CANCELLATION & INVENTORY RESTORATION
+CREATE OR REPLACE FUNCTION cancel_order_atomic(
+    p_order_id UUID,
+    p_actor_email TEXT DEFAULT 'system',
+    p_note TEXT DEFAULT 'Order cancelled'
+)
+RETURNS JSONB AS $$
+DECLARE
+    v_order RECORD;
+    v_item RECORD;
+    v_updated_order JSONB;
+BEGIN
+    SELECT * INTO v_order
+    FROM orders
+    WHERE id = p_order_id
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Order with ID % not found', p_order_id;
+    END IF;
+
+    -- If already cancelled, do not restore stock again
+    IF v_order.order_status = 'Cancelled' THEN
+        SELECT to_jsonb(o) INTO v_updated_order FROM orders o WHERE o.id = p_order_id;
+        RETURN v_updated_order;
+    END IF;
+
+    -- Only restore stock if cancelling prior to dispatch/delivery
+    IF v_order.order_status IN ('Pending', 'Confirmed', 'Processing') THEN
+        FOR v_item IN SELECT * FROM order_items WHERE order_id = p_order_id
+        LOOP
+            IF v_item.product_id IS NOT NULL THEN
+                UPDATE products
+                SET stock = stock + v_item.quantity,
+                    updated_at = NOW()
+                WHERE id = v_item.product_id;
+            END IF;
+        END LOOP;
+    END IF;
+
+    -- Update order status
+    UPDATE orders
+    SET order_status = 'Cancelled',
+        updated_at = NOW()
+    WHERE id = p_order_id;
+
+    -- Record status history atomically
+    INSERT INTO order_status_history (
+        order_id,
+        from_status,
+        to_status,
+        actor_email,
+        note,
+        created_at
+    ) VALUES (
+        p_order_id,
+        v_order.order_status,
+        'Cancelled',
+        p_actor_email,
+        p_note,
+        NOW()
+    );
+
+    SELECT to_jsonb(o) INTO v_updated_order FROM orders o WHERE o.id = p_order_id;
+    RETURN v_updated_order;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+---
+
+### <a id="data-db-json"></a>71. `data/db.json`
+
+> **Path**: `data/db.json` | **Lines**: 1244 | **Size**: 48.8 KB
+
+```json
+{
+  "admins": [
+    {
+      "id": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "email": "vicks@balaji.com",
+      "passwordHash": "3903a96046ec99bc94100f812cfee1b2:e72fa457ba6ab3be8353defbdf61b4c243714f27acb2cbc20fd2232dc36e184bd6564345d66103f433154a166821c36b5e0a0b162aeddf378182678a830c7f5b",
+      "name": "Vikas Sir (Principal Architect)",
+      "role": "super_admin",
+      "status": "active",
+      "mustChangePassword": false,
+      "createdAt": "2026-08-17T16:23:54.088Z",
+      "updatedAt": "2026-08-18T14:26:57.433Z",
+      "lastLoginAt": "2026-09-08T12:05:25.086Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-stone",
+      "name": "Natural Stone & Marble",
+      "slug": "natural-stone-marble",
+      "description": "Quarried Italian marbles, honed travertines, and architectural granites with bespoke cut-to-size options.",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 1,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.256Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-wood",
+      "name": "Hardwood & Architectural Veneers",
+      "slug": "hardwood-veneers",
+      "description": "Sustainably harvested smoked oaks, European walnuts, and natural fluted timber panels.",
+      "imageUrl": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 2,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-panels",
+      "name": "Wall Panels & Acoustic Surfaces",
+      "slug": "wall-panels-acoustic",
+      "description": "Linear slatted wall systems, architectural micro-cement claddings, and acoustic linen textures.",
+      "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 3,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-porcelain",
+      "name": "Large Format Porcelain Slabs",
+      "slug": "porcelain-slabs",
+      "description": "Monolithic sintered stone slabs for luxury countertops, bookmatched feature walls, and seamless floors.",
+      "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 4,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-lighting",
+      "name": "Architectural Lighting",
+      "slug": "architectural-lighting",
+      "description": "Sculptural unlacquered brass pendants, minimal linear sconces, and recessed gallery luminescence.",
+      "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 5,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-hardware",
+      "name": "Bespoke Hardware & Pulls",
+      "slug": "bespoke-hardware",
+      "description": "Solid forged bronze handles, knurled cabinet pulls, and precision-engineered architectural pivots.",
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 6,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "cat-furniture",
+      "name": "Atelier Furniture & Objects",
+      "slug": "atelier-furniture",
+      "description": "Limited edition travertine monoliths, solid oak dining tables, and tailored bouclé seating.",
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "sortOrder": 7,
+      "isActive": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-travertine-slab",
+      "name": "Romano Classico Vein-Cut Travertine",
+      "slug": "romano-classico-travertine",
+      "sku": "MAT-STN-001",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-stone",
+      "categoryName": "Natural Stone & Marble",
+      "categorySlug": "natural-stone-marble",
+      "subcategory": "Honed Travertine",
+      "description": "Authentic Italian vein-cut travertine quarried in Tivoli. Honed to a velvety matte tactile finish with natural open pores lightly filled for lasting resilience in high-end living spaces and bath suites.",
+      "price": 850,
+      "salePrice": 780,
+      "unit": "sq ft",
+      "moq": 100,
+      "stock": 2380,
+      "purchaseMode": "BOTH",
+      "leadTime": "5-7 business days",
+      "dimensions": "2400mm x 1200mm slab / custom tile sizes",
+      "thickness": "20mm",
+      "material": "Natural Travertine",
+      "finish": "Honed Matte",
+      "color": "Warm Ivory / Biscuit",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "variants": [
+        {
+          "id": "var-trav-20mm",
+          "productId": "prod-travertine-slab",
+          "sku": "MAT-STN-001-20",
+          "name": "20mm Slab - Honed",
+          "finish": "Honed",
+          "thickness": "20mm",
+          "priceModifier": 0,
+          "stock": 1800
+        },
+        {
+          "id": "var-trav-30mm",
+          "productId": "prod-travertine-slab",
+          "sku": "MAT-STN-001-30",
+          "name": "30mm Slab - Polished Matte",
+          "finish": "Polished Matte",
+          "thickness": "30mm",
+          "priceModifier": 190,
+          "stock": 600
+        }
+      ],
+      "isFeatured": true,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Stone",
+        "Travertine",
+        "Flooring",
+        "Wall Cladding",
+        "Luxury Bath"
+      ],
+      "specifications": {
+        "Origin": "Tivoli, Italy",
+        "Compressive Strength": "112 MPa",
+        "Water Absorption": "< 0.8%",
+        "Application": "Indoor flooring, feature walls, bathroom surrounds",
+        "Edge Detail": "Straight rectified / custom bullnose on request"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:06:09.346Z"
+    },
+    {
+      "id": "prod-smoked-oak-flooring",
+      "name": "Smoked European White Oak Wide Plank",
+      "slug": "smoked-european-oak-flooring",
+      "sku": "MAT-WOD-002",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-wood",
+      "categoryName": "Hardwood & Architectural Veneers",
+      "categorySlug": "hardwood-veneers",
+      "subcategory": "Engineered Hardwood",
+      "description": "Slow-smoked French white oak planks with a triple-brushed wire texture and invisible natural UV polyurethane oil finish. Engineered with a multi-layer birch ply core for dimensional stability in humid climates.",
+      "price": 620,
+      "unit": "sq ft",
+      "moq": 150,
+      "stock": 3500,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "3-5 business days",
+      "dimensions": "2200mm L x 220mm W",
+      "thickness": "15mm (4mm top wear layer)",
+      "material": "European White Oak & Baltic Birch",
+      "finish": "Natural Ultra-Matte Oil",
+      "color": "Muted Earth Brown",
+      "images": [
+        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "variants": [
+        {
+          "id": "var-oak-smoked",
+          "productId": "prod-smoked-oak-flooring",
+          "sku": "MAT-WOD-002-SMK",
+          "name": "Smoked Natural",
+          "color": "Warm Umber",
+          "finish": "Wire Brushed",
+          "priceModifier": 0,
+          "stock": 2200
+        },
+        {
+          "id": "var-oak-raw",
+          "productId": "prod-smoked-oak-flooring",
+          "sku": "MAT-WOD-002-RAW",
+          "name": "Raw Nordic Sand",
+          "color": "Light Biscuit",
+          "finish": "Smooth Matte",
+          "priceModifier": 40,
+          "stock": 1300
+        }
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Wood",
+        "Flooring",
+        "Oak",
+        "Wide Plank",
+        "Living Room"
+      ],
+      "specifications": {
+        "Grade": "Select Architectural ABC",
+        "Core": "11-ply Cross-Grain Baltic Birch",
+        "Bevel": "Micro-bevel on 4 sides",
+        "Installation": "Tongue & Groove / Glue-down or Floating",
+        "Underfloor Heating Compatible": "Yes, up to 27°C"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-fluted-acoustic-panel",
+      "name": "Acoustic Fluted Walnut Wall Panel",
+      "slug": "acoustic-fluted-walnut-panel",
+      "sku": "MAT-PNL-003",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-panels",
+      "categoryName": "Wall Panels & Acoustic Surfaces",
+      "categorySlug": "wall-panels-acoustic",
+      "subcategory": "Acoustic Cladding",
+      "description": "Precision-milled American walnut slats affixed to a recycled high-density acoustic PET felt backing. Elevates room acoustics while introducing warm architectural rhythm to master bedrooms and private cinema suites.",
+      "price": 14500,
+      "salePrice": 13200,
+      "unit": "sheet",
+      "moq": 2,
+      "stock": 85,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "3-4 business days",
+      "dimensions": "2400mm H x 600mm W x 22mm D",
+      "thickness": "22mm",
+      "material": "Natural American Walnut & Recycled Felt",
+      "finish": "Silky Natural Wax Oil",
+      "color": "Deep Espresso Walnut",
+      "images": [
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Acoustic",
+        "Wall Panels",
+        "Walnut",
+        "Fluted",
+        "Bedrooms"
+      ],
+      "specifications": {
+        "NRC Rating": "0.85 Sound Absorption",
+        "Fire Rating": "Class B-s1, d0 (Flame Retardant)",
+        "Mounting": "Concealed screw or polyurethane construction adhesive",
+        "Slat Spacing": "13mm width with 14mm felt reveals"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-calacatta-porcelain",
+      "name": "Calacatta Vagli Sintered Porcelain Slab",
+      "slug": "calacatta-vagli-porcelain-slab",
+      "sku": "MAT-POR-004",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-porcelain",
+      "categoryName": "Large Format Porcelain Slabs",
+      "categorySlug": "porcelain-slabs",
+      "subcategory": "Continuous Bookmatched Slabs",
+      "description": "Continuous vein-matched sintered ceramic slab with deep golden and slate veins on an ultra-clean warm white background. 100% stain, heat, and scratch proof for demanding culinary islands and master vanities.",
+      "price": 1100,
+      "unit": "sq ft",
+      "moq": 50,
+      "stock": 1200,
+      "purchaseMode": "BOTH",
+      "leadTime": "7-10 business days",
+      "dimensions": "3200mm x 1600mm",
+      "thickness": "12mm / 20mm",
+      "material": "Sintered Ceramic Porcelain",
+      "finish": "Silk Touch Satin",
+      "color": "Pure White with Gold & Charcoal Veining",
+      "images": [
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Kitchen Countertop",
+        "Porcelain Slab",
+        "Bookmatched",
+        "Island Counter"
+      ],
+      "specifications": {
+        "Porosity": "0.01% (Zero Porosity)",
+        "Thermal Shock": "Resistant to direct pans up to 400°C",
+        "UV Stability": "Fade proof for indoor and outdoor loggias"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-monolith-coffee-table",
+      "name": "Brutalist Travertine Monolith Coffee Table",
+      "slug": "brutalist-travertine-coffee-table",
+      "sku": "FUR-TBL-005",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-furniture",
+      "categoryName": "Atelier Furniture & Objects",
+      "categorySlug": "atelier-furniture",
+      "subcategory": "Sculptural Tables",
+      "description": "Sculpted from a single block of Tuscan Romano travertine. Defined by raw chiseled edges contrasting with a silky hand-honed flat surface. Each table is an individual architectural sculpture numbered by the studio.",
+      "price": 185000,
+      "unit": "piece",
+      "moq": 1,
+      "stock": 4,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "Made to order (2-3 weeks)",
+      "dimensions": "1400mm L x 800mm W x 360mm H",
+      "thickness": "120mm solid block perimeter",
+      "material": "Solid Honed Travertine Stone",
+      "finish": "Natural Matte Wax Sealed",
+      "color": "Ivory Travertine",
+      "images": [
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": true,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Furniture",
+        "Coffee Table",
+        "Travertine",
+        "Sculptural",
+        "Living Room"
+      ],
+      "specifications": {
+        "Weight": "115 kg",
+        "Craftsmanship": "Hand-chiseled perimeter with CNC planar accuracy",
+        "Care": "Wipe with damp cloth and pH neutral stone cleanser"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-linear-bronze-pendant",
+      "name": "Kanso Linear Brushed Bronze Chandelier",
+      "slug": "kanso-linear-bronze-chandelier",
+      "sku": "LGT-PEN-006",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-lighting",
+      "categoryName": "Architectural Lighting",
+      "categorySlug": "architectural-lighting",
+      "subcategory": "Suspension Lighting",
+      "description": "A monolithic 1.8-meter solid extruded bronze fixture housing warm 2700K museum-grade CRI 97+ LED arrays diffused through frosted Japanese alabaster glass. Dimmable via DALI and TRIAC protocols.",
+      "price": 88000,
+      "unit": "set",
+      "moq": 1,
+      "stock": 12,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "5-7 business days",
+      "dimensions": "1800mm L x 60mm W x 80mm H (Suspension up to 2500mm)",
+      "material": "Solid Extruded Bronze & Cast Alabaster",
+      "finish": "Hand-Rubbed Aged Bronze",
+      "color": "Antique Bronze",
+      "images": [
+        "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": true,
+      "isNew": false,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Lighting",
+        "Bronze",
+        "Dining Table Chandelier",
+        "Minimalist"
+      ],
+      "specifications": {
+        "Luminous Flux": "4,200 Lumens",
+        "Color Temperature": "2700K Warm Architectural Glow",
+        "Color Rendering Index": "CRI 98",
+        "Voltage": "220-240V AC 50/60Hz"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-knurled-bronze-hardware",
+      "name": "Bespoke Knurled Bronze Door Lever & Escutcheon Set",
+      "slug": "bespoke-knurled-bronze-door-lever",
+      "sku": "HRD-LVR-007",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-hardware",
+      "categoryName": "Bespoke Hardware & Pulls",
+      "categorySlug": "bespoke-hardware",
+      "subcategory": "Architectural Door Hardware",
+      "description": "Machined from solid naval brass billets and finished with a dark antique bronze patina that deepens with use. Features a precision cross-hatch diamond knurled barrel for a reassuring tactile grip on heavy entrance doors.",
+      "price": 9500,
+      "salePrice": 8600,
+      "unit": "set",
+      "moq": 2,
+      "stock": 65,
+      "purchaseMode": "BUY_NOW",
+      "leadTime": "2-3 business days",
+      "dimensions": "150mm Lever x 52mm Rose",
+      "material": "Solid Forged Naval Brass",
+      "finish": "Unlacquered Living Bronze Patina",
+      "color": "Dark Antique Bronze",
+      "images": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": true,
+      "isBestseller": true,
+      "published": true,
+      "tags": [
+        "Door Hardware",
+        "Bronze Handles",
+        "Knurled Brass",
+        "Luxury Entrance"
+      ],
+      "specifications": {
+        "Mechanism": "Heavy duty sprung return rose with ball-bearing hub",
+        "Spindle": "8mm solid steel standard",
+        "Door Thickness Fit": "38mm to 55mm solid timber doors"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "prod-custom-millwork-veneer",
+      "name": "Smoked Santos Rosewood Architectural Veneer",
+      "slug": "smoked-santos-rosewood-veneer",
+      "sku": "MAT-VNR-008",
+      "brand": "Balaji Architect & Interiors",
+      "categoryId": "cat-wood",
+      "categoryName": "Hardwood & Architectural Veneers",
+      "categorySlug": "hardwood-veneers",
+      "subcategory": "Natural Wood Veneer",
+      "description": "Sequenced architectural flitch veneer with rich espresso cathedrals and bronze undertones. Backed with non-woven fleece for seamless pressing onto curved cabinetry and bespoke wardrobes.",
+      "price": 320,
+      "unit": "sq ft",
+      "moq": 200,
+      "stock": 4200,
+      "purchaseMode": "REQUEST_QUOTE",
+      "leadTime": "7-10 business days",
+      "dimensions": "3050mm L x 1250mm W",
+      "thickness": "0.6mm",
+      "material": "Natural Santos Rosewood",
+      "finish": "Raw Unfinished (Ready for matte polyurethane or hardwax)",
+      "color": "Rich Espresso & Bronze Striations",
+      "images": [
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isFeatured": false,
+      "isNew": false,
+      "isBestseller": false,
+      "published": true,
+      "tags": [
+        "Veneer",
+        "Rosewood",
+        "Wardrobes",
+        "Wall Paneling",
+        "Joinery"
+      ],
+      "specifications": {
+        "Cut": "Crown Cut & Quarter Cut Bookmatched",
+        "Moisture Content": "8-12%",
+        "Sustainably Certified": "FSC 100% Controlled Harvest"
+      },
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-sanctuary-alibaug",
+      "title": "The Sanctuary at Alibaug",
+      "slug": "the-sanctuary-at-alibaug",
+      "location": "Awas Coast, Alibaug",
+      "year": "2025",
+      "projectType": "Architecture & Villa",
+      "area": "8,200 sq ft",
+      "shortDescription": "A monolithic coastal retreat grounded in honed Tivoli travertine, smoked French oak, and frameless pocketing glass walls connecting lush banyan groves.",
+      "description": "Designed as a timeless multi-generational weekend villa, The Sanctuary is configured around a central reflecting pool framed by board-formed concrete and warm Italian travertine. Every interior element was custom designed and fabricated by Balaji Architect & Interiors, ensuring unbroken harmony between raw architectural mass and delicate tactile finishes.",
+      "heroImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Our approach balanced heavy thermal mass walls with delicate bronze joinery and natural woven linens, allowing sea breezes to filter through while maintaining deep shade and thermal comfort.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-travertine-slab",
+          "materialName": "Romano Classico Vein-Cut Travertine",
+          "category": "Natural Stone",
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-smoked-oak-flooring",
+          "materialName": "Smoked European White Oak Wide Plank",
+          "category": "Timber",
+          "imageUrl": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-linear-bronze-pendant",
+          "materialName": "Kanso Linear Brushed Bronze Chandelier",
+          "category": "Lighting",
+          "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 1,
+      "tags": [
+        "Villa",
+        "Coastal",
+        "Travertine",
+        "Minimalist Luxury",
+        "Turnkey Execution"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "proj-pavilion-worli",
+      "title": "Pavilion of Light",
+      "slug": "pavilion-of-light-worli",
+      "location": "Worli Seaface, Mumbai",
+      "year": "2024",
+      "projectType": "Penthouse & Estate",
+      "area": "5,400 sq ft",
+      "shortDescription": "An expansive sea-facing sky penthouse wrapped in acoustic fluted walnut paneling, Calacatta Vagli porcelain, and custom patinated bronze millwork.",
+      "description": "Perched high above the Arabian Sea, this sky residence explores how sunlight behaves across contrasting textures. The public salon flows seamlessly from honed stone floors to floor-to-ceiling smoked walnut millwork housing a curated collection of modern sculpture.",
+      "heroImage": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "We eradicated unnecessary visual clutter, replacing drywall partitions with sliding fluted acoustic timber screens that allow the living space to transform dynamically from open gallery to private entertaining salon.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-fluted-acoustic-panel",
+          "materialName": "Acoustic Fluted Walnut Wall Panel",
+          "category": "Acoustic Cladding",
+          "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          "materialId": "prod-calacatta-porcelain",
+          "materialName": "Calacatta Vagli Sintered Porcelain Slab",
+          "category": "Sintered Stone",
+          "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=400&q=80"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 2,
+      "tags": [
+        "Penthouse",
+        "Mumbai",
+        "Walnut",
+        "Sea View",
+        "Interior Design"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "proj-maison-brutaliste",
+      "title": "Maison Brutaliste",
+      "slug": "maison-brutaliste-delhi",
+      "location": "Chhatarpur Farms, New Delhi",
+      "year": "2025",
+      "projectType": "Residential Interiors",
+      "area": "11,000 sq ft",
+      "shortDescription": "A bold sculptural private residence contrasting raw architectural board-formed concrete with refined brushed bronze and lush interior courtyard gardens.",
+      "description": "Conceived as an inward-looking sanctuary shielded from urban noise, Maison Brutaliste features soaring 6-meter ceilings and rhythmic colonnades that capture changing light across the seasons.",
+      "heroImage": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "The project demonstrates our philosophy of material honesty—every concrete pour, timber grain, and bronze joint is left exposed to celebrate true construction craftsmanship.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-travertine-slab",
+          "materialName": "Romano Classico Vein-Cut Travertine",
+          "category": "Stone"
+        },
+        {
+          "materialId": "prod-knurled-bronze-hardware",
+          "materialName": "Bespoke Knurled Bronze Door Lever",
+          "category": "Hardware"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 3,
+      "tags": [
+        "Brutalist",
+        "Private Residence",
+        "Delhi",
+        "Concrete & Bronze"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "proj-monolith-studio",
+      "title": "The Monolith Design Headquarters",
+      "slug": "the-monolith-design-headquarters",
+      "location": "Indiranagar, Bengaluru",
+      "year": "2024",
+      "projectType": "Commercial & Studio",
+      "area": "4,200 sq ft",
+      "shortDescription": "A serene creative studio for an international fashion house featuring modular walnut workstations and monolithic stone meeting pods.",
+      "description": "Balaji Architect & Interiors was commissioned to rethink modern creative workspace architecture. We crafted quiet acoustic alcoves and an open library of tactile material specimens to inspire daily design exploration.",
+      "heroImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Focus on high acoustic performance and calm ambient illumination to support deep creative focus.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-fluted-acoustic-panel",
+          "materialName": "Acoustic Fluted Walnut Wall Panel",
+          "category": "Acoustics"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": false,
+      "sortOrder": 4,
+      "tags": [
+        "Studio",
+        "Workplace",
+        "Bengaluru",
+        "Commercial"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "proj-aura-hyderabad",
+      "title": "Aura Residence",
+      "slug": "aura-residence-hyderabad",
+      "location": "Jubilee Hills, Hyderabad",
+      "year": "2025",
+      "projectType": "Residential Interiors",
+      "area": "6,800 sq ft",
+      "shortDescription": "An understated private residence balancing traditional Deccan courtyard typologies with razor-sharp modern detailing.",
+      "description": "Every room in Aura Residence is composed around intimate landscaped lightwells. Custom unlacquered bronze partitions and vein-matched marble floors foster a feeling of continuous calm.",
+      "heroImage": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Integration of passive ventilation, natural daylight, and enduring local granite masonry.",
+      "materialsUsed": [],
+      "isPublished": true,
+      "isFeatured": true,
+      "sortOrder": 5,
+      "tags": [
+        "Courtyard House",
+        "Hyderabad",
+        "Luxury Interior"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    },
+    {
+      "id": "proj-kyoto-tea-dine",
+      "title": "Kyoto Tea & Dine Atelier",
+      "slug": "kyoto-tea-dine-atelier",
+      "location": "Pali Hill, Bandra West, Mumbai",
+      "year": "2024",
+      "projectType": "Hospitality & Luxury Dining",
+      "area": "3,900 sq ft",
+      "shortDescription": "An intimate omakase and artisanal tea lounge celebrated for its charred Shou Sugi Ban cedar walls and monolithic travertine bar.",
+      "description": "Designed as a multisensory journey, guests transition through a tranquil rock garden into an ambient dining room anchored by an 8-meter solid stone counter illuminated by custom linear bronze fixtures.",
+      "heroImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85",
+      "gallery": [
+        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80"
+      ],
+      "designApproach": "Minimalist Japanese wabi-sabi principles interpreted through contemporary Indian stone craftsmanship.",
+      "materialsUsed": [
+        {
+          "materialId": "prod-linear-bronze-pendant",
+          "materialName": "Kanso Linear Brushed Bronze Chandelier",
+          "category": "Lighting"
+        }
+      ],
+      "isPublished": true,
+      "isFeatured": false,
+      "sortOrder": 6,
+      "tags": [
+        "Hospitality",
+        "Restaurant",
+        "Bandra",
+        "Dining"
+      ],
+      "createdAt": "2026-08-17T17:05:35.782Z",
+      "updatedAt": "2026-08-17T17:05:35.782Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "srv-interior-architecture",
+      "title": "Interior Architecture & Space Planning",
+      "slug": "interior-architecture-space-planning",
+      "shortDesc": "Comprehensive spatial reconfiguration, structural alignment, and architectural interior detailing for luxury residences and estates.",
+      "fullDesc": "We re-engineer spatial flows from first principles, taking into account natural daylight vectors, sightlines, acoustics, and structural integration. Our drawings cover full architectural CAD & BIM sets, reflected ceiling plans, MEP coordination, and micro-detailed millwork joinery.",
+      "iconName": "Compass",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Concept spatial diagrams & 3D volumetric studies",
+        "Full architectural interior blueprint packages",
+        "Reflected ceiling & architectural lighting plans",
+        "Custom door, window, and wall assembly details",
+        "Statutory & structural consultant coordination"
+      ],
+      "sortOrder": 1,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-turnkey-execution",
+      "title": "Turnkey Luxury Execution",
+      "slug": "turnkey-luxury-execution",
+      "shortDesc": "End-to-end master project management, artisan craftsmanship, and on-site engineering from bare shell to final handover.",
+      "fullDesc": "Our dedicated site engineering and project management division oversees every phase of construction. We ensure absolute adherence to millimeter tolerances, material integrity, and promised delivery timelines.",
+      "iconName": "ShieldCheck",
+      "imageUrl": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Dedicated on-site architectural project manager",
+        "Daily photographic progress tracking & Gantt charts",
+        "Master artisan supervision (masonry, carpentry, stone finishing)",
+        "Rigorous multi-stage QA and snag resolution",
+        "Comprehensive maintenance manuals & warranty portfolio"
+      ],
+      "sortOrder": 2,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-material-consultation",
+      "title": "Material Curation & Sourcing Advisory",
+      "slug": "material-curation-sourcing",
+      "shortDesc": "Global stone quarry selection, certified timber procurement, and bespoke surface formulation tailored to project climate.",
+      "fullDesc": "Leveraging our direct relationships with European quarries and master timber mills, we curate bespoke material palettes that age gracefully. We conduct rigorous laboratory testing for water absorption, hardness, and thermal behavior.",
+      "iconName": "Layers",
+      "imageUrl": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "Physical tactile sample trays & curated finish moodboards",
+        "Direct quarry inspection and slab block selection",
+        "Full technical specification sheets & maintenance protocols",
+        "Contractor procurement schedules and MOQ optimization"
+      ],
+      "sortOrder": 3,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    },
+    {
+      "id": "srv-custom-furniture",
+      "title": "Bespoke Furniture & Custom Millwork",
+      "slug": "bespoke-furniture-custom-millwork",
+      "shortDesc": "Limited edition furniture, sculptural stone monoliths, and precision-engineered architectural cabinetry handcrafted in our studio.",
+      "fullDesc": "Every piece is drafted specifically for its designated space, utilizing select hardwoods, hand-poured bronze castings, and monolithic natural stones.",
+      "iconName": "Armchair",
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80",
+      "deliverables": [
+        "1:1 scale ergonomic prototypes and timber mockups",
+        "Hand-selected natural flitch veneer matching",
+        "Integrated soft-close concealed hardware engineering",
+        "Numbered certificate of atelier authenticity"
+      ],
+      "sortOrder": 4,
+      "isPublished": true,
+      "createdAt": "2026-08-17T16:23:53.257Z",
+      "updatedAt": "2026-08-17T16:23:53.257Z"
+    }
+  ],
+  "orders": [],
+  "quotes": [
+    {
+      "id": "qt-1786986369348-tnbv",
+      "quoteNumber": "QT-2026-69348",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786986369348-3zz8",
+          "quoteId": "qt-1786986369348-tnbv",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T17:06:09.348Z",
+      "updatedAt": "2026-08-17T17:06:09.349Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786984724575-vnkn",
+      "quoteNumber": "QT-2026-24575",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984724575-tfmy",
+          "quoteId": "qt-1786984724575-vnkn",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:38:44.575Z",
+      "updatedAt": "2026-08-17T16:38:44.575Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786984681533-hgeo",
+      "quoteNumber": "QT-2026-81533",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984681533-yga2",
+          "quoteId": "qt-1786984681533-hgeo",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:38:01.533Z",
+      "updatedAt": "2026-08-17T16:38:01.534Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786984657101-va26",
+      "quoteNumber": "QT-2026-57101",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786984657101-bzzx",
+          "quoteId": "qt-1786984657101-va26",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:37:37.101Z",
+      "updatedAt": "2026-08-17T16:37:37.102Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    },
+    {
+      "id": "qt-1786983899968-72ks",
+      "quoteNumber": "QT-2026-99968",
+      "customerName": "Karan Singhania (Architect)",
+      "customerEmail": "karan@singhania-arch.com",
+      "customerPhone": "+91 98111 22334",
+      "projectType": "Penthouse & Estate",
+      "projectLocation": "Jubilee Hills, Hyderabad",
+      "estimatedTimeline": "Immediate",
+      "budgetRange": "₹1 Cr+",
+      "notes": "Looking for 2,000 sq ft vein-cut travertine and acoustic walnut fluting.",
+      "items": [
+        {
+          "id": "qti-1786983899968-24q9",
+          "quoteId": "qt-1786983899968-72ks",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "dimensions": "Custom cut 1200x600",
+          "quantity": 2000,
+          "unit": "sq ft"
+        }
+      ],
+      "status": "Under_Review",
+      "createdAt": "2026-08-17T16:24:59.968Z",
+      "updatedAt": "2026-08-17T16:24:59.969Z",
+      "totalQuotedAmount": 1700000,
+      "adminNotes": "Travertine quarry block confirmed"
+    }
+  ],
+  "enquiries": [
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786986369349-vfnu",
+      "status": "New",
+      "createdAt": "2026-08-17T17:06:09.349Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984724576-d32w",
+      "status": "New",
+      "createdAt": "2026-08-17T16:38:44.576Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984681535-87zz",
+      "status": "New",
+      "createdAt": "2026-08-17T16:38:01.535Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786984657103-937g",
+      "status": "New",
+      "createdAt": "2026-08-17T16:37:37.103Z"
+    },
+    {
+      "name": "Pooja Verma",
+      "email": "pooja@verma.com",
+      "phone": "+91 98333 44556",
+      "subject": "Studio Consultation",
+      "message": "We would like to visit the Lower Parel gallery this Friday.",
+      "source": "Contact Page",
+      "id": "enq-1786983899970-uvnw",
+      "status": "New",
+      "createdAt": "2026-08-17T16:24:59.970Z"
+    }
+  ],
+  "siteSettings": {
+    "brandName": "Balaji Architect & Interior",
+    "tagline": "Crafted spaces, luxury architecture, and considered materials for timeless living.",
+    "logoUrl": "",
+    "contactEmail": "atelier@balaji-interior.com",
+    "contactPhone": "+91 70029 48484",
+    "studioAddress": "Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali",
+    "city": "Guwahati",
+    "state": "Assam",
+    "country": "India",
+    "pincode": "781040",
+    "currency": "INR",
+    "currencySymbol": "₹",
+    "taxRatePercent": 18,
+    "standardShippingFee": 1500,
+    "freeShippingThreshold": 50000,
+    "socialInstagram": "https://instagram.com/balajiatelier",
+    "socialPinterest": "https://pinterest.com/balajiatelier",
+    "socialLinkedin": "https://linkedin.com/company/balaji-atelier",
+    "announcementBanner": {
+      "enabled": true,
+      "text": "Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions",
+      "linkUrl": "/quote"
+    }
+  },
+  "pushSubscriptions": [],
+  "auditLogs": [
+    {
+      "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entity": "Auth",
+      "entityId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "details": {
+        "test": true
+      },
+      "id": "log-1788869125087-hfqk",
+      "createdAt": "2026-09-08T12:05:25.087Z"
+    },
+    {
+      "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_LOGIN_SUCCESS",
+      "entity": "Auth",
+      "entityId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
+      "details": {
+        "test": true
+      },
+      "id": "log-1788869056752-fjdj",
+      "createdAt": "2026-09-08T12:04:16.752Z"
+    },
+    {
+      "id": "log-1787152756799",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "22ed6b59-72f1-4c51-a631-1c5adb048c17",
+      "details": {
+        "orderNumber": "BAL-756132-541",
+        "total": 32652,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-19T15:19:16.799Z"
+    },
+    {
+      "id": "log-1787152721500",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "071304c5-d535-4aa0-9363-8dd603b49998",
+      "details": {
+        "orderNumber": "BAL-721036-937",
+        "total": 32652,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-19T15:18:41.500Z"
+    },
+    {
+      "id": "log-1786986369346",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786986369346-43ydx",
+      "details": {
+        "orderNumber": "BAL-369346-717",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T17:06:09.346Z"
+    },
+    {
+      "id": "log-1786986369335",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T17:06:09.335Z"
+    },
+    {
+      "id": "log-1786984724573",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984724573-glnn8",
+      "details": {
+        "orderNumber": "BAL-724573-452",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:38:44.573Z"
+    },
+    {
+      "id": "log-1786984724563",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:38:44.563Z"
+    },
+    {
+      "id": "log-1786984681531",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984681531-7o0k4",
+      "details": {
+        "orderNumber": "BAL-681531-570",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:38:01.531Z"
+    },
+    {
+      "id": "log-1786984681519",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:38:01.519Z"
+    },
+    {
+      "id": "log-1786984667361",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:37:47.361Z"
+    },
+    {
+      "id": "log-1786984657099",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786984657099-ufqu3",
+      "details": {
+        "orderNumber": "BAL-657099-574",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:37:37.099Z"
+    },
+    {
+      "id": "log-1786984657086",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:37:37.086Z"
+    },
+    {
+      "id": "log-1786983899967",
+      "adminId": "system",
+      "adminEmail": "checkout@balaji.com",
+      "action": "ORDER_PLACED",
+      "entity": "Order",
+      "entityId": "ord-1786983899967-25odp",
+      "details": {
+        "orderNumber": "BAL-899967-440",
+        "total": 19908,
+        "itemsCount": 1
+      },
+      "createdAt": "2026-08-17T16:24:59.967Z"
+    },
+    {
+      "id": "log-1786983899957",
+      "adminId": "admin-balaji-root",
+      "adminEmail": "vicks@balaji.com",
+      "action": "ADMIN_PASSWORD_CHANGED",
+      "entity": "Admin",
+      "entityId": "admin-balaji-root",
+      "details": {
+        "message": "Initial bootstrap password replaced with permanent custom password."
+      },
+      "createdAt": "2026-08-17T16:24:59.957Z"
+    },
+    {
+      "id": "log-init",
+      "adminId": "system",
+      "adminEmail": "system@balaji.com",
+      "action": "DATABASE_INITIALIZED",
+      "entity": "System",
+      "details": {
+        "message": "Balaji Atelier Production Database successfully initialized with editorial seed."
+      },
+      "createdAt": "2026-08-17T16:23:54.088Z"
+    }
+  ]
+}
+```
+
+---
+

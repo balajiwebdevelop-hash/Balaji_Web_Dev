@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getProducts, createProduct, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { requirePermission } from '@/lib/auth';
+import { validateProductInput } from '@/server/validation/schemas';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,12 +33,12 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'products.create');
   if ('response' in auth) return auth.response;
 
   try {
@@ -47,6 +49,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    validateProductInput(body, false);
 
     // Auto-generate slug if not provided
     const slug =
@@ -109,6 +113,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, product: newProduct });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }

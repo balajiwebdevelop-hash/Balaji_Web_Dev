@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import {
   Plus,
@@ -19,7 +20,10 @@ import { AdminLayout } from '@/components/AdminLayout';
 import { ImageUploader } from '@/components/ImageUploader';
 import { Product, Category, UnitType, PurchaseMode } from '@/types';
 
-export default function AdminProductsPage() {
+function AdminProductsContent() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get('id') || searchParams?.get('highlight') || null;
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -131,6 +135,15 @@ export default function AdminProductsPage() {
     setFormError(null);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (highlightId && products.length > 0 && !isModalOpen) {
+      const match = products.find((p) => p.id === highlightId || p.sku === highlightId);
+      if (match) {
+        openEditModal(match);
+      }
+    }
+  }, [highlightId, products]);
 
   // Targeted Partial Update (Stock / Published toggle)
   const handleTogglePublish = async (p: Product) => {
@@ -678,5 +691,13 @@ export default function AdminProductsPage() {
         </div>
       )}
     </AdminLayout>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={<div className="p-16 text-center text-champagne text-xs">Loading materials catalog...</div>}>
+      <AdminProductsContent />
+    </Suspense>
   );
 }

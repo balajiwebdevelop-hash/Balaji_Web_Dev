@@ -1,11 +1,11 @@
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
 > **Document**: `admincodebase.md`  
-> **Generation Timestamp**: `20260908-182453`  
+> **Generation Timestamp**: `20260908-184303`  
 > **Platform**: Balaji Architect & Interiors Executive Command Center & Atelier Management Suite  
 > **Architecture**: Next.js 14 App Router, TypeScript 5.7, Tailwind CSS, PBKDF2/JWT Cryptographic Authentication, Supabase / High-Performance Resilient Persistence  
 > **Admin Panel URL**: `/admin` (Executive Command Center) & `/admin/login` (Stealth Atelier Gateway)  
 > **Default Super Admin**: `vicks@balaji.com`  
-> **Total Admin Full-Stack Files Included**: 71
+> **Total Admin Full-Stack Files Included**: 83
 
 ---
 
@@ -45,85 +45,221 @@ The Balaji Architect & Interiors administrative subsystem is designed as an atel
 
 | # | File Path | Component / Layer | Description |
 |---|---|---|---|
-| 1 | [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx) | Admin UI Shell & Context | [Jump to Code](#src-components-adminlayout-tsx) |
-| 2 | [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx) | Admin UI Shell & Context | [Jump to Code](#src-context-adminauthcontext-tsx) |
-| 3 | [`src/components/Footer.tsx`](#src-components-footer-tsx) | Admin UI Shell & Context | [Jump to Code](#src-components-footer-tsx) |
-| 4 | [`src/app/admin/page.tsx`](#src-app-admin-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-page-tsx) |
-| 5 | [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-login-page-tsx) |
-| 6 | [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-products-page-tsx) |
-| 7 | [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-categories-page-tsx) |
-| 8 | [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-inventory-page-tsx) |
-| 9 | [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-orders-page-tsx) |
-| 10 | [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-quotes-page-tsx) |
-| 11 | [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-projects-page-tsx) |
-| 12 | [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-services-page-tsx) |
-| 13 | [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-customers-page-tsx) |
-| 14 | [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-employees-page-tsx) |
-| 15 | [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-settings-page-tsx) |
-| 16 | [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-audit-logs-page-tsx) |
-| 17 | [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-login-route-ts) |
-| 18 | [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-me-route-ts) |
-| 19 | [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-change-password-route-ts) |
-| 20 | [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-callback-route-ts) |
-| 21 | [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-logout-route-ts) |
-| 22 | [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-forgot-password-route-ts) |
-| 23 | [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-analytics-dashboard-route-ts) |
-| 24 | [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees-route-ts) |
-| 25 | [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees-id-route-ts) |
-| 26 | [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-search-route-ts) |
-| 27 | [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-export-route-ts) |
-| 28 | [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-settings-route-ts) |
-| 29 | [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-upload-route-ts) |
-| 30 | [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-audit-logs-route-ts) |
-| 31 | [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-notifications-test-route-ts) |
-| 32 | [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts) | Resource API Route | [Jump to Code](#src-app-api-notifications-subscribe-route-ts) |
-| 33 | [`src/app/api/products/route.ts`](#src-app-api-products-route-ts) | Resource API Route | [Jump to Code](#src-app-api-products-route-ts) |
-| 34 | [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-products-id-route-ts) |
-| 35 | [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories-route-ts) |
-| 36 | [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories-id-route-ts) |
-| 37 | [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders-route-ts) |
-| 38 | [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders-id-route-ts) |
-| 39 | [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-route-ts) |
-| 40 | [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-id-route-ts) |
-| 41 | [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-id-convert-route-ts) |
-| 42 | [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects-route-ts) |
-| 43 | [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects-id-route-ts) |
-| 44 | [`src/app/api/services/route.ts`](#src-app-api-services-route-ts) | Resource API Route | [Jump to Code](#src-app-api-services-route-ts) |
-| 45 | [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-services-id-route-ts) |
-| 46 | [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries-route-ts) |
-| 47 | [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries-id-route-ts) |
-| 48 | [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts) | Auth & RBAC Layer | [Jump to Code](#src-server-auth-rbac-ts) |
-| 49 | [`src/lib/auth.ts`](#src-lib-auth-ts) | Auth & RBAC Layer | [Jump to Code](#src-lib-auth-ts) |
-| 50 | [`src/server/db/client.ts`](#src-server-db-client-ts) | Server / DB | [Jump to Code](#src-server-db-client-ts) |
-| 51 | [`src/server/db/mappers.ts`](#src-server-db-mappers-ts) | Server / DB | [Jump to Code](#src-server-db-mappers-ts) |
-| 52 | [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-employees-ts) |
-| 53 | [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-audit-ts) |
-| 54 | [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-orders-ts) |
-| 55 | [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-quotes-ts) |
-| 56 | [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-products-ts) |
-| 57 | [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-categories-ts) |
-| 58 | [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-projects-ts) |
-| 59 | [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-services-ts) |
-| 60 | [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-settings-ts) |
-| 61 | [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-customers-ts) |
-| 62 | [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-enquiries-ts) |
-| 63 | [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts) | Server / DB | [Jump to Code](#src-server-db-transactions-orders-ts) |
-| 64 | [`src/server/db/index.ts`](#src-server-db-index-ts) | Server / DB | [Jump to Code](#src-server-db-index-ts) |
-| 65 | [`src/lib/db.ts`](#src-lib-db-ts) | Server / DB | [Jump to Code](#src-lib-db-ts) |
-| 66 | [`src/lib/supabase.ts`](#src-lib-supabase-ts) | Server / DB | [Jump to Code](#src-lib-supabase-ts) |
-| 67 | [`src/types/index.ts`](#src-types-index-ts) | Type Definitions | [Jump to Code](#src-types-index-ts) |
-| 68 | [`src/lib/push-client.ts`](#src-lib-push-client-ts) | Server / DB | [Jump to Code](#src-lib-push-client-ts) |
-| 69 | [`src/lib/seedData.ts`](#src-lib-seeddata-ts) | Server / DB | [Jump to Code](#src-lib-seeddata-ts) |
-| 70 | [`supabase/schema.sql`](#supabase-schema-sql) | Database Schema | [Jump to Code](#supabase-schema-sql) |
-| 71 | [`data/db.json`](#data-db-json) | Data Fixture | [Jump to Code](#data-db-json) |
+| 1 | [`src/middleware.ts`](#src-middleware-ts) | Edge Route Protection | [Jump to Code](#src-middleware-ts) |
+| 2 | [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx) | Admin UI Shell & Context | [Jump to Code](#src-components-adminlayout-tsx) |
+| 3 | [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx) | Admin UI Shell & Context | [Jump to Code](#src-context-adminauthcontext-tsx) |
+| 4 | [`src/components/Footer.tsx`](#src-components-footer-tsx) | Admin Stealth Trigger | [Jump to Code](#src-components-footer-tsx) |
+| 5 | [`src/app/admin/page.tsx`](#src-app-admin-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-page-tsx) |
+| 6 | [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-login-page-tsx) |
+| 7 | [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-products-page-tsx) |
+| 8 | [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-categories-page-tsx) |
+| 9 | [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-inventory-page-tsx) |
+| 10 | [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-orders-page-tsx) |
+| 11 | [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-quotes-page-tsx) |
+| 12 | [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-projects-page-tsx) |
+| 13 | [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-services-page-tsx) |
+| 14 | [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-customers-page-tsx) |
+| 15 | [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-employees-page-tsx) |
+| 16 | [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-settings-page-tsx) |
+| 17 | [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx) | Frontend Admin Page | [Jump to Code](#src-app-admin-audit-logs-page-tsx) |
+| 18 | [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-login-route-ts) |
+| 19 | [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-me-route-ts) |
+| 20 | [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-change-password-route-ts) |
+| 21 | [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-callback-route-ts) |
+| 22 | [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-logout-route-ts) |
+| 23 | [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts) | Authentication API Route | [Jump to Code](#src-app-api-auth-forgot-password-route-ts) |
+| 24 | [`src/app/api/admin/summary/route.ts`](#src-app-api-admin-summary-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-summary-route-ts) |
+| 25 | [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-analytics-dashboard-route-ts) |
+| 26 | [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees-route-ts) |
+| 27 | [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees--id--route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-employees--id--route-ts) |
+| 28 | [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-search-route-ts) |
+| 29 | [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-export-route-ts) |
+| 30 | [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-settings-route-ts) |
+| 31 | [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-upload-route-ts) |
+| 32 | [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-audit-logs-route-ts) |
+| 33 | [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts) | Admin API Route | [Jump to Code](#src-app-api-admin-notifications-test-route-ts) |
+| 34 | [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts) | Resource API Route | [Jump to Code](#src-app-api-notifications-subscribe-route-ts) |
+| 35 | [`src/app/api/health/ready/route.ts`](#src-app-api-health-ready-route-ts) | Health & Readiness API Route | [Jump to Code](#src-app-api-health-ready-route-ts) |
+| 36 | [`src/app/api/products/route.ts`](#src-app-api-products-route-ts) | Resource API Route | [Jump to Code](#src-app-api-products-route-ts) |
+| 37 | [`src/app/api/products/[id]/route.ts`](#src-app-api-products--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-products--id--route-ts) |
+| 38 | [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories-route-ts) |
+| 39 | [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-categories--id--route-ts) |
+| 40 | [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders-route-ts) |
+| 41 | [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-orders--id--route-ts) |
+| 42 | [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes-route-ts) |
+| 43 | [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes--id--route-ts) |
+| 44 | [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes--id--convert-route-ts) | Resource API Route | [Jump to Code](#src-app-api-quotes--id--convert-route-ts) |
+| 45 | [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects-route-ts) |
+| 46 | [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-projects--id--route-ts) |
+| 47 | [`src/app/api/services/route.ts`](#src-app-api-services-route-ts) | Resource API Route | [Jump to Code](#src-app-api-services-route-ts) |
+| 48 | [`src/app/api/services/[id]/route.ts`](#src-app-api-services--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-services--id--route-ts) |
+| 49 | [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries-route-ts) |
+| 50 | [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries--id--route-ts) | Resource API Route | [Jump to Code](#src-app-api-enquiries--id--route-ts) |
+| 51 | [`src/server/services/orderService.ts`](#src-server-services-orderservice-ts) | Domain Service Layer | [Jump to Code](#src-server-services-orderservice-ts) |
+| 52 | [`src/server/services/quoteService.ts`](#src-server-services-quoteservice-ts) | Domain Service Layer | [Jump to Code](#src-server-services-quoteservice-ts) |
+| 53 | [`src/server/services/index.ts`](#src-server-services-index-ts) | Domain Service Layer | [Jump to Code](#src-server-services-index-ts) |
+| 54 | [`src/server/auth/tokens.ts`](#src-server-auth-tokens-ts) | Auth & RBAC Layer | [Jump to Code](#src-server-auth-tokens-ts) |
+| 55 | [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts) | Auth & RBAC Layer | [Jump to Code](#src-server-auth-rbac-ts) |
+| 56 | [`src/lib/auth.ts`](#src-lib-auth-ts) | Auth & RBAC Layer | [Jump to Code](#src-lib-auth-ts) |
+| 57 | [`src/server/security/config.ts`](#src-server-security-config-ts) | Security & Sanitization | [Jump to Code](#src-server-security-config-ts) |
+| 58 | [`src/server/security/sanitization.ts`](#src-server-security-sanitization-ts) | Security & Sanitization | [Jump to Code](#src-server-security-sanitization-ts) |
+| 59 | [`src/server/security/index.ts`](#src-server-security-index-ts) | Security & Sanitization | [Jump to Code](#src-server-security-index-ts) |
+| 60 | [`src/server/validation/schemas.ts`](#src-server-validation-schemas-ts) | Schema Validation | [Jump to Code](#src-server-validation-schemas-ts) |
+| 61 | [`src/server/errors/index.ts`](#src-server-errors-index-ts) | Error Taxonomy Layer | [Jump to Code](#src-server-errors-index-ts) |
+| 62 | [`src/server/db/client.ts`](#src-server-db-client-ts) | Server / DB | [Jump to Code](#src-server-db-client-ts) |
+| 63 | [`src/server/db/mappers.ts`](#src-server-db-mappers-ts) | Server / DB | [Jump to Code](#src-server-db-mappers-ts) |
+| 64 | [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-employees-ts) |
+| 65 | [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-audit-ts) |
+| 66 | [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-orders-ts) |
+| 67 | [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-quotes-ts) |
+| 68 | [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-products-ts) |
+| 69 | [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-categories-ts) |
+| 70 | [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-projects-ts) |
+| 71 | [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-services-ts) |
+| 72 | [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-settings-ts) |
+| 73 | [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-customers-ts) |
+| 74 | [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts) | Server / DB | [Jump to Code](#src-server-db-repositories-enquiries-ts) |
+| 75 | [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts) | Server / DB | [Jump to Code](#src-server-db-transactions-orders-ts) |
+| 76 | [`src/server/db/index.ts`](#src-server-db-index-ts) | Server / DB | [Jump to Code](#src-server-db-index-ts) |
+| 77 | [`src/lib/db.ts`](#src-lib-db-ts) | Server / DB | [Jump to Code](#src-lib-db-ts) |
+| 78 | [`src/lib/supabase.ts`](#src-lib-supabase-ts) | Server / DB | [Jump to Code](#src-lib-supabase-ts) |
+| 79 | [`src/types/index.ts`](#src-types-index-ts) | Core Types & Utilities | [Jump to Code](#src-types-index-ts) |
+| 80 | [`src/lib/push-client.ts`](#src-lib-push-client-ts) | Core Types & Utilities | [Jump to Code](#src-lib-push-client-ts) |
+| 81 | [`src/lib/seedData.ts`](#src-lib-seeddata-ts) | Core Types & Utilities | [Jump to Code](#src-lib-seeddata-ts) |
+| 82 | [`supabase/schema.sql`](#supabase-schema-sql) | Database Migration / SQL Schema | [Jump to Code](#supabase-schema-sql) |
+| 83 | [`data/db.json`](#data-db-json) | Storage Fixture | [Jump to Code](#data-db-json) |
 
 ---
 
-## 3. COMPLETE ADMIN FULL-STACK SOURCE CODE
+## 3. FULL SOURCE CODE REPOSITORY SNAPSHOT
 
-### <a id="src-components-adminlayout-tsx"></a>1. `src/components/AdminLayout.tsx`
+### <a id="src-middleware-ts"></a>1. `src/middleware.ts`
 
-> **Path**: `src/components/AdminLayout.tsx` | **Lines**: 1178 | **Size**: 53.3 KB
+> **Path**: `src/middleware.ts`  
+> **Layer**: Edge Route Protection  
+> **Metrics**: 112 lines • 3.5 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+
+function decodeJwtPayload(token: string): any {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = Buffer.from(base64, 'base64').toString('utf8');
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+}
+
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // 1. Skip public auth routes and assets
+  if (
+    pathname === '/admin/login' ||
+    pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api/health') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/logo.png'
+  ) {
+    return NextResponse.next();
+  }
+
+  // 2. Protect Admin Studio UI pages (/admin/*)
+  if (pathname.startsWith('/admin')) {
+    const adminToken = req.cookies.get('balaji_admin_session')?.value;
+    if (!adminToken) {
+      const loginUrl = new URL('/admin/login', req.url);
+      loginUrl.searchParams.set('from', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    const payload = decodeJwtPayload(adminToken);
+    if (!payload || !payload.role || payload.role === 'customer') {
+      const loginUrl = new URL('/admin/login', req.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Check expiry if exp claim exists
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      const loginUrl = new URL('/admin/login', req.url);
+      loginUrl.searchParams.set('expired', 'true');
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Owner-only route protection at middleware boundary
+    if (pathname.startsWith('/admin/employees') || pathname.startsWith('/admin/settings')) {
+      const isOwner = payload.role === 'owner' || payload.role === 'super_admin';
+      if (!isOwner) {
+        return NextResponse.redirect(new URL('/admin', req.url));
+      }
+    }
+
+    return NextResponse.next();
+  }
+
+  // 3. Protect Admin API endpoints (/api/admin/*)
+  if (pathname.startsWith('/api/admin')) {
+    const adminToken =
+      req.cookies.get('balaji_admin_session')?.value ||
+      req.headers.get('authorization')?.replace('Bearer ', '');
+
+    if (!adminToken) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required for administrative access.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    const payload = decodeJwtPayload(adminToken);
+    if (!payload || !payload.role || payload.role === 'customer') {
+      return NextResponse.json(
+        { success: false, error: 'Invalid administrative session credentials.', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      return NextResponse.json(
+        { success: false, error: 'Administrative session has expired. Please sign in again.', code: 'SESSION_EXPIRED' },
+        { status: 401 }
+      );
+    }
+
+    // Owner-only API route protection
+    if (pathname.startsWith('/api/admin/employees') || pathname.startsWith('/api/admin/settings')) {
+      const isOwner = payload.role === 'owner' || payload.role === 'super_admin';
+      if (!isOwner) {
+        return NextResponse.json(
+          { success: false, error: 'Access Denied: Only studio owners are permitted.', code: 'FORBIDDEN' },
+          { status: 403 }
+        );
+      }
+    }
+
+    return NextResponse.next();
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
+};
+```
+
+---
+
+### <a id="src-components-adminlayout-tsx"></a>2. `src/components/AdminLayout.tsx`
+
+> **Path**: `src/components/AdminLayout.tsx`  
+> **Layer**: Admin UI Shell & Context  
+> **Metrics**: 1178 lines • 53.3 KB
 
 ```tsx
 'use client';
@@ -1307,9 +1443,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
 ---
 
-### <a id="src-context-adminauthcontext-tsx"></a>2. `src/context/AdminAuthContext.tsx`
+### <a id="src-context-adminauthcontext-tsx"></a>3. `src/context/AdminAuthContext.tsx`
 
-> **Path**: `src/context/AdminAuthContext.tsx` | **Lines**: 122 | **Size**: 3.4 KB
+> **Path**: `src/context/AdminAuthContext.tsx`  
+> **Layer**: Admin UI Shell & Context  
+> **Metrics**: 122 lines • 3.4 KB
 
 ```tsx
 'use client';
@@ -1437,9 +1575,11 @@ export function useAdminAuth() {
 
 ---
 
-### <a id="src-components-footer-tsx"></a>3. `src/components/Footer.tsx`
+### <a id="src-components-footer-tsx"></a>4. `src/components/Footer.tsx`
 
-> **Path**: `src/components/Footer.tsx` | **Lines**: 224 | **Size**: 9.3 KB
+> **Path**: `src/components/Footer.tsx`  
+> **Layer**: Admin Stealth Trigger  
+> **Metrics**: 224 lines • 9.3 KB
 
 ```tsx
 'use client';
@@ -1669,9 +1809,11 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
 
 ---
 
-### <a id="src-app-admin-page-tsx"></a>4. `src/app/admin/page.tsx`
+### <a id="src-app-admin-page-tsx"></a>5. `src/app/admin/page.tsx`
 
-> **Path**: `src/app/admin/page.tsx` | **Lines**: 482 | **Size**: 22.5 KB
+> **Path**: `src/app/admin/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 482 lines • 22.5 KB
 
 ```tsx
 'use client';
@@ -2159,9 +2301,11 @@ export default function AdminDashboardPage() {
 
 ---
 
-### <a id="src-app-admin-login-page-tsx"></a>5. `src/app/admin/login/page.tsx`
+### <a id="src-app-admin-login-page-tsx"></a>6. `src/app/admin/login/page.tsx`
 
-> **Path**: `src/app/admin/login/page.tsx` | **Lines**: 232 | **Size**: 9.8 KB
+> **Path**: `src/app/admin/login/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 232 lines • 9.8 KB
 
 ```tsx
 'use client';
@@ -2399,9 +2543,11 @@ export default function AdminLoginPage() {
 
 ---
 
-### <a id="src-app-admin-products-page-tsx"></a>6. `src/app/admin/products/page.tsx`
+### <a id="src-app-admin-products-page-tsx"></a>7. `src/app/admin/products/page.tsx`
 
-> **Path**: `src/app/admin/products/page.tsx` | **Lines**: 704 | **Size**: 30.1 KB
+> **Path**: `src/app/admin/products/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 710 lines • 30.2 KB
 
 ```tsx
 'use client';
@@ -2493,23 +2639,29 @@ function AdminProductsContent() {
   const openCreateModal = () => {
     setEditingProduct(null);
     setName('');
-    setSku(`MAT-${Math.floor(100 + Math.random() * 900)}`);
+    const randSuffix =
+      typeof window !== 'undefined' && window.crypto
+        ? Array.from(window.crypto.getRandomValues(new Uint8Array(2)), (b) => b.toString(16).padStart(2, '0'))
+            .join('')
+            .toUpperCase()
+        : '01';
+    setSku(`MAT-${randSuffix}`);
     setBrand('Balaji Architect & Interiors');
     setCategoryId(categories[0]?.id || '');
     setSubcategory('');
     setDescription('');
-    setPrice(850);
+    setPrice(0);
     setSalePrice(undefined);
     setUnit('sq ft');
-    setMoq(50);
-    setStock(500);
+    setMoq(1);
+    setStock(0);
     setPurchaseMode('BUY_NOW');
     setLeadTime('3-5 business days');
     setDimensions('');
     setThickness('');
     setMaterial('');
     setFinish('');
-    setImages(['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80']);
+    setImages([]);
     setPublished(true);
     setIsFeatured(false);
     setFormError(null);
@@ -3111,9 +3263,11 @@ export default function AdminProductsPage() {
 
 ---
 
-### <a id="src-app-admin-categories-page-tsx"></a>7. `src/app/admin/categories/page.tsx`
+### <a id="src-app-admin-categories-page-tsx"></a>8. `src/app/admin/categories/page.tsx`
 
-> **Path**: `src/app/admin/categories/page.tsx` | **Lines**: 304 | **Size**: 12.3 KB
+> **Path**: `src/app/admin/categories/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 304 lines • 12.3 KB
 
 ```tsx
 'use client';
@@ -3423,9 +3577,11 @@ export default function AdminCategoriesPage() {
 
 ---
 
-### <a id="src-app-admin-inventory-page-tsx"></a>8. `src/app/admin/inventory/page.tsx`
+### <a id="src-app-admin-inventory-page-tsx"></a>9. `src/app/admin/inventory/page.tsx`
 
-> **Path**: `src/app/admin/inventory/page.tsx` | **Lines**: 343 | **Size**: 15.1 KB
+> **Path**: `src/app/admin/inventory/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 353 lines • 15.4 KB
 
 ```tsx
 'use client';
@@ -3495,10 +3651,20 @@ function AdminInventoryContent() {
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stock: numStock }),
+        body: JSON.stringify({
+          stock: numStock,
+          expectedUpdatedAt: product.updatedAt,
+        }),
       });
 
       const data = await res.json().catch(() => ({}));
+      if (res.status === 409) {
+        alert(
+          'Concurrent Modification Detected: Another administrator updated this product while you were viewing it. Refreshing current inventory data...'
+        );
+        await loadProducts();
+        return;
+      }
       if (res.ok && data.product) {
         setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);
@@ -3774,9 +3940,11 @@ export default function AdminInventoryPage() {
 
 ---
 
-### <a id="src-app-admin-orders-page-tsx"></a>9. `src/app/admin/orders/page.tsx`
+### <a id="src-app-admin-orders-page-tsx"></a>10. `src/app/admin/orders/page.tsx`
 
-> **Path**: `src/app/admin/orders/page.tsx` | **Lines**: 519 | **Size**: 23.4 KB
+> **Path**: `src/app/admin/orders/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 544 lines • 24.5 KB
 
 ```tsx
 'use client';
@@ -3847,8 +4015,33 @@ function AdminOrdersContent() {
           'postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           (payload: any) => {
-            // Immediately reload orders on any new order insertion or status update
-            loadOrders();
+            if (payload.eventType === 'UPDATE' && payload.new) {
+              const updatedRow = payload.new;
+              setOrders((prev) =>
+                prev.map((o) =>
+                  o.id === updatedRow.id
+                    ? {
+                        ...o,
+                        orderStatus: updatedRow.order_status || o.orderStatus,
+                        paymentStatus: updatedRow.payment_status || o.paymentStatus,
+                        updatedAt: updatedRow.updated_at || o.updatedAt,
+                      }
+                    : o
+                )
+              );
+              setSelectedOrder((prev: any) => {
+                if (!prev || prev.id !== updatedRow.id) return prev;
+                return {
+                  ...prev,
+                  orderStatus: updatedRow.order_status || prev.orderStatus,
+                  paymentStatus: updatedRow.payment_status || prev.paymentStatus,
+                  updatedAt: updatedRow.updated_at || prev.updatedAt,
+                };
+              });
+            } else {
+              // Immediately reload orders on new order insertion or other events
+              loadOrders();
+            }
 
             // If browser notifications are permitted, display order alert
             if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
@@ -4301,9 +4494,11 @@ export default function AdminOrdersPage() {
 
 ---
 
-### <a id="src-app-admin-quotes-page-tsx"></a>10. `src/app/admin/quotes/page.tsx`
+### <a id="src-app-admin-quotes-page-tsx"></a>11. `src/app/admin/quotes/page.tsx`
 
-> **Path**: `src/app/admin/quotes/page.tsx` | **Lines**: 364 | **Size**: 16.9 KB
+> **Path**: `src/app/admin/quotes/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 364 lines • 16.9 KB
 
 ```tsx
 'use client';
@@ -4673,9 +4868,11 @@ export default function AdminQuotesPage() {
 
 ---
 
-### <a id="src-app-admin-projects-page-tsx"></a>11. `src/app/admin/projects/page.tsx`
+### <a id="src-app-admin-projects-page-tsx"></a>12. `src/app/admin/projects/page.tsx`
 
-> **Path**: `src/app/admin/projects/page.tsx` | **Lines**: 437 | **Size**: 17.9 KB
+> **Path**: `src/app/admin/projects/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 437 lines • 17.9 KB
 
 ```tsx
 'use client';
@@ -5118,9 +5315,11 @@ export default function AdminProjectsPage() {
 
 ---
 
-### <a id="src-app-admin-services-page-tsx"></a>12. `src/app/admin/services/page.tsx`
+### <a id="src-app-admin-services-page-tsx"></a>13. `src/app/admin/services/page.tsx`
 
-> **Path**: `src/app/admin/services/page.tsx` | **Lines**: 342 | **Size**: 13.7 KB
+> **Path**: `src/app/admin/services/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 342 lines • 13.7 KB
 
 ```tsx
 'use client';
@@ -5468,9 +5667,11 @@ export default function AdminServicesPage() {
 
 ---
 
-### <a id="src-app-admin-customers-page-tsx"></a>13. `src/app/admin/customers/page.tsx`
+### <a id="src-app-admin-customers-page-tsx"></a>14. `src/app/admin/customers/page.tsx`
 
-> **Path**: `src/app/admin/customers/page.tsx` | **Lines**: 174 | **Size**: 6.5 KB
+> **Path**: `src/app/admin/customers/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 174 lines • 6.5 KB
 
 ```tsx
 'use client';
@@ -5650,9 +5851,11 @@ export default function AdminCustomersPage() {
 
 ---
 
-### <a id="src-app-admin-employees-page-tsx"></a>14. `src/app/admin/employees/page.tsx`
+### <a id="src-app-admin-employees-page-tsx"></a>15. `src/app/admin/employees/page.tsx`
 
-> **Path**: `src/app/admin/employees/page.tsx` | **Lines**: 780 | **Size**: 33.8 KB
+> **Path**: `src/app/admin/employees/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 781 lines • 33.9 KB
 
 ```tsx
 'use client';
@@ -5703,11 +5906,12 @@ export default function EmployeeManagementPage() {
   const [status, setStatus] = useState<'active' | 'disabled'>('active');
   const generateSecurePassword = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-    let generated = '';
-    for (let i = 0; i < 10; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    if (typeof window !== 'undefined' && window.crypto) {
+      const array = new Uint32Array(12);
+      window.crypto.getRandomValues(array);
+      return Array.from(array, (x) => chars[x % chars.length]).join('');
     }
-    return generated;
+    return 'Balaji#Atelier2026!';
   };
 
   const [tempPassword, setTempPassword] = useState(generateSecurePassword);
@@ -6438,9 +6642,11 @@ export default function EmployeeManagementPage() {
 
 ---
 
-### <a id="src-app-admin-settings-page-tsx"></a>15. `src/app/admin/settings/page.tsx`
+### <a id="src-app-admin-settings-page-tsx"></a>16. `src/app/admin/settings/page.tsx`
 
-> **Path**: `src/app/admin/settings/page.tsx` | **Lines**: 1340 | **Size**: 68.2 KB
+> **Path**: `src/app/admin/settings/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 1340 lines • 68.2 KB
 
 ```tsx
 'use client';
@@ -7786,9 +7992,11 @@ export default function AdminSettingsPage() {
 
 ---
 
-### <a id="src-app-admin-audit-logs-page-tsx"></a>16. `src/app/admin/audit-logs/page.tsx`
+### <a id="src-app-admin-audit-logs-page-tsx"></a>17. `src/app/admin/audit-logs/page.tsx`
 
-> **Path**: `src/app/admin/audit-logs/page.tsx` | **Lines**: 134 | **Size**: 5.9 KB
+> **Path**: `src/app/admin/audit-logs/page.tsx`  
+> **Layer**: Frontend Admin Page  
+> **Metrics**: 134 lines • 5.9 KB
 
 ```tsx
 'use client';
@@ -7928,9 +8136,11 @@ export default function AdminAuditLogsPage() {
 
 ---
 
-### <a id="src-app-api-auth-login-route-ts"></a>17. `src/app/api/auth/login/route.ts`
+### <a id="src-app-api-auth-login-route-ts"></a>18. `src/app/api/auth/login/route.ts`
 
-> **Path**: `src/app/api/auth/login/route.ts` | **Lines**: 196 | **Size**: 5.9 KB
+> **Path**: `src/app/api/auth/login/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 196 lines • 5.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8132,9 +8342,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-auth-me-route-ts"></a>18. `src/app/api/auth/me/route.ts`
+### <a id="src-app-api-auth-me-route-ts"></a>19. `src/app/api/auth/me/route.ts`
 
-> **Path**: `src/app/api/auth/me/route.ts` | **Lines**: 61 | **Size**: 1.9 KB
+> **Path**: `src/app/api/auth/me/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 61 lines • 1.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8201,9 +8413,11 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-auth-change-password-route-ts"></a>19. `src/app/api/auth/change-password/route.ts`
+### <a id="src-app-api-auth-change-password-route-ts"></a>20. `src/app/api/auth/change-password/route.ts`
 
-> **Path**: `src/app/api/auth/change-password/route.ts` | **Lines**: 116 | **Size**: 3.5 KB
+> **Path**: `src/app/api/auth/change-password/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 116 lines • 3.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8325,9 +8539,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-auth-callback-route-ts"></a>20. `src/app/api/auth/callback/route.ts`
+### <a id="src-app-api-auth-callback-route-ts"></a>21. `src/app/api/auth/callback/route.ts`
 
-> **Path**: `src/app/api/auth/callback/route.ts` | **Lines**: 179 | **Size**: 6.0 KB
+> **Path**: `src/app/api/auth/callback/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 179 lines • 6.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8512,9 +8728,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-auth-logout-route-ts"></a>21. `src/app/api/auth/logout/route.ts`
+### <a id="src-app-api-auth-logout-route-ts"></a>22. `src/app/api/auth/logout/route.ts`
 
-> **Path**: `src/app/api/auth/logout/route.ts` | **Lines**: 9 | **Size**: 0.3 KB
+> **Path**: `src/app/api/auth/logout/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 9 lines • 0.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8529,9 +8747,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-auth-forgot-password-route-ts"></a>22. `src/app/api/auth/forgot-password/route.ts`
+### <a id="src-app-api-auth-forgot-password-route-ts"></a>23. `src/app/api/auth/forgot-password/route.ts`
 
-> **Path**: `src/app/api/auth/forgot-password/route.ts` | **Lines**: 72 | **Size**: 2.5 KB
+> **Path**: `src/app/api/auth/forgot-password/route.ts`  
+> **Layer**: Authentication API Route  
+> **Metrics**: 72 lines • 2.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8609,9 +8829,120 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-analytics-dashboard-route-ts"></a>23. `src/app/api/admin/analytics/dashboard/route.ts`
+### <a id="src-app-api-admin-summary-route-ts"></a>24. `src/app/api/admin/summary/route.ts`
 
-> **Path**: `src/app/api/admin/analytics/dashboard/route.ts` | **Lines**: 280 | **Size**: 9.4 KB
+> **Path**: `src/app/api/admin/summary/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 99 lines • 2.9 KB
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuthenticatedAdmin } from '@/lib/auth';
+import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
+import { getOrders, getQuotes, getProducts } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+
+interface SummaryData {
+  pendingOrders: number;
+  pendingQuotes: number;
+  lowStock: number;
+  recentActivity: number;
+}
+
+let cachedSummary: { data: SummaryData; timestamp: number } | null = null;
+const SUMMARY_CACHE_TTL_MS = 15 * 1000; // 15 seconds
+
+export async function GET(req: NextRequest) {
+  const auth = await requireAuthenticatedAdmin(req);
+  if ('response' in auth) return auth.response;
+
+  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+  const now = Date.now();
+
+  if (!forceRefresh && cachedSummary && now - cachedSummary.timestamp < SUMMARY_CACHE_TTL_MS) {
+    return NextResponse.json({
+      success: true,
+      ...cachedSummary.data,
+      cached: true,
+    });
+  }
+
+  try {
+    let pendingOrders = 0;
+    let pendingQuotes = 0;
+    let lowStock = 0;
+
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+
+      const [ordRes, qtRes, prodRes] = await Promise.all([
+        supabase
+          .from('orders')
+          .select('id', { count: 'exact', head: true })
+          .in('order_status', ['Pending', 'Confirmed']),
+        supabase
+          .from('quotes')
+          .select('id', { count: 'exact', head: true })
+          .in('status', ['Pending', 'Under_Review']),
+        supabase
+          .from('products')
+          .select('stock, moq'),
+      ]);
+
+      pendingOrders = ordRes.count ?? 0;
+      pendingQuotes = qtRes.count ?? 0;
+
+      if (prodRes.data) {
+        lowStock = prodRes.data.filter(
+          (p: any) => (p.stock ?? 0) <= ((p.moq ?? 1) * 2) || (p.stock ?? 0) < 10
+        ).length;
+      }
+    } else {
+      const [orders, quotes, products] = await Promise.all([
+        getOrders().catch(() => []),
+        getQuotes().catch(() => []),
+        getProducts().catch(() => []),
+      ]);
+
+      pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+      pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
+      lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
+    }
+
+    const recentActivity = pendingOrders + pendingQuotes + lowStock;
+
+    const data: SummaryData = {
+      pendingOrders,
+      pendingQuotes,
+      lowStock,
+      recentActivity,
+    };
+
+    cachedSummary = { data, timestamp: now };
+
+    return NextResponse.json({
+      success: true,
+      ...data,
+      cached: false,
+    });
+  } catch (err: any) {
+    console.error('Failed to compute admin summary:', err);
+    return NextResponse.json(
+      { success: false, error: 'Failed to retrieve admin summary' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-admin-analytics-dashboard-route-ts"></a>25. `src/app/api/admin/analytics/dashboard/route.ts`
+
+> **Path**: `src/app/api/admin/analytics/dashboard/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 280 lines • 9.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8897,9 +9228,11 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-employees-route-ts"></a>24. `src/app/api/admin/employees/route.ts`
+### <a id="src-app-api-admin-employees-route-ts"></a>26. `src/app/api/admin/employees/route.ts`
 
-> **Path**: `src/app/api/admin/employees/route.ts` | **Lines**: 63 | **Size**: 2.0 KB
+> **Path**: `src/app/api/admin/employees/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 63 lines • 2.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -8968,9 +9301,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-employees-id-route-ts"></a>25. `src/app/api/admin/employees/[id]/route.ts`
+### <a id="src-app-api-admin-employees--id--route-ts"></a>27. `src/app/api/admin/employees/[id]/route.ts`
 
-> **Path**: `src/app/api/admin/employees/[id]/route.ts` | **Lines**: 82 | **Size**: 2.7 KB
+> **Path**: `src/app/api/admin/employees/[id]/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 82 lines • 2.7 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9058,9 +9393,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### <a id="src-app-api-admin-search-route-ts"></a>26. `src/app/api/admin/search/route.ts`
+### <a id="src-app-api-admin-search-route-ts"></a>28. `src/app/api/admin/search/route.ts`
 
-> **Path**: `src/app/api/admin/search/route.ts` | **Lines**: 236 | **Size**: 7.9 KB
+> **Path**: `src/app/api/admin/search/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 236 lines • 7.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9302,9 +9639,11 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-export-route-ts"></a>27. `src/app/api/admin/export/route.ts`
+### <a id="src-app-api-admin-export-route-ts"></a>29. `src/app/api/admin/export/route.ts`
 
-> **Path**: `src/app/api/admin/export/route.ts` | **Lines**: 125 | **Size**: 5.1 KB
+> **Path**: `src/app/api/admin/export/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 125 lines • 5.1 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9435,9 +9774,11 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-settings-route-ts"></a>28. `src/app/api/admin/settings/route.ts`
+### <a id="src-app-api-admin-settings-route-ts"></a>30. `src/app/api/admin/settings/route.ts`
 
-> **Path**: `src/app/api/admin/settings/route.ts` | **Lines**: 79 | **Size**: 2.3 KB
+> **Path**: `src/app/api/admin/settings/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 79 lines • 2.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9522,9 +9863,11 @@ export async function PATCH(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-upload-route-ts"></a>29. `src/app/api/admin/upload/route.ts`
+### <a id="src-app-api-admin-upload-route-ts"></a>31. `src/app/api/admin/upload/route.ts`
 
-> **Path**: `src/app/api/admin/upload/route.ts` | **Lines**: 196 | **Size**: 6.1 KB
+> **Path**: `src/app/api/admin/upload/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 196 lines • 6.1 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9726,9 +10069,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-audit-logs-route-ts"></a>30. `src/app/api/admin/audit-logs/route.ts`
+### <a id="src-app-api-admin-audit-logs-route-ts"></a>32. `src/app/api/admin/audit-logs/route.ts`
 
-> **Path**: `src/app/api/admin/audit-logs/route.ts` | **Lines**: 45 | **Size**: 1.4 KB
+> **Path**: `src/app/api/admin/audit-logs/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 45 lines • 1.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9779,9 +10124,11 @@ export async function GET(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-admin-notifications-test-route-ts"></a>31. `src/app/api/admin/notifications/test/route.ts`
+### <a id="src-app-api-admin-notifications-test-route-ts"></a>33. `src/app/api/admin/notifications/test/route.ts`
 
-> **Path**: `src/app/api/admin/notifications/test/route.ts` | **Lines**: 18 | **Size**: 0.5 KB
+> **Path**: `src/app/api/admin/notifications/test/route.ts`  
+> **Layer**: Admin API Route  
+> **Metrics**: 18 lines • 0.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9805,9 +10152,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-notifications-subscribe-route-ts"></a>32. `src/app/api/notifications/subscribe/route.ts`
+### <a id="src-app-api-notifications-subscribe-route-ts"></a>34. `src/app/api/notifications/subscribe/route.ts`
 
-> **Path**: `src/app/api/notifications/subscribe/route.ts` | **Lines**: 47 | **Size**: 1.5 KB
+> **Path**: `src/app/api/notifications/subscribe/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 47 lines • 1.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9860,9 +10209,108 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-products-route-ts"></a>33. `src/app/api/products/route.ts`
+### <a id="src-app-api-health-ready-route-ts"></a>35. `src/app/api/health/ready/route.ts`
 
-> **Path**: `src/app/api/products/route.ts` | **Lines**: 119 | **Size**: 3.8 KB
+> **Path**: `src/app/api/health/ready/route.ts`  
+> **Layer**: Health & Readiness API Route  
+> **Metrics**: 87 lines • 1.9 KB
+
+```typescript
+import { NextResponse } from 'next/server';
+import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET() {
+  const timestamp = new Date().toISOString();
+
+  if (!isSupabaseConfigured()) {
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        {
+          status: 'not_ready',
+          timestamp,
+          database: {
+            configured: false,
+            connected: false,
+            error: 'SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing in production environment.',
+          },
+        },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        status: 'ready',
+        timestamp,
+        mode: 'development_fallback',
+        database: {
+          configured: false,
+          connected: true,
+          provider: 'local_fixture',
+        },
+      },
+      { status: 200 }
+    );
+  }
+
+  try {
+    const supabase = getServiceSupabase();
+    const { error } = await supabase.from('site_settings').select('key').limit(1);
+
+    if (error) {
+      return NextResponse.json(
+        {
+          status: 'not_ready',
+          timestamp,
+          database: {
+            configured: true,
+            connected: false,
+            error: error.message,
+          },
+        },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        status: 'ready',
+        timestamp,
+        mode: 'production',
+        database: {
+          configured: true,
+          connected: true,
+          provider: 'supabase_postgres',
+        },
+      },
+      { status: 200 }
+    );
+  } catch (err: any) {
+    return NextResponse.json(
+      {
+        status: 'not_ready',
+        timestamp,
+        database: {
+          configured: true,
+          connected: false,
+          error: err.message || 'Unknown probe error',
+        },
+      },
+      { status: 503 }
+    );
+  }
+}
+```
+
+---
+
+### <a id="src-app-api-products-route-ts"></a>36. `src/app/api/products/route.ts`
+
+> **Path**: `src/app/api/products/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 119 lines • 3.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9987,9 +10435,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-products-id-route-ts"></a>34. `src/app/api/products/[id]/route.ts`
+### <a id="src-app-api-products--id--route-ts"></a>37. `src/app/api/products/[id]/route.ts`
 
-> **Path**: `src/app/api/products/[id]/route.ts` | **Lines**: 118 | **Size**: 3.5 KB
+> **Path**: `src/app/api/products/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 118 lines • 3.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10113,9 +10563,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### <a id="src-app-api-categories-route-ts"></a>35. `src/app/api/categories/route.ts`
+### <a id="src-app-api-categories-route-ts"></a>38. `src/app/api/categories/route.ts`
 
-> **Path**: `src/app/api/categories/route.ts` | **Lines**: 79 | **Size**: 2.4 KB
+> **Path**: `src/app/api/categories/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 79 lines • 2.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10200,9 +10652,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-categories-id-route-ts"></a>36. `src/app/api/categories/[id]/route.ts`
+### <a id="src-app-api-categories--id--route-ts"></a>39. `src/app/api/categories/[id]/route.ts`
 
-> **Path**: `src/app/api/categories/[id]/route.ts` | **Lines**: 94 | **Size**: 2.8 KB
+> **Path**: `src/app/api/categories/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 94 lines • 2.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10302,16 +10756,19 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### <a id="src-app-api-orders-route-ts"></a>37. `src/app/api/orders/route.ts`
+### <a id="src-app-api-orders-route-ts"></a>40. `src/app/api/orders/route.ts`
 
-> **Path**: `src/app/api/orders/route.ts` | **Lines**: 97 | **Size**: 3.2 KB
+> **Path**: `src/app/api/orders/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 65 lines • 2.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { createOrderAtomic, getOrders } from '@/lib/db';
+import { getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
-import { sendNewOrderPush } from '@/lib/push';
+import { OrderService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
   try {
@@ -10334,7 +10791,7 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
@@ -10342,29 +10799,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
-      return NextResponse.json(
-        { success: false, error: 'Customer name, email, and phone are required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!body.shippingAddress || !body.shippingAddress.addressLine1) {
-      return NextResponse.json(
-        { success: false, error: 'Valid delivery address is required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!Array.isArray(body.items) || body.items.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'Order must contain at least one material/product.' },
-        { status: 400 }
-      );
-    }
-
-    // Process order with Server-Authoritative Price & Atomic Inventory Lock
-    const result = await createOrderAtomic({
+    const order = await OrderService.placeOrder({
       customerName: body.customerName,
       customerEmail: body.customerEmail,
       customerPhone: body.customerPhone,
@@ -10375,10 +10810,6 @@ export async function POST(req: NextRequest) {
       notes: body.notes,
       idempotencyKey: body.idempotencyKey,
     });
-
-    if (!result.success || !result.order) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 });
-    }
 
     // Invalidate customer-facing stock & product caches immediately
     try {
@@ -10391,30 +10822,26 @@ export async function POST(req: NextRequest) {
       console.warn('Revalidation notice:', revErr);
     }
 
-    // Trigger Realtime Web Push Notification to Admin devices
-    if (result.order) {
-      sendNewOrderPush(result.order).catch((pushErr) => {
-        console.warn('Order push notification dispatch notice:', pushErr);
-      });
-    }
-
-    return NextResponse.json({ success: true, order: result.order });
+    return NextResponse.json({ success: true, order });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### <a id="src-app-api-orders-id-route-ts"></a>38. `src/app/api/orders/[id]/route.ts`
+### <a id="src-app-api-orders--id--route-ts"></a>41. `src/app/api/orders/[id]/route.ts`
 
-> **Path**: `src/app/api/orders/[id]/route.ts` | **Lines**: 70 | **Size**: 2.1 KB
+> **Path**: `src/app/api/orders/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 46 lines • 1.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrderById, updateOrderStatus, addAuditLog } from '@/lib/db';
+import { getOrderById } from '@/lib/db';
 import { requireAuthenticatedAdmin, requirePermission } from '@/lib/auth';
+import { OrderService } from '@/server/services';
 import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
@@ -10442,38 +10869,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const body = await req.json();
     const { orderStatus, paymentStatus, action, utrNumber, note } = body;
 
-    let targetPaymentStatus = paymentStatus;
-    let targetOrderStatus = orderStatus;
-
-    if (action === 'VERIFY_PAYMENT') {
-      targetPaymentStatus = 'Paid';
-    }
-
-    const updated = await updateOrderStatus(params.id, targetOrderStatus, targetPaymentStatus, {
-      actorEmail: auth.admin.email,
-      note,
+    const updated = await OrderService.updateOrderStatusAndPayment(params.id, {
+      orderStatus,
+      paymentStatus,
+      action,
       utrNumber,
-    });
-
-    if (!updated) {
-      return NextResponse.json({ success: false, error: 'Order not found' }, { status: 404 });
-    }
-
-    const auditAction = action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
-
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: auditAction,
-      entity: 'Order',
-      entityId: params.id,
-      details: {
-        orderStatus: targetOrderStatus,
-        paymentStatus: targetPaymentStatus,
-        utrNumber,
-        verifiedBy: auth.admin.email,
-        note,
-      },
+      note,
+      actor: { id: auth.admin.id, email: auth.admin.email },
     });
 
     return NextResponse.json({ success: true, order: updated });
@@ -10485,9 +10887,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 ---
 
-### <a id="src-app-api-quotes-route-ts"></a>39. `src/app/api/quotes/route.ts`
+### <a id="src-app-api-quotes-route-ts"></a>42. `src/app/api/quotes/route.ts`
 
-> **Path**: `src/app/api/quotes/route.ts` | **Lines**: 63 | **Size**: 2.2 KB
+> **Path**: `src/app/api/quotes/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 63 lines • 2.2 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10556,14 +10960,18 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-quotes-id-route-ts"></a>40. `src/app/api/quotes/[id]/route.ts`
+### <a id="src-app-api-quotes--id--route-ts"></a>43. `src/app/api/quotes/[id]/route.ts`
 
-> **Path**: `src/app/api/quotes/[id]/route.ts` | **Lines**: 45 | **Size**: 1.5 KB
+> **Path**: `src/app/api/quotes/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 39 lines • 1.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuoteById, updateQuoteStatus, addAuditLog } from '@/lib/db';
-import { requireOwnerOrEmployee } from '@/lib/auth';
+import { getQuoteById } from '@/lib/db';
+import { requirePermission } from '@/lib/auth';
+import { QuoteService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -10575,48 +10983,42 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
     return NextResponse.json({ success: true, quote });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const auth = await requireOwnerOrEmployee(req);
+  const auth = await requirePermission(req, 'quotes.update');
   if ('response' in auth) return auth.response;
 
   try {
     const { status, totalQuotedAmount, adminNotes } = await req.json();
-    const updated = await updateQuoteStatus(params.id, status, totalQuotedAmount, adminNotes);
-
-    if (!updated) {
-      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
-    }
-
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: 'QUOTE_STATUS_UPDATED',
-      entity: 'Quote',
-      entityId: params.id,
-      details: { status, totalQuotedAmount },
+    const updated = await QuoteService.updateEstimation(params.id, {
+      status,
+      totalQuotedAmount,
+      adminNotes,
+      actor: { id: auth.admin.id, email: auth.admin.email },
     });
 
     return NextResponse.json({ success: true, quote: updated });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 ```
 
 ---
 
-### <a id="src-app-api-quotes-id-convert-route-ts"></a>41. `src/app/api/quotes/[id]/convert/route.ts`
+### <a id="src-app-api-quotes--id--convert-route-ts"></a>44. `src/app/api/quotes/[id]/convert/route.ts`
 
-> **Path**: `src/app/api/quotes/[id]/convert/route.ts` | **Lines**: 100 | **Size**: 3.3 KB
+> **Path**: `src/app/api/quotes/[id]/convert/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 28 lines • 0.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuoteById, updateQuoteStatus, createOrderAtomic, addAuditLog } from '@/lib/db';
 import { requirePermission } from '@/lib/auth';
+import { QuoteService } from '@/server/services';
 import { formatErrorResponse } from '@/server/errors';
 
 export const dynamic = 'force-dynamic';
@@ -10626,87 +11028,15 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if ('response' in auth) return auth.response;
 
   try {
-    const quote = await getQuoteById(params.id);
-    if (!quote) {
-      return NextResponse.json({ success: false, error: 'Quote not found' }, { status: 404 });
-    }
-
-    if (quote.status === 'Converted_To_Order') {
-      return NextResponse.json(
-        { success: false, error: 'This quote has already been converted to an order.' },
-        { status: 409 }
-      );
-    }
-
-    // Map quote items to order items format
-    const orderItems = (quote.items || []).map((it) => ({
-      productId: it.productId || 'custom-material',
-      quantity: it.quantity || 1,
-      selectedColor: 'Custom Specification',
-      selectedFinish: 'Bespoke',
-    }));
-
-    if (orderItems.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'Cannot convert a quote with no specified material items.' },
-        { status: 400 }
-      );
-    }
-
-    // Create the order idempotently using quote reference
-    const orderResult = await createOrderAtomic({
-      customerName: quote.customerName,
-      customerEmail: quote.customerEmail,
-      customerPhone: quote.customerPhone,
-      shippingAddress: {
-        fullName: quote.customerName,
-        phone: quote.customerPhone,
-        addressLine1: quote.projectLocation || 'Assam, India',
-        city: 'Guwahati',
-        state: 'Assam',
-        pincode: '781040',
-        country: 'India',
-      },
-      items: orderItems,
-      paymentMethod: 'Architectural Contract / Wire Transfer',
-      notes: `Converted from Quotation Dossier #${quote.quoteNumber}. Project Type: ${quote.projectType}.`,
-      idempotencyKey: `quote-conv-${quote.id}`,
-    });
-
-    if (!orderResult.success || !orderResult.order) {
-      return NextResponse.json(
-        { success: false, error: orderResult.error || 'Failed to generate order from quotation.' },
-        { status: 500 }
-      );
-    }
-
-    // Update Quote status to Converted_To_Order
-    await updateQuoteStatus(
-      quote.id,
-      'Converted_To_Order',
-      quote.totalQuotedAmount,
-      `Converted to Order #${orderResult.order.orderNumber} by ${auth.admin.email}`
-    );
-
-    // Audit the conversion
-    await addAuditLog({
-      adminId: auth.admin.id,
-      adminEmail: auth.admin.email,
-      action: 'QUOTE_CONVERTED_TO_ORDER',
-      entity: 'Quote',
-      entityId: quote.id,
-      details: {
-        quoteNumber: quote.quoteNumber,
-        orderId: orderResult.order.id,
-        orderNumber: orderResult.order.orderNumber,
-        totalAmount: orderResult.order.totalAmount,
-      },
+    const result = await QuoteService.convertQuoteToOrder(params.id, {
+      id: auth.admin.id,
+      email: auth.admin.email,
     });
 
     return NextResponse.json({
       success: true,
-      order: orderResult.order,
-      message: `Quote #${quote.quoteNumber} successfully converted to Order #${orderResult.order.orderNumber}`,
+      order: result.order,
+      message: `Quote #${result.quote.quoteNumber} successfully converted to Order #${result.order.orderNumber}`,
     });
   } catch (err: any) {
     console.error('Quote conversion error:', err);
@@ -10717,9 +11047,11 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 ---
 
-### <a id="src-app-api-projects-route-ts"></a>42. `src/app/api/projects/route.ts`
+### <a id="src-app-api-projects-route-ts"></a>45. `src/app/api/projects/route.ts`
 
-> **Path**: `src/app/api/projects/route.ts` | **Lines**: 91 | **Size**: 2.9 KB
+> **Path**: `src/app/api/projects/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 91 lines • 2.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10816,9 +11148,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-projects-id-route-ts"></a>43. `src/app/api/projects/[id]/route.ts`
+### <a id="src-app-api-projects--id--route-ts"></a>46. `src/app/api/projects/[id]/route.ts`
 
-> **Path**: `src/app/api/projects/[id]/route.ts` | **Lines**: 109 | **Size**: 3.2 KB
+> **Path**: `src/app/api/projects/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 109 lines • 3.2 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10933,9 +11267,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### <a id="src-app-api-services-route-ts"></a>44. `src/app/api/services/route.ts`
+### <a id="src-app-api-services-route-ts"></a>47. `src/app/api/services/route.ts`
 
-> **Path**: `src/app/api/services/route.ts` | **Lines**: 77 | **Size**: 2.3 KB
+> **Path**: `src/app/api/services/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 77 lines • 2.3 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11018,9 +11354,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-services-id-route-ts"></a>45. `src/app/api/services/[id]/route.ts`
+### <a id="src-app-api-services--id--route-ts"></a>48. `src/app/api/services/[id]/route.ts`
 
-> **Path**: `src/app/api/services/[id]/route.ts` | **Lines**: 88 | **Size**: 2.5 KB
+> **Path**: `src/app/api/services/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 88 lines • 2.5 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11114,9 +11452,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 ---
 
-### <a id="src-app-api-enquiries-route-ts"></a>46. `src/app/api/enquiries/route.ts`
+### <a id="src-app-api-enquiries-route-ts"></a>49. `src/app/api/enquiries/route.ts`
 
-> **Path**: `src/app/api/enquiries/route.ts` | **Lines**: 51 | **Size**: 1.7 KB
+> **Path**: `src/app/api/enquiries/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 51 lines • 1.7 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11173,9 +11513,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-### <a id="src-app-api-enquiries-id-route-ts"></a>47. `src/app/api/enquiries/[id]/route.ts`
+### <a id="src-app-api-enquiries--id--route-ts"></a>50. `src/app/api/enquiries/[id]/route.ts`
 
-> **Path**: `src/app/api/enquiries/[id]/route.ts` | **Lines**: 24 | **Size**: 0.8 KB
+> **Path**: `src/app/api/enquiries/[id]/route.ts`  
+> **Layer**: Resource API Route  
+> **Metrics**: 24 lines • 0.8 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11205,9 +11547,425 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 ---
 
-### <a id="src-server-auth-rbac-ts"></a>48. `src/server/auth/rbac.ts`
+### <a id="src-server-services-orderservice-ts"></a>51. `src/server/services/orderService.ts`
 
-> **Path**: `src/server/auth/rbac.ts` | **Lines**: 274 | **Size**: 7.2 KB
+> **Path**: `src/server/services/orderService.ts`  
+> **Layer**: Domain Service Layer  
+> **Metrics**: 129 lines • 3.9 KB
+
+```typescript
+import { Order, OrderStatus, PaymentStatus } from '@/types';
+import { createOrderAtomic, CreateOrderData } from '../db/transactions/orders';
+import { getOrderById, updateOrderStatus } from '../db/repositories/orders';
+import { addAuditLog } from '../db/repositories/audit';
+import { validateOrderStatusTransition } from '../validation/schemas';
+import { ValidationError, NotFoundError } from '../errors';
+import { sendNewOrderPush } from '@/lib/push';
+
+export interface ActorContext {
+  id: string;
+  email: string;
+}
+
+export class OrderService {
+  /**
+   * Domain-level order placement.
+   * Validates customer, address, and items, executes atomic reservation/creation,
+   * dispatches background push notifications, and records audit if actor is provided.
+   */
+  static async placeOrder(
+    data: CreateOrderData,
+    actor?: ActorContext
+  ): Promise<Order> {
+    if (!data.customerName || !data.customerEmail || !data.customerPhone) {
+      throw new ValidationError('Customer name, email, and phone are required.');
+    }
+
+    if (!data.shippingAddress || !data.shippingAddress.addressLine1) {
+      throw new ValidationError('Valid delivery address is required.');
+    }
+
+    if (!Array.isArray(data.items) || data.items.length === 0) {
+      throw new ValidationError('Order must contain at least one material/product.');
+    }
+
+    const result = await createOrderAtomic(data);
+
+    if (!result.success || !result.order) {
+      throw new Error(result.error || 'Failed to generate order.');
+    }
+
+    const order = result.order;
+
+    // Trigger realtime push notifications asynchronously
+    sendNewOrderPush(order).catch((pushErr) => {
+      console.warn('Order push notification dispatch notice:', pushErr);
+    });
+
+    if (actor) {
+      await addAuditLog({
+        adminId: actor.id,
+        adminEmail: actor.email,
+        action: 'ORDER_CREATED',
+        entity: 'Order',
+        entityId: order.id,
+        details: {
+          orderNumber: order.orderNumber,
+          totalAmount: order.totalAmount,
+          customerEmail: order.customerEmail,
+        },
+      });
+    }
+
+    return order;
+  }
+
+  /**
+   * Domain-level status transition and payment verification.
+   * Enforces transition state machine, persistence, and immutable audit trails.
+   */
+  static async updateOrderStatusAndPayment(
+    orderId: string,
+    params: {
+      orderStatus?: OrderStatus;
+      paymentStatus?: PaymentStatus;
+      action?: string;
+      utrNumber?: string;
+      note?: string;
+      actor: ActorContext;
+    }
+  ): Promise<Order> {
+    const existing = await getOrderById(orderId);
+    if (!existing) {
+      throw new NotFoundError(`Order ${orderId} not found`);
+    }
+
+    let targetPaymentStatus = params.paymentStatus || existing.paymentStatus;
+    const currentStatus = existing.orderStatus || (existing as any).status;
+    let targetOrderStatus = params.orderStatus || currentStatus;
+
+    if (params.action === 'VERIFY_PAYMENT') {
+      targetPaymentStatus = 'Paid';
+    }
+
+    if (params.orderStatus && params.orderStatus !== currentStatus) {
+      validateOrderStatusTransition(currentStatus, params.orderStatus);
+    }
+
+    const updated = await updateOrderStatus(orderId, targetOrderStatus, targetPaymentStatus, {
+      actorEmail: params.actor.email,
+      note: params.note,
+      utrNumber: params.utrNumber,
+    });
+
+    if (!updated) {
+      throw new NotFoundError(`Order ${orderId} could not be updated`);
+    }
+
+    const auditAction = params.action === 'VERIFY_PAYMENT' ? 'ORDER_PAYMENT_VERIFIED' : 'ORDER_STATUS_UPDATED';
+
+    await addAuditLog({
+      adminId: params.actor.id,
+      adminEmail: params.actor.email,
+      action: auditAction,
+      entity: 'Order',
+      entityId: orderId,
+      details: {
+        orderStatus: targetOrderStatus,
+        paymentStatus: targetPaymentStatus,
+        utrNumber: params.utrNumber,
+        verifiedBy: params.actor.email,
+        note: params.note,
+      },
+    });
+
+    return updated;
+  }
+}
+```
+
+---
+
+### <a id="src-server-services-quoteservice-ts"></a>52. `src/server/services/quoteService.ts`
+
+> **Path**: `src/server/services/quoteService.ts`  
+> **Layer**: Domain Service Layer  
+> **Metrics**: 132 lines • 3.8 KB
+
+```typescript
+import { Quote, QuoteStatus, Order } from '@/types';
+import { getQuoteById, updateQuoteStatus } from '../db/repositories/quotes';
+import { createOrderAtomic } from '../db/transactions/orders';
+import { addAuditLog } from '../db/repositories/audit';
+import { NotFoundError, ConflictError, ValidationError } from '../errors';
+
+import { ActorContext } from './orderService';
+
+export class QuoteService {
+  /**
+   * Converts an existing quotation into an atelier-grade order atomically.
+   */
+  static async convertQuoteToOrder(
+    quoteId: string,
+    actor: ActorContext
+  ): Promise<{ order: Order; quote: Quote }> {
+    const quote = await getQuoteById(quoteId);
+    if (!quote) {
+      throw new NotFoundError(`Quote ${quoteId} not found`);
+    }
+
+    if (quote.status === 'Converted_To_Order') {
+      throw new ConflictError('This quote has already been converted to an order.');
+    }
+
+    const orderItems = (quote.items || []).map((it) => ({
+      productId: it.productId || 'custom-material',
+      quantity: it.quantity || 1,
+      selectedColor: 'Custom Specification',
+      selectedFinish: 'Bespoke',
+    }));
+
+    if (orderItems.length === 0) {
+      throw new ValidationError('Cannot convert a quote with no specified material items.');
+    }
+
+    const orderResult = await createOrderAtomic({
+      customerName: quote.customerName,
+      customerEmail: quote.customerEmail,
+      customerPhone: quote.customerPhone,
+      shippingAddress: {
+        fullName: quote.customerName,
+        phone: quote.customerPhone,
+        addressLine1: quote.projectLocation || 'Assam, India',
+        city: 'Guwahati',
+        state: 'Assam',
+        pincode: '781040',
+        country: 'India',
+      },
+      items: orderItems,
+      paymentMethod: 'Architectural Contract / Wire Transfer',
+      notes: `Converted from Quotation Dossier #${quote.quoteNumber}. Project Type: ${quote.projectType}.`,
+      idempotencyKey: `quote-conv-${quote.id}`,
+    });
+
+    if (!orderResult.success || !orderResult.order) {
+      throw new Error(orderResult.error || 'Failed to generate order from quotation.');
+    }
+
+    const updatedQuote = await updateQuoteStatus(
+      quote.id,
+      'Converted_To_Order',
+      quote.totalQuotedAmount,
+      `Converted to Order #${orderResult.order.orderNumber} by ${actor.email}`
+    );
+
+    await addAuditLog({
+      adminId: actor.id,
+      adminEmail: actor.email,
+      action: 'QUOTE_CONVERTED_TO_ORDER',
+      entity: 'Quote',
+      entityId: quote.id,
+      details: {
+        quoteNumber: quote.quoteNumber,
+        orderId: orderResult.order.id,
+        orderNumber: orderResult.order.orderNumber,
+        totalAmount: orderResult.order.totalAmount,
+      },
+    });
+
+    return {
+      order: orderResult.order,
+      quote: updatedQuote || quote,
+    };
+  }
+
+  /**
+   * Reviews or updates pricing estimation for a quotation.
+   */
+  static async updateEstimation(
+    quoteId: string,
+    params: {
+      status: QuoteStatus;
+      totalQuotedAmount?: number;
+      adminNotes?: string;
+      actor: ActorContext;
+    }
+  ): Promise<Quote> {
+    const existing = await getQuoteById(quoteId);
+    if (!existing) {
+      throw new NotFoundError(`Quote ${quoteId} not found`);
+    }
+
+    const updated = await updateQuoteStatus(
+      quoteId,
+      params.status,
+      params.totalQuotedAmount,
+      params.adminNotes
+    );
+
+    if (!updated) {
+      throw new NotFoundError(`Quote ${quoteId} could not be updated`);
+    }
+
+    await addAuditLog({
+      adminId: params.actor.id,
+      adminEmail: params.actor.email,
+      action: 'QUOTE_STATUS_UPDATED',
+      entity: 'Quote',
+      entityId: quoteId,
+      details: {
+        quoteNumber: updated.quoteNumber,
+        status: params.status,
+        totalQuotedAmount: params.totalQuotedAmount,
+        adminNotes: params.adminNotes,
+      },
+    });
+
+    return updated;
+  }
+}
+```
+
+---
+
+### <a id="src-server-services-index-ts"></a>53. `src/server/services/index.ts`
+
+> **Path**: `src/server/services/index.ts`  
+> **Layer**: Domain Service Layer  
+> **Metrics**: 3 lines • 0.1 KB
+
+```typescript
+export * from './orderService';
+export * from './quoteService';
+```
+
+---
+
+### <a id="src-server-auth-tokens-ts"></a>54. `src/server/auth/tokens.ts`
+
+> **Path**: `src/server/auth/tokens.ts`  
+> **Layer**: Auth & RBAC Layer  
+> **Metrics**: 110 lines • 3.0 KB
+
+```typescript
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { AdminRole } from '@/types';
+
+// In-memory revocation tracking: maps adminId -> timestamp of revocation
+// Any token issued BEFORE this timestamp is rejected
+const revokedBeforeMap = new Map<string, number>();
+
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Critical Security Error: Missing JWT_SECRET environment variable.');
+    }
+    return 'development_only_jwt_secret_do_not_use_in_production_key';
+  }
+  return secret;
+}
+
+export interface SessionTokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  mustChangePassword: boolean;
+  sessionId: string;
+  iat?: number;
+  exp?: number;
+}
+
+/**
+ * Signs an authoritative admin session token with cryptographic session ID
+ */
+export function signSessionToken(data: {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  mustChangePassword?: boolean;
+}): string {
+  const sessionId = crypto.randomBytes(16).toString('hex');
+  const payload: SessionTokenPayload = {
+    id: data.id,
+    email: data.email.toLowerCase().trim(),
+    name: data.name,
+    role: data.role,
+    mustChangePassword: Boolean(data.mustChangePassword),
+    sessionId,
+  };
+
+  return jwt.sign(payload, getJwtSecret(), {
+    expiresIn: '7d',
+    algorithm: 'HS256',
+  });
+}
+
+/**
+ * Cryptographically verifies and validates session token, checking revocation
+ */
+export function verifySessionToken(token: string): SessionTokenPayload | null {
+  try {
+    const decoded = jwt.verify(token, getJwtSecret(), { algorithms: ['HS256'] }) as SessionTokenPayload;
+    if (!decoded || !decoded.id || !decoded.email || !decoded.role) {
+      return null;
+    }
+
+    // Check if session was revoked for this admin
+    const revokedTimestamp = revokedBeforeMap.get(decoded.id);
+    if (revokedTimestamp && decoded.iat && decoded.iat * 1000 < revokedTimestamp) {
+      return null; // Token was revoked
+    }
+
+    return decoded;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Revokes all active sessions for an admin (e.g. password reset, employee disabled, account deleted)
+ */
+export function revokeAllSessionsForAdmin(adminId: string): void {
+  revokedBeforeMap.set(adminId, Date.now());
+}
+
+/**
+ * Checks if a session issued at `iatSeconds` has been revoked
+ */
+export function isSessionRevoked(adminId: string, iatSeconds?: number): boolean {
+  const revokedTimestamp = revokedBeforeMap.get(adminId);
+  if (!revokedTimestamp || !iatSeconds) return false;
+  return iatSeconds * 1000 < revokedTimestamp;
+}
+
+/**
+ * Rotates a session token (issues a new sessionId while preserving identity)
+ */
+export function rotateSessionToken(token: string): string | null {
+  const current = verifySessionToken(token);
+  if (!current) return null;
+
+  return signSessionToken({
+    id: current.id,
+    email: current.email,
+    name: current.name,
+    role: current.role,
+    mustChangePassword: current.mustChangePassword,
+  });
+}
+```
+
+---
+
+### <a id="src-server-auth-rbac-ts"></a>55. `src/server/auth/rbac.ts`
+
+> **Path**: `src/server/auth/rbac.ts`  
+> **Layer**: Auth & RBAC Layer  
+> **Metrics**: 274 lines • 7.2 KB
 
 ```typescript
 import { AdminRole, AdminUser } from '@/types';
@@ -11487,9 +12245,11 @@ export function protectOwnerFromModification(
 
 ---
 
-### <a id="src-lib-auth-ts"></a>49. `src/lib/auth.ts`
+### <a id="src-lib-auth-ts"></a>56. `src/lib/auth.ts`
 
-> **Path**: `src/lib/auth.ts` | **Lines**: 276 | **Size**: 8.0 KB
+> **Path**: `src/lib/auth.ts`  
+> **Layer**: Auth & RBAC Layer  
+> **Metrics**: 276 lines • 8.0 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -11771,9 +12531,410 @@ export function verifyCustomerToken(token: string): { id: string; email: string;
 
 ---
 
-### <a id="src-server-db-client-ts"></a>50. `src/server/db/client.ts`
+### <a id="src-server-security-config-ts"></a>57. `src/server/security/config.ts`
 
-> **Path**: `src/server/db/client.ts` | **Lines**: 273 | **Size**: 8.1 KB
+> **Path**: `src/server/security/config.ts`  
+> **Layer**: Security & Sanitization  
+> **Metrics**: 48 lines • 1.2 KB
+
+```typescript
+import { isProduction } from '../db/client';
+import { AppError } from '../errors';
+
+export interface ProductionConfigStatus {
+  valid: boolean;
+  isProduction: boolean;
+  issues: string[];
+}
+
+/**
+ * Validates critical production configuration at runtime.
+ * Throws AppError in production if critical secrets or variables are missing.
+ */
+export function validateProductionConfig(): ProductionConfigStatus {
+  const isProd = isProduction();
+  const issues: string[] = [];
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  if (!supabaseUrl) {
+    issues.push('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL');
+  }
+
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseServiceKey) {
+    issues.push('Missing SUPABASE_SERVICE_ROLE_KEY');
+  }
+
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    issues.push('Missing JWT_SECRET');
+  }
+
+  if (isProd && issues.length > 0) {
+    throw new AppError(
+      `Critical Production Security Error: Incomplete configuration. Issues: ${issues.join(', ')}`,
+      500,
+      'CRITICAL_CONFIG_ERROR',
+      { issues }
+    );
+  }
+
+  return {
+    valid: issues.length === 0,
+    isProduction: isProd,
+    issues,
+  };
+}
+```
+
+---
+
+### <a id="src-server-security-sanitization-ts"></a>58. `src/server/security/sanitization.ts`
+
+> **Path**: `src/server/security/sanitization.ts`  
+> **Layer**: Security & Sanitization  
+> **Metrics**: 84 lines • 1.9 KB
+
+```typescript
+/**
+ * Security & Sanitization Utilities for Balaji Atelier
+ */
+
+const REDACTED_KEYS = new Set([
+  'password',
+  'passwordhash',
+  'password_hash',
+  'token',
+  'sessiontoken',
+  'session_token',
+  'jwt',
+  'secret',
+  'jwtsecret',
+  'jwt_secret',
+  'key',
+  'vapidprivatekey',
+  'vapid_private_key',
+  'service_role_key',
+  'servicerolekey',
+]);
+
+/**
+ * Recursively sanitizes data before writing to audit logs or public responses,
+ * scrubbing any credentials, tokens, or private secrets.
+ */
+export function sanitizeAuditDetails(data: any, depth = 0): any {
+  if (depth > 5 || data === null || data === undefined) return data;
+
+  if (typeof data !== 'object') {
+    return data;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map((item) => sanitizeAuditDetails(item, depth + 1));
+  }
+
+  const sanitized: Record<string, any> = {};
+  for (const [key, value] of Object.entries(data)) {
+    const lowerKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (REDACTED_KEYS.has(lowerKey)) {
+      sanitized[key] = '[REDACTED]';
+    } else if (typeof value === 'object' && value !== null) {
+      sanitized[key] = sanitizeAuditDetails(value, depth + 1);
+    } else {
+      sanitized[key] = value;
+    }
+  }
+
+  return sanitized;
+}
+
+/**
+ * Inspects SVG string content to ensure no executable script tags, event handlers,
+ * or unsafe protocols are embedded.
+ */
+export function isSafeSvg(content: string): boolean {
+  if (!content || typeof content !== 'string') return false;
+  const lower = content.toLowerCase();
+
+  const isSvg = lower.includes('<svg') || lower.includes('<?xml');
+  if (!isSvg) return false;
+
+  const dangerousPatterns = [
+    '<script',
+    'onload=',
+    'onerror=',
+    'onclick=',
+    'onmouseover=',
+    'onfocus=',
+    'javascript:',
+    'data:text/html',
+    'xlink:href="javascript',
+  ];
+
+  for (const pattern of dangerousPatterns) {
+    if (lower.includes(pattern)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+```
+
+---
+
+### <a id="src-server-security-index-ts"></a>59. `src/server/security/index.ts`
+
+> **Path**: `src/server/security/index.ts`  
+> **Layer**: Security & Sanitization  
+> **Metrics**: 3 lines • 0.1 KB
+
+```typescript
+export * from './config';
+export * from './sanitization';
+```
+
+---
+
+### <a id="src-server-validation-schemas-ts"></a>60. `src/server/validation/schemas.ts`
+
+> **Path**: `src/server/validation/schemas.ts`  
+> **Layer**: Schema Validation  
+> **Metrics**: 112 lines • 3.9 KB
+
+```typescript
+import { ValidationError } from '../errors';
+import { OrderStatus, PaymentStatus, UnitType, PurchaseMode, AdminRole } from '@/types';
+
+export function validateProductInput(data: any, isUpdate = false): void {
+  if (!isUpdate || data.name !== undefined) {
+    if (!data.name || typeof data.name !== 'string' || data.name.trim().length < 2) {
+      throw new ValidationError('Product name must be at least 2 characters long');
+    }
+  }
+
+  if (!isUpdate || data.sku !== undefined) {
+    if (!data.sku || typeof data.sku !== 'string' || !/^[A-Za-z0-9-_]+$/.test(data.sku.trim())) {
+      throw new ValidationError('SKU must contain only letters, numbers, hyphens, and underscores');
+    }
+  }
+
+  if (data.price !== undefined) {
+    const p = Number(data.price);
+    if (isNaN(p) || p < 0) {
+      throw new ValidationError('Product price must be a non-negative number');
+    }
+  }
+
+  if (data.salePrice !== undefined && data.salePrice !== null) {
+    const sp = Number(data.salePrice);
+    if (isNaN(sp) || sp < 0) {
+      throw new ValidationError('Sale price must be a non-negative number');
+    }
+  }
+
+  if (data.stock !== undefined) {
+    const s = Number(data.stock);
+    if (isNaN(s) || s < 0 || !Number.isInteger(s)) {
+      throw new ValidationError('Stock quantity must be a non-negative integer');
+    }
+  }
+
+  if (data.moq !== undefined) {
+    const m = Number(data.moq);
+    if (isNaN(m) || m < 1 || !Number.isInteger(m)) {
+      throw new ValidationError('Minimum order quantity (MOQ) must be at least 1');
+    }
+  }
+
+  if (data.purchaseMode !== undefined) {
+    const validModes: PurchaseMode[] = ['BUY_NOW', 'REQUEST_QUOTE', 'BOTH', 'UNAVAILABLE'];
+    if (!validModes.includes(data.purchaseMode)) {
+      throw new ValidationError(`Invalid purchase mode. Must be one of: ${validModes.join(', ')}`);
+    }
+  }
+}
+
+export function validateOrderStatusTransition(currentStatus: OrderStatus, newStatus: OrderStatus): void {
+  const allowedTransitions: Record<OrderStatus, OrderStatus[]> = {
+    Pending: ['Confirmed', 'Cancelled'],
+    Confirmed: ['Processing', 'Cancelled'],
+    Processing: ['Packed', 'Cancelled'],
+    Packed: ['Shipped', 'Cancelled'],
+    Shipped: ['Delivered', 'Cancelled'],
+    Delivered: [], // Final state
+    Cancelled: [], // Final state
+  };
+
+  if (currentStatus === newStatus) return;
+
+  const validNext = allowedTransitions[currentStatus] || [];
+  if (!validNext.includes(newStatus)) {
+    throw new ValidationError(
+      `Illegal order status transition: Cannot change status from '${currentStatus}' to '${newStatus}'.`
+    );
+  }
+}
+
+export function validatePaymentSettings(payment: any): void {
+  if (!payment || typeof payment !== 'object') return;
+
+  if (payment.upiId && typeof payment.upiId === 'string') {
+    const trimmed = payment.upiId.trim();
+    if (!/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(trimmed)) {
+      throw new ValidationError('Invalid UPI ID format. Expected format: username@bank');
+    }
+  }
+
+  if (payment.qrExpiryMinutes !== undefined) {
+    const m = Number(payment.qrExpiryMinutes);
+    if (isNaN(m) || m < 1 || m > 1440) {
+      throw new ValidationError('QR expiry minutes must be between 1 and 1440 (24 hours)');
+    }
+  }
+}
+
+export function validateEmployeeInput(data: any, isUpdate = false): void {
+  if (!isUpdate || data.email !== undefined) {
+    if (!data.email || typeof data.email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      throw new ValidationError('A valid email address is required for the employee');
+    }
+  }
+
+  if (!isUpdate || data.name !== undefined) {
+    if (!data.name || typeof data.name !== 'string' || data.name.trim().length < 2) {
+      throw new ValidationError('Employee name must be at least 2 characters long');
+    }
+  }
+
+  if (data.role !== undefined) {
+    const validRoles: AdminRole[] = ['employee', 'editor', 'viewer'];
+    if (!validRoles.includes(data.role)) {
+      throw new ValidationError(`Assigned role must be one of: ${validRoles.join(', ')}`);
+    }
+  }
+}
+```
+
+---
+
+### <a id="src-server-errors-index-ts"></a>61. `src/server/errors/index.ts`
+
+> **Path**: `src/server/errors/index.ts`  
+> **Layer**: Error Taxonomy Layer  
+> **Metrics**: 102 lines • 2.9 KB
+
+```typescript
+import { NextResponse } from 'next/server';
+
+export class AppError extends Error {
+  public readonly statusCode: number;
+  public readonly code: string;
+  public readonly details?: any;
+
+  constructor(message: string, statusCode = 500, code = 'INTERNAL_ERROR', details?: any) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    this.details = details;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(message = 'Authentication required to access this atelier resource', details?: any) {
+    super(message, 401, 'UNAUTHORIZED', details);
+  }
+}
+
+export class ForbiddenError extends AppError {
+  constructor(message = 'You do not have the required administrative permissions for this action', details?: any) {
+    super(message, 403, 'FORBIDDEN', details);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(entity = 'Resource', details?: any) {
+    super(`${entity} not found`, 404, 'NOT_FOUND', details);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message: string, details?: any) {
+    super(message, 409, 'CONFLICT', details);
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message: string, details?: any) {
+    super(message, 422, 'VALIDATION_ERROR', details);
+  }
+}
+
+export class RateLimitError extends AppError {
+  constructor(message = 'Too many requests. Please try again later.', details?: any) {
+    super(message, 429, 'RATE_LIMITED', details);
+  }
+}
+
+export class DatabaseUnavailableError extends AppError {
+  constructor(message = 'The primary database service is temporarily unavailable. Please retry shortly.', details?: any) {
+    super(message, 503, 'DATABASE_UNAVAILABLE', details);
+  }
+}
+
+export interface StandardErrorResponse {
+  success: false;
+  error: string;
+  code: string;
+  statusCode: number;
+  requestId?: string;
+  details?: any;
+}
+
+export function formatErrorResponse(err: unknown, requestId?: string): NextResponse<StandardErrorResponse> {
+  if (err instanceof AppError) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: err.message,
+        code: err.code,
+        statusCode: err.statusCode,
+        requestId,
+        ...(err.details ? { details: err.details } : {}),
+      },
+      { status: err.statusCode }
+    );
+  }
+
+  const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+  console.error('[Unhandled Server Error]', { requestId, error: err });
+
+  // In production, do not leak raw SQL / internal error stack
+  const isProd = process.env.NODE_ENV === 'production';
+  const safeMessage = isProd ? 'An unexpected server error occurred. Please contact studio administration.' : message;
+
+  return NextResponse.json(
+    {
+      success: false,
+      error: safeMessage,
+      code: 'INTERNAL_SERVER_ERROR',
+      statusCode: 500,
+      requestId,
+    },
+    { status: 500 }
+  );
+}
+```
+
+---
+
+### <a id="src-server-db-client-ts"></a>62. `src/server/db/client.ts`
+
+> **Path**: `src/server/db/client.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 273 lines • 8.1 KB
 
 ```typescript
 import fs from 'fs';
@@ -12052,9 +13213,11 @@ export function saveDb(state: DatabaseState): void {
 
 ---
 
-### <a id="src-server-db-mappers-ts"></a>51. `src/server/db/mappers.ts`
+### <a id="src-server-db-mappers-ts"></a>63. `src/server/db/mappers.ts`
 
-> **Path**: `src/server/db/mappers.ts` | **Lines**: 217 | **Size**: 7.1 KB
+> **Path**: `src/server/db/mappers.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 217 lines • 7.1 KB
 
 ```typescript
 import {
@@ -12277,9 +13440,11 @@ export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
 
 ---
 
-### <a id="src-server-db-repositories-employees-ts"></a>52. `src/server/db/repositories/employees.ts`
+### <a id="src-server-db-repositories-employees-ts"></a>64. `src/server/db/repositories/employees.ts`
 
-> **Path**: `src/server/db/repositories/employees.ts` | **Lines**: 390 | **Size**: 11.2 KB
+> **Path**: `src/server/db/repositories/employees.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 390 lines • 11.2 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -12675,11 +13840,14 @@ export async function bootstrapInitialEmployee(): Promise<void> {
 
 ---
 
-### <a id="src-server-db-repositories-audit-ts"></a>53. `src/server/db/repositories/audit.ts`
+### <a id="src-server-db-repositories-audit-ts"></a>65. `src/server/db/repositories/audit.ts`
 
-> **Path**: `src/server/db/repositories/audit.ts` | **Lines**: 88 | **Size**: 2.3 KB
+> **Path**: `src/server/db/repositories/audit.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 92 lines • 2.5 KB
 
 ```typescript
+import crypto from 'crypto';
 import { AuditLog } from '@/types';
 import {
   isSupabaseConfigured,
@@ -12689,9 +13857,11 @@ import {
   getDb,
   saveDb,
 } from '../client';
+import { sanitizeAuditDetails } from '../../security/sanitization';
 
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   const now = new Date().toISOString();
+  const safeDetails = entry.details ? sanitizeAuditDetails(entry.details) : null;
 
   if (await isSupabaseAvailable()) {
     try {
@@ -12706,7 +13876,7 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
           action: entry.action,
           entity: entry.entity,
           entity_id: entry.entityId,
-          details: entry.details || null,
+          details: safeDetails,
           created_at: now,
         })
         .select()
@@ -12732,7 +13902,8 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
   const db = getDb();
   const log: AuditLog = {
     ...entry,
-    id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    details: safeDetails,
+    id: crypto.randomUUID(),
     createdAt: now,
   };
   db.auditLogs.unshift(log);
@@ -12771,9 +13942,11 @@ export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]>
 
 ---
 
-### <a id="src-server-db-repositories-orders-ts"></a>54. `src/server/db/repositories/orders.ts`
+### <a id="src-server-db-repositories-orders-ts"></a>66. `src/server/db/repositories/orders.ts`
 
-> **Path**: `src/server/db/repositories/orders.ts` | **Lines**: 267 | **Size**: 7.9 KB
+> **Path**: `src/server/db/repositories/orders.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 267 lines • 7.9 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -13046,9 +14219,11 @@ export async function createOrder(
 
 ---
 
-### <a id="src-server-db-repositories-quotes-ts"></a>55. `src/server/db/repositories/quotes.ts`
+### <a id="src-server-db-repositories-quotes-ts"></a>67. `src/server/db/repositories/quotes.ts`
 
-> **Path**: `src/server/db/repositories/quotes.ts` | **Lines**: 211 | **Size**: 6.3 KB
+> **Path**: `src/server/db/repositories/quotes.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 211 lines • 6.2 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -13130,9 +14305,9 @@ export async function createQuote(quoteData: {
   }
 
   const db = getDb();
-  const quoteId = `qt-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const quoteId = crypto.randomUUID();
   const quoteItems = (quoteData.items || []).map((it) => ({
-    id: `qti-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    id: crypto.randomUUID(),
     quoteId,
     productId: it.productId,
     productName: it.productName,
@@ -13265,9 +14440,11 @@ export async function updateQuoteStatus(
 
 ---
 
-### <a id="src-server-db-repositories-products-ts"></a>56. `src/server/db/repositories/products.ts`
+### <a id="src-server-db-repositories-products-ts"></a>68. `src/server/db/repositories/products.ts`
 
-> **Path**: `src/server/db/repositories/products.ts` | **Lines**: 419 | **Size**: 14.1 KB
+> **Path**: `src/server/db/repositories/products.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 451 lines • 15.3 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -13586,20 +14763,52 @@ export async function createProduct(
 
 export async function updateProduct(
   id: string,
-  partialData: Partial<Product>
+  partialData: Partial<Product> & { expectedUpdatedAt?: string }
 ): Promise<Product | null> {
   const now = new Date().toISOString();
+  const { expectedUpdatedAt, ...dataToUpdate } = (partialData || {}) as any;
+
+  // Optimistic Concurrency Control Check
+  if (expectedUpdatedAt) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const { data: current, error: fetchErr } = await supabase
+        .from('products')
+        .select('updated_at')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (fetchErr) {
+        throw new Error(`Database error verifying product concurrency: ${fetchErr.message}`);
+      }
+      if (!current) return null;
+      if (current.updated_at && expectedUpdatedAt !== current.updated_at) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    } else {
+      const db = getDb();
+      const current = db.products.find((p) => p.id === id);
+      if (!current) return null;
+      if (current.updatedAt && expectedUpdatedAt !== current.updatedAt) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    }
+  }
 
   // Enforce unique SKU if modified
-  if (partialData.sku) {
-    const existing = await getProductBySku(partialData.sku);
+  if (dataToUpdate.sku) {
+    const existing = await getProductBySku(dataToUpdate.sku);
     if (existing && existing.id !== id) {
-      throw new ConflictError(`A product with SKU '${partialData.sku}' already exists in the catalog.`);
+      throw new ConflictError(`A product with SKU '${dataToUpdate.sku}' already exists in the catalog.`);
     }
   }
 
   // Enforce non-negative stock if modified
-  if (partialData.stock !== undefined && (partialData.stock < 0 || isNaN(Number(partialData.stock)))) {
+  if (dataToUpdate.stock !== undefined && (dataToUpdate.stock < 0 || isNaN(Number(dataToUpdate.stock)))) {
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
@@ -13607,33 +14816,33 @@ export async function updateProduct(
     const supabase = getServiceSupabase();
 
     const updates: any = { updated_at: now };
-    if (partialData.name !== undefined) updates.name = partialData.name;
-    if (partialData.slug !== undefined) updates.slug = partialData.slug;
-    if (partialData.sku !== undefined) updates.sku = partialData.sku;
-    if (partialData.brand !== undefined) updates.brand = partialData.brand;
-    if (partialData.categoryId !== undefined) updates.category_id = partialData.categoryId || null;
-    if (partialData.subcategory !== undefined) updates.subcategory = partialData.subcategory;
-    if (partialData.description !== undefined) updates.description = partialData.description;
-    if (partialData.price !== undefined) updates.price = partialData.price;
-    if (partialData.salePrice !== undefined) updates.sale_price = partialData.salePrice;
-    if (partialData.unit !== undefined) updates.unit = partialData.unit;
-    if (partialData.moq !== undefined) updates.moq = partialData.moq;
-    if (partialData.stock !== undefined) updates.stock = partialData.stock;
-    if (partialData.purchaseMode !== undefined) updates.purchase_mode = partialData.purchaseMode;
-    if (partialData.leadTime !== undefined) updates.lead_time = partialData.leadTime;
-    if (partialData.dimensions !== undefined) updates.dimensions = partialData.dimensions;
-    if (partialData.thickness !== undefined) updates.thickness = partialData.thickness;
-    if (partialData.material !== undefined) updates.material = partialData.material;
-    if (partialData.finish !== undefined) updates.finish = partialData.finish;
-    if (partialData.color !== undefined) updates.color = partialData.color;
-    if (partialData.images !== undefined) updates.images = partialData.images;
-    if (partialData.variants !== undefined) updates.variants = partialData.variants;
-    if (partialData.isFeatured !== undefined) updates.is_featured = partialData.isFeatured;
-    if (partialData.isNew !== undefined) updates.is_new = partialData.isNew;
-    if (partialData.isBestseller !== undefined) updates.is_bestseller = partialData.isBestseller;
-    if (partialData.published !== undefined) updates.published = partialData.published;
-    if (partialData.tags !== undefined) updates.tags = partialData.tags;
-    if (partialData.specifications !== undefined) updates.specifications = partialData.specifications;
+    if (dataToUpdate.name !== undefined) updates.name = dataToUpdate.name;
+    if (dataToUpdate.slug !== undefined) updates.slug = dataToUpdate.slug;
+    if (dataToUpdate.sku !== undefined) updates.sku = dataToUpdate.sku;
+    if (dataToUpdate.brand !== undefined) updates.brand = dataToUpdate.brand;
+    if (dataToUpdate.categoryId !== undefined) updates.category_id = dataToUpdate.categoryId || null;
+    if (dataToUpdate.subcategory !== undefined) updates.subcategory = dataToUpdate.subcategory;
+    if (dataToUpdate.description !== undefined) updates.description = dataToUpdate.description;
+    if (dataToUpdate.price !== undefined) updates.price = dataToUpdate.price;
+    if (dataToUpdate.salePrice !== undefined) updates.sale_price = dataToUpdate.salePrice;
+    if (dataToUpdate.unit !== undefined) updates.unit = dataToUpdate.unit;
+    if (dataToUpdate.moq !== undefined) updates.moq = dataToUpdate.moq;
+    if (dataToUpdate.stock !== undefined) updates.stock = dataToUpdate.stock;
+    if (dataToUpdate.purchaseMode !== undefined) updates.purchase_mode = dataToUpdate.purchaseMode;
+    if (dataToUpdate.leadTime !== undefined) updates.lead_time = dataToUpdate.leadTime;
+    if (dataToUpdate.dimensions !== undefined) updates.dimensions = dataToUpdate.dimensions;
+    if (dataToUpdate.thickness !== undefined) updates.thickness = dataToUpdate.thickness;
+    if (dataToUpdate.material !== undefined) updates.material = dataToUpdate.material;
+    if (dataToUpdate.finish !== undefined) updates.finish = dataToUpdate.finish;
+    if (dataToUpdate.color !== undefined) updates.color = dataToUpdate.color;
+    if (dataToUpdate.images !== undefined) updates.images = dataToUpdate.images;
+    if (dataToUpdate.variants !== undefined) updates.variants = dataToUpdate.variants;
+    if (dataToUpdate.isFeatured !== undefined) updates.is_featured = dataToUpdate.isFeatured;
+    if (dataToUpdate.isNew !== undefined) updates.is_new = dataToUpdate.isNew;
+    if (dataToUpdate.isBestseller !== undefined) updates.is_bestseller = dataToUpdate.isBestseller;
+    if (dataToUpdate.published !== undefined) updates.published = dataToUpdate.published;
+    if (dataToUpdate.tags !== undefined) updates.tags = dataToUpdate.tags;
+    if (dataToUpdate.specifications !== undefined) updates.specifications = dataToUpdate.specifications;
 
     const { data: updated, error } = await supabase
       .from('products')
@@ -13658,7 +14867,7 @@ export async function updateProduct(
 
   db.products[index] = {
     ...db.products[index],
-    ...partialData,
+    ...dataToUpdate,
     updatedAt: now,
   };
   saveDb(db);
@@ -13692,9 +14901,11 @@ export async function deleteProduct(id: string): Promise<boolean> {
 
 ---
 
-### <a id="src-server-db-repositories-categories-ts"></a>57. `src/server/db/repositories/categories.ts`
+### <a id="src-server-db-repositories-categories-ts"></a>69. `src/server/db/repositories/categories.ts`
 
-> **Path**: `src/server/db/repositories/categories.ts` | **Lines**: 273 | **Size**: 8.5 KB
+> **Path**: `src/server/db/repositories/categories.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 273 lines • 8.5 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -13973,9 +15184,11 @@ export async function deleteCategory(id: string): Promise<boolean> {
 
 ---
 
-### <a id="src-server-db-repositories-projects-ts"></a>58. `src/server/db/repositories/projects.ts`
+### <a id="src-server-db-repositories-projects-ts"></a>70. `src/server/db/repositories/projects.ts`
 
-> **Path**: `src/server/db/repositories/projects.ts` | **Lines**: 297 | **Size**: 9.8 KB
+> **Path**: `src/server/db/repositories/projects.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 297 lines • 9.8 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -14278,9 +15491,11 @@ export async function deleteProject(id: string): Promise<boolean> {
 
 ---
 
-### <a id="src-server-db-repositories-services-ts"></a>59. `src/server/db/repositories/services.ts`
+### <a id="src-server-db-repositories-services-ts"></a>71. `src/server/db/repositories/services.ts`
 
-> **Path**: `src/server/db/repositories/services.ts` | **Lines**: 176 | **Size**: 5.4 KB
+> **Path**: `src/server/db/repositories/services.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 176 lines • 5.4 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -14462,9 +15677,11 @@ export async function deleteService(id: string): Promise<boolean> {
 
 ---
 
-### <a id="src-server-db-repositories-settings-ts"></a>60. `src/server/db/repositories/settings.ts`
+### <a id="src-server-db-repositories-settings-ts"></a>72. `src/server/db/repositories/settings.ts`
 
-> **Path**: `src/server/db/repositories/settings.ts` | **Lines**: 191 | **Size**: 7.1 KB
+> **Path**: `src/server/db/repositories/settings.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 221 lines • 8.0 KB
 
 ```typescript
 import { SiteSettings, PublicSiteSettings } from '@/types';
@@ -14619,6 +15836,34 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
   };
 }
 
+function mergeSiteSettings(current: SiteSettings, partial: Partial<SiteSettings>): SiteSettings {
+  return {
+    ...current,
+    ...partial,
+    announcementBanner:
+      partial.announcementBanner !== undefined
+        ? {
+            ...(current.announcementBanner || { enabled: true, text: '', linkUrl: '/quote' }),
+            ...partial.announcementBanner,
+          }
+        : current.announcementBanner,
+    homepage:
+      partial.homepage !== undefined
+        ? {
+            ...(current.homepage || {}),
+            ...partial.homepage,
+          }
+        : current.homepage,
+    paymentGateway:
+      partial.paymentGateway !== undefined
+        ? {
+            ...(current.paymentGateway || {}),
+            ...partial.paymentGateway,
+          }
+        : current.paymentGateway,
+  };
+}
+
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
   if (partial.paymentGateway) {
     validatePaymentSettings(partial.paymentGateway);
@@ -14627,7 +15872,7 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const current = await getSiteSettings();
-    const merged = { ...current, ...partial };
+    const merged = mergeSiteSettings(current, partial);
 
     const { data, error } = await supabase
       .from('site_settings')
@@ -14652,7 +15897,9 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   }
 
   const db = getDb();
-  db.siteSettings = { ...db.siteSettings, ...partial };
+  const current = await getSiteSettings();
+  const merged = mergeSiteSettings(current, partial);
+  db.siteSettings = merged;
   saveDb(db);
   invalidateMemoryCache('settings');
   return db.siteSettings;
@@ -14661,9 +15908,11 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
 
 ---
 
-### <a id="src-server-db-repositories-customers-ts"></a>61. `src/server/db/repositories/customers.ts`
+### <a id="src-server-db-repositories-customers-ts"></a>73. `src/server/db/repositories/customers.ts`
 
-> **Path**: `src/server/db/repositories/customers.ts` | **Lines**: 168 | **Size**: 4.4 KB
+> **Path**: `src/server/db/repositories/customers.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 168 lines • 4.4 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -14837,9 +16086,11 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
 
 ---
 
-### <a id="src-server-db-repositories-enquiries-ts"></a>62. `src/server/db/repositories/enquiries.ts`
+### <a id="src-server-db-repositories-enquiries-ts"></a>74. `src/server/db/repositories/enquiries.ts`
 
-> **Path**: `src/server/db/repositories/enquiries.ts` | **Lines**: 108 | **Size**: 2.8 KB
+> **Path**: `src/server/db/repositories/enquiries.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 108 lines • 2.8 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -14953,9 +16204,11 @@ export async function updateEnquiryStatus(
 
 ---
 
-### <a id="src-server-db-transactions-orders-ts"></a>63. `src/server/db/transactions/orders.ts`
+### <a id="src-server-db-transactions-orders-ts"></a>75. `src/server/db/transactions/orders.ts`
 
-> **Path**: `src/server/db/transactions/orders.ts` | **Lines**: 237 | **Size**: 7.1 KB
+> **Path**: `src/server/db/transactions/orders.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 237 lines • 7.0 KB
 
 ```typescript
 import crypto from 'crypto';
@@ -15034,7 +16287,7 @@ export async function createOrderAtomic(
       const itemSubtotal = unitPrice * item.quantity;
       subtotal += itemSubtotal;
       orderItems.push({
-        id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        id: crypto.randomUUID(),
         productId: product.id,
         productName: product.name,
         sku: product.sku,
@@ -15198,9 +16451,11 @@ export async function cancelOrderAtomic(
 
 ---
 
-### <a id="src-server-db-index-ts"></a>64. `src/server/db/index.ts`
+### <a id="src-server-db-index-ts"></a>76. `src/server/db/index.ts`
 
-> **Path**: `src/server/db/index.ts` | **Lines**: 5 | **Size**: 0.1 KB
+> **Path**: `src/server/db/index.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 5 lines • 0.1 KB
 
 ```typescript
 export * from './client';
@@ -15211,9 +16466,11 @@ export * from './transactions/orders';
 
 ---
 
-### <a id="src-lib-db-ts"></a>65. `src/lib/db.ts`
+### <a id="src-lib-db-ts"></a>77. `src/lib/db.ts`
 
-> **Path**: `src/lib/db.ts` | **Lines**: 13 | **Size**: 0.4 KB
+> **Path**: `src/lib/db.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 13 lines • 0.4 KB
 
 ```typescript
 /**
@@ -15232,9 +16489,11 @@ export * from '@/server/db';
 
 ---
 
-### <a id="src-lib-supabase-ts"></a>66. `src/lib/supabase.ts`
+### <a id="src-lib-supabase-ts"></a>78. `src/lib/supabase.ts`
 
-> **Path**: `src/lib/supabase.ts` | **Lines**: 32 | **Size**: 1.0 KB
+> **Path**: `src/lib/supabase.ts`  
+> **Layer**: Server / DB  
+> **Metrics**: 32 lines • 1.0 KB
 
 ```typescript
 import { createClient } from '@supabase/supabase-js';
@@ -15272,9 +16531,11 @@ export function getServiceSupabase() {
 
 ---
 
-### <a id="src-types-index-ts"></a>67. `src/types/index.ts`
+### <a id="src-types-index-ts"></a>79. `src/types/index.ts`
 
-> **Path**: `src/types/index.ts` | **Lines**: 447 | **Size**: 9.1 KB
+> **Path**: `src/types/index.ts`  
+> **Layer**: Core Types & Utilities  
+> **Metrics**: 447 lines • 9.1 KB
 
 ```typescript
 export type UnitType =
@@ -15727,9 +16988,11 @@ export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
 
 ---
 
-### <a id="src-lib-push-client-ts"></a>68. `src/lib/push-client.ts`
+### <a id="src-lib-push-client-ts"></a>80. `src/lib/push-client.ts`
 
-> **Path**: `src/lib/push-client.ts` | **Lines**: 14 | **Size**: 0.5 KB
+> **Path**: `src/lib/push-client.ts`  
+> **Layer**: Core Types & Utilities  
+> **Metrics**: 14 lines • 0.5 KB
 
 ```typescript
 export const DEFAULT_VAPID_PUBLIC_KEY =
@@ -15749,9 +17012,11 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 ---
 
-### <a id="src-lib-seeddata-ts"></a>69. `src/lib/seedData.ts`
+### <a id="src-lib-seeddata-ts"></a>81. `src/lib/seedData.ts`
 
-> **Path**: `src/lib/seedData.ts` | **Lines**: 838 | **Size**: 36.2 KB
+> **Path**: `src/lib/seedData.ts`  
+> **Layer**: Core Types & Utilities  
+> **Metrics**: 838 lines • 36.2 KB
 
 ```typescript
 import { hashPassword } from './auth';
@@ -16595,9 +17860,11 @@ export function getInitialAdminSeed() {
 
 ---
 
-### <a id="supabase-schema-sql"></a>70. `supabase/schema.sql`
+### <a id="supabase-schema-sql"></a>82. `supabase/schema.sql`
 
-> **Path**: `supabase/schema.sql` | **Lines**: 763 | **Size**: 26.9 KB
+> **Path**: `supabase/schema.sql`  
+> **Layer**: Database Migration / SQL Schema  
+> **Metrics**: 763 lines • 26.9 KB
 
 ```sql
 -- ============================================================
@@ -17366,9 +18633,11 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
-### <a id="data-db-json"></a>71. `data/db.json`
+### <a id="data-db-json"></a>83. `data/db.json`
 
-> **Path**: `data/db.json` | **Lines**: 1244 | **Size**: 48.8 KB
+> **Path**: `data/db.json`  
+> **Layer**: Storage Fixture  
+> **Metrics**: 1459 lines • 57.2 KB
 
 ```json
 {
@@ -17481,7 +18750,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2380,
+      "stock": 2377,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -18186,7 +19455,137 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
       "updatedAt": "2026-08-17T16:23:53.257Z"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "ord-1788873109221",
+      "orderNumber": "BAL-MTSOV10L-B60303",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b96b1af2-4cd4-41b4-952c-d8114c209498",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873109220",
+      "createdAt": "2026-09-08T13:11:49.221Z",
+      "updatedAt": "2026-09-08T13:11:49.236Z"
+    },
+    {
+      "id": "ord-1788873049641",
+      "orderNumber": "BAL-MTSOTR1L-91B12A",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b0cf9806-5b24-4709-ac9a-4b61594efcc3",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873049641",
+      "createdAt": "2026-09-08T13:10:49.641Z",
+      "updatedAt": "2026-09-08T13:10:49.658Z"
+    },
+    {
+      "id": "ord-1788873014906",
+      "orderNumber": "BAL-MTSOT08Q-D28CFC",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "c1f13b51-dc90-4627-86fa-ba1b692a914f",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873014906",
+      "createdAt": "2026-09-08T13:10:14.906Z",
+      "updatedAt": "2026-09-08T13:10:14.906Z"
+    }
+  ],
   "quotes": [
     {
       "id": "qt-1786986369348-tnbv",
@@ -18383,10 +19782,16 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
   ],
   "siteSettings": {
     "brandName": "Balaji Architect & Interior",
+    "brandSubtitle": "ARCHITECTURE • INTERIORS • MATERIALS",
     "tagline": "Crafted spaces, luxury architecture, and considered materials for timeless living.",
+    "architectName": "Vikas Sir (Principal Architect)",
+    "establishedYear": "2014",
+    "googleRating": "★ 5.0 (22 Google Reviews)",
     "logoUrl": "",
     "contactEmail": "atelier@balaji-interior.com",
     "contactPhone": "+91 70029 48484",
+    "whatsappNumber": "+91 70029 48484",
+    "businessHours": "Mon - Sat: 10:00 AM - 7:00 PM (IST)",
     "studioAddress": "Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali",
     "city": "Guwahati",
     "state": "Assam",
@@ -18397,17 +19802,96 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
     "taxRatePercent": 18,
     "standardShippingFee": 1500,
     "freeShippingThreshold": 50000,
+    "gstinNumber": "18AAECB4848F1ZX",
+    "minOrderValue": 0,
     "socialInstagram": "https://instagram.com/balajiatelier",
     "socialPinterest": "https://pinterest.com/balajiatelier",
     "socialLinkedin": "https://linkedin.com/company/balaji-atelier",
+    "socialFacebook": "https://facebook.com/balajiarchitects",
     "announcementBanner": {
       "enabled": true,
       "text": "Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions",
       "linkUrl": "/quote"
+    },
+    "homepage": {
+      "heroEyebrow": "Architecture • Interior Studio • Material Curation",
+      "heroHeadingLine1": "BESPOKE ARCHITECTURE.",
+      "heroHeadingLine2": "ARCHITECTURE.",
+      "heroHeadingLine3": "MATERIALS.",
+      "heroDescription": "Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "heroPrimaryBtnText": "Explore Projects",
+      "heroPrimaryBtnLink": "/projects",
+      "heroSecondaryBtnText": "Explore Materials",
+      "heroSecondaryBtnLink": "/materials",
+      "trustBadge1": "★ 5.0 (22 Google Reviews)",
+      "trustBadge2": "Guwahati Studio Office",
+      "trustBadge3": "Turnkey Architecture",
+      "trustBadge4": "Pan-India Material Logistics",
+      "introEyebrow": "The Atelier Philosophy",
+      "introHeading": "Restraint is the ultimate form of luxury.",
+      "introParagraph1": "Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.",
+      "introParagraph2": "Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.",
+      "introImageUrl": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "stat1Value": "14+",
+      "stat1Label": "Years of Practice",
+      "stat2Value": "180+",
+      "stat2Label": "Projects Handed Over",
+      "stat3Value": "22+",
+      "stat3Label": "Global Quarry Partners",
+      "ctaHeading": "Commission an Architectural Dialogue",
+      "ctaDescription": "Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.",
+      "ctaBtnText": "Request Consultation & Quote",
+      "ctaBtnLink": "/quote",
+      "heroTitle": "Updated Test Title"
+    },
+    "paymentGateway": {
+      "enabled": true,
+      "gatewayName": "Balaji PG",
+      "methodName": "Balaji QR Payment",
+      "upiId": "6000149918@fam",
+      "merchantName": "Balaji Architect & Interiors",
+      "instructions": "1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee \"Balaji Architect & Interiors\" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.",
+      "qrExpiryMinutes": 10,
+      "enableGPay": true,
+      "enablePhonePe": true,
+      "enablePaytm": true,
+      "enableBhim": true,
+      "enableCred": true,
+      "enableAmazonPay": true,
+      "requireUtr": true
     }
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873109221",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "79448d74-d243-4035-9f11-81863ca49d67",
+      "createdAt": "2026-09-08T13:11:49.246Z"
+    },
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873049641",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "095e049a-c1f1-40d4-999b-7033464409b7",
+      "createdAt": "2026-09-08T13:10:49.675Z"
+    },
     {
       "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
       "adminEmail": "vicks@balaji.com",

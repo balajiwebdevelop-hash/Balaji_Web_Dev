@@ -314,20 +314,52 @@ export async function createProduct(
 
 export async function updateProduct(
   id: string,
-  partialData: Partial<Product>
+  partialData: Partial<Product> & { expectedUpdatedAt?: string }
 ): Promise<Product | null> {
   const now = new Date().toISOString();
+  const { expectedUpdatedAt, ...dataToUpdate } = (partialData || {}) as any;
+
+  // Optimistic Concurrency Control Check
+  if (expectedUpdatedAt) {
+    if (isSupabaseConfigured()) {
+      const supabase = getServiceSupabase();
+      const { data: current, error: fetchErr } = await supabase
+        .from('products')
+        .select('updated_at')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (fetchErr) {
+        throw new Error(`Database error verifying product concurrency: ${fetchErr.message}`);
+      }
+      if (!current) return null;
+      if (current.updated_at && expectedUpdatedAt !== current.updated_at) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    } else {
+      const db = getDb();
+      const current = db.products.find((p) => p.id === id);
+      if (!current) return null;
+      if (current.updatedAt && expectedUpdatedAt !== current.updatedAt) {
+        throw new ConflictError(
+          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
+        );
+      }
+    }
+  }
 
   // Enforce unique SKU if modified
-  if (partialData.sku) {
-    const existing = await getProductBySku(partialData.sku);
+  if (dataToUpdate.sku) {
+    const existing = await getProductBySku(dataToUpdate.sku);
     if (existing && existing.id !== id) {
-      throw new ConflictError(`A product with SKU '${partialData.sku}' already exists in the catalog.`);
+      throw new ConflictError(`A product with SKU '${dataToUpdate.sku}' already exists in the catalog.`);
     }
   }
 
   // Enforce non-negative stock if modified
-  if (partialData.stock !== undefined && (partialData.stock < 0 || isNaN(Number(partialData.stock)))) {
+  if (dataToUpdate.stock !== undefined && (dataToUpdate.stock < 0 || isNaN(Number(dataToUpdate.stock)))) {
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
@@ -335,33 +367,33 @@ export async function updateProduct(
     const supabase = getServiceSupabase();
 
     const updates: any = { updated_at: now };
-    if (partialData.name !== undefined) updates.name = partialData.name;
-    if (partialData.slug !== undefined) updates.slug = partialData.slug;
-    if (partialData.sku !== undefined) updates.sku = partialData.sku;
-    if (partialData.brand !== undefined) updates.brand = partialData.brand;
-    if (partialData.categoryId !== undefined) updates.category_id = partialData.categoryId || null;
-    if (partialData.subcategory !== undefined) updates.subcategory = partialData.subcategory;
-    if (partialData.description !== undefined) updates.description = partialData.description;
-    if (partialData.price !== undefined) updates.price = partialData.price;
-    if (partialData.salePrice !== undefined) updates.sale_price = partialData.salePrice;
-    if (partialData.unit !== undefined) updates.unit = partialData.unit;
-    if (partialData.moq !== undefined) updates.moq = partialData.moq;
-    if (partialData.stock !== undefined) updates.stock = partialData.stock;
-    if (partialData.purchaseMode !== undefined) updates.purchase_mode = partialData.purchaseMode;
-    if (partialData.leadTime !== undefined) updates.lead_time = partialData.leadTime;
-    if (partialData.dimensions !== undefined) updates.dimensions = partialData.dimensions;
-    if (partialData.thickness !== undefined) updates.thickness = partialData.thickness;
-    if (partialData.material !== undefined) updates.material = partialData.material;
-    if (partialData.finish !== undefined) updates.finish = partialData.finish;
-    if (partialData.color !== undefined) updates.color = partialData.color;
-    if (partialData.images !== undefined) updates.images = partialData.images;
-    if (partialData.variants !== undefined) updates.variants = partialData.variants;
-    if (partialData.isFeatured !== undefined) updates.is_featured = partialData.isFeatured;
-    if (partialData.isNew !== undefined) updates.is_new = partialData.isNew;
-    if (partialData.isBestseller !== undefined) updates.is_bestseller = partialData.isBestseller;
-    if (partialData.published !== undefined) updates.published = partialData.published;
-    if (partialData.tags !== undefined) updates.tags = partialData.tags;
-    if (partialData.specifications !== undefined) updates.specifications = partialData.specifications;
+    if (dataToUpdate.name !== undefined) updates.name = dataToUpdate.name;
+    if (dataToUpdate.slug !== undefined) updates.slug = dataToUpdate.slug;
+    if (dataToUpdate.sku !== undefined) updates.sku = dataToUpdate.sku;
+    if (dataToUpdate.brand !== undefined) updates.brand = dataToUpdate.brand;
+    if (dataToUpdate.categoryId !== undefined) updates.category_id = dataToUpdate.categoryId || null;
+    if (dataToUpdate.subcategory !== undefined) updates.subcategory = dataToUpdate.subcategory;
+    if (dataToUpdate.description !== undefined) updates.description = dataToUpdate.description;
+    if (dataToUpdate.price !== undefined) updates.price = dataToUpdate.price;
+    if (dataToUpdate.salePrice !== undefined) updates.sale_price = dataToUpdate.salePrice;
+    if (dataToUpdate.unit !== undefined) updates.unit = dataToUpdate.unit;
+    if (dataToUpdate.moq !== undefined) updates.moq = dataToUpdate.moq;
+    if (dataToUpdate.stock !== undefined) updates.stock = dataToUpdate.stock;
+    if (dataToUpdate.purchaseMode !== undefined) updates.purchase_mode = dataToUpdate.purchaseMode;
+    if (dataToUpdate.leadTime !== undefined) updates.lead_time = dataToUpdate.leadTime;
+    if (dataToUpdate.dimensions !== undefined) updates.dimensions = dataToUpdate.dimensions;
+    if (dataToUpdate.thickness !== undefined) updates.thickness = dataToUpdate.thickness;
+    if (dataToUpdate.material !== undefined) updates.material = dataToUpdate.material;
+    if (dataToUpdate.finish !== undefined) updates.finish = dataToUpdate.finish;
+    if (dataToUpdate.color !== undefined) updates.color = dataToUpdate.color;
+    if (dataToUpdate.images !== undefined) updates.images = dataToUpdate.images;
+    if (dataToUpdate.variants !== undefined) updates.variants = dataToUpdate.variants;
+    if (dataToUpdate.isFeatured !== undefined) updates.is_featured = dataToUpdate.isFeatured;
+    if (dataToUpdate.isNew !== undefined) updates.is_new = dataToUpdate.isNew;
+    if (dataToUpdate.isBestseller !== undefined) updates.is_bestseller = dataToUpdate.isBestseller;
+    if (dataToUpdate.published !== undefined) updates.published = dataToUpdate.published;
+    if (dataToUpdate.tags !== undefined) updates.tags = dataToUpdate.tags;
+    if (dataToUpdate.specifications !== undefined) updates.specifications = dataToUpdate.specifications;
 
     const { data: updated, error } = await supabase
       .from('products')
@@ -386,7 +418,7 @@ export async function updateProduct(
 
   db.products[index] = {
     ...db.products[index],
-    ...partialData,
+    ...dataToUpdate,
     updatedAt: now,
   };
   saveDb(db);

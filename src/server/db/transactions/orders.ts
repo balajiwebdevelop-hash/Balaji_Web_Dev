@@ -74,7 +74,7 @@ export async function createOrderAtomic(
       const itemSubtotal = unitPrice * item.quantity;
       subtotal += itemSubtotal;
       orderItems.push({
-        id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        id: crypto.randomUUID(),
         productId: product.id,
         productName: product.name,
         sku: product.sku,

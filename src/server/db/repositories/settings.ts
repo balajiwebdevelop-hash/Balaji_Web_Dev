@@ -150,6 +150,34 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
   };
 }
 
+function mergeSiteSettings(current: SiteSettings, partial: Partial<SiteSettings>): SiteSettings {
+  return {
+    ...current,
+    ...partial,
+    announcementBanner:
+      partial.announcementBanner !== undefined
+        ? {
+            ...(current.announcementBanner || { enabled: true, text: '', linkUrl: '/quote' }),
+            ...partial.announcementBanner,
+          }
+        : current.announcementBanner,
+    homepage:
+      partial.homepage !== undefined
+        ? {
+            ...(current.homepage || {}),
+            ...partial.homepage,
+          }
+        : current.homepage,
+    paymentGateway:
+      partial.paymentGateway !== undefined
+        ? {
+            ...(current.paymentGateway || {}),
+            ...partial.paymentGateway,
+          }
+        : current.paymentGateway,
+  };
+}
+
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
   if (partial.paymentGateway) {
     validatePaymentSettings(partial.paymentGateway);
@@ -158,7 +186,7 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const current = await getSiteSettings();
-    const merged = { ...current, ...partial };
+    const merged = mergeSiteSettings(current, partial);
 
     const { data, error } = await supabase
       .from('site_settings')
@@ -183,7 +211,9 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   }
 
   const db = getDb();
-  db.siteSettings = { ...db.siteSettings, ...partial };
+  const current = await getSiteSettings();
+  const merged = mergeSiteSettings(current, partial);
+  db.siteSettings = merged;
   saveDb(db);
   invalidateMemoryCache('settings');
   return db.siteSettings;

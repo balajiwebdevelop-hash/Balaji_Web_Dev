@@ -58,8 +58,20 @@ export default function CheckoutPage() {
   const [notes, setNotes] = useState('');
   const [utrNumber, setUtrNumber] = useState('');
   const [copiedUpi, setCopiedUpi] = useState(false);
-  const [idempotencyKey] = useState(() => `chk-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`);
-  const [orderRefNote] = useState(() => `BALAJI-ORDER-${Math.floor(100000 + Math.random() * 900000)}`);
+  const [idempotencyKey] = useState(() => {
+    if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
+      return `chk-${window.crypto.randomUUID()}`;
+    }
+    return `chk-${Date.now()}`;
+  });
+  const [orderRefNote] = useState(() => {
+    if (typeof window !== 'undefined' && window.crypto) {
+      const arr = new Uint32Array(1);
+      window.crypto.getRandomValues(arr);
+      return `BALAJI-ORDER-${100000 + (arr[0] % 900000)}`;
+    }
+    return `BALAJI-ORDER-${Date.now().toString().slice(-6)}`;
+  });
 
   // Security Countdown Timer (10:00 Minutes)
   const [timeLeft, setTimeLeft] = useState(600);

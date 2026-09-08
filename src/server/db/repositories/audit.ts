@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { AuditLog } from '@/types';
 import {
   isSupabaseConfigured,
@@ -7,9 +8,11 @@ import {
   getDb,
   saveDb,
 } from '../client';
+import { sanitizeAuditDetails } from '../../security/sanitization';
 
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   const now = new Date().toISOString();
+  const safeDetails = entry.details ? sanitizeAuditDetails(entry.details) : null;
 
   if (await isSupabaseAvailable()) {
     try {
@@ -24,7 +27,7 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
           action: entry.action,
           entity: entry.entity,
           entity_id: entry.entityId,
-          details: entry.details || null,
+          details: safeDetails,
           created_at: now,
         })
         .select()
@@ -50,7 +53,8 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
   const db = getDb();
   const log: AuditLog = {
     ...entry,
-    id: `log-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    details: safeDetails,
+    id: crypto.randomUUID(),
     createdAt: now,
   };
   db.auditLogs.unshift(log);

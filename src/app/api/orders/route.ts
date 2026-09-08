@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { createOrderAtomic, getOrders } from '@/lib/db';
+import { getOrders } from '@/lib/db';
 import { verifyAdminToken } from '@/lib/auth';
-import { sendNewOrderPush } from '@/lib/push';
+import { OrderService } from '@/server/services';
+import { formatErrorResponse } from '@/server/errors';
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }
 
@@ -33,29 +34,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
-      return NextResponse.json(
-        { success: false, error: 'Customer name, email, and phone are required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!body.shippingAddress || !body.shippingAddress.addressLine1) {
-      return NextResponse.json(
-        { success: false, error: 'Valid delivery address is required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!Array.isArray(body.items) || body.items.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'Order must contain at least one material/product.' },
-        { status: 400 }
-      );
-    }
-
-    // Process order with Server-Authoritative Price & Atomic Inventory Lock
-    const result = await createOrderAtomic({
+    const order = await OrderService.placeOrder({
       customerName: body.customerName,
       customerEmail: body.customerEmail,
       customerPhone: body.customerPhone,
@@ -66,10 +45,6 @@ export async function POST(req: NextRequest) {
       notes: body.notes,
       idempotencyKey: body.idempotencyKey,
     });
-
-    if (!result.success || !result.order) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 });
-    }
 
     // Invalidate customer-facing stock & product caches immediately
     try {
@@ -82,15 +57,8 @@ export async function POST(req: NextRequest) {
       console.warn('Revalidation notice:', revErr);
     }
 
-    // Trigger Realtime Web Push Notification to Admin devices
-    if (result.order) {
-      sendNewOrderPush(result.order).catch((pushErr) => {
-        console.warn('Order push notification dispatch notice:', pushErr);
-      });
-    }
-
-    return NextResponse.json({ success: true, order: result.order });
+    return NextResponse.json({ success: true, order });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message || 'Server error' }, { status: 500 });
+    return formatErrorResponse(err);
   }
 }

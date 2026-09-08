@@ -108,7 +108,7 @@
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2380,
+      "stock": 2377,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -813,7 +813,137 @@
       "updatedAt": "2026-08-17T16:23:53.257Z"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "ord-1788873109221",
+      "orderNumber": "BAL-MTSOV10L-B60303",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b96b1af2-4cd4-41b4-952c-d8114c209498",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873109220",
+      "createdAt": "2026-09-08T13:11:49.221Z",
+      "updatedAt": "2026-09-08T13:11:49.236Z"
+    },
+    {
+      "id": "ord-1788873049641",
+      "orderNumber": "BAL-MTSOTR1L-91B12A",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "b0cf9806-5b24-4709-ac9a-4b61594efcc3",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Processing",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873049641",
+      "createdAt": "2026-09-08T13:10:49.641Z",
+      "updatedAt": "2026-09-08T13:10:49.658Z"
+    },
+    {
+      "id": "ord-1788873014906",
+      "orderNumber": "BAL-MTSOT08Q-D28CFC",
+      "customerName": "Enterprise Test Client",
+      "customerEmail": "enterprise@balaji.com",
+      "customerPhone": "+91 98765 43210",
+      "shippingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "billingAddress": {
+        "addressLine1": "GS Road, Luxury Estate",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781005"
+      },
+      "items": [
+        {
+          "id": "c1f13b51-dc90-4627-86fa-ba1b692a914f",
+          "productId": "prod-travertine-slab",
+          "productName": "Romano Classico Vein-Cut Travertine",
+          "sku": "MAT-STN-001",
+          "quantity": 1,
+          "unitPrice": 780,
+          "subtotal": 780,
+          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      "subtotal": 780,
+      "tax": 140,
+      "shippingFee": 0,
+      "discount": 0,
+      "totalAmount": 920,
+      "orderStatus": "Confirmed",
+      "paymentStatus": "Submitted",
+      "paymentMethod": "Test Suite Wire Transfer",
+      "notes": "Automated test suite order",
+      "idempotencyKey": "test-order-1788873014906",
+      "createdAt": "2026-09-08T13:10:14.906Z",
+      "updatedAt": "2026-09-08T13:10:14.906Z"
+    }
+  ],
   "quotes": [
     {
       "id": "qt-1786986369348-tnbv",
@@ -1010,10 +1140,16 @@
   ],
   "siteSettings": {
     "brandName": "Balaji Architect & Interior",
+    "brandSubtitle": "ARCHITECTURE • INTERIORS • MATERIALS",
     "tagline": "Crafted spaces, luxury architecture, and considered materials for timeless living.",
+    "architectName": "Vikas Sir (Principal Architect)",
+    "establishedYear": "2014",
+    "googleRating": "★ 5.0 (22 Google Reviews)",
     "logoUrl": "",
     "contactEmail": "atelier@balaji-interior.com",
     "contactPhone": "+91 70029 48484",
+    "whatsappNumber": "+91 70029 48484",
+    "businessHours": "Mon - Sat: 10:00 AM - 7:00 PM (IST)",
     "studioAddress": "Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali",
     "city": "Guwahati",
     "state": "Assam",
@@ -1024,17 +1160,96 @@
     "taxRatePercent": 18,
     "standardShippingFee": 1500,
     "freeShippingThreshold": 50000,
+    "gstinNumber": "18AAECB4848F1ZX",
+    "minOrderValue": 0,
     "socialInstagram": "https://instagram.com/balajiatelier",
     "socialPinterest": "https://pinterest.com/balajiatelier",
     "socialLinkedin": "https://linkedin.com/company/balaji-atelier",
+    "socialFacebook": "https://facebook.com/balajiarchitects",
     "announcementBanner": {
       "enabled": true,
       "text": "Complimentary Material Advisory Sessions Available for Q3/Q4 Architectural Commissions",
       "linkUrl": "/quote"
+    },
+    "homepage": {
+      "heroEyebrow": "Architecture • Interior Studio • Material Curation",
+      "heroHeadingLine1": "BESPOKE ARCHITECTURE.",
+      "heroHeadingLine2": "ARCHITECTURE.",
+      "heroHeadingLine3": "MATERIALS.",
+      "heroDescription": "Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "heroPrimaryBtnText": "Explore Projects",
+      "heroPrimaryBtnLink": "/projects",
+      "heroSecondaryBtnText": "Explore Materials",
+      "heroSecondaryBtnLink": "/materials",
+      "trustBadge1": "★ 5.0 (22 Google Reviews)",
+      "trustBadge2": "Guwahati Studio Office",
+      "trustBadge3": "Turnkey Architecture",
+      "trustBadge4": "Pan-India Material Logistics",
+      "introEyebrow": "The Atelier Philosophy",
+      "introHeading": "Restraint is the ultimate form of luxury.",
+      "introParagraph1": "Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.",
+      "introParagraph2": "Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.",
+      "introImageUrl": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "stat1Value": "14+",
+      "stat1Label": "Years of Practice",
+      "stat2Value": "180+",
+      "stat2Label": "Projects Handed Over",
+      "stat3Value": "22+",
+      "stat3Label": "Global Quarry Partners",
+      "ctaHeading": "Commission an Architectural Dialogue",
+      "ctaDescription": "Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.",
+      "ctaBtnText": "Request Consultation & Quote",
+      "ctaBtnLink": "/quote",
+      "heroTitle": "Updated Test Title"
+    },
+    "paymentGateway": {
+      "enabled": true,
+      "gatewayName": "Balaji PG",
+      "methodName": "Balaji QR Payment",
+      "upiId": "6000149918@fam",
+      "merchantName": "Balaji Architect & Interiors",
+      "instructions": "1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\n2. Scan the dynamic Balaji QR code or select your preferred app below.\n3. Verify payee \"Balaji Architect & Interiors\" and exact amount.\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.",
+      "qrExpiryMinutes": 10,
+      "enableGPay": true,
+      "enablePhonePe": true,
+      "enablePaytm": true,
+      "enableBhim": true,
+      "enableCred": true,
+      "enableAmazonPay": true,
+      "requireUtr": true
     }
   },
   "pushSubscriptions": [],
   "auditLogs": [
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873109221",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "79448d74-d243-4035-9f11-81863ca49d67",
+      "createdAt": "2026-09-08T13:11:49.246Z"
+    },
+    {
+      "adminId": "admin-test",
+      "adminEmail": "admin@balaji.com",
+      "action": "ORDER_STATUS_UPDATED",
+      "entity": "Order",
+      "entityId": "ord-1788873049641",
+      "details": {
+        "orderStatus": "Processing",
+        "paymentStatus": "Submitted",
+        "verifiedBy": "admin@balaji.com"
+      },
+      "id": "095e049a-c1f1-40d4-999b-7033464409b7",
+      "createdAt": "2026-09-08T13:10:49.675Z"
+    },
     {
       "adminId": "2bd20632-00dd-4f48-84b4-6e526543c8d8",
       "adminEmail": "vicks@balaji.com",

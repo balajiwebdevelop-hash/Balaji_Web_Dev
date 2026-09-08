@@ -46,11 +46,12 @@ export default function EmployeeManagementPage() {
   const [status, setStatus] = useState<'active' | 'disabled'>('active');
   const generateSecurePassword = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-    let generated = '';
-    for (let i = 0; i < 10; i++) {
-      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    if (typeof window !== 'undefined' && window.crypto) {
+      const array = new Uint32Array(12);
+      window.crypto.getRandomValues(array);
+      return Array.from(array, (x) => chars[x % chars.length]).join('');
     }
-    return generated;
+    return 'Balaji#Atelier2026!';
   };
 
   const [tempPassword, setTempPassword] = useState(generateSecurePassword);

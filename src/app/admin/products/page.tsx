@@ -87,23 +87,29 @@ function AdminProductsContent() {
   const openCreateModal = () => {
     setEditingProduct(null);
     setName('');
-    setSku(`MAT-${Math.floor(100 + Math.random() * 900)}`);
+    const randSuffix =
+      typeof window !== 'undefined' && window.crypto
+        ? Array.from(window.crypto.getRandomValues(new Uint8Array(2)), (b) => b.toString(16).padStart(2, '0'))
+            .join('')
+            .toUpperCase()
+        : '01';
+    setSku(`MAT-${randSuffix}`);
     setBrand('Balaji Architect & Interiors');
     setCategoryId(categories[0]?.id || '');
     setSubcategory('');
     setDescription('');
-    setPrice(850);
+    setPrice(0);
     setSalePrice(undefined);
     setUnit('sq ft');
-    setMoq(50);
-    setStock(500);
+    setMoq(1);
+    setStock(0);
     setPurchaseMode('BUY_NOW');
     setLeadTime('3-5 business days');
     setDimensions('');
     setThickness('');
     setMaterial('');
     setFinish('');
-    setImages(['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80']);
+    setImages([]);
     setPublished(true);
     setIsFeatured(false);
     setFormError(null);

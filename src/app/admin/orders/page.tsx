@@ -66,8 +66,33 @@ function AdminOrdersContent() {
           'postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           (payload: any) => {
-            // Immediately reload orders on any new order insertion or status update
-            loadOrders();
+            if (payload.eventType === 'UPDATE' && payload.new) {
+              const updatedRow = payload.new;
+              setOrders((prev) =>
+                prev.map((o) =>
+                  o.id === updatedRow.id
+                    ? {
+                        ...o,
+                        orderStatus: updatedRow.order_status || o.orderStatus,
+                        paymentStatus: updatedRow.payment_status || o.paymentStatus,
+                        updatedAt: updatedRow.updated_at || o.updatedAt,
+                      }
+                    : o
+                )
+              );
+              setSelectedOrder((prev: any) => {
+                if (!prev || prev.id !== updatedRow.id) return prev;
+                return {
+                  ...prev,
+                  orderStatus: updatedRow.order_status || prev.orderStatus,
+                  paymentStatus: updatedRow.payment_status || prev.paymentStatus,
+                  updatedAt: updatedRow.updated_at || prev.updatedAt,
+                };
+              });
+            } else {
+              // Immediately reload orders on new order insertion or other events
+              loadOrders();
+            }
 
             // If browser notifications are permitted, display order alert
             if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {

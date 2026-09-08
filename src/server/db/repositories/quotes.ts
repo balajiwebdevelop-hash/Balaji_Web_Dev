@@ -77,9 +77,9 @@ export async function createQuote(quoteData: {
   }
 
   const db = getDb();
-  const quoteId = `qt-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const quoteId = crypto.randomUUID();
   const quoteItems = (quoteData.items || []).map((it) => ({
-    id: `qti-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    id: crypto.randomUUID(),
     quoteId,
     productId: it.productId,
     productName: it.productName,

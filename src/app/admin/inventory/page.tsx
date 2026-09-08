@@ -65,10 +65,20 @@ function AdminInventoryContent() {
       const res = await fetch(`/api/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stock: numStock }),
+        body: JSON.stringify({
+          stock: numStock,
+          expectedUpdatedAt: product.updatedAt,
+        }),
       });
 
       const data = await res.json().catch(() => ({}));
+      if (res.status === 409) {
+        alert(
+          'Concurrent Modification Detected: Another administrator updated this product while you were viewing it. Refreshing current inventory data...'
+        );
+        await loadProducts();
+        return;
+      }
       if (res.ok && data.product) {
         setProducts((prev) => prev.map((p) => (p.id === product.id ? data.product : p)));
         setSaveSuccessId(product.id);

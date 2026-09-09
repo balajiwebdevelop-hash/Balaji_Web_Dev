@@ -199,3 +199,5 @@ export function ImageUploader({
     </div>
   );
 }
+
+export default ImageUploader;

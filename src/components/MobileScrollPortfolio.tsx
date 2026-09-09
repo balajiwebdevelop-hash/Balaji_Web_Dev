@@ -68,61 +68,64 @@ export function MobileScrollPortfolio({ projects, settings }: MobileScrollPortfo
   const activeProject = safeProjects[activeProjectIdx] || safeProjects[0];
 
   return (
-    <section className="w-full bg-canvas text-espresso py-6 px-3.5 sm:px-6 relative select-none">
-      {/* 1. STICKY TOP PROGRESS CONTROLLER (Lightweight, zero RAF, updates only on card change) */}
-      <div className="sticky top-14 sm:top-16 z-20 bg-canvas/95 py-2.5 px-3 rounded-xl border border-atelier/40 shadow-sm mb-6 flex flex-col gap-2">
-        <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-warmgray">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-bronze font-bold">
-              [{String(activeProjectIdx + 1).padStart(2, '0')}/{String(totalCards).padStart(2, '0')}]
-            </span>
-            <span className="text-espresso font-medium truncate max-w-[140px]">
-              {activeProject.location}
-            </span>
-            <span className="text-atelier">•</span>
-            <span className="text-espresso font-serif truncate max-w-[120px]">
-              {activeProject.title}
-            </span>
+    <section className="w-full bg-canvas text-espresso py-6 px-4 sm:px-6 relative select-none">
+      {/* 1. STICKY TOP PROGRESS CONTROLLER (Deadly Premium Architectural Capsule) */}
+      <div className="sticky top-[80px] z-30 w-full max-w-md mx-auto mb-6 pointer-events-auto">
+        <div className="bg-[#FCFAF6] text-espresso rounded-2xl border border-[#C5A880]/50 shadow-[0_12px_32px_rgba(90,67,53,0.12)] p-2.5 sm:p-3 flex flex-col gap-2 relative overflow-hidden">
+          {/* Top Hairline Gold Glint */}
+          <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#C5A880] to-transparent pointer-events-none" />
+
+          {/* Row 1: Balanced Editorial Meta (Zero Truncation, Zero Ellipses) */}
+          <div className="flex items-center justify-between gap-2 px-1">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-mono text-bronze font-bold text-xs tracking-wider shrink-0">
+                [{String(activeProjectIdx + 1).padStart(2, '0')}/{String(totalCards).padStart(2, '0')}]
+              </span>
+              <span className="font-serif text-espresso text-[13px] sm:text-sm font-medium tracking-wide truncate">
+                {activeProject.title}
+              </span>
+            </div>
+
+            <Link
+              href="/projects"
+              className="shrink-0 text-bronze hover:text-espresso text-[10px] uppercase tracking-widest font-semibold flex items-center gap-1 whitespace-nowrap pl-1 transition-colors"
+            >
+              <span>All ({projects.length})</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
 
-          <Link
-            href="/projects"
-            className="text-bronze hover:text-espresso font-medium flex items-center gap-1 transition-colors"
-          >
-            <span>All ({projects.length})</span> <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
+          {/* Row 2: Tactile Liquid Progress Indicators */}
+          <div className="flex items-center gap-1.5 w-full px-0.5">
+            {safeProjects.map((proj, idx) => {
+              const isSelected = idx === activeProjectIdx;
+              const isPassed = idx < activeProjectIdx;
 
-        {/* Minimal Progress Sticks */}
-        <div className="flex items-center gap-1.5 w-full">
-          {safeProjects.map((proj, idx) => {
-            const isSelected = idx === activeProjectIdx;
-            const isPassed = idx < activeProjectIdx;
-
-            return (
-              <button
-                key={proj.id}
-                onClick={() => scrollToCard(idx)}
-                className="flex-1 py-1 cursor-pointer focus:outline-hidden"
-                aria-label={`Jump to project ${idx + 1}: ${proj.title}`}
-              >
-                <div
-                  className={`h-1 rounded-full transition-all duration-300 ease-out ${
-                    isSelected
-                      ? 'w-full bg-gradient-to-r from-bronze via-champagne to-bronze shadow-[0_0_8px_rgba(140,106,69,0.35)]'
-                      : isPassed
-                      ? 'w-full bg-bronze/40'
-                      : 'w-full bg-[#E5DDCF]'
-                  }`}
-                />
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={proj.id}
+                  onClick={() => scrollToCard(idx)}
+                  className="flex-1 py-1 cursor-pointer focus:outline-hidden group"
+                  aria-label={`Jump to project ${idx + 1}: ${proj.title}`}
+                >
+                  <div
+                    className={`h-1.5 rounded-full transition-all duration-300 ease-out ${
+                      isSelected
+                        ? 'w-full bg-gradient-to-r from-bronze via-[#C5A880] to-bronze shadow-[0_0_8px_rgba(140,106,69,0.4)]'
+                        : isPassed
+                        ? 'w-full bg-bronze/40 group-hover:bg-bronze/60'
+                        : 'w-full bg-[#E5DDCF] group-hover:bg-[#DACFBF]'
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* 2. VERTICAL CARDS IN NORMAL DOCUMENT FLOW (Native Mobile Scrolling) */}
-      <div className="space-y-10 sm:space-y-14 max-w-lg mx-auto pb-10">
+      <div className="space-y-10 sm:space-y-14 max-w-md mx-auto pb-10">
         {safeProjects.map((project, idx) => {
           const isFirst = idx === 0;
 

@@ -13,12 +13,12 @@ const ignoreFiles = new Set([
 ]);
 
 function shouldIgnoreFile(fileName) {
-  if (ignoreFiles.has(fileName)) return true;
-  if (fileName.startsWith('MASTER_CODEBASE')) return true;
-  if (fileName.startsWith('codebase')) return true;
-  if (fileName.startsWith('.env')) return true;
-  if (fileName.endsWith('.log')) return true;
-  if (fileName.startsWith('test-device-')) return true;
+  const lower = fileName.toLowerCase();
+  if (ignoreFiles.has(fileName) || ignoreFiles.has(lower)) return true;
+  if (lower.startsWith('master_codebase') || lower.startsWith('mastercodebase') || lower.startsWith('codebase')) return true;
+  if (lower.startsWith('.env')) return true;
+  if (lower.endsWith('.log')) return true;
+  if (lower.startsWith('test-device-')) return true;
   return false;
 }
 
@@ -111,6 +111,11 @@ function buildMasterCodebase() {
     output += '```\n\n---\n\n';
   });
 
+  // Write to mastercodebase.md
+  const mastercodebaseLowerPath = path.join(rootDir, 'mastercodebase.md');
+  fs.writeFileSync(mastercodebaseLowerPath, output, 'utf-8');
+  console.log(`Generated mastercodebase.md with ${allFiles.length} files (${(fs.statSync(mastercodebaseLowerPath).size / 1024).toFixed(1)} KB)`);
+
   // Write to codebase.md
   const codebasePath = path.join(rootDir, 'codebase.md');
   fs.writeFileSync(codebasePath, output, 'utf-8');
@@ -128,3 +133,4 @@ function buildMasterCodebase() {
 }
 
 buildMasterCodebase();
+

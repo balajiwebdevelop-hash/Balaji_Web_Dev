@@ -1,5 +1,5 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260909-182004)`  
+> **Version**: `MASTER_CODEBASE(20260909-185903)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
@@ -164,23 +164,16 @@
 
 ### `.eslintrc.json`
 
-- **File**: `.eslintrc.json`
-- **Size**: 0.0 KB (4 lines)
-- **Language**: `json`
-
 ```json
 {
   "extends": "next/core-web-vitals"
 }
+
 ```
 
 ---
 
 ### `admincodebase.md`
-
-- **File**: `admincodebase.md`
-- **Size**: 816.7 KB (20941 lines)
-- **Language**: `markdown`
 
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
@@ -21123,15 +21116,12 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
+
 ```
 
 ---
 
 ### `data/db.json`
-
-- **File**: `data/db.json`
-- **Size**: 58.6 KB (1459 lines)
-- **Language**: `json`
 
 ```json
 {
@@ -22599,10 +22589,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ### `hostinger_balaji_schema.sql`
 
-- **File**: `hostinger_balaji_schema.sql`
-- **Size**: 56.3 KB (536 lines)
-- **Language**: `sql`
-
 ```sql
 -- ============================================================
 -- BALAJI ARCHITECT & INTERIORS — HOSTINGER PHPMYADMIN MYSQL SCHEMA
@@ -23139,15 +23125,12 @@ VALUES ('global', 'Balaji Architect & Interior', 'Crafted spaces, luxury archite
 ON DUPLICATE KEY UPDATE `brand_name` = VALUES(`brand_name`), `payment_gateway` = VALUES(`payment_gateway`), `raw_json` = VALUES(`raw_json`);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
 ```
 
 ---
 
 ### `MASTER_ADMIN_CODEBASE.md`
-
-- **File**: `MASTER_ADMIN_CODEBASE.md`
-- **Size**: 816.7 KB (20941 lines)
-- **Language**: `markdown`
 
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
@@ -44089,6 +44072,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 ```
 
 ---
+
 
 ```
 
@@ -44096,10 +44080,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ### `MASTER_ADMIN_CODEBASE(1).md`
 
-- **File**: `MASTER_ADMIN_CODEBASE(1).md`
-- **Size**: 816.7 KB (20941 lines)
-- **Language**: `markdown`
-
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
 > **Document**: `admincodebase.md`  
@@ -65041,15 +65021,12 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
+
 ```
 
 ---
 
 ### `next-env.d.ts`
-
-- **File**: `next-env.d.ts`
-- **Size**: 0.2 KB (6 lines)
-- **Language**: `typescript`
 
 ```typescript
 /// <reference types="next" />
@@ -65057,15 +65034,12 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 // NOTE: This file should not be edited
 // see https://nextjs.org/docs/app/building-your-application/configuring/typescript for more information.
+
 ```
 
 ---
 
 ### `next.config.js`
-
-- **File**: `next.config.js`
-- **Size**: 0.8 KB (34 lines)
-- **Language**: `javascript`
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -65101,15 +65075,12 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
 ```
 
 ---
 
 ### `package.json`
-
-- **File**: `package.json`
-- **Size**: 0.9 KB (38 lines)
-- **Language**: `json`
 
 ```json
 {
@@ -65149,15 +65120,12 @@ module.exports = nextConfig;
   },
   "devDependencies": {}
 }
+
 ```
 
 ---
 
 ### `postcss.config.js`
-
-- **File**: `postcss.config.js`
-- **Size**: 0.1 KB (7 lines)
-- **Language**: `javascript`
 
 ```javascript
 module.exports = {
@@ -65166,15 +65134,12 @@ module.exports = {
     autoprefixer: {},
   },
 };
+
 ```
 
 ---
 
 ### `public/manifest.json`
-
-- **File**: `public/manifest.json`
-- **Size**: 1.2 KB (53 lines)
-- **Language**: `json`
 
 ```json
 {
@@ -65229,15 +65194,12 @@ module.exports = {
     }
   ]
 }
+
 ```
 
 ---
 
 ### `public/sw.js`
-
-- **File**: `public/sw.js`
-- **Size**: 1.1 KB (36 lines)
-- **Language**: `javascript`
 
 ```javascript
 // Balaji Architect & Interiors Service Worker - Realtime Order & Quote Notifications
@@ -65275,15 +65237,12 @@ self.addEventListener('notificationclick', function (event) {
     })
   );
 });
+
 ```
 
 ---
 
 ### `scripts/seed-supabase.ts`
-
-- **File**: `scripts/seed-supabase.ts`
-- **Size**: 7.3 KB (203 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { createClient } from '@supabase/supabase-js';
@@ -65488,15 +65447,12 @@ async function runSeed() {
 }
 
 runSeed();
+
 ```
 
 ---
 
 ### `scripts/test-architecture-refactor.ts`
-
-- **File**: `scripts/test-architecture-refactor.ts`
-- **Size**: 8.3 KB (236 lines)
-- **Language**: `typescript`
 
 ```typescript
 import {
@@ -65734,15 +65690,12 @@ runArchitectureTests().catch((err) => {
   console.error('Architecture test execution fatal exception:', err);
   process.exit(1);
 });
+
 ```
 
 ---
 
 ### `scripts/verify-production.ts`
-
-- **File**: `scripts/verify-production.ts`
-- **Size**: 10.3 KB (291 lines)
-- **Language**: `typescript`
 
 ```typescript
 import fs from 'fs';
@@ -66035,17 +65988,14 @@ runAllTests().catch((err) => {
   console.error('Fatal test error:', err);
   process.exit(1);
 });
+
 ```
 
 ---
 
 ### `src/app/about/page.tsx`
 
-- **File**: `src/app/about/page.tsx`
-- **Size**: 10.0 KB (210 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -66255,17 +66205,14 @@ export default function AboutPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/account/page.tsx`
 
-- **File**: `src/app/account/page.tsx`
-- **Size**: 10.3 KB (257 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66522,17 +66469,14 @@ export default function AccountPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/audit-logs/page.tsx`
 
-- **File**: `src/app/admin/audit-logs/page.tsx`
-- **Size**: 5.9 KB (134 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66666,17 +66610,14 @@ export default function AdminAuditLogsPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/categories/page.tsx`
 
-- **File**: `src/app/admin/categories/page.tsx`
-- **Size**: 12.3 KB (304 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66980,17 +66921,14 @@ export default function AdminCategoriesPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/customers/page.tsx`
 
-- **File**: `src/app/admin/customers/page.tsx`
-- **Size**: 6.5 KB (174 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -67164,17 +67102,14 @@ export default function AdminCustomersPage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/employees/page.tsx`
 
-- **File**: `src/app/admin/employees/page.tsx`
-- **Size**: 33.9 KB (781 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -67955,17 +67890,14 @@ export default function EmployeeManagementPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/inventory/page.tsx`
 
-- **File**: `src/app/admin/inventory/page.tsx`
-- **Size**: 15.4 KB (353 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -68318,17 +68250,14 @@ export default function AdminInventoryPage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/login/page.tsx`
 
-- **File**: `src/app/admin/login/page.tsx`
-- **Size**: 9.9 KB (235 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -68563,17 +68492,14 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/orders/page.tsx`
 
-- **File**: `src/app/admin/orders/page.tsx`
-- **Size**: 24.7 KB (550 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -69123,17 +69049,14 @@ export default function AdminOrdersPage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/page.tsx`
 
-- **File**: `src/app/admin/page.tsx`
-- **Size**: 22.5 KB (482 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -69615,17 +69538,14 @@ export default function AdminDashboardPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/products/page.tsx`
 
-- **File**: `src/app/admin/products/page.tsx`
-- **Size**: 30.2 KB (710 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -70335,17 +70255,14 @@ export default function AdminProductsPage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/projects/page.tsx`
 
-- **File**: `src/app/admin/projects/page.tsx`
-- **Size**: 17.9 KB (437 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -70782,17 +70699,14 @@ export default function AdminProjectsPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/quotes/page.tsx`
 
-- **File**: `src/app/admin/quotes/page.tsx`
-- **Size**: 16.9 KB (364 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -71156,17 +71070,14 @@ export default function AdminQuotesPage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/services/page.tsx`
 
-- **File**: `src/app/admin/services/page.tsx`
-- **Size**: 13.7 KB (342 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -71508,17 +71419,14 @@ export default function AdminServicesPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/admin/settings/page.tsx`
 
-- **File**: `src/app/admin/settings/page.tsx`
-- **Size**: 93.0 KB (1807 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -73325,15 +73233,12 @@ export default function AdminSettingsPage() {
     </AdminLayout>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/analytics/dashboard/route.ts`
-
-- **File**: `src/app/api/admin/analytics/dashboard/route.ts`
-- **Size**: 9.4 KB (280 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73615,15 +73520,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to compute dashboard analytics' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/audit-logs/route.ts`
-
-- **File**: `src/app/api/admin/audit-logs/route.ts`
-- **Size**: 1.4 KB (45 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73670,15 +73572,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to fetch audit logs' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/employees/[id]/route.ts`
-
-- **File**: `src/app/api/admin/employees/[id]/route.ts`
-- **Size**: 2.7 KB (82 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73762,15 +73661,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message || 'Failed to delete employee' }, { status: 400 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/employees/route.ts`
-
-- **File**: `src/app/api/admin/employees/route.ts`
-- **Size**: 2.0 KB (63 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73835,15 +73731,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to create employee' }, { status: 400 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/export/route.ts`
-
-- **File**: `src/app/api/admin/export/route.ts`
-- **Size**: 5.1 KB (125 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73970,15 +73863,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Export generation failed' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/notifications/test/route.ts`
-
-- **File**: `src/app/api/admin/notifications/test/route.ts`
-- **Size**: 0.5 KB (18 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73998,15 +73888,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/search/route.ts`
-
-- **File**: `src/app/api/admin/search/route.ts`
-- **Size**: 8.4 KB (248 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74256,15 +74143,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/settings/route.ts`
-
-- **File**: `src/app/api/admin/settings/route.ts`
-- **Size**: 2.3 KB (79 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74345,15 +74229,12 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to update settings' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/summary/route.ts`
-
-- **File**: `src/app/api/admin/summary/route.ts`
-- **Size**: 2.9 KB (99 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74454,15 +74335,12 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/admin/upload/route.ts`
-
-- **File**: `src/app/api/admin/upload/route.ts`
-- **Size**: 6.1 KB (196 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74660,15 +74538,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Server upload error' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/callback/route.ts`
-
-- **File**: `src/app/api/auth/callback/route.ts`
-- **Size**: 6.0 KB (179 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74849,15 +74724,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Authentication verification failed.' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/change-password/route.ts`
-
-- **File**: `src/app/api/auth/change-password/route.ts`
-- **Size**: 3.5 KB (116 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74975,15 +74847,12 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/forgot-password/route.ts`
-
-- **File**: `src/app/api/auth/forgot-password/route.ts`
-- **Size**: 2.5 KB (72 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75057,15 +74926,12 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/login/route.ts`
-
-- **File**: `src/app/api/auth/login/route.ts`
-- **Size**: 5.9 KB (196 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75263,15 +75129,12 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/logout/route.ts`
-
-- **File**: `src/app/api/auth/logout/route.ts`
-- **Size**: 0.3 KB (9 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75282,15 +75145,12 @@ export async function POST(req: NextRequest) {
   response.cookies.delete('balaji_customer_session');
   return response;
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/me/route.ts`
-
-- **File**: `src/app/api/auth/me/route.ts`
-- **Size**: 1.9 KB (61 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75353,15 +75213,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ admin: null, user: null });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/auth/register/route.ts`
-
-- **File**: `src/app/api/auth/register/route.ts`
-- **Size**: 1.8 KB (65 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75428,15 +75285,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to create account. Please try again.' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/categories/[id]/route.ts`
-
-- **File**: `src/app/api/categories/[id]/route.ts`
-- **Size**: 2.8 KB (94 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75532,15 +75386,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/categories/route.ts`
-
-- **File**: `src/app/api/categories/route.ts`
-- **Size**: 2.4 KB (81 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75623,15 +75474,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/enquiries/[id]/route.ts`
-
-- **File**: `src/app/api/enquiries/[id]/route.ts`
-- **Size**: 0.8 KB (24 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75657,15 +75505,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/enquiries/route.ts`
-
-- **File**: `src/app/api/enquiries/route.ts`
-- **Size**: 1.7 KB (51 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75718,15 +75563,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/health/ready/route.ts`
-
-- **File**: `src/app/api/health/ready/route.ts`
-- **Size**: 3.1 KB (128 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -75856,15 +75698,12 @@ export async function GET() {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/health/route.ts`
-
-- **File**: `src/app/api/health/route.ts`
-- **Size**: 4.2 KB (118 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -75984,15 +75823,12 @@ export async function GET() {
     { status: httpStatus }
   );
 }
+
 ```
 
 ---
 
 ### `src/app/api/notifications/subscribe/route.ts`
-
-- **File**: `src/app/api/notifications/subscribe/route.ts`
-- **Size**: 1.5 KB (47 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76041,15 +75877,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/orders/[id]/route.ts`
-
-- **File**: `src/app/api/orders/[id]/route.ts`
-- **Size**: 1.5 KB (46 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76097,15 +75930,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/orders/customer/route.ts`
-
-- **File**: `src/app/api/orders/customer/route.ts`
-- **Size**: 2.5 KB (78 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76185,15 +76015,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to retrieve orders.' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/orders/route.ts`
-
-- **File**: `src/app/api/orders/route.ts`
-- **Size**: 2.2 KB (69 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76264,15 +76091,12 @@ export async function POST(req: NextRequest) {
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/products/[id]/route.ts`
-
-- **File**: `src/app/api/products/[id]/route.ts`
-- **Size**: 3.5 KB (118 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76392,15 +76216,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/products/route.ts`
-
-- **File**: `src/app/api/products/route.ts`
-- **Size**: 3.9 KB (122 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76524,15 +76345,12 @@ export async function POST(req: NextRequest) {
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/projects/[id]/route.ts`
-
-- **File**: `src/app/api/projects/[id]/route.ts`
-- **Size**: 3.3 KB (109 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76643,15 +76461,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/projects/route.ts`
-
-- **File**: `src/app/api/projects/route.ts`
-- **Size**: 3.0 KB (94 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76747,15 +76562,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/quotes/[id]/convert/route.ts`
-
-- **File**: `src/app/api/quotes/[id]/convert/route.ts`
-- **Size**: 0.9 KB (28 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76785,15 +76597,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/quotes/[id]/route.ts`
-
-- **File**: `src/app/api/quotes/[id]/route.ts`
-- **Size**: 1.3 KB (39 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76834,15 +76643,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return formatErrorResponse(err);
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/quotes/route.ts`
-
-- **File**: `src/app/api/quotes/route.ts`
-- **Size**: 2.2 KB (63 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76907,15 +76713,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/search/route.ts`
-
-- **File**: `src/app/api/search/route.ts`
-- **Size**: 1.4 KB (54 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76971,15 +76774,12 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/services/[id]/route.ts`
-
-- **File**: `src/app/api/services/[id]/route.ts`
-- **Size**: 2.6 KB (88 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -77069,15 +76869,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/services/route.ts`
-
-- **File**: `src/app/api/services/route.ts`
-- **Size**: 2.4 KB (80 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -77159,15 +76956,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/api/settings/route.ts`
-
-- **File**: `src/app/api/settings/route.ts`
-- **Size**: 0.6 KB (21 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -77190,17 +76984,14 @@ export async function GET() {
     return NextResponse.json({ success: false, error: 'Failed to retrieve site settings' }, { status: 500 });
   }
 }
+
 ```
 
 ---
 
 ### `src/app/auth/callback/page.tsx`
 
-- **File**: `src/app/auth/callback/page.tsx`
-- **Size**: 4.4 KB (118 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -77318,17 +77109,14 @@ export default function AuthCallbackPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/cart/page.tsx`
 
-- **File**: `src/app/cart/page.tsx`
-- **Size**: 8.7 KB (185 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -77513,17 +77301,14 @@ export default function CartPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/category/[slug]/page.tsx`
 
-- **File**: `src/app/category/[slug]/page.tsx`
-- **Size**: 7.2 KB (162 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -77685,17 +77470,14 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/checkout/page.tsx`
 
-- **File**: `src/app/checkout/page.tsx`
-- **Size**: 41.3 KB (911 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -78606,17 +78388,14 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/contact/page.tsx`
 
-- **File**: `src/app/contact/page.tsx`
-- **Size**: 10.6 KB (244 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState } from 'react';
@@ -78860,15 +78639,12 @@ export default function ContactPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/globals.css`
-
-- **File**: `src/app/globals.css`
-- **Size**: 5.5 KB (263 lines)
-- **Language**: `css`
 
 ```css
 @tailwind base;
@@ -79131,6 +78907,24 @@ body {
   animation-play-state: paused;
 }
 
+/* Lightweight GPU-composited ambient pulse (replaces heavy infinite animate-ping) */
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.75;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform, opacity;
+}
+
+
 
 
 ```
@@ -79139,11 +78933,7 @@ body {
 
 ### `src/app/layout.tsx`
 
-- **File**: `src/app/layout.tsx`
-- **Size**: 5.0 KB (146 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
@@ -79289,17 +79079,14 @@ export default async function RootLayout({
     </html>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/material/[slug]/page.tsx`
 
-- **File**: `src/app/material/[slug]/page.tsx`
-- **Size**: 1.6 KB (49 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -79348,17 +79135,14 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/materials/page.tsx`
 
-- **File**: `src/app/materials/page.tsx`
-- **Size**: 8.1 KB (181 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -79539,17 +79323,14 @@ export default async function MaterialsPage({
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/page.tsx`
 
-- **File**: `src/app/page.tsx`
-- **Size**: 15.6 KB (302 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -79851,17 +79632,14 @@ export default async function HomePage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/projects/[slug]/page.tsx`
 
-- **File**: `src/app/projects/[slug]/page.tsx`
-- **Size**: 9.7 KB (228 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80089,17 +79867,14 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/projects/page.tsx`
 
-- **File**: `src/app/projects/page.tsx`
-- **Size**: 5.4 KB (131 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80230,17 +80005,14 @@ export default async function ProjectsPage({
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/quote/page.tsx`
 
-- **File**: `src/app/quote/page.tsx`
-- **Size**: 16.4 KB (428 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
@@ -80668,15 +80440,12 @@ export default function QuotePage() {
     </Suspense>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/robots.ts`
-
-- **File**: `src/app/robots.ts`
-- **Size**: 0.3 KB (15 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -80693,17 +80462,14 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: 'https://balaji-atelier.com/sitemap.xml',
   };
 }
+
 ```
 
 ---
 
 ### `src/app/search/page.tsx`
 
-- **File**: `src/app/search/page.tsx`
-- **Size**: 7.2 KB (183 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -80886,17 +80652,14 @@ export default function SearchPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/services/page.tsx`
 
-- **File**: `src/app/services/page.tsx`
-- **Size**: 8.3 KB (183 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -81079,17 +80842,14 @@ export default async function ServicesPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/shop/page.tsx`
 
-- **File**: `src/app/shop/page.tsx`
-- **Size**: 4.9 KB (106 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -81195,15 +80955,12 @@ export default async function ShopPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/sitemap.ts`
-
-- **File**: `src/app/sitemap.ts`
-- **Size**: 2.0 KB (48 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -81253,17 +81010,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...projectRoutes];
 }
+
 ```
 
 ---
 
 ### `src/app/studio/page.tsx`
 
-- **File**: `src/app/studio/page.tsx`
-- **Size**: 17.0 KB (429 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -81692,17 +81446,14 @@ export default function StudioAuthPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/app/wishlist/page.tsx`
 
-- **File**: `src/app/wishlist/page.tsx`
-- **Size**: 5.2 KB (129 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -81831,17 +81582,14 @@ export default function WishlistPage() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/AdminLayout.tsx`
 
-- **File**: `src/components/AdminLayout.tsx`
-- **Size**: 53.4 KB (1181 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -83022,17 +82770,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 }
 
 export default AdminLayout;
+
 ```
 
 ---
 
 ### `src/components/CartDrawer.tsx`
 
-- **File**: `src/components/CartDrawer.tsx`
-- **Size**: 7.7 KB (173 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -83205,17 +82950,14 @@ export function CartDrawer() {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/Footer.tsx`
 
-- **File**: `src/components/Footer.tsx`
-- **Size**: 9.4 KB (227 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState } from 'react';
@@ -83442,17 +83184,14 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     </footer>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/Hero3DTypography.tsx`
 
-- **File**: `src/components/Hero3DTypography.tsx`
-- **Size**: 12.2 KB (293 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -83501,78 +83240,184 @@ export function Hero3DTypography({
   const rafId = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
 
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // Direct DOM Refs to eliminate React per-frame rendering
+  const bgImageRef = useRef<HTMLDivElement | null>(null);
+  const backlightRef = useRef<HTMLDivElement | null>(null);
+  const subElementsRef1 = useRef<HTMLDivElement | null>(null);
+  const subElementsRef2 = useRef<HTMLParagraphElement | null>(null);
+  const subElementsRef3 = useRef<HTMLDivElement | null>(null);
+  const line1Ref = useRef<HTMLDivElement | null>(null);
+  const line2Ref = useRef<HTMLDivElement | null>(null);
+  const line3Ref = useRef<HTMLDivElement | null>(null);
 
   const physicsRef = useRef({
     target: 0,
     current: 0,
+    isAnimating: false,
+    inView: true,
   });
 
   useEffect(() => {
     let isMounted = true;
 
-    const onScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight || 800;
-      // Normalized progress 0 -> 1 as hero scrolls out
-      const progress = Math.max(0, Math.min(1.2, -rect.top / (rect.height * 0.8 || windowHeight)));
-      physicsRef.current.target = progress;
+    // High-performance direct DOM transform applier (Zero React VDOM allocations)
+    const applyHeroStyles = (s: number) => {
+      // 1. Cinematic Background Photography counter-zoom
+      if (bgImageRef.current) {
+        const bgScale = 1.04 + s * 0.06;
+        const bgTranslateY = s * 10;
+        bgImageRef.current.style.transform = `scale(${bgScale.toFixed(3)}) translateY(${bgTranslateY.toFixed(2)}%)`;
+      }
+
+      // 2. Subtle Diffused Ambient Backlight Aperture
+      if (backlightRef.current) {
+        backlightRef.current.style.opacity = Math.max(0, 1 - s * 1.5).toFixed(3);
+      }
+
+      // 3. Sub-elements fade out cleanly on initial scroll
+      const subOpacity = Math.max(0, 1 - s * 2.8).toFixed(3);
+      if (subElementsRef1.current) subElementsRef1.current.style.opacity = subOpacity;
+      if (subElementsRef2.current) subElementsRef2.current.style.opacity = subOpacity;
+      if (subElementsRef3.current) subElementsRef3.current.style.opacity = subOpacity;
+
+      // 4. Line 1: INTERIORS. (Alabaster Chiaroscuro)
+      if (line1Ref.current) {
+        const line1TranslateY = -s * 58;
+        const line1Scale = Math.max(0.95, 1 - s * 0.025);
+        const line1Opacity = Math.max(0, 1 - Math.pow(s, 1.25) * 1.15);
+        const line1Blur = Math.max(0, (s - 0.28) * 2.4);
+        line1Ref.current.style.transform = `translate3d(0, ${line1TranslateY.toFixed(1)}px, 0) scale(${line1Scale.toFixed(4)})`;
+        line1Ref.current.style.opacity = line1Opacity.toFixed(3);
+        line1Ref.current.style.filter = line1Blur > 0.1 ? `blur(${line1Blur.toFixed(1)}px)` : 'none';
+      }
+
+      // 5. Line 2: ARCHITECTURE. (Monumental Center Anchor — Specular Champagne Contrast)
+      if (line2Ref.current) {
+        const line2TranslateY = -s * 26;
+        const line2Scale = Math.max(0.97, 1 - s * 0.015);
+        const line2Opacity = Math.max(0, 1 - Math.pow(s, 1.35) * 1.05);
+        const line2Blur = Math.max(0, (s - 0.35) * 2.0);
+        line2Ref.current.style.transform = `translate3d(0, ${line2TranslateY.toFixed(1)}px, 0) scale(${line2Scale.toFixed(4)})`;
+        line2Ref.current.style.opacity = line2Opacity.toFixed(3);
+        line2Ref.current.style.filter = line2Blur > 0.1 ? `blur(${line2Blur.toFixed(1)}px)` : 'none';
+      }
+
+      // 6. Line 3: MATERIALS. (Honed Limestone Tactility)
+      if (line3Ref.current) {
+        const line3TranslateY = -s * 82;
+        const line3Scale = Math.max(0.93, 1 - s * 0.045);
+        const line3Opacity = Math.max(0, 1 - Math.pow(s, 1.15) * 1.25);
+        const line3Blur = Math.max(0, (s - 0.22) * 2.6);
+        line3Ref.current.style.transform = `translate3d(0, ${line3TranslateY.toFixed(1)}px, 0) scale(${line3Scale.toFixed(4)})`;
+        line3Ref.current.style.opacity = line3Opacity.toFixed(3);
+        line3Ref.current.style.filter = line3Blur > 0.1 ? `blur(${line3Blur.toFixed(1)}px)` : 'none';
+      }
     };
 
     const updateLoop = (timestamp: number) => {
       if (!isMounted) return;
+      const p = physicsRef.current;
+
+      // Stop loop if offscreen or tab hidden
+      if (!p.inView || (typeof document !== 'undefined' && document.hidden)) {
+        p.isAnimating = false;
+        rafId.current = null;
+        return;
+      }
 
       if (!lastTimeRef.current) lastTimeRef.current = timestamp;
       const dt = Math.min(0.04, Math.max(0.008, (timestamp - lastTimeRef.current) / 1000));
       lastTimeRef.current = timestamp;
 
-      const p = physicsRef.current;
+      const diff = p.target - p.current;
+
       // High-end viscous hydrodynamic damping (watery, buttery smooth, frame-rate independent)
-      const factor = 1 - Math.exp(-7.2 * dt);
-      p.current += (p.target - p.current) * factor;
+      if (Math.abs(diff) > 0.0001) {
+        const factor = 1 - Math.exp(-7.2 * dt);
+        p.current += diff * factor;
+        applyHeroStyles(p.current);
+        rafId.current = requestAnimationFrame(updateLoop);
+      } else {
+        // Settled: perform final snap and sleep the RAF loop to save CPU & GPU
+        p.current = p.target;
+        applyHeroStyles(p.current);
+        p.isAnimating = false;
+        rafId.current = null;
+      }
+    };
 
-      setScrollProgress(p.current);
-
+    const startLoop = () => {
+      if (physicsRef.current.isAnimating) return;
+      if (!physicsRef.current.inView || (typeof document !== 'undefined' && document.hidden)) return;
+      physicsRef.current.isAnimating = true;
+      lastTimeRef.current = 0;
       rafId.current = requestAnimationFrame(updateLoop);
     };
 
+    let scrollTicking = false;
+    const onScroll = () => {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          scrollTicking = false;
+          if (!sectionRef.current) return;
+          const rect = sectionRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight || 800;
+          // Normalized progress 0 -> 1 as hero scrolls out
+          const progress = Math.max(0, Math.min(1.2, -rect.top / (rect.height * 0.8 || windowHeight)));
+          physicsRef.current.target = progress;
+          startLoop();
+        });
+      }
+    };
+
+    // Sleep when offscreen via IntersectionObserver
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && sectionRef.current) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          const inView = entry ? entry.isIntersecting : true;
+          physicsRef.current.inView = inView;
+          if (inView) {
+            onScroll();
+          } else {
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+            physicsRef.current.isAnimating = false;
+          }
+        },
+        { rootMargin: '100px 0px 100px 0px' }
+      );
+      observer.observe(sectionRef.current);
+    }
+
+    // Sleep in background tab via document.visibilityState
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        if (rafId.current) cancelAnimationFrame(rafId.current);
+        physicsRef.current.isAnimating = false;
+      } else if (physicsRef.current.inView) {
+        onScroll();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    // Initial mount setup
+    applyHeroStyles(0);
     onScroll();
-    rafId.current = requestAnimationFrame(updateLoop);
 
     return () => {
       isMounted = false;
       if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (observer) observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, []);
-
-  const s = scrollProgress;
-
-  // Real-Life Developer Architectural Parallax:
-  // Classical Cormorant Garamond with Chiaroscuro Material Contrast & Optical Depth
-  const line1TranslateY = -s * 58;
-  const line1Scale = Math.max(0.95, 1 - s * 0.025);
-  const line1Opacity = Math.max(0, 1 - Math.pow(s, 1.25) * 1.15);
-  const line1Blur = Math.max(0, (s - 0.28) * 2.4);
-
-  const line2TranslateY = -s * 26; // Grounded anchor moves at slower parallax
-  const line2Scale = Math.max(0.97, 1 - s * 0.015);
-  const line2Opacity = Math.max(0, 1 - Math.pow(s, 1.35) * 1.05);
-  const line2Blur = Math.max(0, (s - 0.35) * 2.0);
-
-  const line3TranslateY = -s * 82; // Trailing plane moves at faster parallax
-  const line3Scale = Math.max(0.93, 1 - s * 0.045);
-  const line3Opacity = Math.max(0, 1 - Math.pow(s, 1.15) * 1.25);
-  const line3Blur = Math.max(0, (s - 0.22) * 2.6);
-
-  // Sub-elements fade out cleanly on initial scroll
-  const subElementsOpacity = Math.max(0, 1 - s * 2.8);
-
-  // Background photographic counter-zoom
-  const bgScale = 1.04 + s * 0.06;
-  const bgTranslateY = s * 10;
 
   return (
     <section
@@ -83583,9 +83428,10 @@ export function Hero3DTypography({
     >
       {/* 1. CINEMATIC BACKGROUND PHOTOGRAPHY */}
       <div
+        ref={bgImageRef}
         className="absolute inset-0 z-0 will-change-transform pointer-events-none"
         style={{
-          transform: `scale(${bgScale}) translateY(${bgTranslateY}%)`,
+          transform: 'scale(1.04) translateY(0%)',
         }}
       >
         <Image
@@ -83604,8 +83450,9 @@ export function Hero3DTypography({
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 sm:pt-12 pb-16 sm:pb-20 flex flex-col items-center">
         {/* Clean Eyebrow Text */}
         <div
+          ref={subElementsRef1}
           className="mb-4 sm:mb-6 transition-opacity duration-200"
-          style={{ opacity: subElementsOpacity }}
+          style={{ opacity: 1 }}
         >
           <span className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest-plus text-champagne font-medium">
             {eyebrow}
@@ -83616,17 +83463,18 @@ export function Hero3DTypography({
         <div className="relative w-full flex flex-col items-center select-none py-1 sm:py-2">
           {/* Subtle Diffused Ambient Backlight Aperture */}
           <div
+            ref={backlightRef}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-4xl h-[70vh] bg-[radial-gradient(ellipse_at_center,rgba(218,193,158,0.07)_0%,rgba(197,168,128,0.03)_45%,rgba(16,12,10,0)_75%)] pointer-events-none -z-10 transition-opacity duration-300"
-            style={{ opacity: 1 - s * 1.5 }}
+            style={{ opacity: 1 }}
           />
 
           {/* LINE 1: INTERIORS. (Alabaster Chiaroscuro) */}
           <div
+            ref={line1Ref}
             className="will-change-transform"
             style={{
-              transform: `translate3d(0, ${line1TranslateY}px, 0) scale(${line1Scale})`,
-              opacity: line1Opacity,
-              filter: line1Blur > 0.1 ? `blur(${line1Blur.toFixed(1)}px)` : 'none',
+              transform: 'translate3d(0, 0px, 0) scale(1)',
+              opacity: 1,
             }}
           >
             <h1 className="font-serif text-chiaroscuro-ivory text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[8.5rem] font-light leading-[1.04] tracking-[0.035em] sm:tracking-[0.05em] drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)]">
@@ -83636,11 +83484,11 @@ export function Hero3DTypography({
 
           {/* LINE 2: ARCHITECTURE. (Monumental Center Anchor — Specular Champagne Contrast) */}
           <div
+            ref={line2Ref}
             className="will-change-transform my-1 sm:my-2"
             style={{
-              transform: `translate3d(0, ${line2TranslateY}px, 0) scale(${line2Scale})`,
-              opacity: line2Opacity,
-              filter: line2Blur > 0.1 ? `blur(${line2Blur.toFixed(1)}px)` : 'none',
+              transform: 'translate3d(0, 0px, 0) scale(1)',
+              opacity: 1,
             }}
           >
             <h1 className="font-serif text-chiaroscuro-champagne text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[8.5rem] font-light leading-[1.04] tracking-[0.035em] sm:tracking-[0.05em] drop-shadow-[0_6px_32px_rgba(0,0,0,0.75)]">
@@ -83650,11 +83498,11 @@ export function Hero3DTypography({
 
           {/* LINE 3: MATERIALS. (Honed Limestone Tactility) */}
           <div
+            ref={line3Ref}
             className="will-change-transform"
             style={{
-              transform: `translate3d(0, ${line3TranslateY}px, 0) scale(${line3Scale})`,
-              opacity: line3Opacity,
-              filter: line3Blur > 0.1 ? `blur(${line3Blur.toFixed(1)}px)` : 'none',
+              transform: 'translate3d(0, 0px, 0) scale(1)',
+              opacity: 1,
             }}
           >
             <h1 className="font-serif text-chiaroscuro-limestone text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[8.5rem] font-light leading-[1.04] tracking-[0.035em] sm:tracking-[0.05em] drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)]">
@@ -83665,16 +83513,18 @@ export function Hero3DTypography({
 
         {/* Subtitle Description */}
         <p
+          ref={subElementsRef2}
           className="max-w-2xl mx-auto text-xs sm:text-base md:text-lg text-surface/80 font-light leading-relaxed px-4 sm:px-0 mt-4 sm:mt-6 transition-opacity"
-          style={{ opacity: subElementsOpacity }}
+          style={{ opacity: 1 }}
         >
           {description}
         </p>
 
         {/* Action Buttons */}
         <div
+          ref={subElementsRef3}
           className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 w-full sm:w-auto transition-opacity"
-          style={{ opacity: subElementsOpacity }}
+          style={{ opacity: 1 }}
         >
           <Link
             href={primaryBtnLink}
@@ -83745,17 +83595,14 @@ export function Hero3DTypography({
 }
 
 export default Hero3DTypography;
+
 ```
 
 ---
 
 ### `src/components/ImageReveal.tsx`
 
-- **File**: `src/components/ImageReveal.tsx`
-- **Size**: 1.1 KB (53 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -83808,17 +83655,14 @@ export function ImageReveal({
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/ImageUploader.tsx`
 
-- **File**: `src/components/ImageUploader.tsx`
-- **Size**: 6.3 KB (204 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useRef } from 'react';
@@ -84022,15 +83866,12 @@ export function ImageUploader({
 }
 
 export default ImageUploader;
+
 ```
 
 ---
 
 ### `src/components/index.ts`
-
-- **File**: `src/components/index.ts`
-- **Size**: 0.5 KB (20 lines)
-- **Language**: `typescript`
 
 ```typescript
 export * from './AdminLayout';
@@ -84052,17 +83893,14 @@ export * from './WhatsAppButton';
 export * from './Hero3DTypography';
 
 
+
 ```
 
 ---
 
 ### `src/components/MobileBottomNav.tsx`
 
-- **File**: `src/components/MobileBottomNav.tsx`
-- **Size**: 3.0 KB (83 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -84145,20 +83983,17 @@ export function MobileBottomNav() {
 
 export default MobileBottomNav;
 
+
 ```
 
 ---
 
 ### `src/components/Navbar.tsx`
 
-- **File**: `src/components/Navbar.tsx`
-- **Size**: 21.9 KB (534 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, Heart, ShoppingBag, Menu, X, User } from 'lucide-react';
@@ -84183,6 +84018,9 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     pathname.startsWith('/materials');
 
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(isInitialDarkPage);
+
+  const isDarkThemeRef = useRef<boolean>(isInitialDarkPage);
+  const isScrolledRef = useRef<boolean>(false);
 
   const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(
     initialSettings?.announcementBanner !== undefined
@@ -84222,7 +84060,11 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
     const scrollY = window.scrollY;
-    setIsScrolled(scrollY > 20);
+    const isOverScrolled = scrollY > 20;
+    if (isScrolledRef.current !== isOverScrolled) {
+      isScrolledRef.current = isOverScrolled;
+      setIsScrolled(isOverScrolled);
+    }
 
     const headerEl = document.getElementById('main-navbar-header');
     let navbarTop = 0;
@@ -84281,6 +84123,7 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
         for (let i = 0; i < visualMedia.length; i++) {
           const el = visualMedia[i];
           if (el.closest('#main-navbar-header') || el.closest('#navbar-container')) continue;
+          if (el.offsetParent === null) continue; // Fast check for display:none without forced layout reflow
 
           const rect = el.getBoundingClientRect();
 
@@ -84290,11 +84133,6 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
 
           // Filter out tiny icons or tracking pixels
           if (rect.width < 45 || rect.height < 45) continue;
-
-          // Verify computed visibility and opacity
-          const style = window.getComputedStyle(el);
-          if (style.display === 'none' || style.visibility === 'hidden') continue;
-          if (parseFloat(style.opacity || '1') < 0.25) continue;
 
           // Active photograph or visual card is physically underneath the navbar
           isOverDark = true;
@@ -84368,12 +84206,25 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
       }
     }
 
-    setIsDarkTheme(isOverDark);
+    // Only trigger React state update if the theme actually changed
+    if (isDarkThemeRef.current !== isOverDark) {
+      isDarkThemeRef.current = isOverDark;
+      setIsDarkTheme(isOverDark);
+    }
   }, [pathname]);
 
   useEffect(() => {
+    let ticking = false;
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      detectThemeUnderNavbar();
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(() => {
+          detectThemeUnderNavbar();
+          ticking = false;
+        });
+      }
     };
 
     detectThemeUnderNavbar();
@@ -84388,6 +84239,7 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
@@ -84689,17 +84541,14 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     </>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/PageTransition.tsx`
 
-- **File**: `src/components/PageTransition.tsx`
-- **Size**: 0.2 KB (12 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -84711,17 +84560,14 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/ProductDetailClient.tsx`
 
-- **File**: `src/components/ProductDetailClient.tsx`
-- **Size**: 18.2 KB (404 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState } from 'react';
@@ -85125,17 +84971,14 @@ export function ProductDetailClient({
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/Reveal.tsx`
 
-- **File**: `src/components/Reveal.tsx`
-- **Size**: 0.3 KB (23 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React from 'react';
@@ -85158,17 +85001,14 @@ export function Reveal({
     </div>
   );
 }
+
 ```
 
 ---
 
 ### `src/components/ScrollPortfolio.tsx`
 
-- **File**: `src/components/ScrollPortfolio.tsx`
-- **Size**: 23.6 KB (537 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
@@ -85187,9 +85027,9 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const rafId = useRef<number | null>(null);
 
+  // Discrete active index state (updated ONLY when active project genuinely changes)
   const [activeIndex, setActiveIndex] = useState(0);
-  const [smoothProgress, setSmoothProgress] = useState(0);
-  const [velocity, setVelocity] = useState(0);
+  const activeIndexRef = useRef(0);
 
   // Fallback if projects is empty
   const safeProjects = useMemo(() => {
@@ -85231,14 +85071,116 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     }
   }, [intensity]);
 
+  // Direct DOM Element Refs for High-Performance Animation (Zero React VDOM allocations)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imgRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const textTopRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const textBottomRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   // Target and current interpolated progress refs
   const physicsRef = useRef({
     target: 0,
     current: 0,
     last: 0,
     velocity: 0,
+    isAnimating: false,
+    inView: true,
   });
   const lastTimeRef = useRef<number>(0);
+
+  // High-performance direct DOM transform applier (runs directly against DOM, zero React re-renders)
+  const applyCardStyles = useCallback((currentProgress: number, vel: number) => {
+    const dynamicTiltX = Math.max(-3.5, Math.min(3.5, vel * 40));
+    const dynamicTiltZ = Math.max(-1.2, Math.min(1.2, -vel * 16));
+
+    for (let idx = 0; idx < totalCards; idx++) {
+      const card = cardRefs.current[idx];
+      if (!card) continue;
+
+      const delta = idx - currentProgress;
+      const isCurrent = Math.abs(delta) < 0.5;
+
+      // Prune invisible / far cards from active compositing for 120fps performance
+      if (Math.abs(delta) > 3.5 || delta < -0.60) {
+        card.style.display = 'none';
+        continue;
+      }
+      card.style.display = '';
+
+      let translateZ: number;
+      let translateYPercent: number;
+      let scale: number;
+      let opacity: number;
+      let blurPx: number;
+      let brightness: number;
+      let textOpacity: number;
+
+      if (delta < 0) {
+        const absDelta = -delta;
+        if (absDelta <= 0.30) {
+          opacity = 1;
+          textOpacity = 1;
+          blurPx = 0;
+          brightness = 1;
+        } else if (absDelta <= 0.60) {
+          const exitT = (absDelta - 0.30) / 0.30;
+          const smoothExit = exitT * exitT * (3 - 2 * exitT);
+          opacity = Math.max(0, 1 - smoothExit);
+          textOpacity = Math.max(0, 1 - Math.min(1, exitT * 1.35));
+          blurPx = Math.min(6, exitT * 4);
+          brightness = Math.max(0.4, 1 - exitT * 0.4);
+        } else {
+          opacity = 0;
+          textOpacity = 0;
+          blurPx = 6;
+          brightness = 0.4;
+        }
+        translateZ = delta * (depthConfig.zStep * 0.45);
+        translateYPercent = delta * (depthConfig.yStep * 2.5);
+        scale = Math.min(1.12, 1 + absDelta * 0.05);
+      } else {
+        if (delta <= 0.30) {
+          opacity = 1;
+          textOpacity = 1;
+          blurPx = 0;
+          brightness = 1;
+        } else if (delta <= 0.60) {
+          const enterT = (0.60 - delta) / 0.30;
+          const smoothEnter = enterT * enterT * (3 - 2 * enterT);
+          opacity = 0.38 + 0.62 * smoothEnter;
+          textOpacity = Math.max(0, (smoothEnter - 0.2) / 0.8);
+          blurPx = Math.max(0, (1 - smoothEnter) * 3.5);
+          brightness = 0.65 + 0.35 * smoothEnter;
+        } else {
+          opacity = Math.max(0, 0.38 - (delta - 0.60) * 0.14);
+          textOpacity = 0;
+          blurPx = Math.min(8, 2.5 + (delta - 0.60) * 2.2);
+          brightness = Math.max(0.35, 0.65 - (delta - 0.60) * 0.18);
+        }
+        translateZ = -delta * depthConfig.zStep;
+        translateYPercent = delta * depthConfig.yStep;
+        scale = Math.max(0.65, 1 - delta * depthConfig.scaleStep);
+      }
+
+      const zIndex = totalCards - Math.abs(Math.round(delta));
+      const imgScale = Math.max(1.02, 1.10 - Math.abs(delta) * 0.04);
+
+      card.style.transform = `translate3d(0, ${translateYPercent.toFixed(2)}%, ${translateZ.toFixed(1)}px) scale(${scale.toFixed(4)}) rotateX(${dynamicTiltX.toFixed(2)}deg) rotateZ(${dynamicTiltZ.toFixed(2)}deg)`;
+      card.style.opacity = opacity.toFixed(3);
+      card.style.filter = blurPx > 0.1 ? `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})` : `brightness(${brightness.toFixed(2)})`;
+      card.style.zIndex = `${zIndex}`;
+      card.style.pointerEvents = isCurrent ? 'auto' : 'none';
+
+      const textTop = textTopRefs.current[idx];
+      if (textTop) textTop.style.opacity = textOpacity.toFixed(3);
+
+      const textBottom = textBottomRefs.current[idx];
+      if (textBottom) textBottom.style.opacity = textOpacity.toFixed(3);
+
+      const imgEl = imgRefs.current[idx];
+      if (imgEl) imgEl.style.transform = `scale(${imgScale.toFixed(3)})`;
+    }
+  }, [totalCards, depthConfig]);
 
   // Viscous fluid damping loop (Watery Smooth / Buttery Smooth Hydrodynamic Physics)
   useEffect(() => {
@@ -85246,31 +85188,29 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
     let isMounted = true;
 
-    const onScrollOrResize = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight || 800;
-
-      // Check if container is in viewport
-      const inView = rect.top < windowHeight && rect.bottom > 0;
-      if (!inView) return;
-
-      const totalScrollableDistance = rect.height - windowHeight;
-      if (totalScrollableDistance <= 0) return;
-
-      // Fraction from 0 to 1
-      const progress = Math.max(0, Math.min(1, -rect.top / totalScrollableDistance));
-      physicsRef.current.target = progress * (totalCards - 1);
+    const startLoop = () => {
+      if (physicsRef.current.isAnimating) return;
+      if (!physicsRef.current.inView || (typeof document !== 'undefined' && document.hidden)) return;
+      physicsRef.current.isAnimating = true;
+      lastTimeRef.current = 0;
+      rafId.current = requestAnimationFrame(updateLoop);
     };
 
     const updateLoop = (timestamp: number) => {
       if (!isMounted) return;
+      const p = physicsRef.current;
+
+      // Stop loop if offscreen or tab hidden
+      if (!p.inView || (typeof document !== 'undefined' && document.hidden)) {
+        p.isAnimating = false;
+        rafId.current = null;
+        return;
+      }
 
       if (!lastTimeRef.current) lastTimeRef.current = timestamp;
       const dt = Math.min(0.04, Math.max(0.008, (timestamp - lastTimeRef.current) / 1000));
       lastTimeRef.current = timestamp;
 
-      const p = physicsRef.current;
       const diff = p.target - p.current;
 
       // Hydrodynamic viscosity factor calibrated for liquid buttery glide:
@@ -85281,39 +85221,115 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       if (Math.abs(diff) > 0.00005) {
         // High-precision hydrodynamic asymptotic glide
         p.current += diff * dampFactor;
-
-        // Accurate velocity for organic liquid tilt (like floating on calm water)
         const currentVel = (p.current - p.last) / (dt * 60);
         p.velocity = currentVel;
         p.last = p.current;
 
-        setSmoothProgress(p.current);
-        setVelocity(currentVel);
+        applyCardStyles(p.current, currentVel);
+
+        // Discrete active index change only when project changes
+        const newIndex = Math.max(0, Math.min(totalCards - 1, Math.round(p.current)));
+        if (newIndex !== activeIndexRef.current) {
+          activeIndexRef.current = newIndex;
+          setActiveIndex(newIndex);
+        }
+
+        rafId.current = requestAnimationFrame(updateLoop);
+      } else {
+        // Settled: perform final position snap and sleep the RAF loop to save CPU & GPU
+        p.current = p.target;
+        p.velocity = 0;
+        p.last = p.target;
+        applyCardStyles(p.current, 0);
 
         const newIndex = Math.max(0, Math.min(totalCards - 1, Math.round(p.current)));
-        setActiveIndex(newIndex);
-      } else {
-        if (p.velocity !== 0) {
-          p.velocity = 0;
-          setVelocity(0);
+        if (newIndex !== activeIndexRef.current) {
+          activeIndexRef.current = newIndex;
+          setActiveIndex(newIndex);
         }
-      }
 
-      rafId.current = requestAnimationFrame(updateLoop);
+        p.isAnimating = false;
+        rafId.current = null;
+      }
     };
 
+    let scrollTicking = false;
+    const onScrollOrResize = () => {
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          scrollTicking = false;
+          if (!containerRef.current) return;
+          const rect = containerRef.current.getBoundingClientRect();
+          const windowHeight = window.innerHeight || 800;
+
+          // Check if container is in viewport
+          const inView = rect.top < windowHeight && rect.bottom > 0;
+          physicsRef.current.inView = inView;
+          if (!inView) {
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+            physicsRef.current.isAnimating = false;
+            return;
+          }
+
+          const totalScrollableDistance = rect.height - windowHeight;
+          if (totalScrollableDistance <= 0) return;
+
+          // Fraction from 0 to 1
+          const progress = Math.max(0, Math.min(1, -rect.top / totalScrollableDistance));
+          physicsRef.current.target = progress * (totalCards - 1);
+          startLoop();
+        });
+      }
+    };
+
+    // Sleep when offscreen via IntersectionObserver
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && containerRef.current) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          const inView = entry ? entry.isIntersecting : true;
+          physicsRef.current.inView = inView;
+          if (inView) {
+            onScrollOrResize();
+          } else {
+            if (rafId.current) cancelAnimationFrame(rafId.current);
+            physicsRef.current.isAnimating = false;
+          }
+        },
+        { rootMargin: '100px 0px 100px 0px' }
+      );
+      observer.observe(containerRef.current);
+    }
+
+    // Sleep in background tab via document.visibilityState
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        if (rafId.current) cancelAnimationFrame(rafId.current);
+        physicsRef.current.isAnimating = false;
+      } else if (physicsRef.current.inView) {
+        onScrollOrResize();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     window.addEventListener('scroll', onScrollOrResize, { passive: true });
-    window.addEventListener('resize', onScrollOrResize);
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    // Initial mount card styling
+    applyCardStyles(0, 0);
     onScrollOrResize();
-    rafId.current = requestAnimationFrame(updateLoop);
 
     return () => {
       isMounted = false;
       if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (observer) observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('scroll', onScrollOrResize);
       window.removeEventListener('resize', onScrollOrResize);
     };
-  }, [totalCards, speed]);
+  }, [totalCards, speed, applyCardStyles]);
 
   // Jump to specific card by smoothly scrolling the viewport
   const jumpToIndex = useCallback(
@@ -85325,7 +85341,11 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
       if (totalScrollableDistance <= 0) {
         physicsRef.current.target = index;
-        setActiveIndex(index);
+        if (activeIndexRef.current !== index) {
+          activeIndexRef.current = index;
+          setActiveIndex(index);
+        }
+        applyCardStyles(index, 0);
         return;
       }
 
@@ -85337,7 +85357,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
         behavior: 'smooth',
       });
     },
-    [totalCards]
+    [totalCards, applyCardStyles]
   );
 
   // Mobile Touch Swipe Handling with kinetic momentum
@@ -85376,10 +85396,6 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   // Section height: Compact total travel so user never feels trapped
   const totalContainerHeightVh = Math.max(120, 100 + (totalCards - 1) * scrollDistanceMultiplier);
 
-  // Liquid tilt calculation: creates an organic water-floating physical tilt
-  const dynamicTiltX = Math.max(-3.5, Math.min(3.5, velocity * 40));
-  const dynamicTiltZ = Math.max(-1.2, Math.min(1.2, -velocity * 16));
-
   return (
     <section
       ref={containerRef}
@@ -85398,157 +85414,76 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
         <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-canvas/80 to-transparent z-25" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-canvas/80 to-transparent z-25" />
 
-        {/* Luminous Light Glass Atmospheric Backdrop (Zero Brown Box) */}
+        {/* Luminous Light Glass Atmospheric Backdrop (Single Active Layer — High GPU Efficiency) */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
-          {safeProjects.map((p, i) => (
-            <div
-              key={`bg-ambient-${p.id}`}
-              className="absolute -inset-20 transition-opacity duration-700 ease-out will-change-transform"
-              style={{
-                opacity: i === activeIndex ? 0.12 : 0,
-              }}
-            >
-              <Image
-                src={p.heroImage}
-                alt=""
-                fill
-                sizes="100vw"
-                className="object-cover object-center filter blur-3xl scale-125 saturate-120"
-              />
-            </div>
-          ))}
+          <div
+            key={`bg-ambient-${activeProject.id}`}
+            className="absolute -inset-20 transition-opacity duration-700 ease-out will-change-transform opacity-12"
+          >
+            <Image
+              src={activeProject.heroImage}
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover object-center filter blur-3xl scale-125 saturate-120"
+            />
+          </div>
           {/* Transparent Frosted Glass Texture & Pure Architectural Canvas Glow */}
-          <div className="absolute inset-0 bg-canvas/60 backdrop-blur-2xl" />
+          <div className="absolute inset-0 bg-canvas/60 backdrop-blur-xl" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85)_0%,rgba(246,242,234,0.3)_60%,transparent_100%)]" />
           {/* Soft Diffused Warmth Lighting */}
-          <div className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] bg-champagne/15 rounded-full blur-[160px]" />
-          <div className="absolute -bottom-32 right-1/4 w-[36rem] h-[36rem] bg-bronze/10 rounded-full blur-[180px]" />
+          <div className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] bg-champagne/15 rounded-full blur-[140px]" />
+          <div className="absolute -bottom-32 right-1/4 w-[36rem] h-[36rem] bg-bronze/10 rounded-full blur-[160px]" />
         </div>
 
         {/* 2. MAIN 3D PERSPECTIVE STAGE */}
         <div
           ref={stageRef}
-          className="relative z-10 my-auto flex-1 w-full max-w-6xl mx-auto flex items-center justify-center py-1 sm:py-2"
+          className="relative z-10 my-auto flex-1 w-full max-w-6xl mx-auto flex items-center justify-center py-1 sm:py-2 pointer-events-none"
           style={{
             perspective: '1200px',
             perspectiveOrigin: '50% 48%',
           }}
         >
           <div
-            className="relative w-full max-w-5xl aspect-[4/4.5] sm:aspect-[16/10] md:aspect-[21/10] max-h-[54dvh] sm:max-h-[58vh]"
+            className="relative w-full max-w-5xl aspect-[4/4.5] sm:aspect-[16/10] md:aspect-[21/10] max-h-[54dvh] sm:max-h-[58vh] pointer-events-none"
             style={{ transformStyle: 'preserve-3d' }}
           >
             {safeProjects.map((project, idx) => {
-              const delta = idx - smoothProgress;
-              const isCurrent = Math.abs(delta) < 0.5;
-
-              // Fluid 3D positioning calculations
-              let translateZ: number;
-              let translateYPercent: number;
-              let scale: number;
-              let opacity: number;
-              let blurPx: number;
-              let brightness: number;
-              let textOpacity: number;
-
-              if (delta < 0) {
-                // Card has passed / is passing upward out of view as user scrolls down
-                const absDelta = -delta;
-
-                if (absDelta <= 0.30) {
-                  // Stays 100% solid hero during dominant scroll viewing
-                  opacity = 1;
-                  textOpacity = 1;
-                  blurPx = 0;
-                  brightness = 1;
-                } else if (absDelta <= 0.60) {
-                  // Seamless fraction-of-time cross-fade exit (tight 0.30 delta window)
-                  const exitT = (absDelta - 0.30) / 0.30;
-                  const smoothExit = exitT * exitT * (3 - 2 * exitT); // Hermite smoothstep
-                  opacity = Math.max(0, 1 - smoothExit);
-                  textOpacity = Math.max(0, 1 - Math.min(1, exitT * 1.35));
-                  blurPx = Math.min(6, exitT * 4);
-                  brightness = Math.max(0.4, 1 - exitT * 0.4);
-                } else {
-                  // Completely dissolved - clean, zero ghosting
-                  opacity = 0;
-                  textOpacity = 0;
-                  blurPx = 6;
-                  brightness = 0.4;
-                }
-
-                // Effortless upward glide with water buoyancy
-                translateZ = delta * (depthConfig.zStep * 0.45);
-                translateYPercent = delta * (depthConfig.yStep * 2.5);
-                scale = Math.min(1.12, 1 + absDelta * 0.05);
-              } else {
-                // Card is active hero or resting in background 3D deck
-                if (delta <= 0.30) {
-                  // Fully active crisp hero card
-                  opacity = 1;
-                  textOpacity = 1;
-                  blurPx = 0;
-                  brightness = 1;
-                } else if (delta <= 0.60) {
-                  // Seamless fraction-of-time entry from the deck
-                  const enterT = (0.60 - delta) / 0.30;
-                  const smoothEnter = enterT * enterT * (3 - 2 * enterT);
-                  opacity = 0.38 + 0.62 * smoothEnter;
-                  textOpacity = Math.max(0, (smoothEnter - 0.2) / 0.8);
-                  blurPx = Math.max(0, (1 - smoothEnter) * 3.5);
-                  brightness = 0.65 + 0.35 * smoothEnter;
-                } else {
-                  // Stacked in background deck: clean architectural depth falloff
-                  opacity = Math.max(0, 0.38 - (delta - 0.60) * 0.14);
-                  textOpacity = 0;
-                  blurPx = Math.min(8, 2.5 + (delta - 0.60) * 2.2);
-                  brightness = Math.max(0.35, 0.65 - (delta - 0.60) * 0.18);
-                }
-
-                translateZ = -delta * depthConfig.zStep;
-                translateYPercent = delta * depthConfig.yStep;
-                scale = Math.max(0.65, 1 - delta * depthConfig.scaleStep);
-              }
-
-              // Prune invisible / far cards from DOM for 120fps performance
-              if (Math.abs(delta) > 3.5 || (delta < -0.60 && opacity <= 0.001)) return null;
-
-              // Counter-parallax on image to give magazine breathing effect
-              const imgScale = Math.max(1.02, 1.10 - Math.abs(delta) * 0.04);
-
               return (
                 <div
                   key={project.id}
+                  ref={(el) => {
+                    cardRefs.current[idx] = el;
+                  }}
                   data-portfolio-card="true"
                   data-theme="dark"
-                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 will-change-transform bg-white/40 backdrop-blur-2xl"
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 will-change-transform bg-white/40 backdrop-blur-xl"
                   style={{
-                    transform: `translate3d(0, ${translateYPercent}%, ${translateZ}px) scale(${scale}) rotateX(${dynamicTiltX}deg) rotateZ(${dynamicTiltZ}deg)`,
-                    opacity,
-                    filter: `blur(${blurPx}px) brightness(${brightness})`,
-                    zIndex: totalCards - Math.abs(Math.round(delta)),
-                    pointerEvents: isCurrent ? 'auto' : 'none',
                     transformStyle: 'preserve-3d',
-                    boxShadow: isCurrent
-                      ? '0 30px 80px -15px rgba(90, 67, 53, 0.18), 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1.5px 2px rgba(255, 255, 255, 0.95), 0 0 35px rgba(197, 168, 128, 0.15)'
-                      : '0 15px 45px -10px rgba(90, 67, 53, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.8)',
+                    boxShadow:
+                      idx === 0
+                        ? '0 30px 80px -15px rgba(90, 67, 53, 0.18), 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1.5px 2px rgba(255, 255, 255, 0.95), 0 0 35px rgba(197, 168, 128, 0.15)'
+                        : '0 15px 45px -10px rgba(90, 67, 53, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.8)',
                   }}
                 >
                   {/* Tricky Premium Top Hairline Gold Glint */}
                   <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#C5A880]/80 to-transparent z-20 pointer-events-none" />
 
                   {/* High Quality Hero Architectural Photography */}
-                  <div className="relative w-full h-full overflow-hidden">
+                  <div
+                    ref={(el) => {
+                      imgRefs.current[idx] = el;
+                    }}
+                    className="relative w-full h-full overflow-hidden will-change-transform"
+                  >
                     <Image
                       src={project.heroImage}
                       alt={project.title}
                       fill
                       priority={idx === 0}
                       sizes="(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1100px"
-                      style={{
-                        transform: `scale(${imgScale})`,
-                      }}
-                      className="object-cover object-center select-none will-change-transform"
+                      className="object-cover object-center select-none"
                     />
                   </div>
 
@@ -85557,11 +85492,13 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
                   <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent pointer-events-none" />
 
                   {/* Card Editorial Info Overlay */}
-                  <div className="absolute inset-0 p-3.5 sm:p-7 md:p-10 flex flex-col justify-between z-10">
+                  <div className="absolute inset-0 p-3.5 sm:p-7 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
                     {/* Top Tag & Location Badge (Frosted Crystal Glass) */}
                     <div
-                      className="flex items-center justify-between"
-                      style={{ opacity: textOpacity }}
+                      ref={(el) => {
+                        textTopRefs.current[idx] = el;
+                      }}
+                      className="flex items-center justify-between pointer-events-auto"
                     >
                       <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs uppercase tracking-wider text-espresso rounded-2xs shadow-md">
                         <Compass className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-bronze" />
@@ -85574,8 +85511,10 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
                     {/* Bottom Title & Action Button */}
                     <div
-                      className="space-y-1.5 sm:space-y-3.5 max-w-2xl"
-                      style={{ opacity: textOpacity }}
+                      ref={(el) => {
+                        textBottomRefs.current[idx] = el;
+                      }}
+                      className="space-y-1.5 sm:space-y-3.5 max-w-2xl pointer-events-auto"
                     >
                       <span className="text-[9px] sm:text-xs uppercase tracking-widest text-champagne font-medium">
                         {project.projectType}
@@ -85612,7 +85551,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
           {activeIndex > 0 && (
             <button
               onClick={() => jumpToIndex(activeIndex - 1)}
-              className="absolute left-2 sm:left-4 z-30 p-2.5 sm:p-3.5 bg-surface/90 hover:bg-white text-espresso border border-atelier rounded-full backdrop-blur-md transition-all cursor-pointer shadow-xl hidden sm:flex items-center justify-center hover:scale-105"
+              className="pointer-events-auto absolute left-2 sm:left-4 z-30 p-2.5 sm:p-3.5 bg-surface/90 hover:bg-white text-espresso border border-atelier rounded-full backdrop-blur-md transition-all cursor-pointer shadow-xl hidden sm:flex items-center justify-center hover:scale-105"
               aria-label="Previous project"
             >
               <ChevronLeft className="w-4 h-4 text-espresso" />
@@ -85622,7 +85561,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
           {activeIndex < totalCards - 1 && (
             <button
               onClick={() => jumpToIndex(activeIndex + 1)}
-              className="absolute right-2 sm:right-4 z-30 p-2.5 sm:p-3.5 bg-surface/90 hover:bg-white text-espresso border border-atelier rounded-full backdrop-blur-md transition-all cursor-pointer shadow-xl hidden sm:flex items-center justify-center hover:scale-105"
+              className="pointer-events-auto absolute right-2 sm:right-4 z-30 p-2.5 sm:p-3.5 bg-surface/90 hover:bg-white text-espresso border border-atelier rounded-full backdrop-blur-md transition-all cursor-pointer shadow-xl hidden sm:flex items-center justify-center hover:scale-105"
               aria-label="Next project"
             >
               <ChevronRight className="w-4 h-4 text-espresso" />
@@ -85705,17 +85644,14 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 }
 
 export default ScrollPortfolio;
+
 ```
 
 ---
 
 ### `src/components/WhatsAppButton.tsx`
 
-- **File**: `src/components/WhatsAppButton.tsx`
-- **Size**: 6.2 KB (131 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -85804,7 +85740,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${isHovered ? 'animate-ping' : ''}`} />
           <span className="text-champagne font-medium text-[11px]">{tooltipText}</span>
         </div>
       )}
@@ -85818,7 +85754,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
         className="relative group p-3.5 sm:p-4 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-108 active:scale-95 flex items-center justify-center border border-champagne/40"
       >
         {/* Subtle Luxury Pulsing Glow */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366]/40 animate-ping pointer-events-none group-hover:opacity-100 opacity-60" />
+        <span className="absolute inset-0 rounded-full bg-[#25D366]/35 animate-pulse-subtle pointer-events-none group-hover:opacity-100 opacity-60" />
 
         {/* WhatsApp Vector Icon */}
         <svg
@@ -85837,7 +85773,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${isHovered ? 'animate-ping' : ''}`} />
           <span className="text-champagne font-medium text-[11px]">{tooltipText}</span>
         </div>
       )}
@@ -85846,17 +85782,14 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
 }
 
 export default WhatsAppButton;
+
 ```
 
 ---
 
 ### `src/context/AdminAuthContext.tsx`
 
-- **File**: `src/context/AdminAuthContext.tsx`
-- **Size**: 3.7 KB (129 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -85985,17 +85918,14 @@ export function useAdminAuth() {
   }
   return context;
 }
+
 ```
 
 ---
 
 ### `src/context/CartContext.tsx`
 
-- **File**: `src/context/CartContext.tsx`
-- **Size**: 4.3 KB (159 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -86154,17 +86084,14 @@ export function useCart() {
   }
   return context;
 }
+
 ```
 
 ---
 
 ### `src/context/WishlistContext.tsx`
 
-- **File**: `src/context/WishlistContext.tsx`
-- **Size**: 2.1 KB (80 lines)
-- **Language**: `tsx`
-
-```tsx
+```typescript
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -86244,15 +86171,12 @@ export function useWishlist() {
   }
   return context;
 }
+
 ```
 
 ---
 
 ### `src/lib/auth.ts`
-
-- **File**: `src/lib/auth.ts`
-- **Size**: 8.4 KB (288 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -86542,15 +86466,12 @@ export function verifyCustomerToken(token: string): { id: string; email: string;
     return null;
   }
 }
+
 ```
 
 ---
 
 ### `src/lib/db.ts`
-
-- **File**: `src/lib/db.ts`
-- **Size**: 0.4 KB (13 lines)
-- **Language**: `typescript`
 
 ```typescript
 /**
@@ -86565,15 +86486,12 @@ export function verifyCustomerToken(token: string): { id: string; email: string;
  */
 
 export * from '@/server/db';
+
 ```
 
 ---
 
 ### `src/lib/push-client.ts`
-
-- **File**: `src/lib/push-client.ts`
-- **Size**: 0.5 KB (14 lines)
-- **Language**: `typescript`
 
 ```typescript
 export const DEFAULT_VAPID_PUBLIC_KEY =
@@ -86589,15 +86507,12 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array {
   }
   return outputArray;
 }
+
 ```
 
 ---
 
 ### `src/lib/push.ts`
-
-- **File**: `src/lib/push.ts`
-- **Size**: 9.8 KB (339 lines)
-- **Language**: `typescript`
 
 ```typescript
 import webPush from 'web-push';
@@ -86938,15 +86853,12 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
     return { success: false, sent: 0, message: err.message || 'Error triggering test push notification.' };
   }
 }
+
 ```
 
 ---
 
 ### `src/lib/seedData.ts`
-
-- **File**: `src/lib/seedData.ts`
-- **Size**: 36.8 KB (856 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { hashPassword } from './auth';
@@ -87804,15 +87716,12 @@ export function getInitialAdminSeed() {
     updatedAt: new Date().toISOString(),
   };
 }
+
 ```
 
 ---
 
 ### `src/lib/supabase.ts`
-
-- **File**: `src/lib/supabase.ts`
-- **Size**: 1.0 KB (32 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { createClient } from '@supabase/supabase-js';
@@ -87846,15 +87755,12 @@ export function getServiceSupabase() {
     },
   });
 }
+
 ```
 
 ---
 
 ### `src/middleware.ts`
-
-- **File**: `src/middleware.ts`
-- **Size**: 3.5 KB (112 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -87968,15 +87874,12 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/admin/:path*', '/api/admin/:path*'],
 };
+
 ```
 
 ---
 
 ### `src/server/api/response.ts`
-
-- **File**: `src/server/api/response.ts`
-- **Size**: 1.7 KB (71 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -88049,15 +87952,12 @@ export function apiError(
     },
   });
 }
+
 ```
 
 ---
 
 ### `src/server/auth/rbac.ts`
-
-- **File**: `src/server/auth/rbac.ts`
-- **Size**: 7.5 KB (287 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { AdminRole, AdminUser } from '@/types';
@@ -88346,15 +88246,12 @@ export function protectOwnerFromModification(
     throw new ForbiddenError('Immutable Protection: The primary principal architect account cannot be disabled or deleted');
   }
 }
+
 ```
 
 ---
 
 ### `src/server/auth/tokens.ts`
-
-- **File**: `src/server/auth/tokens.ts`
-- **Size**: 3.0 KB (110 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -88466,15 +88363,12 @@ export function rotateSessionToken(token: string): string | null {
     mustChangePassword: current.mustChangePassword,
   });
 }
+
 ```
 
 ---
 
 ### `src/server/db/client.ts`
-
-- **File**: `src/server/db/client.ts`
-- **Size**: 8.5 KB (285 lines)
-- **Language**: `typescript`
 
 ```typescript
 import fs from 'fs';
@@ -88761,15 +88655,12 @@ export function saveDb(state: DatabaseState): void {
     console.warn('Notice writing to local db.json fixture:', err);
   }
 }
+
 ```
 
 ---
 
 ### `src/server/db/index.ts`
-
-- **File**: `src/server/db/index.ts`
-- **Size**: 0.1 KB (7 lines)
-- **Language**: `typescript`
 
 ```typescript
 export * from './client';
@@ -88778,15 +88669,12 @@ export * from './mappers';
 export * from './repositories';
 export * from './transactions/orders';
 
+
 ```
 
 ---
 
 ### `src/server/db/mappers.ts`
-
-- **File**: `src/server/db/mappers.ts`
-- **Size**: 7.1 KB (217 lines)
-- **Language**: `typescript`
 
 ```typescript
 import {
@@ -89005,15 +88893,12 @@ export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
     updatedAt: data.updated_at || data.updatedAt || new Date().toISOString(),
   };
 }
+
 ```
 
 ---
 
 ### `src/server/db/mysql.ts`
-
-- **File**: `src/server/db/mysql.ts`
-- **Size**: 4.0 KB (145 lines)
-- **Language**: `typescript`
 
 ```typescript
 import mysql from 'mysql2/promise';
@@ -89160,15 +89045,12 @@ export async function execute(sql: string, params: any[] = []): Promise<mysql.Re
   const [result] = await p.execute(sql, params);
   return result as mysql.ResultSetHeader;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/audit.ts`
-
-- **File**: `src/server/db/repositories/audit.ts`
-- **Size**: 2.5 KB (92 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -89262,15 +89144,12 @@ export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]>
   const db = getDb();
   return db.auditLogs.slice(offset, offset + limit);
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/categories.ts`
-
-- **File**: `src/server/db/repositories/categories.ts`
-- **Size**: 8.5 KB (273 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -89545,15 +89424,12 @@ export async function deleteCategory(id: string): Promise<boolean> {
   }
   return false;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/customers.ts`
-
-- **File**: `src/server/db/repositories/customers.ts`
-- **Size**: 4.4 KB (168 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -89723,15 +89599,12 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
   });
   return Array.from(customerMap.values()).slice(offset, offset + limit);
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/employees.ts`
-
-- **File**: `src/server/db/repositories/employees.ts`
-- **Size**: 11.2 KB (390 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -90123,15 +89996,12 @@ export async function bootstrapInitialEmployee(): Promise<void> {
   }
 }
 
+
 ```
 
 ---
 
 ### `src/server/db/repositories/enquiries.ts`
-
-- **File**: `src/server/db/repositories/enquiries.ts`
-- **Size**: 2.8 KB (108 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -90241,15 +90111,12 @@ export async function updateEnquiryStatus(
   saveDb(db);
   return enq;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/index.ts`
-
-- **File**: `src/server/db/repositories/index.ts`
-- **Size**: 0.3 KB (12 lines)
-- **Language**: `typescript`
 
 ```typescript
 export * from './products';
@@ -90263,15 +90130,12 @@ export * from './employees';
 export * from './audit';
 export * from './customers';
 export * from './enquiries';
+
 ```
 
 ---
 
 ### `src/server/db/repositories/orders.ts`
-
-- **File**: `src/server/db/repositories/orders.ts`
-- **Size**: 7.9 KB (267 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -90540,15 +90404,12 @@ export async function createOrder(
   saveDb(db);
   return newOrder;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/products.ts`
-
-- **File**: `src/server/db/repositories/products.ts`
-- **Size**: 15.3 KB (451 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -91001,15 +90862,12 @@ export async function deleteProduct(id: string): Promise<boolean> {
   }
   return false;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/projects.ts`
-
-- **File**: `src/server/db/repositories/projects.ts`
-- **Size**: 9.8 KB (297 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -91308,15 +91166,12 @@ export async function deleteProject(id: string): Promise<boolean> {
   }
   return false;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/quotes.ts`
-
-- **File**: `src/server/db/repositories/quotes.ts`
-- **Size**: 6.2 KB (211 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -91529,15 +91384,12 @@ export async function updateQuoteStatus(
   saveDb(db);
   return quote;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/services.ts`
-
-- **File**: `src/server/db/repositories/services.ts`
-- **Size**: 5.4 KB (176 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -91715,15 +91567,12 @@ export async function deleteService(id: string): Promise<boolean> {
   }
   return false;
 }
+
 ```
 
 ---
 
 ### `src/server/db/repositories/settings.ts`
-
-- **File**: `src/server/db/repositories/settings.ts`
-- **Size**: 10.4 KB (302 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { SiteSettings, PublicSiteSettings } from '@/types';
@@ -92027,15 +91876,12 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   invalidateMemoryCache('settings');
   return merged;
 }
+
 ```
 
 ---
 
 ### `src/server/db/transactions/orders.ts`
-
-- **File**: `src/server/db/transactions/orders.ts`
-- **Size**: 7.3 KB (243 lines)
-- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -92280,15 +92126,12 @@ export async function cancelOrderAtomic(
 
   return null;
 }
+
 ```
 
 ---
 
 ### `src/server/errors/index.ts`
-
-- **File**: `src/server/errors/index.ts`
-- **Size**: 2.9 KB (102 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -92392,15 +92235,12 @@ export function formatErrorResponse(err: unknown, requestId?: string): NextRespo
     { status: 500 }
   );
 }
+
 ```
 
 ---
 
 ### `src/server/security/config.ts`
-
-- **File**: `src/server/security/config.ts`
-- **Size**: 1.2 KB (48 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { isProduction } from '../db/client';
@@ -92450,28 +92290,22 @@ export function validateProductionConfig(): ProductionConfigStatus {
     issues,
   };
 }
+
 ```
 
 ---
 
 ### `src/server/security/index.ts`
 
-- **File**: `src/server/security/index.ts`
-- **Size**: 0.1 KB (3 lines)
-- **Language**: `typescript`
-
 ```typescript
 export * from './config';
 export * from './sanitization';
+
 ```
 
 ---
 
 ### `src/server/security/sanitization.ts`
-
-- **File**: `src/server/security/sanitization.ts`
-- **Size**: 1.9 KB (84 lines)
-- **Language**: `typescript`
 
 ```typescript
 /**
@@ -92557,28 +92391,22 @@ export function isSafeSvg(content: string): boolean {
 
   return true;
 }
+
 ```
 
 ---
 
 ### `src/server/services/index.ts`
 
-- **File**: `src/server/services/index.ts`
-- **Size**: 0.1 KB (3 lines)
-- **Language**: `typescript`
-
 ```typescript
 export * from './orderService';
 export * from './quoteService';
+
 ```
 
 ---
 
 ### `src/server/services/orderService.ts`
-
-- **File**: `src/server/services/orderService.ts`
-- **Size**: 3.9 KB (129 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { Order, OrderStatus, PaymentStatus } from '@/types';
@@ -92709,15 +92537,12 @@ export class OrderService {
     return updated;
   }
 }
+
 ```
 
 ---
 
 ### `src/server/services/quoteService.ts`
-
-- **File**: `src/server/services/quoteService.ts`
-- **Size**: 3.8 KB (132 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { Quote, QuoteStatus, Order } from '@/types';
@@ -92851,15 +92676,12 @@ export class QuoteService {
     return updated;
   }
 }
+
 ```
 
 ---
 
 ### `src/server/validation/index.ts`
-
-- **File**: `src/server/validation/index.ts`
-- **Size**: 6.4 KB (174 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { CreateOrderInputDTO, UnitType } from '@/types';
@@ -93035,15 +92857,12 @@ export function validateEnquiryInput(body: any): ValidationResult<any> {
 
   return { valid: true, data: body };
 }
+
 ```
 
 ---
 
 ### `src/server/validation/schemas.ts`
-
-- **File**: `src/server/validation/schemas.ts`
-- **Size**: 4.4 KB (125 lines)
-- **Language**: `typescript`
 
 ```typescript
 import { ValidationError } from '../errors';
@@ -93170,15 +92989,12 @@ export function validateUtrNumber(utr?: string): string | undefined {
   return trimmed;
 }
 
+
 ```
 
 ---
 
 ### `src/types/index.ts`
-
-- **File**: `src/types/index.ts`
-- **Size**: 9.7 KB (469 lines)
-- **Language**: `typescript`
 
 ```typescript
 export type UnitType =
@@ -93649,15 +93465,12 @@ export interface ApiResponseError {
 }
 
 export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
+
 ```
 
 ---
 
 ### `supabase/schema.sql`
-
-- **File**: `supabase/schema.sql`
-- **Size**: 27.2 KB (773 lines)
-- **Language**: `sql`
 
 ```sql
 -- ============================================================
@@ -94432,15 +94245,12 @@ BEGIN
     RETURN v_updated_order;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
 ```
 
 ---
 
 ### `tailwind.config.js`
-
-- **File**: `tailwind.config.js`
-- **Size**: 2.4 KB (84 lines)
-- **Language**: `javascript`
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -94526,15 +94336,12 @@ module.exports = {
   },
   plugins: [],
 };
+
 ```
 
 ---
 
 ### `tsconfig.json`
-
-- **File**: `tsconfig.json`
-- **Size**: 0.6 KB (28 lines)
-- **Language**: `json`
 
 ```json
 {
@@ -94564,6 +94371,7 @@ module.exports = {
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
+
 ```
 
 ---

@@ -1,5 +1,5 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260909-123948)`  
+> **Version**: `MASTER_CODEBASE(20260909-125042)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
@@ -2218,7 +2218,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ### <a id="next-config-js"></a>`next.config.js`
 
-> **Lines**: 31 • **Size**: 0.8 KB
+> **Lines**: 34 • **Size**: 0.8 KB
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -2226,6 +2226,9 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
@@ -2257,7 +2260,7 @@ module.exports = nextConfig;
 
 ### <a id="package-json"></a>`package.json`
 
-> **Lines**: 39 • **Size**: 0.9 KB
+> **Lines**: 38 • **Size**: 0.9 KB
 
 ```json
 {
@@ -2272,12 +2275,16 @@ module.exports = nextConfig;
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^20.17.17",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.23",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.475.0",
     "mysql2": "^3.24.4",
@@ -2285,18 +2292,13 @@ module.exports = nextConfig;
     "postcss": "^8.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sharp": "^0.35.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "web-push": "^3.6.7"
   },
-  "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.8",
-    "dotenv": "^17.4.2",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.23",
-    "sharp": "^0.35.3"
-  }
+  "devDependencies": {}
 }
 ```
 

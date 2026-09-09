@@ -5,6 +5,9 @@ import { getProducts, getOrders, getQuotes, getProjects, getServices, getCustome
 
 export const dynamic = 'force-dynamic';
 
+const searchCache = new Map<string, { results: any[]; timestamp: number }>();
+const SEARCH_CACHE_TTL_MS = 15000;
+
 export async function GET(req: NextRequest) {
   const authResult = await requireAuthenticatedAdmin(req);
   if ('response' in authResult) {
@@ -14,6 +17,12 @@ export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() || '';
   if (!query || query.length < 2) {
     return NextResponse.json({ success: true, results: [] });
+  }
+
+  const now = Date.now();
+  const cached = searchCache.get(query);
+  if (cached && now - cached.timestamp < SEARCH_CACHE_TTL_MS) {
+    return NextResponse.json({ success: true, results: cached.results, cached: true });
   }
 
   try {
@@ -135,7 +144,9 @@ export async function GET(req: NextRequest) {
         });
       });
 
-      return NextResponse.json({ success: true, results: results.slice(0, 20) });
+      const finalResults = results.slice(0, 20);
+      searchCache.set(query, { results: finalResults, timestamp: now });
+      return NextResponse.json({ success: true, results: finalResults });
     }
 
     // JSON / Memory Fallback
@@ -226,8 +237,9 @@ export async function GET(req: NextRequest) {
         });
       }
     }
-
-    return NextResponse.json({ success: true, results: results.slice(0, 20) });
+    const finalResults = results.slice(0, 20);
+    searchCache.set(query, { results: finalResults, timestamp: now });
+    return NextResponse.json({ success: true, results: finalResults });
   } catch (err: any) {
     console.error('Search query error:', err);
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });

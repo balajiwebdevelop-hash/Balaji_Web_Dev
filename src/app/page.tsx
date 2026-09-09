@@ -28,7 +28,7 @@ export default async function HomePage() {
           <Image
             src={
               home.heroImageUrl ||
-              'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90'
+              'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80'
             }
             alt={`${settings.brandName || 'Balaji Architect & Interiors'} Architectural Living Space`}
             fill

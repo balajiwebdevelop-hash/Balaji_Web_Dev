@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Search, Heart, ShoppingBag, Menu, X, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -91,10 +92,13 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Studio Brand */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
-              <img
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40 relative">
+              <Image
                 src={brandInfo.logoUrl || '/logo.png'}
                 alt={brandInfo.name}
+                width={40}
+                height={40}
+                priority
                 className="w-full h-full object-cover"
               />
             </div>
@@ -192,10 +196,12 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40">
-                <img
+              <div className="w-10 h-10 rounded-lg overflow-hidden bg-espresso shadow-xs flex-shrink-0 border border-champagne/40 relative">
+                <Image
                   src={brandInfo.logoUrl || '/logo.png'}
                   alt={brandInfo.name}
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>

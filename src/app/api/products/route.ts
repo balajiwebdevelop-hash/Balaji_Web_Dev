@@ -14,7 +14,8 @@ export async function GET(req: NextRequest) {
     const categorySlug = searchParams.get('category') || undefined;
     const featuredOnly = searchParams.get('featured') === 'true';
     const search = searchParams.get('search') || undefined;
-    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const isAll = searchParams.get('all') === 'true';
+    const publishedOnly = !isAll;
 
     const products = await getProducts({
       categoryId,
@@ -28,7 +29,9 @@ export async function GET(req: NextRequest) {
       { products },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAll
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=15, s-maxage=30, stale-while-revalidate=120',
         },
       }
     );

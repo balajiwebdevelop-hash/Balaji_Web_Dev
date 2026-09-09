@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -16,7 +17,7 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     setSecretClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        window.location.href = '/admin/login';
+        router.push('/admin/login');
         return 0;
       }
       setTimeout(() => setSecretClicks(0), 1200);
@@ -39,10 +40,12 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40">
-                <img
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40 relative">
+                <Image
                   src={initialSettings?.logoUrl || '/logo.png'}
                   alt={brandName}
+                  width={48}
+                  height={48}
                   className="w-full h-full object-cover"
                 />
               </div>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Shield, Lock, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 
@@ -41,7 +42,8 @@ export default function AdminLoginPage() {
       if (res.mustChangePassword) {
         setShowForcePasswordModal(true);
       } else {
-        window.location.href = '/admin';
+        router.push('/admin');
+        router.refresh();
       }
     } else {
       setError(res.error || 'Invalid admin credentials');
@@ -68,7 +70,8 @@ export default function AdminLoginPage() {
     if (res.success) {
       setPasswordSuccess(true);
       setTimeout(() => {
-        window.location.href = '/admin';
+        router.push('/admin');
+        router.refresh();
       }, 1500);
     } else {
       setError(res.error || 'Failed to update password');
@@ -84,7 +87,7 @@ export default function AdminLoginPage() {
         {/* Studio Branding */}
         <div className="text-center space-y-2">
           <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#16110E] shadow-xl mx-auto mb-3 border border-[#C5A880]/50 flex items-center justify-center">
-            <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+            <Image src="/logo.png" alt="Balaji Logo" width={64} height={64} className="w-full h-full object-cover" priority />
           </div>
           <span className="text-[10px] uppercase tracking-widest text-[#C5A880] font-medium">
             Studio Administration

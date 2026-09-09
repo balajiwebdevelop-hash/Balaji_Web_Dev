@@ -1,6 +1,6 @@
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
 > **Document**: `admincodebase.md`  
-> **Generation Timestamp**: `20260908-191348`  
+> **Generation Timestamp**: `20260909-111420`  
 > **Platform**: Balaji Architect & Interiors Executive Command Center & Atelier Management Suite  
 > **Architecture**: Next.js 14 App Router, TypeScript 5.7, Tailwind CSS, PBKDF2/JWT Cryptographic Authentication, Supabase / High-Performance Resilient Persistence  
 > **Admin Panel URL**: `/admin` (Executive Command Center) & `/admin/login` (Stealth Atelier Gateway)  
@@ -259,13 +259,14 @@ export const config = {
 
 > **Path**: `src/components/AdminLayout.tsx`  
 > **Layer**: Admin UI Shell & Context  
-> **Metrics**: 1178 lines • 53.3 KB
+> **Metrics**: 1179 lines • 53.4 KB
 
 ```tsx
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -590,7 +591,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div className="md:hidden bg-[#0A0706] text-[#FCFAF6] px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-[#241C16] shadow-md">
         <Link href="/admin" className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-sm overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40">
-            <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
+            <Image src="/logo.png" alt="Balaji" width={28} height={28} className="w-full h-full object-cover" priority />
           </div>
           <div className="flex flex-col">
             <span className="font-serif text-sm tracking-wider text-[#FCFAF6] font-medium leading-none">BALAJI ATELIER</span>
@@ -641,7 +642,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="p-5 border-b border-[#241C16] space-y-1.5 bg-[#0A0706]">
           <Link href="/admin" className="flex items-center gap-3 group">
             <div className="w-9 h-9 rounded-lg overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40 group-hover:border-champagne transition-colors">
-              <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+              <Image src="/logo.png" alt="Balaji Logo" width={36} height={36} className="w-full h-full object-cover" priority />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-sm tracking-widest text-[#FCFAF6] block font-light leading-tight">
@@ -1447,7 +1448,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
 > **Path**: `src/context/AdminAuthContext.tsx`  
 > **Layer**: Admin UI Shell & Context  
-> **Metrics**: 122 lines • 3.4 KB
+> **Metrics**: 129 lines • 3.7 KB
 
 ```tsx
 'use client';
@@ -1491,7 +1492,14 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    refreshAdmin();
+    const hasAdminCookie = typeof document !== 'undefined' && document.cookie.includes('balaji_admin_session');
+    const isAdminPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+
+    if (hasAdminCookie || isAdminPath) {
+      refreshAdmin();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -1579,13 +1587,14 @@ export function useAdminAuth() {
 
 > **Path**: `src/components/Footer.tsx`  
 > **Layer**: Admin Stealth Trigger  
-> **Metrics**: 224 lines • 9.3 KB
+> **Metrics**: 227 lines • 9.3 KB
 
 ```tsx
 'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -1600,7 +1609,7 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     setSecretClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        window.location.href = '/admin/login';
+        router.push('/admin/login');
         return 0;
       }
       setTimeout(() => setSecretClicks(0), 1200);
@@ -1623,10 +1632,12 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
           {/* Studio Identity */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40">
-                <img
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-espresso shadow-md flex-shrink-0 border border-champagne/40 relative">
+                <Image
                   src={initialSettings?.logoUrl || '/logo.png'}
                   alt={brandName}
+                  width={48}
+                  height={48}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -2305,7 +2316,7 @@ export default function AdminDashboardPage() {
 
 > **Path**: `src/app/admin/login/page.tsx`  
 > **Layer**: Frontend Admin Page  
-> **Metrics**: 232 lines • 9.8 KB
+> **Metrics**: 235 lines • 9.9 KB
 
 ```tsx
 'use client';
@@ -2313,6 +2324,7 @@ export default function AdminDashboardPage() {
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Shield, Lock, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 
@@ -2351,7 +2363,8 @@ export default function AdminLoginPage() {
       if (res.mustChangePassword) {
         setShowForcePasswordModal(true);
       } else {
-        window.location.href = '/admin';
+        router.push('/admin');
+        router.refresh();
       }
     } else {
       setError(res.error || 'Invalid admin credentials');
@@ -2378,7 +2391,8 @@ export default function AdminLoginPage() {
     if (res.success) {
       setPasswordSuccess(true);
       setTimeout(() => {
-        window.location.href = '/admin';
+        router.push('/admin');
+        router.refresh();
       }, 1500);
     } else {
       setError(res.error || 'Failed to update password');
@@ -2394,7 +2408,7 @@ export default function AdminLoginPage() {
         {/* Studio Branding */}
         <div className="text-center space-y-2">
           <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#16110E] shadow-xl mx-auto mb-3 border border-[#C5A880]/50 flex items-center justify-center">
-            <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+            <Image src="/logo.png" alt="Balaji Logo" width={64} height={64} className="w-full h-full object-cover" priority />
           </div>
           <span className="text-[10px] uppercase tracking-widest text-[#C5A880] font-medium">
             Studio Administration
@@ -3944,7 +3958,7 @@ export default function AdminInventoryPage() {
 
 > **Path**: `src/app/admin/orders/page.tsx`  
 > **Layer**: Frontend Admin Page  
-> **Metrics**: 544 lines • 24.5 KB
+> **Metrics**: 550 lines • 24.7 KB
 
 ```tsx
 'use client';
@@ -3966,7 +3980,6 @@ import {
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
-import { supabase } from '@/lib/supabase';
 
 function AdminOrdersContent() {
   const searchParams = useSearchParams();
@@ -4006,15 +4019,21 @@ function AdminOrdersContent() {
   useEffect(() => {
     loadOrders();
 
-    // 1. Setup Supabase Realtime Channel if client is configured
+    // 1. Setup Supabase Realtime Channel asynchronously if client is configured
     let channel: any = null;
-    if (supabase) {
+    let supabaseClient: any = null;
+    let isMounted = true;
+
+    import('@/lib/supabase').then(({ supabase }) => {
+      if (!isMounted || !supabase) return;
+      supabaseClient = supabase;
       channel = supabase
         .channel('admin-orders-realtime-stream')
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           (payload: any) => {
+            if (!isMounted) return;
             if (payload.eventType === 'UPDATE' && payload.new) {
               const updatedRow = payload.new;
               setOrders((prev) =>
@@ -4054,11 +4073,11 @@ function AdminOrdersContent() {
           }
         )
         .subscribe((status: string) => {
-          if (status === 'SUBSCRIBED') {
+          if (status === 'SUBSCRIBED' && isMounted) {
             setIsLiveConnected(true);
           }
         });
-    }
+    });
 
     // 2. Periodic sync fallback (every 30 seconds when tab is active)
     const interval = setInterval(() => {
@@ -4068,8 +4087,9 @@ function AdminOrdersContent() {
     }, 30000);
 
     return () => {
-      if (supabase && channel) {
-        supabase.removeChannel(channel);
+      isMounted = false;
+      if (supabaseClient && channel) {
+        supabaseClient.removeChannel(channel);
       }
       clearInterval(interval);
     };
@@ -9397,7 +9417,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 > **Path**: `src/app/api/admin/search/route.ts`  
 > **Layer**: Admin API Route  
-> **Metrics**: 236 lines • 7.9 KB
+> **Metrics**: 248 lines • 8.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -9406,6 +9426,9 @@ import { getServiceSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { getProducts, getOrders, getQuotes, getProjects, getServices, getCustomers, getEnquiries } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+
+const searchCache = new Map<string, { results: any[]; timestamp: number }>();
+const SEARCH_CACHE_TTL_MS = 15000;
 
 export async function GET(req: NextRequest) {
   const authResult = await requireAuthenticatedAdmin(req);
@@ -9416,6 +9439,12 @@ export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() || '';
   if (!query || query.length < 2) {
     return NextResponse.json({ success: true, results: [] });
+  }
+
+  const now = Date.now();
+  const cached = searchCache.get(query);
+  if (cached && now - cached.timestamp < SEARCH_CACHE_TTL_MS) {
+    return NextResponse.json({ success: true, results: cached.results, cached: true });
   }
 
   try {
@@ -9537,7 +9566,9 @@ export async function GET(req: NextRequest) {
         });
       });
 
-      return NextResponse.json({ success: true, results: results.slice(0, 20) });
+      const finalResults = results.slice(0, 20);
+      searchCache.set(query, { results: finalResults, timestamp: now });
+      return NextResponse.json({ success: true, results: finalResults });
     }
 
     // JSON / Memory Fallback
@@ -9628,8 +9659,9 @@ export async function GET(req: NextRequest) {
         });
       }
     }
-
-    return NextResponse.json({ success: true, results: results.slice(0, 20) });
+    const finalResults = results.slice(0, 20);
+    searchCache.set(query, { results: finalResults, timestamp: now });
+    return NextResponse.json({ success: true, results: finalResults });
   } catch (err: any) {
     console.error('Search query error:', err);
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
@@ -10310,7 +10342,7 @@ export async function GET() {
 
 > **Path**: `src/app/api/products/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 119 lines • 3.8 KB
+> **Metrics**: 122 lines • 3.9 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10329,7 +10361,8 @@ export async function GET(req: NextRequest) {
     const categorySlug = searchParams.get('category') || undefined;
     const featuredOnly = searchParams.get('featured') === 'true';
     const search = searchParams.get('search') || undefined;
-    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const isAll = searchParams.get('all') === 'true';
+    const publishedOnly = !isAll;
 
     const products = await getProducts({
       categoryId,
@@ -10343,7 +10376,9 @@ export async function GET(req: NextRequest) {
       { products },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAll
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=15, s-maxage=30, stale-while-revalidate=120',
         },
       }
     );
@@ -10567,7 +10602,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 > **Path**: `src/app/api/categories/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 79 lines • 2.4 KB
+> **Metrics**: 81 lines • 2.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -10587,7 +10622,9 @@ export async function GET(req: NextRequest) {
       { categories },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAdmin
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=30, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );
@@ -11055,7 +11092,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 > **Path**: `src/app/api/projects/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 91 lines • 2.9 KB
+> **Metrics**: 94 lines • 3.0 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11069,14 +11106,17 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const featuredOnly = searchParams.get('featured') === 'true';
-    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const isAll = searchParams.get('all') === 'true';
+    const publishedOnly = !isAll;
 
     const projects = await getProjects({ featuredOnly, publishedOnly });
     return NextResponse.json(
       { projects },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAll
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=30, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );
@@ -11275,7 +11315,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 > **Path**: `src/app/api/services/route.ts`  
 > **Layer**: Resource API Route  
-> **Metrics**: 77 lines • 2.3 KB
+> **Metrics**: 80 lines • 2.4 KB
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -11288,13 +11328,16 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const isAll = searchParams.get('all') === 'true';
+    const publishedOnly = !isAll;
     const services = await getServices(publishedOnly);
     return NextResponse.json(
       { services },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAll
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=30, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );
@@ -12976,7 +13019,7 @@ export function formatErrorResponse(err: unknown, requestId?: string): NextRespo
 
 > **Path**: `src/server/db/client.ts`  
 > **Layer**: Server / DB  
-> **Metrics**: 273 lines • 8.1 KB
+> **Metrics**: 281 lines • 8.3 KB
 
 ```typescript
 import fs from 'fs';
@@ -13075,7 +13118,13 @@ export async function isSupabaseAvailable(): Promise<boolean> {
   }
 }
 
+let cachedServiceClient: SupabaseClient | null = null;
+
 export function getServiceSupabase(): SupabaseClient {
+  if (cachedServiceClient) {
+    return cachedServiceClient;
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
@@ -13085,7 +13134,7 @@ export function getServiceSupabase(): SupabaseClient {
     );
   }
 
-  return createClient(url, key, {
+  cachedServiceClient = createClient(url, key, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
@@ -13099,6 +13148,8 @@ export function getServiceSupabase(): SupabaseClient {
       },
     },
   });
+
+  return cachedServiceClient;
 }
 
 /**
@@ -15723,7 +15774,7 @@ export async function deleteService(id: string): Promise<boolean> {
 
 > **Path**: `src/server/db/repositories/settings.ts`  
 > **Layer**: Server / DB  
-> **Metrics**: 221 lines • 8.0 KB
+> **Metrics**: 222 lines • 8.0 KB
 
 ```typescript
 import { SiteSettings, PublicSiteSettings } from '@/types';
@@ -15836,6 +15887,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     ...(db.siteSettings || {}),
     gstinNumber: db.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
   };
+  memoryCache.settings = { data: mergedSettings, timestamp: now };
   return mergedSettings;
 }
 
@@ -18695,7 +18747,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 > **Path**: `data/db.json`  
 > **Layer**: Storage Fixture  
-> **Metrics**: 1659 lines • 63.6 KB
+> **Metrics**: 1459 lines • 58.6 KB
 
 ```json
 {
@@ -18808,7 +18860,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
       "salePrice": 780,
       "unit": "sq ft",
       "moq": 100,
-      "stock": 2373,
+      "stock": 2377,
       "purchaseMode": "BOTH",
       "leadTime": "5-7 business days",
       "dimensions": "2400mm x 1200mm slab / custom tile sizes",
@@ -19515,178 +19567,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
   ],
   "orders": [
     {
-      "id": "ord-1788874958510",
-      "orderNumber": "BAL-MTSPYNXQ-F3E385",
-      "customerName": "Enterprise Test Client",
-      "customerEmail": "enterprise@balaji.com",
-      "customerPhone": "+91 98765 43210",
-      "shippingAddress": {
-        "addressLine1": "GS Road, Luxury Estate",
-        "city": "Guwahati",
-        "state": "Assam",
-        "pincode": "781005"
-      },
-      "billingAddress": {
-        "addressLine1": "GS Road, Luxury Estate",
-        "city": "Guwahati",
-        "state": "Assam",
-        "pincode": "781005"
-      },
-      "items": [
-        {
-          "id": "9dabf14a-919d-4c23-9069-10d484877547",
-          "productId": "prod-travertine-slab",
-          "productName": "Romano Classico Vein-Cut Travertine",
-          "sku": "MAT-STN-001",
-          "quantity": 1,
-          "unitPrice": 780,
-          "subtotal": 780,
-          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
-        }
-      ],
-      "subtotal": 780,
-      "tax": 140,
-      "shippingFee": 0,
-      "discount": 0,
-      "totalAmount": 920,
-      "orderStatus": "Processing",
-      "paymentStatus": "Submitted",
-      "paymentMethod": "Test Suite Wire Transfer",
-      "notes": "Automated test suite order",
-      "idempotencyKey": "test-order-1788874958510",
-      "createdAt": "2026-09-08T13:42:38.510Z",
-      "updatedAt": "2026-09-08T13:42:38.521Z"
-    },
-    {
-      "id": "ord-1788874943432",
-      "orderNumber": "BAL-MTSPYCAW-BB8720",
-      "customerName": "High Net-Worth Client",
-      "customerEmail": "hnw@balaji.com",
-      "customerPhone": "+91 99999 88888",
-      "shippingAddress": {
-        "addressLine1": "Bespoke Penthouse 42",
-        "city": "Mumbai",
-        "state": "Maharashtra",
-        "pincode": "400001"
-      },
-      "billingAddress": {
-        "addressLine1": "Bespoke Penthouse 42",
-        "city": "Mumbai",
-        "state": "Maharashtra",
-        "pincode": "400001"
-      },
-      "items": [
-        {
-          "id": "50afedd0-986a-4ddd-a62c-5d0dd4fa91ac",
-          "productId": "prod-travertine-slab",
-          "productName": "Romano Classico Vein-Cut Travertine",
-          "sku": "MAT-STN-001",
-          "quantity": 1,
-          "unitPrice": 780,
-          "subtotal": 780,
-          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
-        }
-      ],
-      "subtotal": 780,
-      "tax": 140,
-      "shippingFee": 0,
-      "discount": 0,
-      "totalAmount": 920,
-      "orderStatus": "Confirmed",
-      "paymentStatus": "Submitted",
-      "paymentMethod": "UPI",
-      "utrNumber": "UPI-1122334455",
-      "idempotencyKey": "idemp-test-1788874943432",
-      "createdAt": "2026-09-08T13:42:23.432Z",
-      "updatedAt": "2026-09-08T13:42:23.432Z"
-    },
-    {
-      "id": "ord-1788874923819",
-      "orderNumber": "BAL-MTSPXX63-78DC36",
-      "customerName": "High Net-Worth Client",
-      "customerEmail": "hnw@balaji.com",
-      "customerPhone": "+91 99999 88888",
-      "shippingAddress": {
-        "addressLine1": "Bespoke Penthouse 42",
-        "city": "Mumbai",
-        "state": "Maharashtra",
-        "pincode": "400001"
-      },
-      "billingAddress": {
-        "addressLine1": "Bespoke Penthouse 42",
-        "city": "Mumbai",
-        "state": "Maharashtra",
-        "pincode": "400001"
-      },
-      "items": [
-        {
-          "id": "e4d3de02-01ad-4e9d-90de-ca4ef91f2453",
-          "productId": "prod-travertine-slab",
-          "productName": "Romano Classico Vein-Cut Travertine",
-          "sku": "MAT-STN-001",
-          "quantity": 1,
-          "unitPrice": 780,
-          "subtotal": 780,
-          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
-        }
-      ],
-      "subtotal": 780,
-      "tax": 140,
-      "shippingFee": 0,
-      "discount": 0,
-      "totalAmount": 920,
-      "orderStatus": "Confirmed",
-      "paymentStatus": "Submitted",
-      "paymentMethod": "UPI",
-      "utrNumber": "UPI-1122334455",
-      "idempotencyKey": "idemp-test-1788874923819",
-      "createdAt": "2026-09-08T13:42:03.819Z",
-      "updatedAt": "2026-09-08T13:42:03.819Z"
-    },
-    {
-      "id": "ord-1788874879408",
-      "orderNumber": "BAL-MTSPWYWG-1A3CE4",
-      "customerName": "Enterprise Test Client",
-      "customerEmail": "enterprise@balaji.com",
-      "customerPhone": "+91 98765 43210",
-      "shippingAddress": {
-        "addressLine1": "GS Road, Luxury Estate",
-        "city": "Guwahati",
-        "state": "Assam",
-        "pincode": "781005"
-      },
-      "billingAddress": {
-        "addressLine1": "GS Road, Luxury Estate",
-        "city": "Guwahati",
-        "state": "Assam",
-        "pincode": "781005"
-      },
-      "items": [
-        {
-          "id": "a74a89eb-b073-4998-9cc0-43c442a91637",
-          "productId": "prod-travertine-slab",
-          "productName": "Romano Classico Vein-Cut Travertine",
-          "sku": "MAT-STN-001",
-          "quantity": 1,
-          "unitPrice": 780,
-          "subtotal": 780,
-          "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
-        }
-      ],
-      "subtotal": 780,
-      "tax": 140,
-      "shippingFee": 0,
-      "discount": 0,
-      "totalAmount": 920,
-      "orderStatus": "Processing",
-      "paymentStatus": "Submitted",
-      "paymentMethod": "Test Suite Wire Transfer",
-      "notes": "Automated test suite order",
-      "idempotencyKey": "test-order-1788874879408",
-      "createdAt": "2026-09-08T13:41:19.408Z",
-      "updatedAt": "2026-09-08T13:41:19.431Z"
-    },
-    {
       "id": "ord-1788873109221",
       "orderNumber": "BAL-MTSOV10L-B60303",
       "customerName": "Enterprise Test Client",
@@ -20094,34 +19974,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
   },
   "pushSubscriptions": [],
   "auditLogs": [
-    {
-      "adminId": "admin-test",
-      "adminEmail": "admin@balaji.com",
-      "action": "ORDER_STATUS_UPDATED",
-      "entity": "Order",
-      "entityId": "ord-1788874958510",
-      "details": {
-        "orderStatus": "Processing",
-        "paymentStatus": "Submitted",
-        "verifiedBy": "admin@balaji.com"
-      },
-      "id": "31b04096-8b68-4557-a5dc-f70a99ce1495",
-      "createdAt": "2026-09-08T13:42:38.530Z"
-    },
-    {
-      "adminId": "admin-test",
-      "adminEmail": "admin@balaji.com",
-      "action": "ORDER_STATUS_UPDATED",
-      "entity": "Order",
-      "entityId": "ord-1788874879408",
-      "details": {
-        "orderStatus": "Processing",
-        "paymentStatus": "Submitted",
-        "verifiedBy": "admin@balaji.com"
-      },
-      "id": "5c0fcf47-ef91-456c-9693-9703cc027b9d",
-      "createdAt": "2026-09-08T13:41:19.441Z"
-    },
     {
       "adminId": "admin-test",
       "adminEmail": "admin@balaji.com",

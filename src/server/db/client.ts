@@ -94,7 +94,13 @@ export async function isSupabaseAvailable(): Promise<boolean> {
   }
 }
 
+let cachedServiceClient: SupabaseClient | null = null;
+
 export function getServiceSupabase(): SupabaseClient {
+  if (cachedServiceClient) {
+    return cachedServiceClient;
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
@@ -104,7 +110,7 @@ export function getServiceSupabase(): SupabaseClient {
     );
   }
 
-  return createClient(url, key, {
+  cachedServiceClient = createClient(url, key, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
@@ -118,6 +124,8 @@ export function getServiceSupabase(): SupabaseClient {
       },
     },
   });
+
+  return cachedServiceClient;
 }
 
 /**

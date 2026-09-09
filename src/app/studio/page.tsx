@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
 import { Shield, ArrowRight, Eye, EyeOff, CheckCircle2, AlertCircle, X, Mail } from 'lucide-react';
 
 export default function StudioAuthPage() {
@@ -35,12 +35,12 @@ export default function StudioAuthPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
-        window.location.href = '/admin/login';
+        router.push('/admin/login');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [router]);
 
   // Stealth Logo Emblem Triple Click Trigger
   const [emblemClicks, setEmblemClicks] = useState(0);
@@ -48,7 +48,7 @@ export default function StudioAuthPage() {
     setEmblemClicks((prev) => {
       const next = prev + 1;
       if (next >= 3) {
-        window.location.href = '/admin/login';
+        router.push('/admin/login');
         return 0;
       }
       setTimeout(() => setEmblemClicks(0), 1200);
@@ -63,6 +63,7 @@ export default function StudioAuthPage() {
     setError(null);
     setGoogleLoading(true);
     try {
+      const { supabase } = await import('@/lib/supabase');
       if (!supabase) {
         throw new Error('Authentication service currently initializing. Please try email sign in.');
       }
@@ -118,7 +119,8 @@ export default function StudioAuthPage() {
 
       // Seamless role routing
       const destination = data.redirectUrl || (data.role === 'customer' ? '/account' : '/admin');
-      window.location.href = destination;
+      router.push(destination);
+      router.refresh();
     } catch (err: any) {
       setError(err.message || 'Sign in request could not be completed.');
       setLoading(false);
@@ -161,7 +163,7 @@ export default function StudioAuthPage() {
             aria-label="Balaji Atelier"
             className="w-11 h-11 rounded-xl overflow-hidden bg-[#1A1614] shadow-md flex items-center justify-center border border-[#C5A880]/40 cursor-pointer focus:outline-none"
           >
-            <img src="/logo.png" alt="Balaji Emblem" className="w-full h-full object-cover" />
+            <Image src="/logo.png" alt="Balaji Emblem" width={44} height={44} className="w-full h-full object-cover" priority />
           </button>
         </div>
         <div>

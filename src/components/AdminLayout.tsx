@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -326,7 +327,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <div className="md:hidden bg-[#0A0706] text-[#FCFAF6] px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-[#241C16] shadow-md">
         <Link href="/admin" className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-sm overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40">
-            <img src="/logo.png" alt="Balaji" className="w-full h-full object-cover" />
+            <Image src="/logo.png" alt="Balaji" width={28} height={28} className="w-full h-full object-cover" priority />
           </div>
           <div className="flex flex-col">
             <span className="font-serif text-sm tracking-wider text-[#FCFAF6] font-medium leading-none">BALAJI ATELIER</span>
@@ -377,7 +378,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="p-5 border-b border-[#241C16] space-y-1.5 bg-[#0A0706]">
           <Link href="/admin" className="flex items-center gap-3 group">
             <div className="w-9 h-9 rounded-lg overflow-hidden bg-[#16110E] shadow-xs flex-shrink-0 border border-champagne/40 group-hover:border-champagne transition-colors">
-              <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
+              <Image src="/logo.png" alt="Balaji Logo" width={36} height={36} className="w-full h-full object-cover" priority />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-sm tracking-widest text-[#FCFAF6] block font-light leading-tight">

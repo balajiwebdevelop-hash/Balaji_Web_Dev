@@ -38,8 +38,14 @@ export function MobileBottomNav() {
     <>
       {/* Quick Contact Modal Drawer for Mobile */}
       {quickContactOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-espresso/70 backdrop-blur-xs flex items-end animate-fade-in">
-          <div className="w-full bg-surface border-t border-atelier p-6 space-y-5 rounded-t-2xl shadow-2xl animate-slide-up pb-8">
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-espresso/70 backdrop-blur-xs flex items-end animate-fade-in"
+          onClick={() => setQuickContactOpen(false)}
+        >
+          <div
+            className="w-full bg-surface border-t border-atelier p-6 space-y-5 rounded-t-2xl shadow-2xl animate-slide-up pb-8"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-atelier">
               <div>
                 <h3 className="font-serif text-lg text-espresso font-medium">Connect with Studio</h3>

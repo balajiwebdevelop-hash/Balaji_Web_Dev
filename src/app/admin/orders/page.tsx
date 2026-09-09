@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
-import { supabase } from '@/lib/supabase';
 
 function AdminOrdersContent() {
   const searchParams = useSearchParams();
@@ -57,15 +56,21 @@ function AdminOrdersContent() {
   useEffect(() => {
     loadOrders();
 
-    // 1. Setup Supabase Realtime Channel if client is configured
+    // 1. Setup Supabase Realtime Channel asynchronously if client is configured
     let channel: any = null;
-    if (supabase) {
+    let supabaseClient: any = null;
+    let isMounted = true;
+
+    import('@/lib/supabase').then(({ supabase }) => {
+      if (!isMounted || !supabase) return;
+      supabaseClient = supabase;
       channel = supabase
         .channel('admin-orders-realtime-stream')
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           (payload: any) => {
+            if (!isMounted) return;
             if (payload.eventType === 'UPDATE' && payload.new) {
               const updatedRow = payload.new;
               setOrders((prev) =>
@@ -105,11 +110,11 @@ function AdminOrdersContent() {
           }
         )
         .subscribe((status: string) => {
-          if (status === 'SUBSCRIBED') {
+          if (status === 'SUBSCRIBED' && isMounted) {
             setIsLiveConnected(true);
           }
         });
-    }
+    });
 
     // 2. Periodic sync fallback (every 30 seconds when tab is active)
     const interval = setInterval(() => {
@@ -119,8 +124,9 @@ function AdminOrdersContent() {
     }, 30000);
 
     return () => {
-      if (supabase && channel) {
-        supabase.removeChannel(channel);
+      isMounted = false;
+      if (supabaseClient && channel) {
+        supabaseClient.removeChannel(channel);
       }
       clearInterval(interval);
     };

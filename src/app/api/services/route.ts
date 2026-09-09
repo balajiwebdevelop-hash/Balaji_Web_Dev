@@ -8,13 +8,16 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const publishedOnly = searchParams.get('all') === 'true' ? false : true;
+    const isAll = searchParams.get('all') === 'true';
+    const publishedOnly = !isAll;
     const services = await getServices(publishedOnly);
     return NextResponse.json(
       { services },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAll
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=30, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );

@@ -15,7 +15,9 @@ export async function GET(req: NextRequest) {
       { categories },
       {
         headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Cache-Control': isAdmin
+            ? 'no-store, no-cache, must-revalidate'
+            : 'public, max-age=30, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );

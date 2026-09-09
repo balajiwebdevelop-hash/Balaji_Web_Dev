@@ -108,6 +108,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     ...(db.siteSettings || {}),
     gstinNumber: db.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
   };
+  memoryCache.settings = { data: mergedSettings, timestamp: now };
   return mergedSettings;
 }
 

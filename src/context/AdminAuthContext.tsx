@@ -39,7 +39,14 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    refreshAdmin();
+    const hasAdminCookie = typeof document !== 'undefined' && document.cookie.includes('balaji_admin_session');
+    const isAdminPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+
+    if (hasAdminCookie || isAdminPath) {
+      refreshAdmin();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const login = async (email: string, password: string) => {

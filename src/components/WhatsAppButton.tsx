@@ -86,7 +86,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${isHovered ? 'animate-ping' : ''}`} />
           <span className="text-champagne font-medium text-[11px]">{tooltipText}</span>
         </div>
       )}
@@ -100,7 +100,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
         className="relative group p-3.5 sm:p-4 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-108 active:scale-95 flex items-center justify-center border border-champagne/40"
       >
         {/* Subtle Luxury Pulsing Glow */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366]/40 animate-ping pointer-events-none group-hover:opacity-100 opacity-60" />
+        <span className="absolute inset-0 rounded-full bg-[#25D366]/35 animate-pulse-subtle pointer-events-none group-hover:opacity-100 opacity-60" />
 
         {/* WhatsApp Vector Icon */}
         <svg
@@ -119,7 +119,7 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${isHovered ? 'animate-ping' : ''}`} />
           <span className="text-champagne font-medium text-[11px]">{tooltipText}</span>
         </div>
       )}

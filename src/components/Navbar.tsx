@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Search, Heart, ShoppingBag, Menu, X, User } from 'lucide-react';
@@ -25,6 +25,9 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     pathname.startsWith('/materials');
 
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(isInitialDarkPage);
+
+  const isDarkThemeRef = useRef<boolean>(isInitialDarkPage);
+  const isScrolledRef = useRef<boolean>(false);
 
   const [announcement, setAnnouncement] = useState<{ enabled: boolean; text: string; linkUrl?: string } | null>(
     initialSettings?.announcementBanner !== undefined
@@ -64,7 +67,11 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
     const scrollY = window.scrollY;
-    setIsScrolled(scrollY > 20);
+    const isOverScrolled = scrollY > 20;
+    if (isScrolledRef.current !== isOverScrolled) {
+      isScrolledRef.current = isOverScrolled;
+      setIsScrolled(isOverScrolled);
+    }
 
     const headerEl = document.getElementById('main-navbar-header');
     let navbarTop = 0;
@@ -123,6 +130,7 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
         for (let i = 0; i < visualMedia.length; i++) {
           const el = visualMedia[i];
           if (el.closest('#main-navbar-header') || el.closest('#navbar-container')) continue;
+          if (el.offsetParent === null) continue; // Fast check for display:none without forced layout reflow
 
           const rect = el.getBoundingClientRect();
 
@@ -132,11 +140,6 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
 
           // Filter out tiny icons or tracking pixels
           if (rect.width < 45 || rect.height < 45) continue;
-
-          // Verify computed visibility and opacity
-          const style = window.getComputedStyle(el);
-          if (style.display === 'none' || style.visibility === 'hidden') continue;
-          if (parseFloat(style.opacity || '1') < 0.25) continue;
 
           // Active photograph or visual card is physically underneath the navbar
           isOverDark = true;
@@ -210,12 +213,25 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
       }
     }
 
-    setIsDarkTheme(isOverDark);
+    // Only trigger React state update if the theme actually changed
+    if (isDarkThemeRef.current !== isOverDark) {
+      isDarkThemeRef.current = isOverDark;
+      setIsDarkTheme(isOverDark);
+    }
   }, [pathname]);
 
   useEffect(() => {
+    let ticking = false;
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      detectThemeUnderNavbar();
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(() => {
+          detectThemeUnderNavbar();
+          ticking = false;
+        });
+      }
     };
 
     detectThemeUnderNavbar();
@@ -230,6 +246,7 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };

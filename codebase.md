@@ -1,5 +1,5 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260909-191755)`  
+> **Version**: `MASTER_CODEBASE(20260909-193148)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
@@ -85030,6 +85030,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   // Discrete active index state (updated ONLY when active project genuinely changes)
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
+  const lastMobileActiveRef = useRef<number>(-1);
 
   // Fallback if projects is empty
   const safeProjects = useMemo(() => {
@@ -85045,7 +85046,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   const intensity = settings?.parallaxIntensity || 'medium';
 
   // Section height multiplier:
-  // Compact, responsive scroll travel so the user glides effortlessly
+  // Desktop scroll distance multiplier
   const scrollDistanceMultiplier = useMemo(() => {
     switch (speed) {
       case 'fast':
@@ -85058,7 +85059,10 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     }
   }, [speed]);
 
-  // Z-depth & scaling parameters
+  // Mobile scroll distance multiplier: shorter travel for instant, effortless progression (Section 20)
+  const mobileDistanceMultiplier = 28;
+
+  // Z-depth & scaling parameters for Desktop 3D engine
   const depthConfig = useMemo(() => {
     switch (intensity) {
       case 'subtle':
@@ -85077,7 +85081,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   const textTopRefs = useRef<(HTMLDivElement | null)[]>([]);
   const textBottomRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Target and current interpolated progress refs
+  // Desktop hydrodynamic physics refs
   const physicsRef = useRef({
     target: 0,
     current: 0,
@@ -85091,91 +85095,80 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   // Dedicated responsive mobile flag ref (avoids SSR hydration mismatches)
   const isMobileRef = useRef<boolean>(false);
 
-  // High-performance direct DOM transform applier (runs directly against DOM, zero React re-renders)
-  const applyCardStyles = useCallback((currentProgress: number, vel: number) => {
-    const isMobile = isMobileRef.current;
+  // -------------------------------------------------------------
+  // 1. DEDICATED LIGHTWEIGHT 2D MOBILE RENDERING ENGINE
+  // -------------------------------------------------------------
+  // Zero inertia loop, zero rotateX/rotateZ, zero translateZ, zero blur/brightness filters.
+  // Animates strictly the Current and Next cards. All distant cards are dormant.
+  const renderMobileCards = useCallback((cardProgress: number) => {
+    const currentCardIdx = Math.max(0, Math.min(totalCards - 1, Math.floor(cardProgress)));
+    const nextCardIdx = Math.min(totalCards - 1, currentCardIdx + 1);
+    const frac = cardProgress - currentCardIdx;
 
-    if (isMobile) {
-      // DEDICATED LIGHTWEIGHT 2D MOBILE RENDERING ENGINE
-      // ZERO rotateX / rotateZ, ZERO translateZ, ZERO animated filters, ZERO forced layout toggles
-      for (let idx = 0; idx < totalCards; idx++) {
-        const card = cardRefs.current[idx];
-        if (!card) continue;
-
-        const delta = idx - currentProgress;
-        const isCurrent = Math.abs(delta) < 0.5;
-
-        // Mobile Prune: composite ONLY Active + Next + Immediate Previous cards
-        if (delta < -0.70 || delta > 1.60) {
-          if (card.style.visibility !== 'hidden') card.style.visibility = 'hidden';
-          if (card.style.opacity !== '0') card.style.opacity = '0';
-          if (card.style.pointerEvents !== 'none') card.style.pointerEvents = 'none';
-          continue;
-        }
-        if (card.style.visibility !== 'visible') card.style.visibility = 'visible';
-
-        let translateYPercent: number;
-        let scale: number;
-        let opacity: number;
-        let textOpacity: number;
-
-        if (delta < 0) {
-          // Card exiting smoothly towards top
-          const absDelta = -delta;
-          translateYPercent = delta * 24;
-          scale = Math.min(1.05, 1 + absDelta * 0.04);
-          if (absDelta <= 0.20) {
-            opacity = 1;
-            textOpacity = 1;
-          } else if (absDelta <= 0.55) {
-            const t = (absDelta - 0.20) / 0.35;
-            const smooth = t * t * (3 - 2 * t);
-            opacity = Math.max(0, 1 - smooth);
-            textOpacity = Math.max(0, 1 - t * 1.3);
-          } else {
-            opacity = 0;
-            textOpacity = 0;
-          }
-        } else {
-          // Card entering from lower stack
-          translateYPercent = delta * 14;
-          scale = Math.max(0.88, 1 - delta * 0.07);
-          if (delta <= 0.25) {
-            opacity = 1;
-            textOpacity = 1;
-          } else if (delta <= 0.75) {
-            const enterT = (0.75 - delta) / 0.50;
-            const smoothEnter = enterT * enterT * (3 - 2 * enterT);
-            opacity = 0.40 + 0.60 * smoothEnter;
-            textOpacity = Math.max(0, (smoothEnter - 0.2) / 0.8);
-          } else {
-            opacity = Math.max(0, 0.40 - (delta - 0.75) * 0.5);
-            textOpacity = 0;
-          }
-        }
-
-        const zIndex = totalCards - Math.abs(Math.round(delta));
-
-        // 2D GPU translation and scale — instantaneous rendering on mobile GPUs
-        card.style.transform = `translate3d(0, ${translateYPercent.toFixed(2)}%, 0) scale(${scale.toFixed(4)})`;
-        card.style.opacity = opacity.toFixed(3);
-        if (card.style.filter !== 'none') card.style.filter = 'none';
-        card.style.zIndex = `${zIndex}`;
-        card.style.pointerEvents = isCurrent ? 'auto' : 'none';
-
-        const textTop = textTopRefs.current[idx];
-        if (textTop) textTop.style.opacity = textOpacity.toFixed(3);
-
-        const textBottom = textBottomRefs.current[idx];
-        if (textBottom) textBottom.style.opacity = textOpacity.toFixed(3);
-
-        const imgEl = imgRefs.current[idx];
-        if (imgEl && imgEl.style.transform !== 'none') imgEl.style.transform = 'none';
-      }
-      return;
+    // Discrete active index tracking (updates React state ONLY when project genuinely changes)
+    const discreteIndex = Math.max(0, Math.min(totalCards - 1, Math.round(cardProgress)));
+    if (discreteIndex !== activeIndexRef.current) {
+      activeIndexRef.current = discreteIndex;
+      setActiveIndex(discreteIndex);
     }
 
-    // DESKTOP RENDERING PATH (100% PRESERVED, UNTOUCHED 3D PERSPECTIVE & EFFECTS)
+    // Update zIndex and pointer-events ONLY when discrete active card changes (Sections 17 & 18)
+    if (discreteIndex !== lastMobileActiveRef.current) {
+      lastMobileActiveRef.current = discreteIndex;
+      for (let i = 0; i < totalCards; i++) {
+        const c = cardRefs.current[i];
+        if (!c) continue;
+        c.style.zIndex = `${totalCards - Math.abs(i - discreteIndex)}`;
+        c.style.pointerEvents = i === discreteIndex ? 'auto' : 'none';
+      }
+    }
+
+    // Animate strictly CURRENT and NEXT cards (Section 8)
+    for (let i = 0; i < totalCards; i++) {
+      const card = cardRefs.current[i];
+      if (!card) continue;
+
+      if (i === currentCardIdx && i === nextCardIdx) {
+        // At the absolute end of the portfolio
+        card.style.visibility = 'visible';
+        card.style.transform = 'translate3d(0, 0%, 0) scale(1)';
+        card.style.opacity = '1';
+        if (card.style.filter !== 'none') card.style.filter = 'none';
+        continue;
+      }
+
+      if (i === currentCardIdx) {
+        // Exiting card: glides up slightly and fades smoothly
+        const yPercent = -frac * 18;
+        const scale = 1.0 - frac * 0.04;
+        const opacity = 1.0 - frac * 0.85;
+
+        card.style.visibility = 'visible';
+        card.style.transform = `translate3d(0, ${yPercent.toFixed(2)}%, 0) scale(${scale.toFixed(4)})`;
+        card.style.opacity = opacity.toFixed(3);
+        if (card.style.filter !== 'none') card.style.filter = 'none';
+      } else if (i === nextCardIdx) {
+        // Entering next card from lower stack: glides up from 14% and scales from 0.94 to 1.0
+        const yPercent = (1 - frac) * 14;
+        const scale = 0.94 + frac * 0.06;
+        const opacity = 0.30 + frac * 0.70;
+
+        card.style.visibility = 'visible';
+        card.style.transform = `translate3d(0, ${yPercent.toFixed(2)}%, 0) scale(${scale.toFixed(4)})`;
+        card.style.opacity = opacity.toFixed(3);
+        if (card.style.filter !== 'none') card.style.filter = 'none';
+      } else {
+        // Distant cards: dormant, zero transforms computed
+        if (card.style.visibility !== 'hidden') card.style.visibility = 'hidden';
+        if (card.style.opacity !== '0') card.style.opacity = '0';
+      }
+    }
+  }, [totalCards]);
+
+  // -------------------------------------------------------------
+  // 2. DESKTOP RENDERING PATH (100% UNTOUCHED 3D PERSPECTIVE & EFFECTS)
+  // -------------------------------------------------------------
+  const applyDesktopCardStyles = useCallback((currentProgress: number, vel: number) => {
     const dynamicTiltX = Math.max(-3.5, Math.min(3.5, vel * 40));
     const dynamicTiltZ = Math.max(-1.2, Math.min(1.2, -vel * 16));
 
@@ -85269,7 +85262,9 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     }
   }, [totalCards, depthConfig]);
 
-  // Viscous fluid damping loop (Watery Smooth / Buttery Smooth Hydrodynamic Physics)
+  // -------------------------------------------------------------
+  // 3. CORE ANIMATION & SCROLL EVENT SYSTEM
+  // -------------------------------------------------------------
   useEffect(() => {
     if (totalCards <= 1) return;
 
@@ -85278,37 +85273,36 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     // Responsive Mobile detection with change listener
     const mq = window.matchMedia('(max-width: 767px)');
     isMobileRef.current = mq.matches;
-    const handleMqChange = (e: MediaQueryListEvent) => {
-      isMobileRef.current = e.matches;
-      for (let idx = 0; idx < totalCards; idx++) {
-        const card = cardRefs.current[idx];
-        if (card) {
-          card.style.display = '';
-          card.style.visibility = 'visible';
-          card.style.filter = '';
-        }
-      }
-      onScrollOrResize();
-    };
-    if (mq.addEventListener) {
-      mq.addEventListener('change', handleMqChange);
-    } else {
-      mq.addListener(handleMqChange);
-    }
 
-    const startLoop = () => {
+    // Cached container layout coordinates to eliminate forced synchronous reflows on scroll
+    const containerGeo = { top: 0, height: 0, windowHeight: 800, scrollableDistance: 1 };
+    const measureGeometry = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      containerGeo.top = rect.top + scrollY;
+      containerGeo.height = rect.height;
+      containerGeo.windowHeight = window.innerHeight || 800;
+      containerGeo.scrollableDistance = Math.max(1, containerGeo.height - containerGeo.windowHeight);
+    };
+
+    // A. Desktop Viscous Damping Loop (Unchanged desktop glide)
+    const startDesktopLoop = () => {
       if (physicsRef.current.isAnimating) return;
       if (!physicsRef.current.inView || (typeof document !== 'undefined' && document.hidden)) return;
       physicsRef.current.isAnimating = true;
       lastTimeRef.current = 0;
-      rafId.current = requestAnimationFrame(updateLoop);
+      rafId.current = requestAnimationFrame(updateDesktopLoop);
     };
 
-    const updateLoop = (timestamp: number) => {
-      if (!isMounted) return;
+    const updateDesktopLoop = (timestamp: number) => {
+      if (!isMounted || isMobileRef.current) {
+        physicsRef.current.isAnimating = false;
+        rafId.current = null;
+        return;
+      }
       const p = physicsRef.current;
 
-      // Stop loop if offscreen or tab hidden
       if (!p.inView || (typeof document !== 'undefined' && document.hidden)) {
         p.isAnimating = false;
         rafId.current = null;
@@ -85320,38 +85314,29 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       lastTimeRef.current = timestamp;
 
       const diff = p.target - p.current;
-
-      const isMobile = isMobileRef.current;
-      // Hydrodynamic viscosity factor calibrated for liquid buttery glide:
-      // Mobile: 14.0 (instant direct tracking with finger, immediate response, buttery ease-out)
-      // Desktop: Fast = 8.5 (snappy yet buttery), Normal = 6.8 (silky water), Cinematic = 4.8 (luxurious slow glide)
-      const lambda = isMobile ? 14.0 : speed === 'fast' ? 8.5 : speed === 'cinematic' ? 4.8 : 6.8;
+      const lambda = speed === 'fast' ? 8.5 : speed === 'cinematic' ? 4.8 : 6.8;
       const dampFactor = 1 - Math.exp(-lambda * dt);
-      const settleThreshold = isMobile ? 0.0001 : 0.00005;
 
-      if (Math.abs(diff) > settleThreshold) {
-        // High-precision hydrodynamic asymptotic glide
+      if (Math.abs(diff) > 0.00005) {
         p.current += diff * dampFactor;
         const currentVel = (p.current - p.last) / (dt * 60);
         p.velocity = currentVel;
         p.last = p.current;
 
-        applyCardStyles(p.current, currentVel);
+        applyDesktopCardStyles(p.current, currentVel);
 
-        // Discrete active index change only when project changes
         const newIndex = Math.max(0, Math.min(totalCards - 1, Math.round(p.current)));
         if (newIndex !== activeIndexRef.current) {
           activeIndexRef.current = newIndex;
           setActiveIndex(newIndex);
         }
 
-        rafId.current = requestAnimationFrame(updateLoop);
+        rafId.current = requestAnimationFrame(updateDesktopLoop);
       } else {
-        // Settled: perform final position snap and sleep the RAF loop to save CPU & GPU
         p.current = p.target;
         p.velocity = 0;
         p.last = p.target;
-        applyCardStyles(p.current, 0);
+        applyDesktopCardStyles(p.current, 0);
 
         const newIndex = Math.max(0, Math.min(totalCards - 1, Math.round(p.current)));
         if (newIndex !== activeIndexRef.current) {
@@ -85364,55 +85349,111 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       }
     };
 
-    // Cached container layout coordinates to eliminate forced synchronous reflows on scroll
-    const containerGeo = { top: 0, height: 0, windowHeight: 800 };
-    const measureGeometry = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
+    const onScrollDesktop = () => {
       const scrollY = window.scrollY || window.pageYOffset || 0;
-      containerGeo.top = rect.top + scrollY;
-      containerGeo.height = rect.height;
-      containerGeo.windowHeight = window.innerHeight || 800;
+      const rectTop = containerGeo.top - scrollY;
+      const rectBottom = rectTop + containerGeo.height;
+
+      const inView = rectTop < containerGeo.windowHeight && rectBottom > 0;
+      physicsRef.current.inView = inView;
+      if (!inView) {
+        if (rafId.current) cancelAnimationFrame(rafId.current);
+        physicsRef.current.isAnimating = false;
+        return;
+      }
+
+      if (containerGeo.scrollableDistance <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rectTop / containerGeo.scrollableDistance));
+      physicsRef.current.target = progress * (totalCards - 1);
+      startDesktopLoop();
     };
 
-    let scrollTicking = false;
-    const onScroll = () => {
-      if (!scrollTicking) {
-        scrollTicking = true;
-        requestAnimationFrame(() => {
-          scrollTicking = false;
-          if (!containerRef.current) return;
-          const scrollY = window.scrollY || window.pageYOffset || 0;
-          const windowHeight = containerGeo.windowHeight || window.innerHeight || 800;
-          const rectTop = containerGeo.top - scrollY;
-          const rectBottom = rectTop + containerGeo.height;
+    // B. Mobile Scheduled Single-Frame Engine (Direct Finger Synchronization, Zero Inertia Chasing)
+    let mobileScrollRaf: number | null = null;
+    let isMobileDirty = false;
 
-          // Check if container is in viewport
-          const inView = rectTop < windowHeight && rectBottom > 0;
-          physicsRef.current.inView = inView;
-          if (!inView) {
-            if (rafId.current) cancelAnimationFrame(rafId.current);
-            physicsRef.current.isAnimating = false;
-            return;
-          }
+    const renderMobileFrame = () => {
+      mobileScrollRaf = null;
+      if (!isMounted || !isMobileDirty || !isMobileRef.current) return;
+      isMobileDirty = false;
 
-          const totalScrollableDistance = containerGeo.height - windowHeight;
-          if (totalScrollableDistance <= 0) return;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const rectTop = containerGeo.top - scrollY;
 
-          // Fraction from 0 to 1
-          const progress = Math.max(0, Math.min(1, -rectTop / totalScrollableDistance));
-          physicsRef.current.target = progress * (totalCards - 1);
-          startLoop();
-        });
+      // Check if container is in viewport
+      if (rectTop > containerGeo.windowHeight || rectTop + containerGeo.height < 0) {
+        return;
+      }
+
+      if (containerGeo.scrollableDistance <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rectTop / containerGeo.scrollableDistance));
+      renderMobileCards(progress * (totalCards - 1));
+    };
+
+    const onScrollMobile = () => {
+      isMobileDirty = true;
+      if (mobileScrollRaf === null) {
+        mobileScrollRaf = requestAnimationFrame(renderMobileFrame);
       }
     };
 
-    const onScrollOrResize = () => {
+    // Unified scroll dispatcher (passive, 0 forced reflows)
+    const onScroll = () => {
+      if (isMobileRef.current) {
+        onScrollMobile();
+      } else {
+        onScrollDesktop();
+      }
+    };
+
+    const onResize = () => {
       measureGeometry();
       onScroll();
     };
 
-    // Sleep when offscreen via IntersectionObserver
+    // Breakpoint change listener
+    const handleMqChange = (e: MediaQueryListEvent) => {
+      isMobileRef.current = e.matches;
+      if (mobileScrollRaf) {
+        cancelAnimationFrame(mobileScrollRaf);
+        mobileScrollRaf = null;
+      }
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+        rafId.current = null;
+        physicsRef.current.isAnimating = false;
+      }
+      for (let idx = 0; idx < totalCards; idx++) {
+        const card = cardRefs.current[idx];
+        if (card) {
+          card.style.display = '';
+          card.style.visibility = 'visible';
+          card.style.filter = '';
+          card.style.transform = '';
+          card.style.opacity = '';
+        }
+      }
+      measureGeometry();
+      onScroll();
+    };
+
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handleMqChange);
+    } else {
+      mq.addListener(handleMqChange);
+    }
+
+    // ResizeObserver for container geometry caching (Section 7)
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        measureGeometry();
+        onScroll();
+      });
+      resizeObserver.observe(containerRef.current);
+    }
+
+    // Sleep when offscreen via IntersectionObserver (Section 25)
     let observer: IntersectionObserver | null = null;
     if (typeof IntersectionObserver !== 'undefined' && containerRef.current) {
       observer = new IntersectionObserver(
@@ -85421,10 +85462,13 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
           const inView = entry ? entry.isIntersecting : true;
           physicsRef.current.inView = inView;
           if (inView) {
-            onScrollOrResize();
+            measureGeometry();
+            onScroll();
           } else {
             if (rafId.current) cancelAnimationFrame(rafId.current);
+            if (mobileScrollRaf) cancelAnimationFrame(mobileScrollRaf);
             physicsRef.current.isAnimating = false;
+            mobileScrollRaf = null;
           }
         },
         { rootMargin: '100px 0px 100px 0px' }
@@ -85432,30 +85476,39 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       observer.observe(containerRef.current);
     }
 
-    // Sleep in background tab via document.visibilityState
+    // Sleep in background tab via document.visibilityState (Section 26)
     const onVisibilityChange = () => {
       if (document.hidden) {
         if (rafId.current) cancelAnimationFrame(rafId.current);
+        if (mobileScrollRaf) cancelAnimationFrame(mobileScrollRaf);
         physicsRef.current.isAnimating = false;
+        mobileScrollRaf = null;
       } else if (physicsRef.current.inView) {
-        onScrollOrResize();
+        measureGeometry();
+        onScroll();
       }
     };
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScrollOrResize, { passive: true });
-    window.addEventListener('orientationchange', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onResize, { passive: true });
 
     // Initial mount card styling & measurement
     measureGeometry();
-    applyCardStyles(0, 0);
+    if (isMobileRef.current) {
+      renderMobileCards(0);
+    } else {
+      applyDesktopCardStyles(0, 0);
+    }
     onScroll();
 
     return () => {
       isMounted = false;
       if (rafId.current) cancelAnimationFrame(rafId.current);
+      if (mobileScrollRaf) cancelAnimationFrame(mobileScrollRaf);
       if (observer) observer.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
       if (mq.removeEventListener) {
         mq.removeEventListener('change', handleMqChange);
       } else {
@@ -85463,10 +85516,10 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       }
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScrollOrResize);
-      window.removeEventListener('orientationchange', onScrollOrResize);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
     };
-  }, [totalCards, speed, applyCardStyles]);
+  }, [totalCards, speed, renderMobileCards, applyDesktopCardStyles]);
 
   // Jump to specific card by smoothly scrolling the viewport
   const jumpToIndex = useCallback(
@@ -85482,7 +85535,11 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
           activeIndexRef.current = index;
           setActiveIndex(index);
         }
-        applyCardStyles(index, 0);
+        if (isMobileRef.current) {
+          renderMobileCards(index);
+        } else {
+          applyDesktopCardStyles(index, 0);
+        }
         return;
       }
 
@@ -85495,58 +85552,33 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
         behavior: 'smooth',
       });
     },
-    [totalCards, applyCardStyles]
+    [totalCards, renderMobileCards, applyDesktopCardStyles]
   );
-
-  // Mobile Touch Swipe Handling with kinetic momentum
-  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches.length === 1) {
-      touchStartRef.current = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY,
-        time: Date.now(),
-      };
-    }
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStartRef.current || e.changedTouches.length === 0) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartRef.current.x;
-    const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
-    touchStartRef.current = null;
-
-    // Horizontal swipe detection: strictly require horizontal dominance so vertical scroll remains unhindered
-    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 2) {
-      if (deltaX < 0 && activeIndexRef.current < totalCards - 1) {
-        jumpToIndex(activeIndexRef.current + 1);
-      } else if (deltaX > 0 && activeIndexRef.current > 0) {
-        jumpToIndex(activeIndexRef.current - 1);
-      }
-    }
-  };
 
   if (totalCards === 0) return null;
 
   const activeProject = safeProjects[activeIndex] || safeProjects[0];
 
-  // Section height: Compact total travel so user never feels trapped
-  const totalContainerHeightVh = Math.max(120, 100 + (totalCards - 1) * scrollDistanceMultiplier);
+  // Section heights:
+  // Mobile: Shorter travel (Section 20) so the user progresses through works quickly
+  // Desktop: Retains full luxurious glide travel
+  const mobileContainerHeightVh = Math.max(105, 100 + (totalCards - 1) * mobileDistanceMultiplier);
+  const desktopContainerHeightVh = Math.max(120, 100 + (totalCards - 1) * scrollDistanceMultiplier);
 
   return (
     <section
       ref={containerRef}
-      style={{ height: `${totalContainerHeightVh}vh` }}
-      className="relative w-full bg-canvas text-espresso selection:bg-champagne selection:text-espresso"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      style={{
+        '--mobile-height': `${mobileContainerHeightVh}vh`,
+        '--desktop-height': `${desktopContainerHeightVh}vh`,
+      } as React.CSSProperties}
+      className="relative w-full bg-canvas text-espresso selection:bg-champagne selection:text-espresso h-[var(--mobile-height)] md:h-[var(--desktop-height)]"
     >
       {/* Pinned Sticky Viewport Stage with Luminous Transparent Glass Aesthetics */}
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between py-3 sm:py-6 md:py-8 px-3 sm:px-8 lg:px-12 z-10">
-        {/* Seamless Soft Edge Ambient Dissolves in Balaji Web Canvas */}
-        <div className="pointer-events-none absolute top-0 left-0 right-0 h-28 sm:h-36 bg-gradient-to-b from-canvas via-canvas/80 to-transparent backdrop-blur-xs z-30" />
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-28 sm:h-36 bg-gradient-to-t from-canvas via-canvas/80 to-transparent backdrop-blur-xs z-30" />
+        {/* Seamless Soft Edge Ambient Dissolves in Balaji Web Canvas (Pure Linear Gradient, Zero Backdrop Filter) */}
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-24 sm:h-36 bg-gradient-to-b from-canvas via-canvas/80 to-transparent z-30" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 sm:h-36 bg-gradient-to-t from-canvas via-canvas/80 to-transparent z-30" />
 
         {/* Left & Right Soft Edge Vignettes */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-canvas/80 to-transparent z-25" />
@@ -85592,7 +85624,7 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
                   }}
                   data-portfolio-card="true"
                   data-theme="dark"
-                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 will-change-transform bg-white/40 md:backdrop-blur-xl md:[transform-style:preserve-3d]"
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 md:will-change-transform bg-white/40 md:backdrop-blur-xl md:[transform-style:preserve-3d]"
                   style={{
                     boxShadow:
                       idx === 0
@@ -85627,18 +85659,18 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
                   {/* Card Editorial Info Overlay */}
                   <div className="absolute inset-0 p-3.5 sm:p-7 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
-                    {/* Top Tag & Location Badge (Frosted Crystal Glass) */}
+                    {/* Top Tag & Location Badge (Frosted Crystal Glass on Desktop, Lightweight Static Translucent on Mobile) */}
                     <div
                       ref={(el) => {
                         textTopRefs.current[idx] = el;
                       }}
                       className="flex items-center justify-between pointer-events-auto"
                     >
-                      <div className="flex items-center gap-1.5 bg-white/90 md:bg-white/85 backdrop-blur-md md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs uppercase tracking-wider text-espresso rounded-2xs shadow-md">
+                      <div className="flex items-center gap-1.5 bg-white/95 md:bg-white/85 md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs uppercase tracking-wider text-espresso rounded-2xs shadow-md">
                         <Compass className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-bronze" />
                         <span className="font-medium">{project.location}</span>
                       </div>
-                      <span className="bg-white/90 md:bg-white/85 backdrop-blur-md md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs font-mono text-espresso font-medium rounded-2xs shadow-md">
+                      <span className="bg-white/95 md:bg-white/85 md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs font-mono text-espresso font-medium rounded-2xs shadow-md">
                         {project.year}
                       </span>
                     </div>

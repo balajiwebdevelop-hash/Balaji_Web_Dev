@@ -1,11 +1,52 @@
 import { NextResponse } from 'next/server';
-import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
+import { isSupabaseConfigured, getServiceSupabase, isMySQLConfigured, testMySQLConnection } from '@/server/db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const timestamp = new Date().toISOString();
 
+  // 1. Hostinger MySQL Primary Probe
+  if (isMySQLConfigured()) {
+    const mysqlCheck = await testMySQLConnection();
+    if (mysqlCheck.success) {
+      return NextResponse.json(
+        {
+          status: 'ready',
+          timestamp,
+          mode: 'production',
+          database: {
+            configured: true,
+            connected: true,
+            provider: 'hostinger_mysql',
+            user: process.env.DB_USER || 'u603162798_balaji_arc_db',
+            database: process.env.DB_NAME || 'u603162798_balaji_arc_db',
+            host: process.env.DB_HOST || 'localhost',
+            latencyMs: mysqlCheck.latencyMs,
+          },
+        },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        {
+          status: 'not_ready',
+          timestamp,
+          database: {
+            configured: true,
+            connected: false,
+            provider: 'hostinger_mysql',
+            user: process.env.DB_USER,
+            host: process.env.DB_HOST,
+            error: mysqlCheck.error || 'Failed to connect to Hostinger MySQL database.',
+          },
+        },
+        { status: 503 }
+      );
+    }
+  }
+
+  // 2. Supabase Secondary Probe
   if (!isSupabaseConfigured()) {
     if (process.env.NODE_ENV === 'production') {
       return NextResponse.json(

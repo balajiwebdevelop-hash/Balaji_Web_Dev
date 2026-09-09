@@ -22,6 +22,9 @@ import {
   getInitialAdminSeed,
 } from '@/lib/seedData';
 import { DatabaseUnavailableError } from '../errors';
+import { isMySQLConfigured, getMySQLPool } from './mysql';
+
+export { isMySQLConfigured, getMySQLPool };
 
 // =============================================================
 // DATABASE STATE & FIXTURE INTERFACES (DEVELOPMENT / TEST ONLY)
@@ -129,13 +132,14 @@ export function getServiceSupabase(): SupabaseClient {
 }
 
 /**
- * Enforces that in production environments, the database MUST be Supabase.
+ * Enforces that in production environments, an authoritative database MUST be configured.
+ * Accepts Hostinger MySQL (phpMyAdmin) or Supabase.
  * Prevents silent fallback to ephemeral or local files in production.
  */
 export function ensureAuthoritativeDb(): void {
-  if (isProduction() && !isSupabaseConfigured()) {
+  if (isProduction() && !isSupabaseConfigured() && !isMySQLConfigured()) {
     throw new Error(
-      'Fatal Production Configuration Error: Supabase connection is required in production mode.'
+      'Fatal Production Configuration Error: Primary database connection (Hostinger MySQL or Supabase) is required in production mode.'
     );
   }
 }

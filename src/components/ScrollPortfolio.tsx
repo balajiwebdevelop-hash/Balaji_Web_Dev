@@ -77,14 +77,101 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
   });
   const lastTimeRef = useRef<number>(0);
 
+  // Dedicated responsive mobile flag ref (avoids SSR hydration mismatches)
+  const isMobileRef = useRef<boolean>(false);
+
   // High-performance direct DOM transform applier (runs directly against DOM, zero React re-renders)
   const applyCardStyles = useCallback((currentProgress: number, vel: number) => {
+    const isMobile = isMobileRef.current;
+
+    if (isMobile) {
+      // DEDICATED LIGHTWEIGHT 2D MOBILE RENDERING ENGINE
+      // ZERO rotateX / rotateZ, ZERO translateZ, ZERO animated filters, ZERO forced layout toggles
+      for (let idx = 0; idx < totalCards; idx++) {
+        const card = cardRefs.current[idx];
+        if (!card) continue;
+
+        const delta = idx - currentProgress;
+        const isCurrent = Math.abs(delta) < 0.5;
+
+        // Mobile Prune: composite ONLY Active + Next + Immediate Previous cards
+        if (delta < -0.70 || delta > 1.60) {
+          if (card.style.visibility !== 'hidden') card.style.visibility = 'hidden';
+          if (card.style.opacity !== '0') card.style.opacity = '0';
+          if (card.style.pointerEvents !== 'none') card.style.pointerEvents = 'none';
+          continue;
+        }
+        if (card.style.visibility !== 'visible') card.style.visibility = 'visible';
+
+        let translateYPercent: number;
+        let scale: number;
+        let opacity: number;
+        let textOpacity: number;
+
+        if (delta < 0) {
+          // Card exiting smoothly towards top
+          const absDelta = -delta;
+          translateYPercent = delta * 24;
+          scale = Math.min(1.05, 1 + absDelta * 0.04);
+          if (absDelta <= 0.20) {
+            opacity = 1;
+            textOpacity = 1;
+          } else if (absDelta <= 0.55) {
+            const t = (absDelta - 0.20) / 0.35;
+            const smooth = t * t * (3 - 2 * t);
+            opacity = Math.max(0, 1 - smooth);
+            textOpacity = Math.max(0, 1 - t * 1.3);
+          } else {
+            opacity = 0;
+            textOpacity = 0;
+          }
+        } else {
+          // Card entering from lower stack
+          translateYPercent = delta * 14;
+          scale = Math.max(0.88, 1 - delta * 0.07);
+          if (delta <= 0.25) {
+            opacity = 1;
+            textOpacity = 1;
+          } else if (delta <= 0.75) {
+            const enterT = (0.75 - delta) / 0.50;
+            const smoothEnter = enterT * enterT * (3 - 2 * enterT);
+            opacity = 0.40 + 0.60 * smoothEnter;
+            textOpacity = Math.max(0, (smoothEnter - 0.2) / 0.8);
+          } else {
+            opacity = Math.max(0, 0.40 - (delta - 0.75) * 0.5);
+            textOpacity = 0;
+          }
+        }
+
+        const zIndex = totalCards - Math.abs(Math.round(delta));
+
+        // 2D GPU translation and scale — instantaneous rendering on mobile GPUs
+        card.style.transform = `translate3d(0, ${translateYPercent.toFixed(2)}%, 0) scale(${scale.toFixed(4)})`;
+        card.style.opacity = opacity.toFixed(3);
+        if (card.style.filter !== 'none') card.style.filter = 'none';
+        card.style.zIndex = `${zIndex}`;
+        card.style.pointerEvents = isCurrent ? 'auto' : 'none';
+
+        const textTop = textTopRefs.current[idx];
+        if (textTop) textTop.style.opacity = textOpacity.toFixed(3);
+
+        const textBottom = textBottomRefs.current[idx];
+        if (textBottom) textBottom.style.opacity = textOpacity.toFixed(3);
+
+        const imgEl = imgRefs.current[idx];
+        if (imgEl && imgEl.style.transform !== 'none') imgEl.style.transform = 'none';
+      }
+      return;
+    }
+
+    // DESKTOP RENDERING PATH (100% PRESERVED, UNTOUCHED 3D PERSPECTIVE & EFFECTS)
     const dynamicTiltX = Math.max(-3.5, Math.min(3.5, vel * 40));
     const dynamicTiltZ = Math.max(-1.2, Math.min(1.2, -vel * 16));
 
     for (let idx = 0; idx < totalCards; idx++) {
       const card = cardRefs.current[idx];
       if (!card) continue;
+      if (card.style.visibility !== 'visible') card.style.visibility = 'visible';
 
       const delta = idx - currentProgress;
       const isCurrent = Math.abs(delta) < 0.5;
@@ -177,6 +264,27 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
     let isMounted = true;
 
+    // Responsive Mobile detection with change listener
+    const mq = window.matchMedia('(max-width: 767px)');
+    isMobileRef.current = mq.matches;
+    const handleMqChange = (e: MediaQueryListEvent) => {
+      isMobileRef.current = e.matches;
+      for (let idx = 0; idx < totalCards; idx++) {
+        const card = cardRefs.current[idx];
+        if (card) {
+          card.style.display = '';
+          card.style.visibility = 'visible';
+          card.style.filter = '';
+        }
+      }
+      onScrollOrResize();
+    };
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handleMqChange);
+    } else {
+      mq.addListener(handleMqChange);
+    }
+
     const startLoop = () => {
       if (physicsRef.current.isAnimating) return;
       if (!physicsRef.current.inView || (typeof document !== 'undefined' && document.hidden)) return;
@@ -202,12 +310,15 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
       const diff = p.target - p.current;
 
+      const isMobile = isMobileRef.current;
       // Hydrodynamic viscosity factor calibrated for liquid buttery glide:
-      // Fast = 8.5 (snappy yet buttery), Normal = 6.8 (silky water), Cinematic = 4.8 (luxurious slow glide)
-      const lambda = speed === 'fast' ? 8.5 : speed === 'cinematic' ? 4.8 : 6.8;
+      // Mobile: 14.0 (instant direct tracking with finger, immediate response, buttery ease-out)
+      // Desktop: Fast = 8.5 (snappy yet buttery), Normal = 6.8 (silky water), Cinematic = 4.8 (luxurious slow glide)
+      const lambda = isMobile ? 14.0 : speed === 'fast' ? 8.5 : speed === 'cinematic' ? 4.8 : 6.8;
       const dampFactor = 1 - Math.exp(-lambda * dt);
+      const settleThreshold = isMobile ? 0.0001 : 0.00005;
 
-      if (Math.abs(diff) > 0.00005) {
+      if (Math.abs(diff) > settleThreshold) {
         // High-precision hydrodynamic asymptotic glide
         p.current += diff * dampFactor;
         const currentVel = (p.current - p.last) / (dt * 60);
@@ -242,18 +353,31 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       }
     };
 
+    // Cached container layout coordinates to eliminate forced synchronous reflows on scroll
+    const containerGeo = { top: 0, height: 0, windowHeight: 800 };
+    const measureGeometry = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      containerGeo.top = rect.top + scrollY;
+      containerGeo.height = rect.height;
+      containerGeo.windowHeight = window.innerHeight || 800;
+    };
+
     let scrollTicking = false;
-    const onScrollOrResize = () => {
+    const onScroll = () => {
       if (!scrollTicking) {
         scrollTicking = true;
         requestAnimationFrame(() => {
           scrollTicking = false;
           if (!containerRef.current) return;
-          const rect = containerRef.current.getBoundingClientRect();
-          const windowHeight = window.innerHeight || 800;
+          const scrollY = window.scrollY || window.pageYOffset || 0;
+          const windowHeight = containerGeo.windowHeight || window.innerHeight || 800;
+          const rectTop = containerGeo.top - scrollY;
+          const rectBottom = rectTop + containerGeo.height;
 
           // Check if container is in viewport
-          const inView = rect.top < windowHeight && rect.bottom > 0;
+          const inView = rectTop < windowHeight && rectBottom > 0;
           physicsRef.current.inView = inView;
           if (!inView) {
             if (rafId.current) cancelAnimationFrame(rafId.current);
@@ -261,15 +385,20 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
             return;
           }
 
-          const totalScrollableDistance = rect.height - windowHeight;
+          const totalScrollableDistance = containerGeo.height - windowHeight;
           if (totalScrollableDistance <= 0) return;
 
           // Fraction from 0 to 1
-          const progress = Math.max(0, Math.min(1, -rect.top / totalScrollableDistance));
+          const progress = Math.max(0, Math.min(1, -rectTop / totalScrollableDistance));
           physicsRef.current.target = progress * (totalCards - 1);
           startLoop();
         });
       }
+    };
+
+    const onScrollOrResize = () => {
+      measureGeometry();
+      onScroll();
     };
 
     // Sleep when offscreen via IntersectionObserver
@@ -303,20 +432,28 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     };
     document.addEventListener('visibilitychange', onVisibilityChange);
 
-    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScrollOrResize, { passive: true });
+    window.addEventListener('orientationchange', onScrollOrResize, { passive: true });
 
-    // Initial mount card styling
+    // Initial mount card styling & measurement
+    measureGeometry();
     applyCardStyles(0, 0);
-    onScrollOrResize();
+    onScroll();
 
     return () => {
       isMounted = false;
       if (rafId.current) cancelAnimationFrame(rafId.current);
       if (observer) observer.disconnect();
+      if (mq.removeEventListener) {
+        mq.removeEventListener('change', handleMqChange);
+      } else {
+        mq.removeListener(handleMqChange);
+      }
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      window.removeEventListener('scroll', onScrollOrResize);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScrollOrResize);
+      window.removeEventListener('orientationchange', onScrollOrResize);
     };
   }, [totalCards, speed, applyCardStyles]);
 
@@ -339,7 +476,8 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
       }
 
       const fraction = index / (totalCards - 1);
-      const targetScrollY = window.scrollY + rect.top + fraction * totalScrollableDistance;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const targetScrollY = scrollY + rect.top + fraction * totalScrollableDistance;
 
       window.scrollTo({
         top: targetScrollY,
@@ -368,12 +506,12 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
     const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
     touchStartRef.current = null;
 
-    // Horizontal swipe detection
-    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (deltaX < 0 && activeIndex < totalCards - 1) {
-        jumpToIndex(activeIndex + 1);
-      } else if (deltaX > 0 && activeIndex > 0) {
-        jumpToIndex(activeIndex - 1);
+    // Horizontal swipe detection: strictly require horizontal dominance so vertical scroll remains unhindered
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 2) {
+      if (deltaX < 0 && activeIndexRef.current < totalCards - 1) {
+        jumpToIndex(activeIndexRef.current + 1);
+      } else if (deltaX > 0 && activeIndexRef.current > 0) {
+        jumpToIndex(activeIndexRef.current - 1);
       }
     }
   };
@@ -405,9 +543,10 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
         {/* Luminous Light Glass Atmospheric Backdrop (Single Active Layer — High GPU Efficiency) */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
+          {/* Heavy blur background image enabled strictly on desktop to save mobile compositor GPU */}
           <div
             key={`bg-ambient-${activeProject.id}`}
-            className="absolute -inset-20 transition-opacity duration-700 ease-out will-change-transform opacity-12"
+            className="hidden md:block absolute -inset-20 transition-opacity duration-700 ease-out will-change-transform opacity-12"
           >
             <Image
               src={activeProject.heroImage}
@@ -418,25 +557,20 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
             />
           </div>
           {/* Transparent Frosted Glass Texture & Pure Architectural Canvas Glow */}
-          <div className="absolute inset-0 bg-canvas/60 backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-canvas/60 md:backdrop-blur-xl" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85)_0%,rgba(246,242,234,0.3)_60%,transparent_100%)]" />
           {/* Soft Diffused Warmth Lighting */}
-          <div className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] bg-champagne/15 rounded-full blur-[140px]" />
-          <div className="absolute -bottom-32 right-1/4 w-[36rem] h-[36rem] bg-bronze/10 rounded-full blur-[160px]" />
+          <div className="absolute -top-32 left-1/4 w-[24rem] sm:w-[36rem] h-[24rem] sm:h-[36rem] bg-champagne/15 rounded-full blur-[90px] sm:blur-[140px]" />
+          <div className="absolute -bottom-32 right-1/4 w-[24rem] sm:w-[36rem] h-[24rem] sm:h-[36rem] bg-bronze/10 rounded-full blur-[100px] sm:blur-[160px]" />
         </div>
 
         {/* 2. MAIN 3D PERSPECTIVE STAGE */}
         <div
           ref={stageRef}
-          className="relative z-10 my-auto flex-1 w-full max-w-6xl mx-auto flex items-center justify-center py-1 sm:py-2 pointer-events-none"
-          style={{
-            perspective: '1200px',
-            perspectiveOrigin: '50% 48%',
-          }}
+          className="relative z-10 my-auto flex-1 w-full max-w-6xl mx-auto flex items-center justify-center py-1 sm:py-2 pointer-events-none md:[perspective:1200px] md:[perspective-origin:50%_48%]"
         >
           <div
-            className="relative w-full max-w-5xl aspect-[4/4.5] sm:aspect-[16/10] md:aspect-[21/10] max-h-[54dvh] sm:max-h-[58vh] pointer-events-none"
-            style={{ transformStyle: 'preserve-3d' }}
+            className="relative w-full max-w-5xl aspect-[4/4.5] sm:aspect-[16/10] md:aspect-[21/10] max-h-[54dvh] sm:max-h-[58vh] pointer-events-none md:[transform-style:preserve-3d]"
           >
             {safeProjects.map((project, idx) => {
               return (
@@ -447,9 +581,8 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
                   }}
                   data-portfolio-card="true"
                   data-theme="dark"
-                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 will-change-transform bg-white/40 backdrop-blur-xl"
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/90 will-change-transform bg-white/40 md:backdrop-blur-xl md:[transform-style:preserve-3d]"
                   style={{
-                    transformStyle: 'preserve-3d',
                     boxShadow:
                       idx === 0
                         ? '0 30px 80px -15px rgba(90, 67, 53, 0.18), 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1.5px 2px rgba(255, 255, 255, 0.95), 0 0 35px rgba(197, 168, 128, 0.15)'
@@ -464,14 +597,15 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
                     ref={(el) => {
                       imgRefs.current[idx] = el;
                     }}
-                    className="relative w-full h-full overflow-hidden will-change-transform"
+                    className="relative w-full h-full overflow-hidden md:will-change-transform"
                   >
                     <Image
                       src={project.heroImage}
                       alt={project.title}
                       fill
                       priority={idx === 0}
-                      sizes="(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1100px"
+                      loading={idx <= 1 ? 'eager' : 'lazy'}
+                      sizes="(max-width: 767px) 92vw, (max-width: 1280px) 80vw, 1100px"
                       className="object-cover object-center select-none"
                     />
                   </div>
@@ -489,11 +623,11 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
                       }}
                       className="flex items-center justify-between pointer-events-auto"
                     >
-                      <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs uppercase tracking-wider text-espresso rounded-2xs shadow-md">
+                      <div className="flex items-center gap-1.5 bg-white/90 md:bg-white/85 backdrop-blur-md md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs uppercase tracking-wider text-espresso rounded-2xs shadow-md">
                         <Compass className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-bronze" />
                         <span className="font-medium">{project.location}</span>
                       </div>
-                      <span className="bg-white/85 backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs font-mono text-espresso font-medium rounded-2xs shadow-md">
+                      <span className="bg-white/90 md:bg-white/85 backdrop-blur-md md:backdrop-blur-xl px-2.5 py-1 sm:px-3.5 sm:py-1.5 border border-white/90 text-[9px] sm:text-xs font-mono text-espresso font-medium rounded-2xs shadow-md">
                         {project.year}
                       </span>
                     </div>

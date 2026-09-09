@@ -26,9 +26,19 @@ import {
   CreditCard,
   Copy,
   ShieldAlert,
+  ExternalLink,
+  Smartphone,
+  MessageSquare,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
-import { SiteSettings, AuditLog, HomepageSettings, PaymentGatewaySettings } from '@/types';
+import {
+  SiteSettings,
+  AuditLog,
+  HomepageSettings,
+  PaymentGatewaySettings,
+  PortfolioAnimationSettings,
+  WhatsAppFloatingSettings,
+} from '@/types';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
 
@@ -48,7 +58,7 @@ export default function AdminSettingsPage() {
 
   // Active section tab
   const [activeTab, setActiveTab] = useState<
-    'homepage' | 'identity' | 'payment' | 'fiscal' | 'announcements' | 'push' | 'audit'
+    'homepage' | 'identity' | 'portfolio-motion' | 'whatsapp' | 'payment' | 'fiscal' | 'announcements' | 'push' | 'audit'
   >('homepage');
 
   // Audit Log Filter States
@@ -166,6 +176,47 @@ export default function AdminSettingsPage() {
       ...settings,
       paymentGateway: {
         ...currentPg,
+        [field]: value,
+      },
+    });
+  };
+
+  const updatePortfolioAnimation = (field: keyof PortfolioAnimationSettings, value: any) => {
+    if (!settings) return;
+    const currentAnim = settings.portfolioAnimation || {
+      enabled: true,
+      speedPreset: 'fast',
+      parallaxIntensity: 'medium',
+      maxProjects: 6,
+      sectionHeading: 'Selected Works',
+      sectionSubheading: 'Architectural Signatures',
+    };
+    setSettings({
+      ...settings,
+      portfolioAnimation: {
+        ...currentAnim,
+        [field]: value,
+      },
+    });
+  };
+
+  const updateWhatsApp = (field: keyof WhatsAppFloatingSettings, value: any) => {
+    if (!settings) return;
+    const currentWa = settings.whatsapp || {
+      enabled: true,
+      phoneNumber: '+91 70029 48484',
+      defaultMessage:
+        'Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.',
+      tooltipText: 'Chat with Atelier Vikas Sir',
+      position: 'bottom-right',
+      showOnMobile: true,
+      showOnDesktop: true,
+      displayDelayMs: 800,
+    };
+    setSettings({
+      ...settings,
+      whatsapp: {
+        ...currentWa,
         [field]: value,
       },
     });
@@ -366,6 +417,32 @@ export default function AdminSettingsPage() {
           >
             <Building2 className="w-3.5 h-3.5" />
             Brand Logo & Identity
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('portfolio-motion')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'portfolio-motion'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-champagne" />
+            3D Portfolio Motion
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('whatsapp')}
+            className={`px-4 py-2 text-xs uppercase tracking-widest font-medium transition-colors flex items-center gap-2 cursor-pointer rounded-2xs flex-shrink-0 ${
+              activeTab === 'whatsapp'
+                ? 'bg-champagne text-[#100C0A] border border-champagne shadow-xs'
+                : 'bg-[#1D1714] text-[#A89F91] hover:text-[#FCFAF6] border border-[#332821] hover:border-champagne/40'
+            }`}
+          >
+            <Phone className="w-3.5 h-3.5 text-emerald-400" />
+            WhatsApp Live Chat
           </button>
 
           <button
@@ -816,6 +893,396 @@ export default function AdminSettingsPage() {
                     className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
                   />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: 3D PORTFOLIO MOTION & STORYTELLING */}
+          {activeTab === 'portfolio-motion' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-champagne" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">3D Portfolio Motion & Storytelling Stage</h2>
+                    <span className="text-[11px] text-[#A89F91]">
+                      Hardware-accelerated perspective card deck inspired by the Radaville Studio interaction principle
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {(settings.portfolioAnimation?.enabled ?? true) ? (
+                    <span className="text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-800/50 px-3 py-1 font-medium flex items-center gap-1.5 rounded-2xs">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> 3D Storytelling Active
+                    </span>
+                  ) : (
+                    <span className="text-[11px] bg-amber-950/40 text-amber-300 border border-amber-800/50 px-3 py-1 font-medium rounded-2xs">
+                      Fallback Static Grid Active
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Status & Preview Card */}
+              <div className="p-6 bg-[#14100D] border border-[#332821] rounded-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-xs uppercase tracking-widest text-champagne font-medium">
+                      Live Configuration Overview
+                    </h3>
+                    <p className="text-xs text-[#A89F91] mt-0.5">
+                      Controls Section 3 (&quot;Selected Works&quot;) on the customer-facing homepage.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wider font-mono">
+                    <span className="px-2 py-1 bg-[#1D1714] border border-[#382D25] text-champagne">
+                      Speed: {settings.portfolioAnimation?.speedPreset || 'fast'}
+                    </span>
+                    <span className="px-2 py-1 bg-[#1D1714] border border-[#382D25] text-champagne">
+                      Depth: {settings.portfolioAnimation?.parallaxIntensity || 'medium'}
+                    </span>
+                    <span className="px-2 py-1 bg-[#1D1714] border border-[#382D25] text-champagne">
+                      Limit: {settings.portfolioAnimation?.maxProjects || 6} Projects
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-xs text-[#A89F91] bg-[#100C0A]/60 p-4 border border-[#281F19] rounded-2xs space-y-2">
+                  <div className="flex items-center gap-2 text-champagne font-medium">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Interaction Architecture:</span>
+                  </div>
+                  <ul className="list-disc list-inside space-y-1 text-[11px] text-[#A89F91]/90 pl-1">
+                    <li>Overlapping 3D card deck rendered with pure CSS transforms (<code className="text-champagne font-mono text-[10px]">perspective: 1200px</code>).</li>
+                    <li>RAF-driven lerp smoothing for buttery 120fps motion without third-party physics weight.</li>
+                    <li>Shorter, tighter scroll timeline to eliminate scroll fatigue and prevent sticky traps.</li>
+                    <li>Interactive timeline stick indicators allow visitors to click and jump directly to any signature work.</li>
+                    <li>Touch swipe gesture support on mobile devices.</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Primary Settings Form */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                {/* 1. Master Toggle */}
+                <div className="md:col-span-2 flex items-center justify-between p-4 bg-[#14100D] border border-[#332821] rounded-xs">
+                  <div>
+                    <h4 className="text-sm font-serif text-[#FCFAF6]">Enable 3D Scroll Storytelling</h4>
+                    <p className="text-xs text-[#A89F91] mt-0.5">
+                      When disabled, the homepage automatically displays the classical 3-column architectural portfolio grid.
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={settings.portfolioAnimation?.enabled ?? true}
+                      onChange={(e) => updatePortfolioAnimation('enabled', e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-[#281F19] peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#FCFAF6] after:border-[#281F19] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-champagne"></div>
+                  </label>
+                </div>
+
+                {/* 2. Speed Preset */}
+                <div className="space-y-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Scroll Responsiveness & Timeline
+                  </label>
+                  <p className="text-[11px] text-[#A89F91]">Controls how much scroll distance is required to advance between works.</p>
+                  <div className="grid grid-cols-3 gap-2 pt-1">
+                    {[
+                      { id: 'fast', label: 'Fast (Recommended)', sub: '35vh/card' },
+                      { id: 'normal', label: 'Normal', sub: '50vh/card' },
+                      { id: 'cinematic', label: 'Cinematic', sub: '70vh/card' },
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => updatePortfolioAnimation('speedPreset', opt.id)}
+                        className={`p-3 text-center border rounded-xs transition-colors cursor-pointer ${
+                          (settings.portfolioAnimation?.speedPreset || 'fast') === opt.id
+                            ? 'bg-champagne text-[#100C0A] border-champagne font-medium shadow-xs'
+                            : 'bg-[#14100D] text-[#A89F91] border-[#382D25] hover:border-champagne/40'
+                        }`}
+                      >
+                        <div className="text-xs font-semibold">{opt.label}</div>
+                        <div className="text-[9px] opacity-75 font-mono mt-0.5">{opt.sub}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Parallax Intensity */}
+                <div className="space-y-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    3D Perspective & Layer Depth
+                  </label>
+                  <p className="text-[11px] text-[#A89F91]">Controls the spacing between stacked cards on the Z/Y depth axis.</p>
+                  <div className="grid grid-cols-3 gap-2 pt-1">
+                    {[
+                      { id: 'subtle', label: 'Subtle', sub: 'Z: 90px' },
+                      { id: 'medium', label: 'Medium (Default)', sub: 'Z: 130px' },
+                      { id: 'high', label: 'High', sub: 'Z: 170px' },
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => updatePortfolioAnimation('parallaxIntensity', opt.id)}
+                        className={`p-3 text-center border rounded-xs transition-colors cursor-pointer ${
+                          (settings.portfolioAnimation?.parallaxIntensity || 'medium') === opt.id
+                            ? 'bg-champagne text-[#100C0A] border-champagne font-medium shadow-xs'
+                            : 'bg-[#14100D] text-[#A89F91] border-[#382D25] hover:border-champagne/40'
+                        }`}
+                      >
+                        <div className="text-xs font-semibold">{opt.label}</div>
+                        <div className="text-[9px] opacity-75 font-mono mt-0.5">{opt.sub}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. Max Projects */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Featured Projects in Deck
+                  </label>
+                  <select
+                    value={settings.portfolioAnimation?.maxProjects || 6}
+                    onChange={(e) => updatePortfolioAnimation('maxProjects', Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option value={3}>3 Signature Works</option>
+                    <option value={4}>4 Signature Works</option>
+                    <option value={5}>5 Signature Works</option>
+                    <option value={6}>6 Signature Works (Recommended)</option>
+                    <option value={8}>8 Signature Works</option>
+                  </select>
+                </div>
+
+                {/* 5. Section Heading Text */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Section Eyebrow Text
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.portfolioAnimation?.sectionHeading || 'Selected Works'}
+                    onChange={(e) => updatePortfolioAnimation('sectionHeading', e.target.value)}
+                    placeholder="Selected Works"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                  </input>
+                </div>
+
+                {/* 6. Section Subheading Text */}
+                <div className="space-y-1 md:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Section Title Headline
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.portfolioAnimation?.sectionSubheading || 'Architectural Signatures'}
+                    onChange={(e) => updatePortfolioAnimation('sectionSubheading', e.target.value)}
+                    placeholder="Architectural Signatures"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                  </input>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: WHATSAPP LIVE CONTACT */}
+          {activeTab === 'whatsapp' && (
+            <div className="bg-[#1D1714] border border-[#332821] p-6 sm:p-8 space-y-8 rounded-xs shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-4">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-5 h-5 text-emerald-400" />
+                  <div>
+                    <h2 className="font-serif text-2xl text-[#FCFAF6]">WhatsApp Floating Live Contact</h2>
+                    <span className="text-[11px] text-[#A89F91]">
+                      Client-facing direct chat trigger with auto-sanitized international link generation
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {(settings.whatsapp?.enabled ?? true) ? (
+                    <span className="text-[11px] bg-emerald-950/40 text-emerald-300 border border-emerald-800/50 px-3 py-1 font-medium flex items-center gap-1.5 rounded-2xs">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Live on Public Site
+                    </span>
+                  ) : (
+                    <span className="text-[11px] bg-red-950/40 text-red-300 border border-red-800/50 px-3 py-1 font-medium rounded-2xs">
+                      Disabled
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Master Toggle */}
+              <div className="flex items-center justify-between p-4 bg-[#14100D] border border-[#332821] rounded-xs">
+                <div>
+                  <h4 className="text-sm font-serif text-[#FCFAF6]">Enable Floating WhatsApp Button</h4>
+                  <p className="text-xs text-[#A89F91] mt-0.5">
+                    Displays a discreet, luxury floating action button on customer pages (automatically hidden in the admin dashboard).
+                  </p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.whatsapp?.enabled ?? true}
+                    onChange={(e) => updateWhatsApp('enabled', e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-[#281F19] peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#FCFAF6] after:border-[#281F19] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                {/* WhatsApp Phone Number */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    WhatsApp Phone Number (with Country Code)
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.whatsapp?.phoneNumber || settings.whatsappNumber || '+91 70029 48484'}
+                    onChange={(e) => updateWhatsApp('phoneNumber', e.target.value)}
+                    placeholder="+91 70029 48484"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                  <p className="text-[10px] text-[#A89F91]">
+                    Accepts formats like <code className="text-champagne">+91 70029 48484</code> or <code className="text-champagne">7002948484</code>. Automatically sanitized into digits.
+                  </p>
+                </div>
+
+                {/* Floating Tooltip Callout */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Floating Tooltip Badge Text
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.whatsapp?.tooltipText || 'Chat with Atelier Vikas Sir'}
+                    onChange={(e) => updateWhatsApp('tooltipText', e.target.value)}
+                    placeholder="Chat with Atelier Vikas Sir"
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                  <p className="text-[10px] text-[#A89F91]">
+                    Displays as an elegant floating badge on desktop hover.
+                  </p>
+                </div>
+
+                {/* Default Pre-filled Message */}
+                <div className="space-y-1 md:col-span-2">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Default Pre-filled Message
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={
+                      settings.whatsapp?.defaultMessage ||
+                      'Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.'
+                    }
+                    onChange={(e) => updateWhatsApp('defaultMessage', e.target.value)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                  <p className="text-[10px] text-[#A89F91]">
+                    This message is automatically loaded into the visitor&apos;s WhatsApp when they click the button.
+                  </p>
+                </div>
+
+                {/* Position */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Screen Position
+                  </label>
+                  <select
+                    value={settings.whatsapp?.position || 'bottom-right'}
+                    onChange={(e) => updateWhatsApp('position', e.target.value as any)}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  >
+                    <option value="bottom-right">Bottom-Right Corner (Standard)</option>
+                    <option value="bottom-left">Bottom-Left Corner</option>
+                  </select>
+                </div>
+
+                {/* Display Delay */}
+                <div className="space-y-1">
+                  <label className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Entrance Delay (Milliseconds)
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={10000}
+                    step={100}
+                    value={settings.whatsapp?.displayDelayMs ?? 800}
+                    onChange={(e) => updateWhatsApp('displayDelayMs', Number(e.target.value))}
+                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] focus:border-champagne focus:outline-hidden rounded-xs"
+                  />
+                  <p className="text-[10px] text-[#A89F91]">
+                    Delay before the button fades onto the screen after page load (default: 800ms).
+                  </p>
+                </div>
+
+                {/* Device Visibility Checkboxes */}
+                <div className="space-y-3 md:col-span-2 p-4 bg-[#14100D] border border-[#332821] rounded-xs">
+                  <span className="uppercase tracking-wider text-champagne/90 font-medium">
+                    Device Visibility
+                  </span>
+                  <div className="flex flex-wrap gap-6 pt-1">
+                    <label className="flex items-center gap-2 cursor-pointer text-xs text-[#FCFAF6]">
+                      <input
+                        type="checkbox"
+                        checked={settings.whatsapp?.showOnDesktop ?? true}
+                        onChange={(e) => updateWhatsApp('showOnDesktop', e.target.checked)}
+                        className="rounded-xs border-[#382D25] text-champagne focus:ring-champagne"
+                      />
+                      <span>Show on Desktop Browsers</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer text-xs text-[#FCFAF6]">
+                      <input
+                        type="checkbox"
+                        checked={settings.whatsapp?.showOnMobile ?? true}
+                        onChange={(e) => updateWhatsApp('showOnMobile', e.target.checked)}
+                        className="rounded-xs border-[#382D25] text-champagne focus:ring-champagne"
+                      />
+                      <span>Show on Mobile Phones & Tablets</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Test Action */}
+              <div className="pt-2 border-t border-[#281F19] flex items-center justify-between">
+                <span className="text-[11px] text-[#A89F91]">
+                  Test the exact WhatsApp deep-link generated with your current settings:
+                </span>
+                {(() => {
+                  const phone = settings.whatsapp?.phoneNumber || settings.whatsappNumber || '+91 70029 48484';
+                  let clean = phone.replace(/[^0-9]/g, '');
+                  if (clean.length === 10 && ['6', '7', '8', '9'].includes(clean[0])) clean = '91' + clean;
+                  const msg = encodeURIComponent(
+                    settings.whatsapp?.defaultMessage ||
+                      'Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.'
+                  );
+                  const testUrl = `https://wa.me/${clean}?text=${msg}`;
+
+                  return (
+                    <a
+                      href={testUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-emerald-700/60 hover:bg-emerald-600 text-emerald-100 border border-emerald-500/50 rounded-xs text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Test WhatsApp Link in New Tab
+                    </a>
+                  );
+                })()}
               </div>
             </div>
           )}

@@ -35,7 +35,7 @@ export default function AboutPage() {
   return (
     <div className="space-y-24 sm:space-y-32 pb-24">
       {/* Header Banner */}
-      <section className="bg-espresso text-surface py-24 sm:py-32 relative overflow-hidden">
+      <section data-navbar-theme="dark" className="bg-espresso text-surface pt-28 sm:pt-36 pb-24 sm:pb-32 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
           <Reveal>
             <span className="text-xs uppercase tracking-widest-plus text-champagne font-medium">

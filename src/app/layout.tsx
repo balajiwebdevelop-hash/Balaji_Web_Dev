@@ -9,6 +9,7 @@ import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { PageTransition } from '@/components/PageTransition';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { getSiteSettings } from '@/lib/db';
 
 const cormorant = Cormorant_Garamond({
@@ -130,6 +131,10 @@ export default async function RootLayout({
               </main>
               <CartDrawer />
               <MobileBottomNav />
+              <WhatsAppButton
+                settings={settings?.whatsapp}
+                fallbackPhone={settings?.whatsappNumber || settings?.contactPhone}
+              />
               <Footer initialSettings={settings} />
             </WishlistProvider>
           </CartProvider>

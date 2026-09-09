@@ -27,7 +27,7 @@ export function ImageReveal({
   aspectRatio = 'aspect-[16/10]',
 }: ImageRevealProps) {
   return (
-    <div className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}>
+    <div data-image="true" className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}>
       {fill ? (
         <Image
           src={src}

@@ -361,6 +361,33 @@ CREATE TABLE IF NOT EXISTS `push_subscriptions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ------------------------------------------------------------
+-- 17. SITE SETTINGS TABLE (Atelier Branding, Portfolio Motion & WhatsApp)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `site_settings` (
+  `id` VARCHAR(36) NOT NULL,
+  `brand_name` VARCHAR(255) NULL,
+  `tagline` TEXT NULL,
+  `contact_email` VARCHAR(255) NULL,
+  `contact_phone` VARCHAR(100) NULL,
+  `whatsapp_number` VARCHAR(100) NULL,
+  `studio_address` TEXT NULL,
+  `gstin_number` VARCHAR(50) NULL,
+  `currency` VARCHAR(10) DEFAULT 'INR',
+  `currency_symbol` VARCHAR(10) DEFAULT '₹',
+  `tax_rate_percent` DECIMAL(5,2) DEFAULT 18.00,
+  `standard_shipping_fee` DECIMAL(10,2) DEFAULT 1500.00,
+  `free_shipping_threshold` DECIMAL(10,2) DEFAULT 50000.00,
+  `homepage` JSON NULL,
+  `payment_gateway` JSON NULL,
+  `portfolio_animation` JSON NULL,
+  `whatsapp` JSON NULL,
+  `raw_json` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ============================================================
 -- INITIAL SEED DATA FOR HOSTINGER PHPMYADMIN
 -- ============================================================

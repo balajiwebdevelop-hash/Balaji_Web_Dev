@@ -88,6 +88,24 @@ export const initialSiteSettings: SiteSettings = {
     enableAmazonPay: true,
     requireUtr: true,
   },
+  portfolioAnimation: {
+    enabled: true,
+    speedPreset: 'fast',
+    parallaxIntensity: 'medium',
+    maxProjects: 6,
+    sectionHeading: 'Selected Works',
+    sectionSubheading: 'Architectural Signatures',
+  },
+  whatsapp: {
+    enabled: true,
+    phoneNumber: '+91 70029 48484',
+    defaultMessage: 'Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.',
+    tooltipText: 'Chat with Atelier Vikas Sir',
+    position: 'bottom-right',
+    showOnMobile: true,
+    showOnDesktop: true,
+    displayDelayMs: 800,
+  },
 };
 
 export const initialCategories: Category[] = [

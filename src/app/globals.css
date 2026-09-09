@@ -35,6 +35,65 @@ body {
   color: #FCFAF6;
 }
 
+/* Bespoke High-Fashion Editorial Typography (PP Neue World & Editorial Old) */
+@font-face {
+  font-family: 'PPNeueWorld';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/PPNeueWorld-CondensedRegular.woff2') format('woff2'),
+       url('/fonts/PPNeueWorld-CondensedRegular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PPNeueWorld';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/PPNeueWorld-SuperCondensedLight.woff2') format('woff2'),
+       url('/fonts/PPNeueWorld-SuperCondensedLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PPEditorialOld';
+  font-style: italic;
+  font-weight: 200;
+  font-display: swap;
+  src: url('/fonts/PPEditorialOld-UltralightItalic.woff2') format('woff2');
+}
+
+.font-world,
+.font-display {
+  font-family: 'PPNeueWorld', var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-editorial-italic {
+  font-family: 'PPEditorialOld', var(--font-cormorant), Georgia, serif;
+  font-style: italic;
+}
+
+/* Chiaroscuro Architectural Typography (Light & Material Contrast Theory) */
+.text-chiaroscuro-ivory {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5EFEB 50%, #D8CEBE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #FCFAF6;
+}
+
+.text-chiaroscuro-champagne {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9F5EE 45%, #E2D1B3 80%, #C5A880 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #F8F4EE;
+}
+
+.text-chiaroscuro-limestone {
+  background: linear-gradient(180deg, #FAF6F0 0%, #E8DFD3 55%, #C2AC92 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #ECE5D8;
+}
+
 /* Editorial Typography */
 .font-serif {
   font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
@@ -177,3 +236,27 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Luxurious Slow Swiping Marquee Ticker */
+@keyframes marquee-swipe {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-swipe 36s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+
+

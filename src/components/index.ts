@@ -12,3 +12,8 @@ export * from './PageTransition';
 export * from './Reveal';
 export * from './ImageReveal';
 export * from './ProductDetailClient';
+export * from './ScrollPortfolio';
+export * from './WhatsAppButton';
+export * from './Hero3DTypography';
+
+

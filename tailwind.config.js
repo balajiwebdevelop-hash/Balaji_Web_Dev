@@ -51,6 +51,7 @@ module.exports = {
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Cormorant Garamond', 'Georgia', 'serif'],
         sans: ['var(--font-jakarta)', 'Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['var(--font-cormorant)', 'Cormorant Garamond', 'Georgia', 'serif'],
       },
       letterSpacing: {
         widest: '0.2em',

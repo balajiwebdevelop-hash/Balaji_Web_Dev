@@ -330,6 +330,26 @@ export interface HomepageSettings {
   ctaBtnLink?: string;
 }
 
+export interface PortfolioAnimationSettings {
+  enabled: boolean;
+  speedPreset: 'fast' | 'normal' | 'cinematic';
+  parallaxIntensity: 'subtle' | 'medium' | 'high';
+  maxProjects: number;
+  sectionHeading?: string;
+  sectionSubheading?: string;
+}
+
+export interface WhatsAppFloatingSettings {
+  enabled: boolean;
+  phoneNumber: string;
+  defaultMessage: string;
+  tooltipText: string;
+  position: 'bottom-right' | 'bottom-left';
+  showOnMobile: boolean;
+  showOnDesktop: boolean;
+  displayDelayMs: number;
+}
+
 export interface SiteSettings {
   brandName: string;
   brandSubtitle?: string;
@@ -365,6 +385,8 @@ export interface SiteSettings {
   };
   homepage?: HomepageSettings;
   paymentGateway?: PaymentGatewaySettings;
+  portfolioAnimation?: PortfolioAnimationSettings;
+  whatsapp?: WhatsAppFloatingSettings;
 }
 
 export interface AuditLog {

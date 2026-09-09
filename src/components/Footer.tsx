@@ -34,7 +34,7 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
   const brandSubtitle = initialSettings?.brandSubtitle || 'Architecture • Interior Design • Materials';
 
   return (
-    <footer className="bg-espresso text-surface border-t border-espresso-light mt-auto">
+    <footer data-navbar-theme="dark" className="bg-espresso text-surface border-t border-espresso-light mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-atelier-dark">
           {/* Studio Identity */}

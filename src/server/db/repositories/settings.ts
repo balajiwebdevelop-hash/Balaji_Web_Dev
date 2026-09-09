@@ -10,6 +10,70 @@ import {
   getDb,
   saveDb,
 } from '../client';
+import { isMySQLConfigured, queryOne, execute } from '../mysql';
+
+function hydrateSettings(v: any): SiteSettings {
+  if (!v) return initialSiteSettings;
+  return {
+    ...initialSiteSettings,
+    ...v,
+    brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
+    brandSubtitle: v.brandSubtitle || initialSiteSettings.brandSubtitle,
+    logoUrl: v.logoUrl || v.logo || initialSiteSettings.logoUrl || '/logo.png',
+    tagline: v.tagline || initialSiteSettings.tagline,
+    architectName: v.architectName || initialSiteSettings.architectName,
+    establishedYear: v.establishedYear || initialSiteSettings.establishedYear,
+    googleRating: v.googleRating || initialSiteSettings.googleRating,
+    contactEmail: v.contactEmail || v.supportEmail || initialSiteSettings.contactEmail,
+    contactPhone: v.contactPhone || v.supportPhone || initialSiteSettings.contactPhone,
+    whatsappNumber: v.whatsappNumber || initialSiteSettings.whatsappNumber,
+    businessHours: v.businessHours || initialSiteSettings.businessHours,
+    studioAddress: v.studioAddress || initialSiteSettings.studioAddress,
+    city: v.city || initialSiteSettings.city,
+    state: v.state || initialSiteSettings.state,
+    country: v.country || initialSiteSettings.country,
+    pincode: v.pincode || initialSiteSettings.pincode,
+    currency: v.currency || initialSiteSettings.currency,
+    currencySymbol: v.currencySymbol || initialSiteSettings.currencySymbol,
+    taxRatePercent: Number(v.taxRatePercent !== undefined ? v.taxRatePercent : initialSiteSettings.taxRatePercent),
+    freeShippingThreshold: Number(
+      v.freeShippingThreshold !== undefined ? v.freeShippingThreshold : initialSiteSettings.freeShippingThreshold
+    ),
+    standardShippingFee: Number(
+      v.standardShippingFee !== undefined ? v.standardShippingFee : initialSiteSettings.standardShippingFee
+    ),
+    gstinNumber: v.gstinNumber || initialSiteSettings.gstinNumber,
+    minOrderValue: Number(v.minOrderValue !== undefined ? v.minOrderValue : initialSiteSettings.minOrderValue),
+    socialInstagram: v.socialInstagram || initialSiteSettings.socialInstagram,
+    socialPinterest: v.socialPinterest || initialSiteSettings.socialPinterest,
+    socialLinkedin: v.socialLinkedin || initialSiteSettings.socialLinkedin,
+    socialFacebook: v.socialFacebook || initialSiteSettings.socialFacebook,
+    announcementBanner: {
+      enabled:
+        v.announcementBanner?.enabled !== undefined
+          ? v.announcementBanner.enabled
+          : initialSiteSettings.announcementBanner?.enabled ?? true,
+      text: v.announcementBanner?.text || initialSiteSettings.announcementBanner?.text || '',
+      linkUrl: v.announcementBanner?.linkUrl || initialSiteSettings.announcementBanner?.linkUrl || '/quote',
+    },
+    homepage: {
+      ...initialSiteSettings.homepage,
+      ...(v.homepage || {}),
+    },
+    paymentGateway: {
+      ...initialSiteSettings.paymentGateway,
+      ...(v.paymentGateway || {}),
+    },
+    portfolioAnimation: {
+      ...initialSiteSettings.portfolioAnimation!,
+      ...(v.portfolioAnimation || {}),
+    },
+    whatsapp: {
+      ...initialSiteSettings.whatsapp!,
+      ...(v.whatsapp || {}),
+    },
+  };
+}
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   const now = Date.now();
@@ -17,6 +81,32 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     return memoryCache.settings.data;
   }
 
+  // 1. Hostinger MySQL Primary/Dual Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne<{ raw_json?: any; value?: any }>(
+        'SELECT raw_json, value FROM site_settings WHERE id = ? OR `key` = ? LIMIT 1',
+        ['global', 'general']
+      );
+      if (row) {
+        let v = row.raw_json || row.value;
+        if (typeof v === 'string') {
+          try {
+            v = JSON.parse(v);
+          } catch {}
+        }
+        if (v) {
+          const result = hydrateSettings(v);
+          memoryCache.settings = { data: result, timestamp: now };
+          return result;
+        }
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getSiteSettings failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Supabase Secondary Layer
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
     const { data, error } = await supabase
@@ -34,80 +124,21 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       ) {
         console.warn('Supabase unreachable. Falling back to default site settings.');
         const fallbackDb = getDb();
-        return {
-          ...initialSiteSettings,
-          ...(fallbackDb.siteSettings || {}),
-          gstinNumber: fallbackDb.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
-        };
+        return hydrateSettings(fallbackDb.siteSettings);
       }
       throw new Error(`Failed to fetch site settings: ${error.message}`);
     }
 
-    let result = initialSiteSettings;
     if (data && data.value) {
-      const v = data.value;
-      result = {
-        ...initialSiteSettings,
-        ...v,
-        brandName: v.brandName || v.studioName || initialSiteSettings.brandName,
-        brandSubtitle: v.brandSubtitle || initialSiteSettings.brandSubtitle,
-        logoUrl: v.logoUrl || v.logo || initialSiteSettings.logoUrl || '/logo.png',
-        tagline: v.tagline || initialSiteSettings.tagline,
-        architectName: v.architectName || initialSiteSettings.architectName,
-        establishedYear: v.establishedYear || initialSiteSettings.establishedYear,
-        googleRating: v.googleRating || initialSiteSettings.googleRating,
-        contactEmail: v.contactEmail || v.supportEmail || initialSiteSettings.contactEmail,
-        contactPhone: v.contactPhone || v.supportPhone || initialSiteSettings.contactPhone,
-        whatsappNumber: v.whatsappNumber || initialSiteSettings.whatsappNumber,
-        businessHours: v.businessHours || initialSiteSettings.businessHours,
-        studioAddress: v.studioAddress || initialSiteSettings.studioAddress,
-        city: v.city || initialSiteSettings.city,
-        state: v.state || initialSiteSettings.state,
-        country: v.country || initialSiteSettings.country,
-        pincode: v.pincode || initialSiteSettings.pincode,
-        currency: v.currency || initialSiteSettings.currency,
-        currencySymbol: v.currencySymbol || initialSiteSettings.currencySymbol,
-        taxRatePercent: Number(v.taxRatePercent !== undefined ? v.taxRatePercent : initialSiteSettings.taxRatePercent),
-        freeShippingThreshold: Number(
-          v.freeShippingThreshold !== undefined ? v.freeShippingThreshold : initialSiteSettings.freeShippingThreshold
-        ),
-        standardShippingFee: Number(
-          v.standardShippingFee !== undefined ? v.standardShippingFee : initialSiteSettings.standardShippingFee
-        ),
-        gstinNumber: v.gstinNumber || initialSiteSettings.gstinNumber,
-        minOrderValue: Number(v.minOrderValue !== undefined ? v.minOrderValue : initialSiteSettings.minOrderValue),
-        socialInstagram: v.socialInstagram || initialSiteSettings.socialInstagram,
-        socialPinterest: v.socialPinterest || initialSiteSettings.socialPinterest,
-        socialLinkedin: v.socialLinkedin || initialSiteSettings.socialLinkedin,
-        socialFacebook: v.socialFacebook || initialSiteSettings.socialFacebook,
-        announcementBanner: {
-          enabled:
-            v.announcementBanner?.enabled !== undefined
-              ? v.announcementBanner.enabled
-              : initialSiteSettings.announcementBanner?.enabled ?? true,
-          text: v.announcementBanner?.text || initialSiteSettings.announcementBanner?.text || '',
-          linkUrl: v.announcementBanner?.linkUrl || initialSiteSettings.announcementBanner?.linkUrl || '/quote',
-        },
-        homepage: {
-          ...initialSiteSettings.homepage,
-          ...(v.homepage || {}),
-        },
-        paymentGateway: {
-          ...initialSiteSettings.paymentGateway,
-          ...(v.paymentGateway || {}),
-        },
-      };
+      const result = hydrateSettings(data.value);
+      memoryCache.settings = { data: result, timestamp: now };
+      return result;
     }
-    memoryCache.settings = { data: result, timestamp: now };
-    return result;
   }
 
+  // 3. Resilient Local Database Cache Layer
   const db = getDb();
-  const mergedSettings: SiteSettings = {
-    ...initialSiteSettings,
-    ...(db.siteSettings || {}),
-    gstinNumber: db.siteSettings?.gstinNumber || initialSiteSettings.gstinNumber,
-  };
+  const mergedSettings = hydrateSettings(db.siteSettings);
   memoryCache.settings = { data: mergedSettings, timestamp: now };
   return mergedSettings;
 }
@@ -144,6 +175,8 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
     announcementBanner: full.announcementBanner,
     homepage: full.homepage,
     paymentGateway: full.paymentGateway,
+    portfolioAnimation: full.portfolioAnimation,
+    whatsapp: full.whatsapp,
     taxRatePercent: full.taxRatePercent,
     freeShippingThreshold: full.freeShippingThreshold,
     standardShippingFee: full.standardShippingFee,
@@ -176,6 +209,20 @@ function mergeSiteSettings(current: SiteSettings, partial: Partial<SiteSettings>
             ...partial.paymentGateway,
           }
         : current.paymentGateway,
+    portfolioAnimation:
+      partial.portfolioAnimation !== undefined
+        ? {
+            ...(current.portfolioAnimation || initialSiteSettings.portfolioAnimation!),
+            ...partial.portfolioAnimation,
+          }
+        : current.portfolioAnimation,
+    whatsapp:
+      partial.whatsapp !== undefined
+        ? {
+            ...(current.whatsapp || initialSiteSettings.whatsapp!),
+            ...partial.whatsapp,
+          }
+        : current.whatsapp,
   };
 }
 
@@ -184,11 +231,44 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
     validatePaymentSettings(partial.paymentGateway);
   }
 
+  const current = await getSiteSettings();
+  const merged = mergeSiteSettings(current, partial);
+  const jsonStr = JSON.stringify(merged);
+
+  // 1. Persist to Hostinger MySQL (if configured)
+  if (isMySQLConfigured()) {
+    try {
+      await execute(
+        `INSERT INTO site_settings (id, brand_name, tagline, contact_email, contact_phone, whatsapp_number, studio_address, raw_json, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+         ON DUPLICATE KEY UPDATE
+           brand_name = VALUES(brand_name),
+           tagline = VALUES(tagline),
+           contact_email = VALUES(contact_email),
+           contact_phone = VALUES(contact_phone),
+           whatsapp_number = VALUES(whatsapp_number),
+           studio_address = VALUES(studio_address),
+           raw_json = VALUES(raw_json),
+           updated_at = NOW()`,
+        [
+          'global',
+          merged.brandName,
+          merged.tagline,
+          merged.contactEmail,
+          merged.contactPhone,
+          merged.whatsappNumber || '',
+          merged.studioAddress,
+          jsonStr,
+        ]
+      );
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateSiteSettings error:', mysqlErr);
+    }
+  }
+
+  // 2. Persist to Supabase (if configured)
   if (isSupabaseConfigured()) {
     const supabase = getServiceSupabase();
-    const current = await getSiteSettings();
-    const merged = mergeSiteSettings(current, partial);
-
     const { data, error } = await supabase
       .from('site_settings')
       .upsert(
@@ -204,18 +284,18 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
 
     if (error || !data) {
       console.error('Supabase updateSiteSettings error:', error);
-      throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
+      // If MySQL succeeded, don't throw; otherwise report error
+      if (!isMySQLConfigured()) {
+        throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
+      }
     }
-
-    invalidateMemoryCache('settings');
-    return merged;
   }
 
+  // 3. Persist to local JSON fallback
   const db = getDb();
-  const current = await getSiteSettings();
-  const merged = mergeSiteSettings(current, partial);
   db.siteSettings = merged;
   saveDb(db);
+
   invalidateMemoryCache('settings');
-  return db.siteSettings;
+  return merged;
 }

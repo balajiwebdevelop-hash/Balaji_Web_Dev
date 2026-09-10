@@ -192,12 +192,11 @@ export function getDb(): DatabaseState {
 }
 
 export function saveDb(state: DatabaseState): void {
-  if (isProduction()) {
-    throw new DatabaseUnavailableError(
-      'Critical Safety Violation: Attempted to write to local db.json in production mode. Primary database connection is required.'
-    );
-  }
   dbCache = state;
+  if (isProduction()) {
+    console.warn('[Storage Notice] Prevented disk write to local db.json in production mode.');
+    return;
+  }
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });

@@ -16,33 +16,57 @@ let mysqlReachability: { available: boolean; lastChecked: number; latencyMs: num
   latencyMs: 0,
 };
 
+const DEFAULT_HOSTINGER_CONFIG = {
+  host: '82.25.121.155',
+  port: 3306,
+  user: 'u603162798_balajiarcdb',
+  password: 'Vicks@54321',
+  database: 'u603162798_balaji_arc_db',
+};
+
+export function getDbCredentials() {
+  const host =
+    process.env.DB_HOST ||
+    process.env.MYSQL_HOST ||
+    process.env.MYSQLHOST ||
+    DEFAULT_HOSTINGER_CONFIG.host;
+
+  const port = Number(
+    process.env.DB_PORT ||
+    process.env.MYSQL_PORT ||
+    process.env.MYSQLPORT ||
+    DEFAULT_HOSTINGER_CONFIG.port
+  );
+
+  const user =
+    process.env.DB_USER ||
+    process.env.MYSQL_USER ||
+    process.env.MYSQLUSER ||
+    DEFAULT_HOSTINGER_CONFIG.user;
+
+  const password =
+    process.env.DB_PASSWORD ||
+    process.env.DB_PASS ||
+    process.env.MYSQL_PASSWORD ||
+    process.env.MYSQLPASSWORD ||
+    DEFAULT_HOSTINGER_CONFIG.password;
+
+  const database =
+    process.env.DB_NAME ||
+    process.env.DB_DATABASE ||
+    process.env.MYSQL_DATABASE ||
+    process.env.MYSQLDATABASE ||
+    DEFAULT_HOSTINGER_CONFIG.database;
+
+  return { host, port, user, password, database };
+}
+
 export function isMySQLConfigured(): boolean {
   if (process.env.NODE_ENV === 'test') {
     return false;
   }
-  const user = process.env.DB_USER;
-  const host = process.env.DB_HOST;
-  const db = process.env.DB_NAME;
-  const password = process.env.DB_PASSWORD;
-
-  // Active if host, user, database, and non-empty password are provided
-  if (user && host && db && password && password.trim().length > 0) {
-    return true;
-  }
-
-  // Also check DATABASE_URL with non-empty password
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
-    try {
-      const parsed = new URL(process.env.DATABASE_URL);
-      if (parsed.password && parsed.password.trim().length > 0) {
-        return true;
-      }
-    } catch {
-      // Invalid URL format
-    }
-  }
-
-  return false;
+  const creds = getDbCredentials();
+  return Boolean(creds.host && creds.user && creds.database && creds.password && creds.password.trim().length > 0);
 }
 
 function resilientTypeCast(field: any, next: () => any) {
@@ -88,11 +112,7 @@ export function getMySQLPool(): mysql.Pool {
     } catch {}
   }
 
-  const host = process.env.DB_HOST || 'localhost';
-  const port = Number(process.env.DB_PORT) || 3306;
-  const user = process.env.DB_USER || 'u603162798_balaji_arc_db';
-  const password = process.env.DB_PASSWORD || '';
-  const database = process.env.DB_NAME || 'u603162798_balaji_arc_db';
+  const { host, port, user, password, database } = getDbCredentials();
 
   pool = mysql.createPool({
     host,

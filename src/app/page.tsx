@@ -7,6 +7,7 @@ import { Reveal } from '@/components/Reveal';
 import { ImageReveal } from '@/components/ImageReveal';
 import { ScrollPortfolio } from '@/components/ScrollPortfolio';
 import { Hero3DTypography } from '@/components/Hero3DTypography';
+import { SafeImage } from '@/components/SafeImage';
 
 export const revalidate = 60;
 
@@ -191,8 +192,8 @@ export default async function HomePage() {
                   className="group block p-2.5 sm:p-4 bg-surface border border-atelier hover:border-bronze transition-all text-center space-y-2 sm:space-y-3"
                 >
                   <div className="relative aspect-square w-full overflow-hidden bg-canvas">
-                    <Image
-                      src={cat.imageUrl || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                    <SafeImage
+                      src={cat.imageUrl}
                       alt={cat.name}
                       fill
                       sizes="(max-width: 640px) 33vw, (max-width: 1024px) 16vw, 150px"
@@ -233,8 +234,8 @@ export default async function HomePage() {
             <Reveal key={product.id} delay={idx * 100}>
               <Link href={`/material/${product.slug}`} className="group block space-y-2 sm:space-y-3">
                 <div className="relative aspect-square overflow-hidden bg-surface border border-atelier">
-                  <Image
-                    src={product.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c'}
+                  <SafeImage
+                    src={product.images?.[0]}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Plus, Edit2, Trash2, Check, X, Compass, Eye, EyeOff } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { ImageUploader } from '@/components/ImageUploader';
+import { SafeImage } from '@/components/SafeImage';
 import { Service } from '@/types';
 
 export default function AdminServicesPage() {
@@ -179,7 +180,7 @@ export default function AdminServicesPage() {
             >
               <div className="space-y-3">
                 <div className="relative aspect-[16/10] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
-                  {srv.imageUrl && <Image src={srv.imageUrl} alt={srv.title} fill className="object-cover" />}
+                  <SafeImage src={srv.imageUrl} alt={srv.title} fill className="object-cover" />
                 </div>
 
                 <div>

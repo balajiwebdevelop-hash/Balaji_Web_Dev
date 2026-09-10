@@ -4,6 +4,9 @@ export { default as AdminLayout } from './AdminLayout';
 export * from './ImageUploader';
 export { default as ImageUploader } from './ImageUploader';
 
+export * from './SafeImage';
+export { default as SafeImage } from './SafeImage';
+
 export * from './Navbar';
 export * from './Footer';
 export * from './CartDrawer';

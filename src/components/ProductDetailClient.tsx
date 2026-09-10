@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SafeImage } from './SafeImage';
 import {
   Heart,
   ShoppingBag,
@@ -63,16 +64,14 @@ export function ProductDetailClient({
         {/* Left: Gallery */}
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-[4/3] sm:aspect-[16/11] bg-canvas overflow-hidden border border-atelier">
-            {currentImage && (
-              <Image
-                src={currentImage}
-                alt={`${product.name} - View ${safeImageIndex + 1}`}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-cover"
-              />
-            )}
+            <SafeImage
+              src={currentImage}
+              alt={`${product.name} - View ${safeImageIndex + 1}`}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover"
+            />
             {product.purchaseMode === 'REQUEST_QUOTE' && (
               <span className="absolute top-4 left-4 bg-espresso text-surface text-[10px] px-3 py-1 uppercase tracking-widest font-medium">
                 Quote Only
@@ -91,7 +90,7 @@ export function ProductDetailClient({
                     selectedImage === idx ? 'border-bronze opacity-100 ring-1 ring-bronze' : 'border-atelier opacity-60 hover:opacity-100'
                   }`}
                 >
-                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
+                  <SafeImage src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -337,15 +336,13 @@ export function ProductDetailClient({
                 className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-colors space-y-1.5 sm:space-y-2"
               >
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                  {rel.images[0] && (
-                    <Image
-                      src={rel.images[0]}
-                      alt={rel.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
-                      className="object-cover group-hover:scale-103 transition-transform duration-500"
-                    />
-                  )}
+                  <SafeImage
+                    src={rel.images?.[0]}
+                    alt={rel.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px"
+                    className="object-cover group-hover:scale-103 transition-transform duration-500"
+                  />
                 </div>
                 <h4 className="font-serif text-xs sm:text-sm text-espresso group-hover:text-bronze transition-colors font-medium truncate">
                   {rel.name}

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SafeImage } from '@/components/SafeImage';
 import { Search as SearchIcon, ArrowRight, X, Layers } from 'lucide-react';
 import { Product, Project } from '@/types';
 
@@ -125,9 +126,7 @@ export default function SearchPage() {
                     className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-colors space-y-2"
                   >
                     <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                      {p.images[0] && (
-                        <Image src={p.images[0]} alt={p.name} fill className="object-cover group-hover:scale-104 transition-transform duration-500" />
-                      )}
+                      <SafeImage src={p.images?.[0]} alt={p.name} fill className="object-cover group-hover:scale-104 transition-transform duration-500" />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider text-bronze font-medium block">
                       {p.categoryName}

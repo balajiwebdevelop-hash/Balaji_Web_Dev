@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { getProducts } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
+import { SafeImage } from '@/components/SafeImage';
 
 export const metadata = {
   title: 'Studio Shop — Curated Lighting, Objects & Furnishings | Balaji Architect & Interiors',
@@ -55,15 +56,13 @@ export default async function ShopPage() {
                 className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-all space-y-3"
               >
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                  {product.images[0] && (
-                    <Image
-                      src={product.images[0]}
-                      alt={product.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
-                    />
-                  )}
+                  <SafeImage
+                    src={product.images?.[0]}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
+                  />
                   {product.isNew && (
                     <span className="absolute top-2 left-2 bg-espresso text-surface text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">
                       New Release

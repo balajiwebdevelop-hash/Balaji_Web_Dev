@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { ImageUploader } from '@/components/ImageUploader';
+import { SafeImage } from '@/components/SafeImage';
 import { Product, Category, UnitType, PurchaseMode } from '@/types';
 
 function AdminProductsContent() {
@@ -322,9 +323,7 @@ function AdminProductsContent() {
               >
                 <div className="flex items-center gap-3">
                   <div className="relative w-12 h-12 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
-                    {p.images[0] && (
-                      <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
-                    )}
+                    <SafeImage src={p.images?.[0]} alt={p.name} fill className="object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="font-serif text-sm font-medium text-[#FCFAF6] block truncate">{p.name}</span>
@@ -418,9 +417,7 @@ function AdminProductsContent() {
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="relative w-10 h-10 bg-[#14100D] flex-shrink-0 overflow-hidden border border-[#332821] rounded-xs">
-                            {p.images[0] && (
-                              <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
-                            )}
+                            <SafeImage src={p.images?.[0]} alt={p.name} fill className="object-cover" />
                           </div>
                           <div>
                             <span className="font-serif text-sm font-medium text-[#FCFAF6] block">{p.name}</span>

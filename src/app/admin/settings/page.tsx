@@ -31,6 +31,8 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
+import { ImageUploader } from '@/components/ImageUploader';
+import { SafeImage } from '@/components/SafeImage';
 import {
   SiteSettings,
   AuditLog,
@@ -563,15 +565,12 @@ export default function AdminSettingsPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                   <div className="space-y-1 sm:col-span-2 lg:col-span-3">
-                    <label className="uppercase tracking-wider text-champagne/90 font-medium flex items-center gap-1.5">
-                      <ImageIcon className="w-3.5 h-3.5 text-champagne" /> Hero Background Image URL
-                    </label>
-                    <input
-                      type="text"
-                      value={home.heroImageUrl || ''}
-                      onChange={(e) => updateHomepage('heroImageUrl', e.target.value)}
-                      placeholder="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90"
-                      className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden font-mono text-[11px] rounded-xs"
+                    <ImageUploader
+                      bucket="site-media"
+                      label="Hero Background Image (Upload from Device or paste URL)"
+                      images={home.heroImageUrl ? [home.heroImageUrl] : []}
+                      onChange={(imgs) => updateHomepage('heroImageUrl', imgs[0] || '')}
+                      multiple={false}
                     />
                   </div>
 
@@ -768,16 +767,15 @@ export default function AdminSettingsPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="uppercase tracking-wider text-champagne/90 font-medium">Brand Logo Image Path / URL</label>
-                  <input
-                    type="text"
-                    value={settings.logoUrl || '/logo.png'}
-                    onChange={(e) => setSettings({ ...settings, logoUrl: e.target.value })}
-                    className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:outline-hidden font-mono text-xs rounded-xs"
-                    placeholder="/logo.png"
+                  <ImageUploader
+                    bucket="brand"
+                    label="Brand Logo (Upload from Device or paste URL)"
+                    images={settings.logoUrl ? [settings.logoUrl] : ['/logo.png']}
+                    onChange={(imgs) => setSettings({ ...settings, logoUrl: imgs[0] || '/logo.png' })}
+                    multiple={false}
                   />
-                  <span className="text-[10px] text-[#A89F91]">
-                    Master high-resolution brand logo & iOS app icon (stored in public/logo.png).
+                  <span className="text-[10px] text-[#A89F91] block mt-1">
+                    Master high-resolution brand logo & iOS app icon (stored in public/logo.png or Hostinger MySQL).
                   </span>
                 </div>
 

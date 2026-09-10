@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Plus, Edit2, Trash2, Check, X, FolderTree, ExternalLink } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { ImageUploader } from '@/components/ImageUploader';
+import { SafeImage } from '@/components/SafeImage';
 import { Category } from '@/types';
 
 export default function AdminCategoriesPage() {
@@ -142,9 +143,7 @@ export default function AdminCategoriesPage() {
             >
               <div className="space-y-3">
                 <div className="relative aspect-[16/9] bg-[#14100D] overflow-hidden border border-[#332821] rounded-xs">
-                  {cat.imageUrl && (
-                    <Image src={cat.imageUrl} alt={cat.name} fill className="object-cover" />
-                  )}
+                  <SafeImage src={cat.imageUrl} alt={cat.name} fill className="object-cover" />
                   <span className="absolute top-2 right-2 px-2 py-0.5 bg-black/80 text-champagne text-[10px] uppercase font-mono border border-champagne/30 rounded-2xs">
                     Order: {cat.sortOrder}
                   </span>

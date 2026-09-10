@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Filter, Search, ArrowRight, Check } from 'lucide-react';
 import { getCategories, getProducts } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
+import { SafeImage } from '@/components/SafeImage';
 
 export const metadata = {
   title: 'Materials Marketplace & Surfaces — Balaji Architect & Interiors',
@@ -124,15 +125,13 @@ export default async function MaterialsPage({
                     className="group block bg-surface border border-atelier p-2.5 sm:p-4 hover:border-bronze transition-all duration-300 space-y-2 sm:space-y-3"
                   >
                     <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                      {product.images[0] && (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                          className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
-                        />
-                      )}
+                      <SafeImage
+                        src={product.images?.[0]}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
+                      />
                       {product.purchaseMode === 'REQUEST_QUOTE' && (
                         <span className="absolute top-1.5 left-1.5 bg-espresso/90 backdrop-blur-xs text-surface text-[8px] sm:text-[9px] px-1.5 sm:px-2 py-0.5 uppercase tracking-wider font-medium">
                           Quote

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getCategoryBySlug, getProducts, getCategories } from '@/lib/db';
 import { Reveal } from '@/components/Reveal';
+import { SafeImage } from '@/components/SafeImage';
 
 export const revalidate = 60;
 
@@ -109,15 +110,13 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                     className="group block bg-surface border border-atelier p-4 hover:border-bronze transition-all duration-300 space-y-3"
                   >
                     <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                      {product.images[0] && (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                          className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
-                        />
-                      )}
+                      <SafeImage
+                        src={product.images?.[0]}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
+                      />
                       {product.purchaseMode === 'REQUEST_QUOTE' && (
                         <span className="absolute top-2 left-2 bg-espresso/90 backdrop-blur-xs text-surface text-[9px] px-2 py-0.5 uppercase tracking-wider font-medium">
                           Quote Required

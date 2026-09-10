@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SafeImage } from '@/components/SafeImage';
 import { Heart, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
@@ -77,9 +78,7 @@ export default function WishlistPage() {
             >
               <div className="space-y-3">
                 <div className="relative aspect-[4/5] bg-canvas overflow-hidden">
-                  {product.images[0] && (
-                    <Image src={product.images[0]} alt={product.name} fill className="object-cover" />
-                  )}
+                  <SafeImage src={product.images?.[0]} alt={product.name} fill className="object-cover" />
                   <button
                     onClick={() => toggleWishlist(product.id)}
                     className="absolute top-2 right-2 p-1.5 bg-surface/90 text-espresso hover:text-red-700 transition-colors"

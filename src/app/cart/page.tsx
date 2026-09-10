@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SafeImage } from '@/components/SafeImage';
 import { Trash2, Minus, Plus, ArrowRight, ArrowLeft, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
@@ -51,9 +52,7 @@ export default function CartPage() {
               >
                 <div className="flex gap-4 sm:gap-6 flex-1">
                   <div className="relative w-24 h-28 sm:w-28 sm:h-32 bg-canvas overflow-hidden flex-shrink-0">
-                    {item.product.images[0] && (
-                      <Image src={item.product.images[0]} alt={item.product.name} fill className="object-cover" />
-                    )}
+                    <SafeImage src={item.product.images?.[0]} alt={item.product.name} fill className="object-cover" />
                   </div>
                   <div className="space-y-1.5 flex-1">
                     <span className="text-[10px] uppercase tracking-wider text-bronze font-medium">

@@ -123,22 +123,20 @@ export async function POST(req: NextRequest) {
 
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
+    const mimeType = file.type || 'image/jpeg';
 
-    // Persistent Local Storage in /public/uploads
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
+    const { saveMediaFile } = await import('@/server/db/repositories/media');
+    const saved = await saveMediaFile({
+      filename,
+      mimeType,
+      buffer,
+    });
 
-    const filePath = path.join(uploadDir, filename);
-    fs.writeFileSync(filePath, buffer);
-
-    const publicUrl = `/uploads/${filename}`;
     return NextResponse.json({
       success: true,
-      url: publicUrl,
-      filename,
-      storage: 'local',
+      url: saved.url,
+      filename: saved.filename,
+      storage: 'mysql_persistent',
     });
   } catch (err: any) {
     console.error('Upload route error:', err);

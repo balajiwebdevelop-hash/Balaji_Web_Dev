@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SafeImage } from './SafeImage';
 import { X, Minus, Plus, Trash2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
@@ -63,14 +64,12 @@ export function CartDrawer() {
                   className="flex gap-4 pb-6 border-b border-atelier/60"
                 >
                   <div className="relative w-20 h-24 bg-canvas flex-shrink-0 overflow-hidden">
-                    {item.product.images?.[0] && (
-                      <Image
-                        src={item.product.images[0]}
-                        alt={item.product.name}
-                        fill
-                        className="object-cover"
-                      />
-                    )}
+                    <SafeImage
+                      src={item.product.images?.[0]}
+                      alt={item.product.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>

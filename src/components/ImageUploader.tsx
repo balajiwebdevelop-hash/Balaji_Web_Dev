@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import Image from 'next/image';
-import { Upload, X, Loader2, Image as ImageIcon, Plus } from 'lucide-react';
+import { Upload, X, Loader2, Link as LinkIcon, Plus, Check } from 'lucide-react';
+import { SafeImage } from './SafeImage';
 
 interface ImageUploaderProps {
-  bucket?: 'products' | 'projects' | 'services' | 'site-media';
+  bucket?: 'products' | 'projects' | 'services' | 'site-media' | 'brand';
   images: string[];
   onChange: (images: string[]) => void;
   multiple?: boolean;
@@ -23,12 +23,16 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [manualUrl, setManualUrl] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setError(null);
+    setSuccessMsg(null);
     setUploading(true);
 
     const validFiles: File[] = [];
@@ -72,6 +76,8 @@ export function ImageUploader({
     }
 
     if (uploadedUrls.length > 0) {
+      setSuccessMsg(`Successfully uploaded and saved ${uploadedUrls.length} photo(s) to cloud database.`);
+      setTimeout(() => setSuccessMsg(null), 4000);
       if (multiple) {
         onChange([...images, ...uploadedUrls].slice(0, maxFiles));
       } else {
@@ -83,6 +89,19 @@ export function ImageUploader({
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  const handleManualAddUrl = () => {
+    const trimmed = manualUrl.trim();
+    if (!trimmed) return;
+
+    if (multiple) {
+      onChange([...images, trimmed].slice(0, maxFiles));
+    } else {
+      onChange([trimmed]);
+    }
+    setManualUrl('');
+    setShowUrlInput(false);
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -111,10 +130,39 @@ export function ImageUploader({
 
   return (
     <div className="space-y-3">
-      {label && (
-        <label className="text-xs uppercase tracking-wider text-champagne/90 font-medium block">
-          {label}
-        </label>
+      <div className="flex items-center justify-between">
+        {label && (
+          <label className="text-xs uppercase tracking-wider text-champagne/90 font-medium block">
+            {label}
+          </label>
+        )}
+        <button
+          type="button"
+          onClick={() => setShowUrlInput(!showUrlInput)}
+          className="text-[11px] text-champagne/80 hover:text-champagne flex items-center gap-1 transition-colors underline"
+        >
+          <LinkIcon className="w-3 h-3" />
+          {showUrlInput ? 'Hide URL input' : 'Or paste image URL'}
+        </button>
+      </div>
+
+      {showUrlInput && (
+        <div className="flex items-center gap-2 p-2.5 bg-[#17120F] border border-[#332821] rounded-xs">
+          <input
+            type="url"
+            value={manualUrl}
+            onChange={(e) => setManualUrl(e.target.value)}
+            placeholder="https://... or /uploads/..."
+            className="flex-1 bg-[#100C0A] border border-[#2B211A] text-xs text-[#FCFAF6] px-3 py-1.5 focus:border-champagne focus:outline-hidden rounded-xs"
+          />
+          <button
+            type="button"
+            onClick={handleManualAddUrl}
+            className="px-3 py-1.5 bg-champagne text-[#100C0A] text-xs uppercase font-medium tracking-wider hover:bg-[#DAC19E] transition-colors rounded-xs flex items-center gap-1"
+          >
+            <Plus className="w-3 h-3" /> Add
+          </button>
+        </div>
       )}
 
       {/* Drag & Drop Upload Zone */}
@@ -124,7 +172,7 @@ export function ImageUploader({
         onDragOver={handleDrag}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`border-2 border-dashed transition-all p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2 rounded-sm ${
+        className={`border-2 border-dashed transition-all p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2 rounded-xs ${
           dragActive
             ? 'border-champagne bg-champagne/10'
             : 'border-[#332821] hover:border-champagne/60 bg-[#16110E] hover:bg-[#1A1411]'
@@ -143,7 +191,7 @@ export function ImageUploader({
           <div className="flex flex-col items-center gap-2 py-2">
             <Loader2 className="w-7 h-7 text-champagne animate-spin" />
             <span className="text-xs text-champagne font-medium">
-              Uploading high-resolution image to storage...
+              Uploading &amp; saving to Hostinger database...
             </span>
           </div>
         ) : (
@@ -153,10 +201,10 @@ export function ImageUploader({
             </div>
             <div className="space-y-0.5">
               <p className="text-xs font-medium text-[#FCFAF6]">
-                Click to browse device or drag and drop photos here
+                Click to browse device or drag &amp; drop photos here
               </p>
               <p className="text-[10px] text-[#A89F91]">
-                Supports JPG, PNG, WebP, AVIF up to 10MB each
+                Photos are stored permanently in cloud database (JPG, PNG, WebP up to 10MB)
               </p>
             </div>
           </>
@@ -167,6 +215,13 @@ export function ImageUploader({
         <p className="text-xs text-red-300 bg-red-950/40 p-2.5 border border-red-800/50 rounded-xs">{error}</p>
       )}
 
+      {successMsg && (
+        <div className="text-xs text-emerald-300 bg-emerald-950/40 p-2.5 border border-emerald-800/50 rounded-xs flex items-center gap-2">
+          <Check className="w-4 h-4 text-emerald-400" />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
       {/* Image Preview Grid */}
       {images.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 pt-2">
@@ -175,7 +230,7 @@ export function ImageUploader({
               key={idx}
               className="relative aspect-square bg-[#16110E] border border-[#332821] overflow-hidden group rounded-xs shadow-xs"
             >
-              <Image src={url} alt={`Upload preview ${idx + 1}`} fill className="object-cover" />
+              <SafeImage src={url} alt={`Upload preview ${idx + 1}`} fill className="object-cover" />
               <button
                 type="button"
                 onClick={(e) => {

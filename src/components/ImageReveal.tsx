@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { SafeImage } from './SafeImage';
 
 interface ImageRevealProps {
   src: string;
@@ -29,7 +29,7 @@ export function ImageReveal({
   return (
     <div data-image="true" className={`overflow-hidden relative bg-canvas-subtle ${aspectRatio} ${className}`}>
       {fill ? (
-        <Image
+        <SafeImage
           src={src}
           alt={alt}
           fill
@@ -38,7 +38,7 @@ export function ImageReveal({
           className={`object-cover ${imageClassName}`}
         />
       ) : (
-        <Image
+        <SafeImage
           src={src}
           alt={alt}
           width={width || 800}

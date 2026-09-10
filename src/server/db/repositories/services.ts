@@ -8,6 +8,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseService } from '../mappers';
+import { ConflictError } from '../../errors';
 import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getServices(publishedOnly = true): Promise<Service[]> {
@@ -88,8 +89,11 @@ export async function createService(
 
       const inserted = await queryOne('SELECT * FROM services WHERE id = ?', [srvId]);
       if (inserted) return mapSupabaseService(inserted);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL createService failed, falling back:', mysqlErr);
+      throw new Error(`Failed to retrieve newly created service ${srvId}`);
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.error('Hostinger MySQL createService failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -133,9 +137,11 @@ export async function updateService(
       invalidateMemoryCache('services');
 
       const updated = await queryOne('SELECT * FROM services WHERE id = ?', [id]);
-      if (updated) return mapSupabaseService(updated);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateService failed, falling back:', mysqlErr);
+      return updated ? mapSupabaseService(updated) : null;
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.error('Hostinger MySQL updateService failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -158,11 +164,12 @@ export async function deleteService(id: string): Promise<boolean> {
   // 1. Hostinger MySQL Primary Layer
   if (isMySQLConfigured()) {
     try {
-      await execute('DELETE FROM services WHERE id = ?', [id]);
+      const res = await execute('DELETE FROM services WHERE id = ?', [id]);
       invalidateMemoryCache('services');
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteService failed, falling back:', mysqlErr);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteService failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

@@ -188,8 +188,10 @@ export async function updateOrderStatus(
         const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
         return mapSupabaseOrder({ ...updated, items });
       }
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateOrderStatus failed, falling back:', mysqlErr);
+      return null;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateOrderStatus failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -233,8 +235,10 @@ export async function updatePaymentStatus(
         const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
         return mapSupabaseOrder({ ...updated, items });
       }
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updatePaymentStatus failed, falling back:', mysqlErr);
+      return null;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updatePaymentStatus failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -256,11 +260,12 @@ export async function deleteOrder(id: string): Promise<boolean> {
   if (isMySQLConfigured()) {
     try {
       await execute('DELETE FROM order_items WHERE order_id = ?', [id]);
-      await execute('DELETE FROM orders WHERE id = ?', [id]);
+      const res = await execute('DELETE FROM orders WHERE id = ?', [id]);
       invalidateMemoryCache('orders');
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteOrder failed, falling back:', mysqlErr);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteOrder failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

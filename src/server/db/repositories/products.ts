@@ -279,8 +279,11 @@ export async function createProduct(
         [prodId]
       );
       if (inserted) return mapSupabaseProduct(inserted);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL createProduct failed, falling back:', mysqlErr);
+      throw new Error(`Failed to retrieve newly created product ${prodId}`);
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.error('Hostinger MySQL createProduct failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -379,9 +382,11 @@ export async function updateProduct(
          WHERE p.id = ? LIMIT 1`,
         [id]
       );
-      if (updated) return mapSupabaseProduct(updated);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateProduct failed, falling back:', mysqlErr);
+      return updated ? mapSupabaseProduct(updated) : null;
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError || mysqlErr instanceof ValidationError) throw mysqlErr;
+      console.error('Hostinger MySQL updateProduct failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -404,11 +409,14 @@ export async function deleteProduct(id: string): Promise<boolean> {
   // 1. Hostinger MySQL Primary Layer
   if (isMySQLConfigured()) {
     try {
-      await execute('DELETE FROM products WHERE id = ?', [id]);
+      await execute('DELETE FROM inventory WHERE product_id = ?', [id]);
+      await execute('DELETE FROM product_variants WHERE product_id = ?', [id]);
+      const res = await execute('DELETE FROM products WHERE id = ?', [id]);
       invalidateMemoryCache('products');
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteProduct failed, falling back:', mysqlErr);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteProduct failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -423,3 +431,4 @@ export async function deleteProduct(id: string): Promise<boolean> {
   }
   return false;
 }
+

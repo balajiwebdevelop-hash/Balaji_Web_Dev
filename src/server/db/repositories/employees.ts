@@ -129,8 +129,10 @@ export async function createEmployeeAdmin(
         const { passwordHash: _, ...safeAdmin } = mapAdminUser(inserted);
         return safeAdmin;
       }
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL createEmployeeAdmin failed, falling back:', mysqlErr);
+      throw new Error(`Failed to retrieve newly created admin ${admId}`);
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL createEmployeeAdmin failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -202,8 +204,10 @@ export async function updateEmployeeAdmin(
         const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
         return safeAdmin;
       }
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateEmployeeAdmin failed, falling back:', mysqlErr);
+      return null;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateEmployeeAdmin failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -238,10 +242,11 @@ export async function deleteEmployeeAdmin(
   // 1. Hostinger MySQL Primary Layer
   if (isMySQLConfigured()) {
     try {
-      await execute('DELETE FROM admins WHERE id = ?', [id]);
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteEmployeeAdmin failed, falling back:', mysqlErr);
+      const res = await execute('DELETE FROM admins WHERE id = ?', [id]);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteEmployeeAdmin failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -279,8 +284,9 @@ export async function resetEmployeePassword(
     try {
       await execute('UPDATE admins SET password_hash = ?, must_change_password = 1, updated_at = NOW() WHERE id = ?', [derivedHash, id]);
       return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL resetEmployeePassword failed, falling back:', mysqlErr);
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL resetEmployeePassword failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -306,8 +312,9 @@ export async function updateAdminPassword(
     try {
       await execute('UPDATE admins SET password_hash = ?, must_change_password = 0, updated_at = NOW() WHERE id = ? OR LOWER(email) = LOWER(?)', [newPasswordHash, adminId, adminId]);
       return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateAdminPassword failed, falling back:', mysqlErr);
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateAdminPassword failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

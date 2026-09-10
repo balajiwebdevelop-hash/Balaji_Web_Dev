@@ -38,7 +38,17 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
         createdAt: now,
       };
     } catch (mysqlErr) {
-      console.warn('Hostinger MySQL addAuditLog failed, falling back:', mysqlErr);
+      console.warn('Hostinger MySQL addAuditLog failed:', mysqlErr);
+      return {
+        id: logId,
+        adminId: entry.adminId || 'system',
+        adminEmail: entry.adminEmail,
+        action: entry.action,
+        entity: entry.entity,
+        entityId: entry.entityId,
+        details: safeDetails,
+        createdAt: now,
+      };
     }
   }
 

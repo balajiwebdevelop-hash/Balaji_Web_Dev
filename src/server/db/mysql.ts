@@ -155,12 +155,16 @@ export async function testMySQLConnection(): Promise<{
   }
 }
 
+function sanitizeParams(params: any[] = []): any[] {
+  return params.map((val) => (val === undefined ? null : val));
+}
+
 /**
  * Executes a parameterized SELECT query returning an array of rows.
  */
 export async function query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
   const p = getMySQLPool();
-  const [rows] = await p.query(sql, params);
+  const [rows] = await p.query(sql, sanitizeParams(params));
   return rows as T[];
 }
 
@@ -177,7 +181,7 @@ export async function queryOne<T = any>(sql: string, params: any[] = []): Promis
  */
 export async function execute(sql: string, params: any[] = []): Promise<mysql.ResultSetHeader> {
   const p = getMySQLPool();
-  const [result] = await p.execute(sql, params);
+  const [result] = await p.execute(sql, sanitizeParams(params));
   return result as mysql.ResultSetHeader;
 }
 

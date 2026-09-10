@@ -8,6 +8,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseProject } from '../mappers';
+import { ConflictError } from '../../errors';
 import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getProjects(options?: {
@@ -184,8 +185,11 @@ export async function createProject(
 
       const inserted = await queryOne('SELECT * FROM projects WHERE id = ?', [projId]);
       if (inserted) return mapSupabaseProject(inserted);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL createProject failed, falling back:', mysqlErr);
+      throw new Error(`Failed to retrieve newly created project ${projId}`);
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.error('Hostinger MySQL createProject failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -237,9 +241,11 @@ export async function updateProject(
       invalidateMemoryCache('projects');
 
       const updated = await queryOne('SELECT * FROM projects WHERE id = ?', [id]);
-      if (updated) return mapSupabaseProject(updated);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateProject failed, falling back:', mysqlErr);
+      return updated ? mapSupabaseProject(updated) : null;
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.error('Hostinger MySQL updateProject failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -262,11 +268,12 @@ export async function deleteProject(id: string): Promise<boolean> {
   // 1. Hostinger MySQL Primary Layer
   if (isMySQLConfigured()) {
     try {
-      await execute('DELETE FROM projects WHERE id = ?', [id]);
+      const res = await execute('DELETE FROM projects WHERE id = ?', [id]);
       invalidateMemoryCache('projects');
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteProject failed, falling back:', mysqlErr);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteProject failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

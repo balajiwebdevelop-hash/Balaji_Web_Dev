@@ -223,8 +223,10 @@ export async function updateQuoteStatus(
         const items = await query('SELECT * FROM quote_items WHERE quote_id = ?', [id]);
         return mapSupabaseQuote({ ...quote, items });
       }
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateQuoteStatus failed, falling back:', mysqlErr);
+      return null;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateQuoteStatus failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -245,10 +247,11 @@ export async function deleteQuote(id: string): Promise<boolean> {
   if (isMySQLConfigured()) {
     try {
       await execute('DELETE FROM quote_items WHERE quote_id = ?', [id]);
-      await execute('DELETE FROM quotes WHERE id = ?', [id]);
-      return true;
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL deleteQuote failed, falling back:', mysqlErr);
+      const res = await execute('DELETE FROM quotes WHERE id = ?', [id]);
+      return res.affectedRows > 0;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL deleteQuote failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

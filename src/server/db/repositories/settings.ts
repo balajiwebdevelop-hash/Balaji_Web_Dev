@@ -233,8 +233,11 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
           jsonStr,
         ]
       );
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateSiteSettings error:', mysqlErr);
+      invalidateMemoryCache('settings');
+      return merged;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateSiteSettings error:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

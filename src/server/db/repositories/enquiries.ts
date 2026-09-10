@@ -29,8 +29,10 @@ export async function createEnquiry(
 
       const inserted = await queryOne('SELECT * FROM enquiries WHERE id = ?', [enqId]);
       if (inserted) return mapSupabaseEnquiry(inserted);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL createEnquiry failed, falling back:', mysqlErr);
+      throw new Error(`Failed to retrieve newly created enquiry ${enqId}`);
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL createEnquiry failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -92,9 +94,10 @@ export async function updateEnquiryStatus(
     try {
       await execute('UPDATE enquiries SET status = ? WHERE id = ?', [status, id]);
       const row = await queryOne('SELECT * FROM enquiries WHERE id = ?', [id]);
-      if (row) return mapSupabaseEnquiry(row);
-    } catch (mysqlErr) {
-      console.warn('Hostinger MySQL updateEnquiryStatus failed, falling back:', mysqlErr);
+      return row ? mapSupabaseEnquiry(row) : null;
+    } catch (mysqlErr: any) {
+      console.error('Hostinger MySQL updateEnquiryStatus failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

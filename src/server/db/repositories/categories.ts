@@ -196,9 +196,11 @@ export async function createCategory(
       if (inserted) {
         return { ...mapSupabaseCategory(inserted), productCount: 0 };
       }
+      throw new Error(`Failed to retrieve newly created category ${catId}`);
     } catch (mysqlErr: any) {
       if (mysqlErr instanceof ConflictError) throw mysqlErr;
-      console.warn('Hostinger MySQL createCategory failed, falling back:', mysqlErr);
+      console.error('Hostinger MySQL createCategory failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -260,9 +262,11 @@ export async function updateCategory(
           productCount: countRes?.count || 0,
         };
       }
+      return null;
     } catch (mysqlErr: any) {
       if (mysqlErr instanceof ConflictError) throw mysqlErr;
-      console.warn('Hostinger MySQL updateCategory failed, falling back:', mysqlErr);
+      console.error('Hostinger MySQL updateCategory failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 
@@ -297,12 +301,13 @@ export async function deleteCategory(id: string): Promise<boolean> {
         throw new ConflictError('Cannot delete category: products are assigned to it.');
       }
 
-      await execute('DELETE FROM categories WHERE id = ?', [id]);
+      const res = await execute('DELETE FROM categories WHERE id = ?', [id]);
       invalidateMemoryCache('categories');
-      return true;
+      return res.affectedRows > 0;
     } catch (mysqlErr: any) {
       if (mysqlErr instanceof ConflictError) throw mysqlErr;
-      console.warn('Hostinger MySQL deleteCategory failed, falling back:', mysqlErr);
+      console.error('Hostinger MySQL deleteCategory failed:', mysqlErr);
+      throw mysqlErr;
     }
   }
 

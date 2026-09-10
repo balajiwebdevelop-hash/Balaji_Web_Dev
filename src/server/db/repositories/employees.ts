@@ -341,15 +341,22 @@ export async function recordAdminLogin(adminId: string): Promise<void> {
       return;
     } catch (mysqlErr) {
       console.warn('Hostinger MySQL recordAdminLogin failed:', mysqlErr);
+      return;
     }
   }
 
-  // 2. Unit Test / Local Fallback
-  const db = getDb();
-  const adm = db.admins.find((a) => a.id === adminId || a.email === adminId);
-  if (adm) {
-    adm.lastLoginAt = new Date().toISOString();
-    saveDb(db);
+  // 2. Unit Test / Local Fallback (Only in non-production environments)
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      const db = getDb();
+      const adm = db.admins.find((a) => a.id === adminId || a.email === adminId);
+      if (adm) {
+        adm.lastLoginAt = new Date().toISOString();
+        saveDb(db);
+      }
+    } catch (fallbackErr) {
+      console.warn('Local fallback recordAdminLogin failed:', fallbackErr);
+    }
   }
 }
 

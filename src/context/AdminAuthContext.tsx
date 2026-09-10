@@ -51,10 +51,11 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      const normalizedEmail = email ? email.trim() : '';
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: normalizedEmail, password, isAdminLogin: true }),
       });
       const data = await res.json();
       const adminObj = data.admin || (data.role !== 'customer' ? data.user : null);

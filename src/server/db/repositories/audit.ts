@@ -53,16 +53,23 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
   }
 
   // 2. Unit Test / Local Fallback
-  const db = getDb();
   const log: AuditLog = {
     ...entry,
     details: safeDetails,
     id: logId,
     createdAt: now,
   };
-  db.auditLogs.unshift(log);
-  if (db.auditLogs.length > 500) db.auditLogs.pop();
-  saveDb(db);
+
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      const db = getDb();
+      db.auditLogs.unshift(log);
+      if (db.auditLogs.length > 500) db.auditLogs.pop();
+      saveDb(db);
+    } catch (fallbackErr) {
+      console.warn('Local fallback addAuditLog failed:', fallbackErr);
+    }
+  }
   return log;
 }
 

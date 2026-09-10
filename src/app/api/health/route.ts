@@ -1,5 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import { NextResponse } from 'next/server';
-import { isSupabaseConfigured, getServiceSupabase, isProduction } from '@/server/db/client';
+import { isMySQLConfigured, isProduction } from '@/server/db/client';
 import { getSiteSettings } from '@/server/db/repositories/settings';
 import { DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
 
@@ -17,26 +19,19 @@ export async function GET() {
     pushNotifications: { status: 'unhealthy', configured: false },
   };
 
-  // 1. Database Check (Lightweight query)
+  // 1. Database Check (Hostinger MySQL)
   const dbStart = Date.now();
   try {
-    if (isSupabaseConfigured()) {
-      checks.database.type = 'supabase';
-      const supabase = getServiceSupabase();
-      const { error } = await supabase.from('site_settings').select('id').limit(1);
-      const latencyMs = Date.now() - dbStart;
-      checks.database.latencyMs = latencyMs;
-      if (error) {
-        checks.database.status = isProduction() ? 'unhealthy' : 'degraded';
-        checks.database.message = 'Database query failed';
-      } else {
-        checks.database.status = 'healthy';
-      }
+    if (isMySQLConfigured()) {
+      checks.database.type = 'hostinger_mysql';
+      await getSiteSettings();
+      checks.database.latencyMs = Date.now() - dbStart;
+      checks.database.status = 'healthy';
     } else {
       checks.database.type = isProduction() ? 'unconfigured' : 'local_fixture';
       if (isProduction()) {
         checks.database.status = 'unhealthy';
-        checks.database.message = 'Supabase credentials missing in production';
+        checks.database.message = 'Hostinger MySQL credentials missing in production';
       } else {
         await getSiteSettings();
         checks.database.latencyMs = Date.now() - dbStart;
@@ -46,29 +41,21 @@ export async function GET() {
   } catch (dbErr: any) {
     checks.database.status = 'unhealthy';
     checks.database.latencyMs = Date.now() - dbStart;
-    checks.database.message = 'Database connection error';
+    checks.database.message = dbErr.message || 'Database connection error';
   }
 
-  // 2. Storage Check
+  // 2. Storage Check (Filesystem / Public uploads)
   try {
-    if (isSupabaseConfigured()) {
-      checks.storage.provider = 'supabase_storage';
-      const supabase = getServiceSupabase();
-      const { error } = await supabase.storage.listBuckets();
-      if (error) {
-        checks.storage.status = isProduction() ? 'degraded' : 'healthy';
-        checks.storage.message = 'Storage check failed';
-      } else {
-        checks.storage.status = 'healthy';
-      }
-    } else {
-      checks.storage.provider = isProduction() ? 'unconfigured' : 'local_filesystem';
-      checks.storage.status = isProduction() ? 'unhealthy' : 'healthy';
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
+    checks.storage.provider = 'local_filesystem';
+    checks.storage.status = 'healthy';
   } catch (storageErr: any) {
-    checks.storage.provider = 'supabase_storage';
+    checks.storage.provider = 'local_filesystem';
     checks.storage.status = isProduction() ? 'degraded' : 'healthy';
-    checks.storage.message = 'Storage check error';
+    checks.storage.message = storageErr.message || 'Storage check error';
   }
 
   // 3. Push Notifications Check (VAPID status without exposing secrets)
@@ -94,10 +81,9 @@ export async function GET() {
 
   // Determine overall system status
   let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-  if (checks.database.status === 'unhealthy') {
+  if (checks.database.status !== 'healthy') {
     overallStatus = 'unhealthy';
   } else if (
-    checks.database.status === 'degraded' ||
     checks.storage.status !== 'healthy' ||
     checks.pushNotifications.status !== 'healthy'
   ) {

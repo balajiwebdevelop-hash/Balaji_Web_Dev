@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { requireOwnerOrEmployee } from '@/lib/auth';
-import { getServiceSupabase, isSupabaseConfigured, isProduction } from '@/server/db/client';
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
 const ALLOWED_BUCKETS = new Set(['products', 'projects', 'brand', 'avatars']);
@@ -125,54 +124,7 @@ export async function POST(req: NextRequest) {
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
 
-    // 1. Authoritative Production Persistent Object Storage
-    if (isSupabaseConfigured()) {
-      try {
-        const supabase = getServiceSupabase();
-
-        const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true,
-        });
-
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
-          if (publicUrlData && publicUrlData.publicUrl) {
-            return NextResponse.json({
-              success: true,
-              url: publicUrlData.publicUrl,
-              filename,
-              storage: 'supabase',
-            });
-          }
-        }
-
-        if (error) {
-          console.error('Supabase storage upload error:', error.message);
-          if (isProduction()) {
-            return NextResponse.json(
-              { success: false, error: `Persistent storage upload failed: ${error.message}` },
-              { status: 500 }
-            );
-          }
-        }
-      } catch (sbErr: any) {
-        console.error('Supabase storage exception:', sbErr.message);
-        if (isProduction()) {
-          return NextResponse.json(
-            { success: false, error: 'Storage service temporarily unavailable. Please retry.' },
-            { status: 500 }
-          );
-        }
-      }
-    } else if (isProduction()) {
-      return NextResponse.json(
-        { success: false, error: 'Production object storage is not configured.' },
-        { status: 500 }
-      );
-    }
-
-    // 2. Local Server Storage (ALLOWED ONLY IN DEVELOPMENT / LOCAL TEST)
+    // Persistent Local Storage in /public/uploads
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });

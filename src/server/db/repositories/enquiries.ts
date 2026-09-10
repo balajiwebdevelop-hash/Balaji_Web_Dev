@@ -1,44 +1,40 @@
 import crypto from 'crypto';
 import { Enquiry } from '@/types';
-import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { getDb, saveDb } from '../client';
 import { mapSupabaseEnquiry } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function createEnquiry(
   data: Omit<Enquiry, 'id' | 'createdAt' | 'status'>
 ): Promise<Enquiry> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('enquiries')
-      .insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        subject: data.subject,
-        message: data.message,
-        source: data.source || 'Contact Form',
-        status: 'New',
-        created_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const enqId = `enq-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO enquiries (id, name, email, phone, subject, message, source, status, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 'New', NOW())`,
+        [
+          enqId,
+          data.name,
+          data.email,
+          data.phone,
+          data.subject,
+          data.message,
+          data.source || 'Contact Form',
+        ]
+      );
 
-    if (error || !inserted) {
-      console.error('Supabase createEnquiry error:', error);
-      throw new Error(`Failed to submit enquiry: ${error?.message || 'Database error'}`);
+      const inserted = await queryOne('SELECT * FROM enquiries WHERE id = ?', [enqId]);
+      if (inserted) return mapSupabaseEnquiry(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createEnquiry failed, falling back:', mysqlErr);
     }
-
-    return mapSupabaseEnquiry(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newEnq: Enquiry = {
     ...data,
@@ -55,20 +51,27 @@ export async function getEnquiries(options?: {
   limit?: number;
   offset?: number;
 }): Promise<Enquiry[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('enquiries').select('*').order('created_at', { ascending: false });
-    if (options?.limit) {
-      query = query.limit(options.limit);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM enquiries ORDER BY created_at DESC';
+      const params: any[] = [];
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const rows = await query(sql, params);
+      return rows.map(mapSupabaseEnquiry);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getEnquiries failed, falling back:', mysqlErr);
     }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-    const { data, error } = await query;
-    if (error) throw new Error(`Failed to load enquiries: ${error.message}`);
-    return (data || []).map(mapSupabaseEnquiry);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let list = [...db.enquiries];
   if (options?.offset) {
@@ -84,20 +87,18 @@ export async function updateEnquiryStatus(
   id: string,
   status: Enquiry['status']
 ): Promise<Enquiry | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('enquiries').update({ status }).select();
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('id', id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE enquiries SET status = ? WHERE id = ?', [status, id]);
+      const row = await queryOne('SELECT * FROM enquiries WHERE id = ?', [id]);
+      if (row) return mapSupabaseEnquiry(row);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateEnquiryStatus failed, falling back:', mysqlErr);
     }
-    const { data, error } = await query.maybeSingle();
-    if (error) throw new Error(`Failed to update enquiry status: ${error.message}`);
-    if (!data) return null;
-    return mapSupabaseEnquiry(data);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const enq = db.enquiries.find((e) => e.id === id);
   if (!enq) return null;

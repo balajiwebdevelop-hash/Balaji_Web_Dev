@@ -1,5 +1,4 @@
 import webPush from 'web-push';
-import { getServiceSupabase } from './supabase';
 import { Order, Quote, Enquiry } from '@/types';
 import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from './push-client';
 
@@ -9,6 +8,17 @@ export const DEFAULT_VAPID_PRIVATE_KEY =
   'SmPawdxDpbEkoUP5Wny9uXJ-kqrA8FWeu5052EG-ffE';
 export const DEFAULT_VAPID_SUBJECT =
   'mailto:atelier@balaji-interior.com';
+
+// In-memory push subscription store
+interface PushSubRecord {
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
+  adminId?: string | null;
+  userAgent?: string | null;
+  createdAt: string;
+}
+
+const inMemoryPushSubs = new Map<string, PushSubRecord>();
 
 // Configure Web Push with VAPID credentials
 function ensureVapidConfigured(): boolean {
@@ -32,7 +42,7 @@ function ensureVapidConfigured(): boolean {
 ensureVapidConfigured();
 
 /**
- * Persist an active push subscription to Supabase.
+ * Persist an active push subscription in memory.
  */
 export async function savePushSubscription(sub: {
   endpoint: string;
@@ -41,63 +51,15 @@ export async function savePushSubscription(sub: {
   userAgent?: string;
 }) {
   try {
-    const supabase = getServiceSupabase();
-
-    let validAdminId: string | null = null;
-    if (sub.adminId && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sub.adminId)) {
-      const { data: adminExists } = await supabase.from('admins').select('id').eq('id', sub.adminId).maybeSingle();
-      if (adminExists) {
-        validAdminId = adminExists.id;
-      }
-    }
-
-    if (!validAdminId) {
-      const { data: defaultAdmin } = await supabase.from('admins').select('id').limit(1).maybeSingle();
-      if (defaultAdmin) {
-        validAdminId = defaultAdmin.id;
-      }
-    }
-
-    const { data, error } = await supabase
-      .from('notification_subscriptions')
-      .upsert(
-        {
-          endpoint: sub.endpoint,
-          keys: sub.keys,
-          admin_id: validAdminId,
-          user_agent: sub.userAgent || null,
-          created_at: new Date().toISOString(),
-        },
-        { onConflict: 'endpoint' }
-      )
-      .select()
-      .single();
-
-    if (error) {
-      console.warn('Upsert with admin_id failed, falling back to null admin_id:', error.message);
-      const fallback = await supabase
-        .from('notification_subscriptions')
-        .upsert(
-          {
-            endpoint: sub.endpoint,
-            keys: sub.keys,
-            admin_id: null,
-            user_agent: sub.userAgent || null,
-            created_at: new Date().toISOString(),
-          },
-          { onConflict: 'endpoint' }
-        )
-        .select()
-        .single();
-
-      if (fallback.error) {
-        console.error('Error saving push subscription to Supabase:', fallback.error);
-        return { success: false, error: fallback.error.message };
-      }
-      return { success: true, data: fallback.data };
-    }
-
-    return { success: true, data };
+    const record: PushSubRecord = {
+      endpoint: sub.endpoint,
+      keys: sub.keys,
+      adminId: sub.adminId || null,
+      userAgent: sub.userAgent || null,
+      createdAt: new Date().toISOString(),
+    };
+    inMemoryPushSubs.set(sub.endpoint, record);
+    return { success: true, data: record };
   } catch (err: any) {
     console.error('Exception saving push subscription:', err);
     return { success: false, error: err.message };
@@ -105,15 +67,10 @@ export async function savePushSubscription(sub: {
 }
 
 /**
- * Remove an invalid/expired push subscription from Supabase.
+ * Remove an invalid/expired push subscription.
  */
 export async function removePushSubscription(endpoint: string) {
-  try {
-    const supabase = getServiceSupabase();
-    await supabase.from('notification_subscriptions').delete().eq('endpoint', endpoint);
-  } catch (err) {
-    console.error('Error removing push subscription:', err);
-  }
+  inMemoryPushSubs.delete(endpoint);
 }
 
 /**
@@ -122,13 +79,9 @@ export async function removePushSubscription(endpoint: string) {
 export async function sendNewOrderPush(order: Order): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -162,7 +115,7 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
         failed++;
         console.warn(`Web push dispatch failed for endpoint ${sub.endpoint.substring(0, 30)}...:`, err.statusCode || err.message);
 
-        // If subscription expired or gone (HTTP 410 or 404), clean it up from Supabase
+        // If subscription expired or gone (HTTP 410 or 404), clean it up from store
         if (err.statusCode === 410 || err.statusCode === 404) {
           await removePushSubscription(sub.endpoint);
         }
@@ -182,13 +135,9 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
 export async function sendNewQuotePush(quote: Quote): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -239,13 +188,9 @@ export async function sendNewQuotePush(quote: Quote): Promise<{ sent: number; fa
 export async function sendNewEnquiryPush(enquiry: Enquiry): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -295,10 +240,9 @@ export async function sendNewEnquiryPush(enquiry: Enquiry): Promise<{ sent: numb
 export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: boolean; sent: number; message: string }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
-    const { data: subscriptions, error } = await supabase.from('notification_subscriptions').select('*');
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return {
         success: false,
         sent: 0,

@@ -1,4 +1,4 @@
-import { isProduction } from '../db/client';
+import { isProduction, isMySQLConfigured } from '../db/client';
 import { AppError } from '../errors';
 
 export interface ProductionConfigStatus {
@@ -15,14 +15,8 @@ export function validateProductionConfig(): ProductionConfigStatus {
   const isProd = isProduction();
   const issues: string[] = [];
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  if (!supabaseUrl) {
-    issues.push('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL');
-  }
-
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseServiceKey) {
-    issues.push('Missing SUPABASE_SERVICE_ROLE_KEY');
+  if (!isMySQLConfigured()) {
+    issues.push('Missing or incomplete Hostinger MySQL database configuration (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)');
   }
 
   const jwtSecret = process.env.JWT_SECRET;

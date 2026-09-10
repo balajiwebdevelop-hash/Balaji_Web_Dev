@@ -1,9 +1,6 @@
 import crypto from 'crypto';
-import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  getDb,
-} from '../client';
+import { getDb } from '../client';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export interface CustomerRecord {
   id: string;
@@ -24,81 +21,67 @@ export async function upsertCustomer(input: {
   const normalizedEmail = input.email.trim().toLowerCase();
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: existing } = await supabase
-      .from('customers')
-      .select('*')
-      .eq('email', normalizedEmail)
-      .maybeSingle();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const existing = await queryOne('SELECT * FROM customers WHERE LOWER(email) = LOWER(?) LIMIT 1', [normalizedEmail]);
+      if (existing) {
+        const updates: string[] = ['updated_at = NOW()'];
+        const params: any[] = [];
+        if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
+          updates.push('full_name = ?');
+          params.push(input.fullName);
+        }
+        if (input.phone && !existing.phone) {
+          updates.push('phone = ?');
+          params.push(input.phone);
+        }
+        if (input.isGuest === false && existing.is_guest) {
+          updates.push('is_guest = 0');
+        }
+        params.push(existing.id);
+        await execute(`UPDATE customers SET ${updates.join(', ')} WHERE id = ?`, params);
 
-    if (existing) {
-      const updates: any = { updated_at: now };
-      if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
-        updates.full_name = input.fullName;
+        const updated = await queryOne('SELECT * FROM customers WHERE id = ?', [existing.id]);
+        const res = updated || existing;
+        return {
+          id: res.id,
+          email: res.email,
+          fullName: res.full_name,
+          phone: res.phone,
+          isGuest: Boolean(res.is_guest),
+          createdAt: res.created_at instanceof Date ? res.created_at.toISOString() : res.created_at,
+          updatedAt: res.updated_at instanceof Date ? res.updated_at.toISOString() : res.updated_at,
+        };
+      } else {
+        const custId = `cust-${crypto.randomUUID()}`;
+        await execute(
+          `INSERT INTO customers (id, email, full_name, phone, is_guest, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
+          [
+            custId,
+            normalizedEmail,
+            input.fullName || 'Client',
+            input.phone || null,
+            input.isGuest ? 1 : 0,
+          ]
+        );
+        return {
+          id: custId,
+          email: normalizedEmail,
+          fullName: input.fullName || 'Client',
+          phone: input.phone,
+          isGuest: Boolean(input.isGuest),
+          createdAt: now,
+          updatedAt: now,
+        };
       }
-      if (input.phone && !existing.phone) {
-        updates.phone = input.phone;
-      }
-      if (input.isGuest === false && existing.is_guest) {
-        updates.is_guest = false;
-      }
-
-      const { data: updated } = await supabase
-        .from('customers')
-        .update(updates)
-        .eq('id', existing.id)
-        .select()
-        .single();
-
-      const res = updated || existing;
-      return {
-        id: res.id,
-        email: res.email,
-        fullName: res.full_name,
-        phone: res.phone,
-        isGuest: res.is_guest,
-        createdAt: res.created_at,
-        updatedAt: res.updated_at,
-      };
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL upsertCustomer failed, falling back:', mysqlErr);
     }
-
-    const { data: inserted, error } = await supabase
-      .from('customers')
-      .insert({
-        email: normalizedEmail,
-        full_name: input.fullName || 'Client',
-        phone: input.phone || null,
-        is_guest: input.isGuest !== undefined ? input.isGuest : false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
-
-    if (error || !inserted) {
-      return {
-        id: crypto.randomUUID(),
-        email: normalizedEmail,
-        fullName: input.fullName || 'Client',
-        phone: input.phone,
-        isGuest: input.isGuest || false,
-        createdAt: now,
-        updatedAt: now,
-      };
-    }
-
-    return {
-      id: inserted.id,
-      email: inserted.email,
-      fullName: inserted.full_name,
-      phone: inserted.phone,
-      isGuest: inserted.is_guest,
-      createdAt: inserted.created_at,
-      updatedAt: inserted.updated_at,
-    };
   }
 
+  // 2. Unit Test / Local Fallback
   return {
     id: `cust-${Date.now()}`,
     email: normalizedEmail,
@@ -111,29 +94,31 @@ export async function upsertCustomer(input: {
 }
 
 export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRecord[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('customers')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    if (error) {
-      console.error('Failed to fetch customers:', error.message);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const rows = await query(
+        'SELECT * FROM customers ORDER BY created_at DESC LIMIT ? OFFSET ?',
+        [Number(limit), Number(offset)]
+      );
+      if (rows && rows.length > 0) {
+        return rows.map((c: any) => ({
+          id: c.id,
+          email: c.email,
+          fullName: c.full_name,
+          phone: c.phone || '',
+          isGuest: Boolean(c.is_guest),
+          createdAt: c.created_at instanceof Date ? c.created_at.toISOString() : c.created_at,
+          updatedAt: c.updated_at instanceof Date ? c.updated_at.toISOString() : c.updated_at,
+        }));
+      }
       return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCustomers failed, falling back:', mysqlErr);
     }
-    return (data || []).map((c: any) => ({
-      id: c.id,
-      email: c.email,
-      fullName: c.full_name,
-      phone: c.phone || '',
-      isGuest: c.is_guest || false,
-      createdAt: c.created_at,
-      updatedAt: c.updated_at,
-    }));
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const rawCustomers = (db as any).customers || [];
   if (rawCustomers.length > 0) {
@@ -148,7 +133,6 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
     }));
   }
 
-  // Derive unique customer list from orders if not standalone
   const customerMap = new Map<string, CustomerRecord>();
   db.orders.forEach((o) => {
     if (o.customerEmail && !customerMap.has(o.customerEmail.toLowerCase())) {

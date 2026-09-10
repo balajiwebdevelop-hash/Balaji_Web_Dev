@@ -1,33 +1,28 @@
 import crypto from 'crypto';
 import { AdminUser } from '@/types';
-import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { isUUID, getDb, saveDb } from '../client';
 import { mapAdminUser } from '../mappers';
 import { protectOwnerFromModification } from '../../auth/rbac';
 import { revokeAllSessionsForAdmin } from '../../auth/tokens';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getAdmins(): Promise<AdminUser[]> {
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: false });
-      if (!error && data && data.length > 0) {
-        return data.map((adm) => {
+      const rows = await query('SELECT * FROM admins ORDER BY created_at DESC');
+      if (rows && rows.length > 0) {
+        return rows.map((adm: any) => {
           const { passwordHash: _, ...safe } = mapAdminUser(adm);
           return safe;
         });
       }
     } catch (err) {
-      console.warn('Supabase getAdmins notice:', err);
+      console.warn('Hostinger MySQL getAdmins failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.admins.map((adm) => {
     const { passwordHash: _, ...safe } = adm;
@@ -36,20 +31,21 @@ export async function getAdmins(): Promise<AdminUser[]> {
 }
 
 export async function getAdminById(id: string): Promise<(AdminUser & { passwordHash: string }) | null> {
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
-      if (!error && data) {
-        const mapped = mapAdminUser(data);
+      const row = await queryOne('SELECT * FROM admins WHERE id = ? LIMIT 1', [id]);
+      if (row) {
+        const mapped = mapAdminUser(row);
         if (!mapped.status) mapped.status = 'active';
         return mapped;
       }
     } catch (err) {
-      console.warn('Supabase getAdminById notice:', err);
+      console.warn('Hostinger MySQL getAdminById failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const found = db.admins.find((a) => a.id === id);
   if (!found) return null;
@@ -62,20 +58,22 @@ export async function getAdminById(id: string): Promise<(AdminUser & { passwordH
 
 export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
   const normalizedEmail = email.trim().toLowerCase();
-  if (await isSupabaseAvailable()) {
+
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').eq('email', normalizedEmail).maybeSingle();
-      if (!error && data) {
-        const mapped = mapAdminUser(data);
+      const row = await queryOne('SELECT * FROM admins WHERE LOWER(email) = LOWER(?) LIMIT 1', [normalizedEmail]);
+      if (row) {
+        const mapped = mapAdminUser(row);
         if (!mapped.status) mapped.status = 'active';
         return mapped;
       }
     } catch (err) {
-      console.warn('Supabase getAdminByEmail notice:', err);
+      console.warn('Hostinger MySQL getAdminByEmail failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const found = db.admins.find((a) => a.email.toLowerCase() === normalizedEmail);
   if (!found) return null;
@@ -109,32 +107,34 @@ export async function createEmployeeAdmin(
     employeeData.passwordHash ||
     (employeeData.temporaryPassword ? hashBootstrapPassword(employeeData.temporaryPassword) : hashBootstrapPassword('Default#2026!'));
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('admins')
-      .insert({
-        email: normalizedEmail,
-        name: employeeData.name,
-        password_hash: derivedHash,
-        role: employeeData.role || 'employee',
-        status: 'active',
-        must_change_password: employeeData.mustChangePassword !== undefined ? employeeData.mustChangePassword : true,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const admId = `admin-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO admins (id, email, name, password_hash, role, status, must_change_password, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, 'active', ?, NOW(), NOW())`,
+        [
+          admId,
+          normalizedEmail,
+          employeeData.name,
+          derivedHash,
+          employeeData.role || 'employee',
+          employeeData.mustChangePassword !== false ? 1 : 0,
+        ]
+      );
 
-    if (error || !inserted) {
-      throw new Error(`Failed to create employee account: ${error?.message || 'Database error'}`);
+      const inserted = await queryOne('SELECT * FROM admins WHERE id = ?', [admId]);
+      if (inserted) {
+        const { passwordHash: _, ...safeAdmin } = mapAdminUser(inserted);
+        return safeAdmin;
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createEmployeeAdmin failed, falling back:', mysqlErr);
     }
-
-    const mapped = mapAdminUser(inserted);
-    const { passwordHash: _, ...safeAdmin } = mapped;
-    return safeAdmin;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newAdmin: AdminUser & { passwordHash: string } = {
     id: `admin-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
@@ -183,27 +183,31 @@ export async function updateEmployeeAdmin(
 
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partialData.email !== undefined) updates.email = partialData.email.trim().toLowerCase();
-    if (partialData.name !== undefined) updates.name = partialData.name;
-    if (partialData.role !== undefined) updates.role = partialData.role;
-    if (partialData.status !== undefined) updates.status = partialData.status;
-    if (partialData.mustChangePassword !== undefined) updates.must_change_password = partialData.mustChangePassword;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partialData.email !== undefined) { updates.push('email = ?'); params.push(partialData.email.trim().toLowerCase()); }
+      if (partialData.name !== undefined) { updates.push('name = ?'); params.push(partialData.name); }
+      if (partialData.role !== undefined) { updates.push('role = ?'); params.push(partialData.role); }
+      if (partialData.status !== undefined) { updates.push('status = ?'); params.push(partialData.status); }
+      if (partialData.mustChangePassword !== undefined) { updates.push('must_change_password = ?'); params.push(partialData.mustChangePassword ? 1 : 0); }
 
-    const { data: updated, error } = await supabase
-      .from('admins')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
+      params.push(id);
+      await execute(`UPDATE admins SET ${updates.join(', ')} WHERE id = ?`, params);
 
-    if (error) throw new Error(`Failed to update account: ${error.message}`);
-    const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
-    return safeAdmin;
+      const updated = await queryOne('SELECT * FROM admins WHERE id = ?', [id]);
+      if (updated) {
+        const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
+        return safeAdmin;
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateEmployeeAdmin failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.admins.findIndex((a) => a.id === id);
   if (index === -1) return null;
@@ -229,16 +233,19 @@ export async function deleteEmployeeAdmin(
     protectOwnerFromModification(target as any, actor as any, 'delete');
   }
 
-  // Revoke any active sessions
   revokeAllSessionsForAdmin(id);
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('admins').delete().eq('id', id);
-    if (error) throw new Error(`Failed to delete employee account: ${error.message}`);
-    return true;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM admins WHERE id = ?', [id]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteEmployeeAdmin failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.admins.length;
   db.admins = db.admins.filter((a) => a.id !== id);
@@ -261,37 +268,29 @@ export async function resetEmployeePassword(
     protectOwnerFromModification(target as any, actor as any, 'reset_password');
   }
 
-  // Derive PBKDF2 hash if plaintext was supplied
   const derivedHash = temporaryPasswordOrHash.includes(':')
     ? temporaryPasswordOrHash
     : hashBootstrapPassword(temporaryPasswordOrHash);
 
-  // Revoke all previous active sessions
   revokeAllSessionsForAdmin(id);
 
-  const now = new Date().toISOString();
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase
-      .from('admins')
-      .update({
-        password_hash: derivedHash,
-        must_change_password: true,
-        updated_at: now,
-      })
-      .eq('id', id);
-
-    if (error) throw new Error(`Failed to reset password: ${error.message}`);
-    return true;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE admins SET password_hash = ?, must_change_password = 1, updated_at = NOW() WHERE id = ?', [derivedHash, id]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL resetEmployeePassword failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const adm = db.admins.find((a) => a.id === id);
   if (adm) {
     adm.passwordHash = derivedHash;
     adm.mustChangePassword = true;
-    adm.updatedAt = now;
+    adm.updatedAt = new Date().toISOString();
     saveDb(db);
     return true;
   }
@@ -302,27 +301,17 @@ export async function updateAdminPassword(
   adminId: string,
   newPasswordHash: string
 ): Promise<boolean> {
-  const now = new Date().toISOString();
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('admins').update({
-      password_hash: newPasswordHash,
-      must_change_password: false,
-      updated_at: now,
-    });
-
-    if (isUUID(adminId)) {
-      query = query.eq('id', adminId);
-    } else {
-      query = query.eq('email', adminId.trim().toLowerCase());
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE admins SET password_hash = ?, must_change_password = 0, updated_at = NOW() WHERE id = ? OR LOWER(email) = LOWER(?)', [newPasswordHash, adminId, adminId]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateAdminPassword failed, falling back:', mysqlErr);
     }
-
-    const { error } = await query;
-    if (error) throw new Error(`Failed to update password: ${error.message}`);
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const admin = db.admins.find(
     (a) => a.id === adminId || a.email.toLowerCase() === adminId.trim().toLowerCase()
@@ -330,7 +319,7 @@ export async function updateAdminPassword(
   if (admin) {
     admin.passwordHash = newPasswordHash;
     admin.mustChangePassword = false;
-    admin.updatedAt = now;
+    admin.updatedAt = new Date().toISOString();
     saveDb(db);
     return true;
   }
@@ -338,27 +327,21 @@ export async function updateAdminPassword(
 }
 
 export async function recordAdminLogin(adminId: string): Promise<void> {
-  const now = new Date().toISOString();
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      let query = supabase.from('admins').update({ last_login_at: now, updated_at: now });
-      if (isUUID(adminId)) {
-        query = query.eq('id', adminId);
-      } else {
-        query = query.eq('email', adminId);
-      }
-      await query;
+      await execute('UPDATE admins SET last_login_at = NOW(), updated_at = NOW() WHERE id = ? OR LOWER(email) = LOWER(?)', [adminId, adminId]);
       return;
-    } catch (err) {
-      console.warn('Supabase recordAdminLogin notice:', err);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL recordAdminLogin failed:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const adm = db.admins.find((a) => a.id === adminId || a.email === adminId);
   if (adm) {
-    adm.lastLoginAt = now;
+    adm.lastLoginAt = new Date().toISOString();
     saveDb(db);
   }
 }
@@ -371,19 +354,13 @@ function hashBootstrapPassword(password: string): string {
 
 export async function bootstrapInitialEmployee(): Promise<void> {
   const existing = await getAdminByEmail('employee@balaji.com');
-  if (!existing) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
-      const hash = hashBootstrapPassword(initialTempPass);
-      await supabase.from('admins').insert({
-        email: 'employee@balaji.com',
-        name: 'Balaji Studio Associate',
-        password_hash: hash,
-        role: 'employee',
-        must_change_password: true,
-      });
-    }
+  if (!existing && isMySQLConfigured()) {
+    const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
+    const hash = hashBootstrapPassword(initialTempPass);
+    await execute(
+      `INSERT INTO admins (id, email, name, password_hash, role, status, must_change_password, created_at, updated_at)
+       VALUES (?, 'employee@balaji.com', 'Balaji Studio Associate', ?, 'employee', 'active', 1, NOW(), NOW())`,
+      [`admin-${crypto.randomUUID()}`, hash]
+    );
   }
 }
-

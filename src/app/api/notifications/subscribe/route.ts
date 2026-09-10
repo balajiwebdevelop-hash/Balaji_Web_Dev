@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: result.error }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, message: 'Push notification subscription registered in Supabase' });
+    return NextResponse.json({ success: true, message: 'Push notification subscription registered successfully' });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

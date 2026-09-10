@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
-import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
 import { getOrders, getQuotes, getProducts } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -31,46 +30,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let pendingOrders = 0;
-    let pendingQuotes = 0;
-    let lowStock = 0;
+    const [orders, quotes, products] = await Promise.all([
+      getOrders().catch(() => []),
+      getQuotes().catch(() => []),
+      getProducts().catch(() => []),
+    ]);
 
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-
-      const [ordRes, qtRes, prodRes] = await Promise.all([
-        supabase
-          .from('orders')
-          .select('id', { count: 'exact', head: true })
-          .in('order_status', ['Pending', 'Confirmed']),
-        supabase
-          .from('quotes')
-          .select('id', { count: 'exact', head: true })
-          .in('status', ['Pending', 'Under_Review']),
-        supabase
-          .from('products')
-          .select('stock, moq'),
-      ]);
-
-      pendingOrders = ordRes.count ?? 0;
-      pendingQuotes = qtRes.count ?? 0;
-
-      if (prodRes.data) {
-        lowStock = prodRes.data.filter(
-          (p: any) => (p.stock ?? 0) <= ((p.moq ?? 1) * 2) || (p.stock ?? 0) < 10
-        ).length;
-      }
-    } else {
-      const [orders, quotes, products] = await Promise.all([
-        getOrders().catch(() => []),
-        getQuotes().catch(() => []),
-        getProducts().catch(() => []),
-      ]);
-
-      pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
-      pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
-      lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
-    }
+    const pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+    const pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
+    const lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
 
     const recentActivity = pendingOrders + pendingQuotes + lowStock;
 

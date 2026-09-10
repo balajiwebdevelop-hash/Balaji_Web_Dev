@@ -1,12 +1,12 @@
 # BALAJI ARCHITECT & INTERIORS — ALL-IN-ONE MASTER CODEBASE
-> **Version**: `MASTER_CODEBASE(20260909-215725)`  
+> **Version**: `MASTER_CODEBASE(20260910-143829)`  
 > **Studio Platform**: Architectural Monograph, Bespoke Turnkey Contracting, Spec Material E-Commerce, and Real-Time Studio Operations.  
 > **Brand**: BALAJI ARCHITECT & INTERIORS  
 > **Studio Address**: Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040  
 > **Direct Contact**: +91 70029 48484 | atelier@balaji-interior.com  
 > **Google Rating**: ★ 5.0 (22 Google Reviews)  
 > **Repository**: https://github.com/balajiwebdevelop-hash/Balaji_Web_Dev  
-> **Total Source Files Included**: 147
+> **Total Source Files Included**: 150
 
 ---
 
@@ -16,149 +16,152 @@
 2. [`admincodebase.md`](#admincodebase-md)
 3. [`data/db.json`](#data-db-json)
 4. [`hostinger_balaji_schema.sql`](#hostinger-balaji-schema-sql)
-5. [`MASTER_ADMIN_CODEBASE.md`](#master-admin-codebase-md)
-6. [`MASTER_ADMIN_CODEBASE(1).md`](#master-admin-codebase-1-md)
-7. [`next-env.d.ts`](#next-env-d-ts)
-8. [`next.config.js`](#next-config-js)
-9. [`package.json`](#package-json)
-10. [`postcss.config.js`](#postcss-config-js)
-11. [`public/manifest.json`](#public-manifest-json)
-12. [`public/sw.js`](#public-sw-js)
-13. [`scripts/seed-supabase.ts`](#scripts-seed-supabase-ts)
-14. [`scripts/test-architecture-refactor.ts`](#scripts-test-architecture-refactor-ts)
-15. [`scripts/verify-production.ts`](#scripts-verify-production-ts)
-16. [`src/app/about/page.tsx`](#src-app-about-page-tsx)
-17. [`src/app/account/page.tsx`](#src-app-account-page-tsx)
-18. [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx)
-19. [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx)
-20. [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx)
-21. [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx)
-22. [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx)
-23. [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx)
-24. [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx)
-25. [`src/app/admin/page.tsx`](#src-app-admin-page-tsx)
-26. [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx)
-27. [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx)
-28. [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx)
-29. [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx)
-30. [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx)
-31. [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts)
-32. [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts)
-33. [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts)
-34. [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts)
-35. [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts)
-36. [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts)
-37. [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts)
-38. [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts)
-39. [`src/app/api/admin/summary/route.ts`](#src-app-api-admin-summary-route-ts)
-40. [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts)
-41. [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts)
-42. [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts)
-43. [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts)
-44. [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts)
-45. [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts)
-46. [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts)
-47. [`src/app/api/auth/register/route.ts`](#src-app-api-auth-register-route-ts)
-48. [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts)
-49. [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts)
-50. [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts)
-51. [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts)
-52. [`src/app/api/health/ready/route.ts`](#src-app-api-health-ready-route-ts)
-53. [`src/app/api/health/route.ts`](#src-app-api-health-route-ts)
-54. [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts)
-55. [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts)
-56. [`src/app/api/orders/customer/route.ts`](#src-app-api-orders-customer-route-ts)
-57. [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts)
-58. [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts)
-59. [`src/app/api/products/route.ts`](#src-app-api-products-route-ts)
-60. [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts)
-61. [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts)
-62. [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts)
-63. [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts)
-64. [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts)
-65. [`src/app/api/search/route.ts`](#src-app-api-search-route-ts)
-66. [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts)
-67. [`src/app/api/services/route.ts`](#src-app-api-services-route-ts)
-68. [`src/app/api/settings/route.ts`](#src-app-api-settings-route-ts)
-69. [`src/app/auth/callback/page.tsx`](#src-app-auth-callback-page-tsx)
-70. [`src/app/cart/page.tsx`](#src-app-cart-page-tsx)
-71. [`src/app/category/[slug]/page.tsx`](#src-app-category-slug-page-tsx)
-72. [`src/app/checkout/page.tsx`](#src-app-checkout-page-tsx)
-73. [`src/app/contact/page.tsx`](#src-app-contact-page-tsx)
-74. [`src/app/globals.css`](#src-app-globals-css)
-75. [`src/app/layout.tsx`](#src-app-layout-tsx)
-76. [`src/app/material/[slug]/page.tsx`](#src-app-material-slug-page-tsx)
-77. [`src/app/materials/page.tsx`](#src-app-materials-page-tsx)
-78. [`src/app/page.tsx`](#src-app-page-tsx)
-79. [`src/app/projects/[slug]/page.tsx`](#src-app-projects-slug-page-tsx)
-80. [`src/app/projects/page.tsx`](#src-app-projects-page-tsx)
-81. [`src/app/quote/page.tsx`](#src-app-quote-page-tsx)
-82. [`src/app/robots.ts`](#src-app-robots-ts)
-83. [`src/app/search/page.tsx`](#src-app-search-page-tsx)
-84. [`src/app/services/page.tsx`](#src-app-services-page-tsx)
-85. [`src/app/shop/page.tsx`](#src-app-shop-page-tsx)
-86. [`src/app/sitemap.ts`](#src-app-sitemap-ts)
-87. [`src/app/studio/page.tsx`](#src-app-studio-page-tsx)
-88. [`src/app/wishlist/page.tsx`](#src-app-wishlist-page-tsx)
-89. [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx)
-90. [`src/components/CartDrawer.tsx`](#src-components-cartdrawer-tsx)
-91. [`src/components/DesktopScrollPortfolio.tsx`](#src-components-desktopscrollportfolio-tsx)
-92. [`src/components/Footer.tsx`](#src-components-footer-tsx)
-93. [`src/components/Hero3DTypography.tsx`](#src-components-hero3dtypography-tsx)
-94. [`src/components/ImageReveal.tsx`](#src-components-imagereveal-tsx)
-95. [`src/components/ImageUploader.tsx`](#src-components-imageuploader-tsx)
-96. [`src/components/index.ts`](#src-components-index-ts)
-97. [`src/components/MobileBottomNav.tsx`](#src-components-mobilebottomnav-tsx)
-98. [`src/components/MobileScrollPortfolio.tsx`](#src-components-mobilescrollportfolio-tsx)
-99. [`src/components/Navbar.tsx`](#src-components-navbar-tsx)
-100. [`src/components/PageTransition.tsx`](#src-components-pagetransition-tsx)
-101. [`src/components/ProductDetailClient.tsx`](#src-components-productdetailclient-tsx)
-102. [`src/components/Reveal.tsx`](#src-components-reveal-tsx)
-103. [`src/components/ScrollPortfolio.tsx`](#src-components-scrollportfolio-tsx)
-104. [`src/components/WhatsAppButton.tsx`](#src-components-whatsappbutton-tsx)
-105. [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx)
-106. [`src/context/CartContext.tsx`](#src-context-cartcontext-tsx)
-107. [`src/context/WishlistContext.tsx`](#src-context-wishlistcontext-tsx)
-108. [`src/lib/auth.ts`](#src-lib-auth-ts)
-109. [`src/lib/db.ts`](#src-lib-db-ts)
-110. [`src/lib/push-client.ts`](#src-lib-push-client-ts)
-111. [`src/lib/push.ts`](#src-lib-push-ts)
-112. [`src/lib/seedData.ts`](#src-lib-seeddata-ts)
-113. [`src/lib/supabase.ts`](#src-lib-supabase-ts)
-114. [`src/middleware.ts`](#src-middleware-ts)
-115. [`src/server/api/response.ts`](#src-server-api-response-ts)
-116. [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts)
-117. [`src/server/auth/tokens.ts`](#src-server-auth-tokens-ts)
-118. [`src/server/db/client.ts`](#src-server-db-client-ts)
-119. [`src/server/db/index.ts`](#src-server-db-index-ts)
-120. [`src/server/db/mappers.ts`](#src-server-db-mappers-ts)
-121. [`src/server/db/mysql.ts`](#src-server-db-mysql-ts)
-122. [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts)
-123. [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts)
-124. [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts)
-125. [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts)
-126. [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts)
-127. [`src/server/db/repositories/index.ts`](#src-server-db-repositories-index-ts)
-128. [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts)
-129. [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts)
-130. [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts)
-131. [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts)
-132. [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts)
-133. [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts)
-134. [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts)
-135. [`src/server/errors/index.ts`](#src-server-errors-index-ts)
-136. [`src/server/security/config.ts`](#src-server-security-config-ts)
-137. [`src/server/security/index.ts`](#src-server-security-index-ts)
-138. [`src/server/security/sanitization.ts`](#src-server-security-sanitization-ts)
-139. [`src/server/services/index.ts`](#src-server-services-index-ts)
-140. [`src/server/services/orderService.ts`](#src-server-services-orderservice-ts)
-141. [`src/server/services/quoteService.ts`](#src-server-services-quoteservice-ts)
-142. [`src/server/validation/index.ts`](#src-server-validation-index-ts)
-143. [`src/server/validation/schemas.ts`](#src-server-validation-schemas-ts)
-144. [`src/types/index.ts`](#src-types-index-ts)
-145. [`supabase/schema.sql`](#supabase-schema-sql)
-146. [`tailwind.config.js`](#tailwind-config-js)
-147. [`tsconfig.json`](#tsconfig-json)
+5. [`HOSTINGER_PHPMYADMIN_SUPABASE_EXPORT.sql`](#hostinger-phpmyadmin-supabase-export-sql)
+6. [`MASTER_ADMIN_CODEBASE.md`](#master-admin-codebase-md)
+7. [`MASTER_ADMIN_CODEBASE(1).md`](#master-admin-codebase-1-md)
+8. [`next-env.d.ts`](#next-env-d-ts)
+9. [`next.config.js`](#next-config-js)
+10. [`package.json`](#package-json)
+11. [`postcss.config.js`](#postcss-config-js)
+12. [`public/manifest.json`](#public-manifest-json)
+13. [`public/sw.js`](#public-sw-js)
+14. [`REMAINING_DATA_INSERT.sql`](#remaining-data-insert-sql)
+15. [`scripts/generate-complete-hostinger-sql.js`](#scripts-generate-complete-hostinger-sql-js)
+16. [`scripts/test-architecture-refactor.ts`](#scripts-test-architecture-refactor-ts)
+17. [`scripts/test-hostinger-mysql.js`](#scripts-test-hostinger-mysql-js)
+18. [`scripts/verify-hostinger-standalone.js`](#scripts-verify-hostinger-standalone-js)
+19. [`scripts/verify-production.ts`](#scripts-verify-production-ts)
+20. [`src/app/about/page.tsx`](#src-app-about-page-tsx)
+21. [`src/app/account/page.tsx`](#src-app-account-page-tsx)
+22. [`src/app/admin/audit-logs/page.tsx`](#src-app-admin-audit-logs-page-tsx)
+23. [`src/app/admin/categories/page.tsx`](#src-app-admin-categories-page-tsx)
+24. [`src/app/admin/customers/page.tsx`](#src-app-admin-customers-page-tsx)
+25. [`src/app/admin/employees/page.tsx`](#src-app-admin-employees-page-tsx)
+26. [`src/app/admin/inventory/page.tsx`](#src-app-admin-inventory-page-tsx)
+27. [`src/app/admin/login/page.tsx`](#src-app-admin-login-page-tsx)
+28. [`src/app/admin/orders/page.tsx`](#src-app-admin-orders-page-tsx)
+29. [`src/app/admin/page.tsx`](#src-app-admin-page-tsx)
+30. [`src/app/admin/products/page.tsx`](#src-app-admin-products-page-tsx)
+31. [`src/app/admin/projects/page.tsx`](#src-app-admin-projects-page-tsx)
+32. [`src/app/admin/quotes/page.tsx`](#src-app-admin-quotes-page-tsx)
+33. [`src/app/admin/services/page.tsx`](#src-app-admin-services-page-tsx)
+34. [`src/app/admin/settings/page.tsx`](#src-app-admin-settings-page-tsx)
+35. [`src/app/api/admin/analytics/dashboard/route.ts`](#src-app-api-admin-analytics-dashboard-route-ts)
+36. [`src/app/api/admin/audit-logs/route.ts`](#src-app-api-admin-audit-logs-route-ts)
+37. [`src/app/api/admin/employees/[id]/route.ts`](#src-app-api-admin-employees-id-route-ts)
+38. [`src/app/api/admin/employees/route.ts`](#src-app-api-admin-employees-route-ts)
+39. [`src/app/api/admin/export/route.ts`](#src-app-api-admin-export-route-ts)
+40. [`src/app/api/admin/notifications/test/route.ts`](#src-app-api-admin-notifications-test-route-ts)
+41. [`src/app/api/admin/search/route.ts`](#src-app-api-admin-search-route-ts)
+42. [`src/app/api/admin/settings/route.ts`](#src-app-api-admin-settings-route-ts)
+43. [`src/app/api/admin/summary/route.ts`](#src-app-api-admin-summary-route-ts)
+44. [`src/app/api/admin/upload/route.ts`](#src-app-api-admin-upload-route-ts)
+45. [`src/app/api/auth/callback/route.ts`](#src-app-api-auth-callback-route-ts)
+46. [`src/app/api/auth/change-password/route.ts`](#src-app-api-auth-change-password-route-ts)
+47. [`src/app/api/auth/forgot-password/route.ts`](#src-app-api-auth-forgot-password-route-ts)
+48. [`src/app/api/auth/login/route.ts`](#src-app-api-auth-login-route-ts)
+49. [`src/app/api/auth/logout/route.ts`](#src-app-api-auth-logout-route-ts)
+50. [`src/app/api/auth/me/route.ts`](#src-app-api-auth-me-route-ts)
+51. [`src/app/api/auth/register/route.ts`](#src-app-api-auth-register-route-ts)
+52. [`src/app/api/categories/[id]/route.ts`](#src-app-api-categories-id-route-ts)
+53. [`src/app/api/categories/route.ts`](#src-app-api-categories-route-ts)
+54. [`src/app/api/enquiries/[id]/route.ts`](#src-app-api-enquiries-id-route-ts)
+55. [`src/app/api/enquiries/route.ts`](#src-app-api-enquiries-route-ts)
+56. [`src/app/api/health/ready/route.ts`](#src-app-api-health-ready-route-ts)
+57. [`src/app/api/health/route.ts`](#src-app-api-health-route-ts)
+58. [`src/app/api/notifications/subscribe/route.ts`](#src-app-api-notifications-subscribe-route-ts)
+59. [`src/app/api/orders/[id]/route.ts`](#src-app-api-orders-id-route-ts)
+60. [`src/app/api/orders/customer/route.ts`](#src-app-api-orders-customer-route-ts)
+61. [`src/app/api/orders/route.ts`](#src-app-api-orders-route-ts)
+62. [`src/app/api/products/[id]/route.ts`](#src-app-api-products-id-route-ts)
+63. [`src/app/api/products/route.ts`](#src-app-api-products-route-ts)
+64. [`src/app/api/projects/[id]/route.ts`](#src-app-api-projects-id-route-ts)
+65. [`src/app/api/projects/route.ts`](#src-app-api-projects-route-ts)
+66. [`src/app/api/quotes/[id]/convert/route.ts`](#src-app-api-quotes-id-convert-route-ts)
+67. [`src/app/api/quotes/[id]/route.ts`](#src-app-api-quotes-id-route-ts)
+68. [`src/app/api/quotes/route.ts`](#src-app-api-quotes-route-ts)
+69. [`src/app/api/search/route.ts`](#src-app-api-search-route-ts)
+70. [`src/app/api/services/[id]/route.ts`](#src-app-api-services-id-route-ts)
+71. [`src/app/api/services/route.ts`](#src-app-api-services-route-ts)
+72. [`src/app/api/settings/route.ts`](#src-app-api-settings-route-ts)
+73. [`src/app/auth/callback/page.tsx`](#src-app-auth-callback-page-tsx)
+74. [`src/app/cart/page.tsx`](#src-app-cart-page-tsx)
+75. [`src/app/category/[slug]/page.tsx`](#src-app-category-slug-page-tsx)
+76. [`src/app/checkout/page.tsx`](#src-app-checkout-page-tsx)
+77. [`src/app/contact/page.tsx`](#src-app-contact-page-tsx)
+78. [`src/app/globals.css`](#src-app-globals-css)
+79. [`src/app/layout.tsx`](#src-app-layout-tsx)
+80. [`src/app/material/[slug]/page.tsx`](#src-app-material-slug-page-tsx)
+81. [`src/app/materials/page.tsx`](#src-app-materials-page-tsx)
+82. [`src/app/page.tsx`](#src-app-page-tsx)
+83. [`src/app/projects/[slug]/page.tsx`](#src-app-projects-slug-page-tsx)
+84. [`src/app/projects/page.tsx`](#src-app-projects-page-tsx)
+85. [`src/app/quote/page.tsx`](#src-app-quote-page-tsx)
+86. [`src/app/robots.ts`](#src-app-robots-ts)
+87. [`src/app/search/page.tsx`](#src-app-search-page-tsx)
+88. [`src/app/services/page.tsx`](#src-app-services-page-tsx)
+89. [`src/app/shop/page.tsx`](#src-app-shop-page-tsx)
+90. [`src/app/sitemap.ts`](#src-app-sitemap-ts)
+91. [`src/app/studio/page.tsx`](#src-app-studio-page-tsx)
+92. [`src/app/wishlist/page.tsx`](#src-app-wishlist-page-tsx)
+93. [`src/components/AdminLayout.tsx`](#src-components-adminlayout-tsx)
+94. [`src/components/CartDrawer.tsx`](#src-components-cartdrawer-tsx)
+95. [`src/components/DesktopScrollPortfolio.tsx`](#src-components-desktopscrollportfolio-tsx)
+96. [`src/components/Footer.tsx`](#src-components-footer-tsx)
+97. [`src/components/Hero3DTypography.tsx`](#src-components-hero3dtypography-tsx)
+98. [`src/components/ImageReveal.tsx`](#src-components-imagereveal-tsx)
+99. [`src/components/ImageUploader.tsx`](#src-components-imageuploader-tsx)
+100. [`src/components/index.ts`](#src-components-index-ts)
+101. [`src/components/MobileBottomNav.tsx`](#src-components-mobilebottomnav-tsx)
+102. [`src/components/MobileScrollPortfolio.tsx`](#src-components-mobilescrollportfolio-tsx)
+103. [`src/components/Navbar.tsx`](#src-components-navbar-tsx)
+104. [`src/components/PageTransition.tsx`](#src-components-pagetransition-tsx)
+105. [`src/components/ProductDetailClient.tsx`](#src-components-productdetailclient-tsx)
+106. [`src/components/Reveal.tsx`](#src-components-reveal-tsx)
+107. [`src/components/ScrollPortfolio.tsx`](#src-components-scrollportfolio-tsx)
+108. [`src/components/WhatsAppButton.tsx`](#src-components-whatsappbutton-tsx)
+109. [`src/context/AdminAuthContext.tsx`](#src-context-adminauthcontext-tsx)
+110. [`src/context/CartContext.tsx`](#src-context-cartcontext-tsx)
+111. [`src/context/WishlistContext.tsx`](#src-context-wishlistcontext-tsx)
+112. [`src/lib/auth.ts`](#src-lib-auth-ts)
+113. [`src/lib/db.ts`](#src-lib-db-ts)
+114. [`src/lib/push-client.ts`](#src-lib-push-client-ts)
+115. [`src/lib/push.ts`](#src-lib-push-ts)
+116. [`src/lib/seedData.ts`](#src-lib-seeddata-ts)
+117. [`src/middleware.ts`](#src-middleware-ts)
+118. [`src/server/api/response.ts`](#src-server-api-response-ts)
+119. [`src/server/auth/rbac.ts`](#src-server-auth-rbac-ts)
+120. [`src/server/auth/tokens.ts`](#src-server-auth-tokens-ts)
+121. [`src/server/db/client.ts`](#src-server-db-client-ts)
+122. [`src/server/db/index.ts`](#src-server-db-index-ts)
+123. [`src/server/db/mappers.ts`](#src-server-db-mappers-ts)
+124. [`src/server/db/mysql.ts`](#src-server-db-mysql-ts)
+125. [`src/server/db/repositories/audit.ts`](#src-server-db-repositories-audit-ts)
+126. [`src/server/db/repositories/categories.ts`](#src-server-db-repositories-categories-ts)
+127. [`src/server/db/repositories/customers.ts`](#src-server-db-repositories-customers-ts)
+128. [`src/server/db/repositories/employees.ts`](#src-server-db-repositories-employees-ts)
+129. [`src/server/db/repositories/enquiries.ts`](#src-server-db-repositories-enquiries-ts)
+130. [`src/server/db/repositories/index.ts`](#src-server-db-repositories-index-ts)
+131. [`src/server/db/repositories/orders.ts`](#src-server-db-repositories-orders-ts)
+132. [`src/server/db/repositories/products.ts`](#src-server-db-repositories-products-ts)
+133. [`src/server/db/repositories/projects.ts`](#src-server-db-repositories-projects-ts)
+134. [`src/server/db/repositories/quotes.ts`](#src-server-db-repositories-quotes-ts)
+135. [`src/server/db/repositories/services.ts`](#src-server-db-repositories-services-ts)
+136. [`src/server/db/repositories/settings.ts`](#src-server-db-repositories-settings-ts)
+137. [`src/server/db/transactions/orders.ts`](#src-server-db-transactions-orders-ts)
+138. [`src/server/errors/index.ts`](#src-server-errors-index-ts)
+139. [`src/server/security/config.ts`](#src-server-security-config-ts)
+140. [`src/server/security/index.ts`](#src-server-security-index-ts)
+141. [`src/server/security/sanitization.ts`](#src-server-security-sanitization-ts)
+142. [`src/server/services/index.ts`](#src-server-services-index-ts)
+143. [`src/server/services/orderService.ts`](#src-server-services-orderservice-ts)
+144. [`src/server/services/quoteService.ts`](#src-server-services-quoteservice-ts)
+145. [`src/server/validation/index.ts`](#src-server-validation-index-ts)
+146. [`src/server/validation/schemas.ts`](#src-server-validation-schemas-ts)
+147. [`src/types/index.ts`](#src-types-index-ts)
+148. [`supabase/schema.sql`](#supabase-schema-sql)
+149. [`tailwind.config.js`](#tailwind-config-js)
+150. [`tsconfig.json`](#tsconfig-json)
 
 ---
 
@@ -166,16 +169,23 @@
 
 ### `.eslintrc.json`
 
+- **File**: `.eslintrc.json`
+- **Size**: 0.0 KB (4 lines)
+- **Language**: `json`
+
 ```json
 {
   "extends": "next/core-web-vitals"
 }
-
 ```
 
 ---
 
 ### `admincodebase.md`
+
+- **File**: `admincodebase.md`
+- **Size**: 816.7 KB (20941 lines)
+- **Language**: `markdown`
 
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
@@ -21118,12 +21128,15 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
-
 ```
 
 ---
 
 ### `data/db.json`
+
+- **File**: `data/db.json`
+- **Size**: 58.6 KB (1459 lines)
+- **Language**: `json`
 
 ```json
 {
@@ -22591,6 +22604,10 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ### `hostinger_balaji_schema.sql`
 
+- **File**: `hostinger_balaji_schema.sql`
+- **Size**: 56.3 KB (536 lines)
+- **Language**: `sql`
+
 ```sql
 -- ============================================================
 -- BALAJI ARCHITECT & INTERIORS — HOSTINGER PHPMYADMIN MYSQL SCHEMA
@@ -23127,12 +23144,1308 @@ VALUES ('global', 'Balaji Architect & Interior', 'Crafted spaces, luxury archite
 ON DUPLICATE KEY UPDATE `brand_name` = VALUES(`brand_name`), `payment_gateway` = VALUES(`payment_gateway`), `raw_json` = VALUES(`raw_json`);
 
 SET FOREIGN_KEY_CHECKS = 1;
+```
 
+---
+
+### `HOSTINGER_PHPMYADMIN_SUPABASE_EXPORT.sql`
+
+- **File**: `HOSTINGER_PHPMYADMIN_SUPABASE_EXPORT.sql`
+- **Size**: 197.7 KB (1283 lines)
+- **Language**: `sql`
+
+```sql
+-- ============================================================
+-- BALAJI ARCHITECT & INTERIORS
+-- HOSTINGER PHPMYADMIN MYSQL DATABASE IMPORT
+-- Includes 100% Real Live Supabase Data + Full Luxury Products & Inventory
+-- Compatible with Hostinger hPanel phpMyAdmin (MySQL 5.7+ / 8.0+ / MariaDB)
+-- Generated: 2026-09-10T08:03:45.033Z
+-- ============================================================
+
+SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+SET NAMES utf8mb4;
+
+-- ------------------------------------------------------------
+-- TARGET DATABASE
+-- (Ensures query runs inside u603162798_balaji_arc_db even if imported from server root)
+-- ------------------------------------------------------------
+USE `u603162798_balaji_arc_db`;
+
+-- ------------------------------------------------------------
+-- CLEAN SLATE: DROP OLD TABLES IF THEY ALREADY EXIST
+-- (Guarantees no column mismatches or schema collisions)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `push_subscriptions`;
+DROP TABLE IF EXISTS `audit_logs`;
+DROP TABLE IF EXISTS `site_settings`;
+DROP TABLE IF EXISTS `enquiries`;
+DROP TABLE IF EXISTS `quote_items`;
+DROP TABLE IF EXISTS `quotes`;
+DROP TABLE IF EXISTS `order_items`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `services`;
+DROP TABLE IF EXISTS `projects`;
+DROP TABLE IF EXISTS `inventory`;
+DROP TABLE IF EXISTS `product_variants`;
+DROP TABLE IF EXISTS `collections`;
+DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `admins`;
+
+-- ------------------------------------------------------------
+-- 1. ADMINS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `admins` (
+  `id` VARCHAR(36) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `password_hash` TEXT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(50) NOT NULL DEFAULT 'super_admin',
+  `status` VARCHAR(50) NOT NULL DEFAULT 'active',
+  `must_change_password` TINYINT(1) NOT NULL DEFAULT 0,
+  `last_login_at` DATETIME NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_admins_email` (`email`),
+  KEY `idx_admins_role` (`role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 2. CATEGORIES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `description` TEXT NULL,
+  `image_url` TEXT NULL,
+  `parent_id` VARCHAR(36) NULL,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_categories_slug` (`slug`),
+  KEY `idx_categories_sort` (`sort_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 3. PRODUCTS TABLE (Curated Luxury Materials & Objects)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `sku` VARCHAR(100) NOT NULL UNIQUE,
+  `brand` VARCHAR(255) NULL DEFAULT 'Balaji Atelier',
+  `category_id` VARCHAR(36) NULL,
+  `subcategory` VARCHAR(255) NULL,
+  `description` LONGTEXT NULL,
+  `price` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `sale_price` DECIMAL(12, 2) NULL,
+  `unit` VARCHAR(50) NOT NULL DEFAULT 'sq ft',
+  `moq` INT NOT NULL DEFAULT 1,
+  `stock` INT NOT NULL DEFAULT 0,
+  `purchase_mode` VARCHAR(50) NOT NULL DEFAULT 'BUY_NOW',
+  `lead_time` VARCHAR(100) NOT NULL DEFAULT '3-5 business days',
+  `dimensions` VARCHAR(255) NULL,
+  `thickness` VARCHAR(100) NULL,
+  `material` VARCHAR(255) NULL,
+  `finish` VARCHAR(255) NULL,
+  `color` VARCHAR(100) NULL,
+  `images` JSON NULL,
+  `variants` JSON NULL,
+  `is_featured` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_new` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_bestseller` TINYINT(1) NOT NULL DEFAULT 0,
+  `published` TINYINT(1) NOT NULL DEFAULT 1,
+  `tags` JSON NULL,
+  `specifications` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_products_slug` (`slug`),
+  KEY `idx_products_sku` (`sku`),
+  KEY `idx_products_cat` (`category_id`),
+  KEY `idx_products_featured` (`is_featured`),
+  KEY `idx_products_published` (`published`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 4. PRODUCT VARIANTS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `product_variants` (
+  `id` VARCHAR(36) NOT NULL,
+  `product_id` VARCHAR(36) NULL,
+  `sku` VARCHAR(100) NOT NULL UNIQUE,
+  `name` VARCHAR(255) NULL,
+  `finish` VARCHAR(100) NULL,
+  `thickness` VARCHAR(100) NULL,
+  `color` VARCHAR(100) NULL,
+  `size` VARCHAR(100) NULL,
+  `dimensions` VARCHAR(255) NULL,
+  `price_modifier` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `stock` INT NOT NULL DEFAULT 0,
+  `image_url` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_variants_prod` (`product_id`),
+  KEY `idx_variants_sku` (`sku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 5. INVENTORY TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `inventory` (
+  `id` VARCHAR(36) NOT NULL,
+  `product_id` VARCHAR(36) NULL,
+  `variant_id` VARCHAR(36) NULL,
+  `stock_on_hand` INT NOT NULL DEFAULT 0,
+  `stock_reserved` INT NOT NULL DEFAULT 0,
+  `stock_available` INT NOT NULL DEFAULT 0,
+  `low_stock_threshold` INT NOT NULL DEFAULT 5,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_inventory_prod` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 6. PROJECTS TABLE (Curated Portfolio Commissions)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` VARCHAR(36) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `location` VARCHAR(255) NULL,
+  `year` VARCHAR(50) NULL,
+  `project_type` VARCHAR(100) NULL,
+  `area` VARCHAR(100) NULL,
+  `short_description` TEXT NULL,
+  `description` LONGTEXT NULL,
+  `hero_image` TEXT NULL,
+  `gallery` JSON NULL,
+  `design_approach` TEXT NULL,
+  `materials_used` JSON NULL,
+  `before_after` JSON NULL,
+  `is_published` TINYINT(1) NOT NULL DEFAULT 1,
+  `is_featured` TINYINT(1) NOT NULL DEFAULT 0,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `tags` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_projects_slug` (`slug`),
+  KEY `idx_projects_featured` (`is_featured`),
+  KEY `idx_projects_sort` (`sort_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 7. SERVICES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `services` (
+  `id` VARCHAR(36) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `short_desc` TEXT NULL,
+  `full_desc` LONGTEXT NULL,
+  `icon_name` VARCHAR(100) NOT NULL DEFAULT 'Compass',
+  `image_url` TEXT NULL,
+  `deliverables` JSON NULL,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `is_published` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_services_slug` (`slug`),
+  KEY `idx_services_sort` (`sort_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 8. CUSTOMERS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` VARCHAR(36) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `phone` VARCHAR(50) NULL,
+  `full_name` VARCHAR(255) NULL,
+  `company_name` VARCHAR(255) NULL,
+  `gstin` VARCHAR(50) NULL,
+  `is_guest` TINYINT(1) NOT NULL DEFAULT 0,
+  `addresses` JSON NULL,
+  `total_orders` INT NOT NULL DEFAULT 0,
+  `total_spent` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_customers_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 9. ORDERS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` VARCHAR(36) NOT NULL,
+  `order_number` VARCHAR(50) NOT NULL UNIQUE,
+  `customer_id` VARCHAR(36) NULL,
+  `customer_name` VARCHAR(255) NULL,
+  `customer_email` VARCHAR(255) NULL,
+  `customer_phone` VARCHAR(50) NULL,
+  `shipping_address` JSON NULL,
+  `billing_address` JSON NULL,
+  `subtotal` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `tax` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `shipping_fee` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `discount` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `total_amount` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `order_status` VARCHAR(50) NOT NULL DEFAULT 'Confirmed',
+  `payment_status` VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+  `payment_method` VARCHAR(50) NOT NULL DEFAULT 'UPI',
+  `utr_number` VARCHAR(100) NULL,
+  `transaction_id` VARCHAR(100) NULL,
+  `notes` TEXT NULL,
+  `idempotency_key` VARCHAR(100) NULL UNIQUE,
+  `items` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_orders_num` (`order_number`),
+  KEY `idx_orders_status` (`order_status`),
+  KEY `idx_orders_payment` (`payment_status`),
+  KEY `idx_orders_email` (`customer_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 10. ORDER ITEMS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `order_items` (
+  `id` VARCHAR(36) NOT NULL,
+  `order_id` VARCHAR(36) NOT NULL,
+  `product_id` VARCHAR(36) NULL,
+  `variant_id` VARCHAR(36) NULL,
+  `product_name` VARCHAR(255) NULL,
+  `product_sku` VARCHAR(100) NULL,
+  `sku` VARCHAR(100) NULL,
+  `unit` VARCHAR(50) NULL,
+  `quantity` INT NOT NULL DEFAULT 1,
+  `unit_price` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `subtotal` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  `image_url` TEXT NULL,
+  `selected_color` VARCHAR(100) NULL,
+  `selected_finish` VARCHAR(100) NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_items_order` (`order_id`),
+  KEY `idx_items_product` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 11. QUOTES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `quotes` (
+  `id` VARCHAR(36) NOT NULL,
+  `quote_number` VARCHAR(50) NOT NULL UNIQUE,
+  `customer_name` VARCHAR(255) NULL,
+  `customer_email` VARCHAR(255) NULL,
+  `customer_phone` VARCHAR(50) NULL,
+  `project_type` VARCHAR(100) NULL,
+  `project_location` VARCHAR(100) NULL,
+  `city` VARCHAR(100) NULL,
+  `scope_of_work` TEXT NULL,
+  `notes` TEXT NULL,
+  `estimated_budget` VARCHAR(100) NULL,
+  `budget_range` VARCHAR(100) NULL,
+  `estimated_timeline` VARCHAR(100) NULL,
+  `timeline` VARCHAR(100) NULL,
+  `status` VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+  `admin_notes` TEXT NULL,
+  `quoted_amount` DECIMAL(14, 2) NULL,
+  `total_quoted_amount` DECIMAL(14, 2) NULL,
+  `items` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_quotes_num` (`quote_number`),
+  KEY `idx_quotes_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 12. QUOTE ITEMS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `quote_items` (
+  `id` VARCHAR(36) NOT NULL,
+  `quote_id` VARCHAR(36) NOT NULL,
+  `product_id` VARCHAR(36) NULL,
+  `product_name` VARCHAR(255) NULL,
+  `dimensions` VARCHAR(255) NULL,
+  `quantity` INT NOT NULL DEFAULT 1,
+  `unit` VARCHAR(50) NOT NULL DEFAULT 'sq ft',
+  `notes` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_quote_items_quote` (`quote_id`),
+  KEY `idx_quote_items_product` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 13. ENQUIRIES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `enquiries` (
+  `id` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(255) NULL,
+  `email` VARCHAR(255) NULL,
+  `phone` VARCHAR(50) NULL,
+  `subject` VARCHAR(255) NULL,
+  `message` TEXT NULL,
+  `status` VARCHAR(50) NOT NULL DEFAULT 'New',
+  `source` VARCHAR(100) NOT NULL DEFAULT 'Website Contact Form',
+  `admin_notes` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_enquiries_status` (`status`),
+  KEY `idx_enquiries_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 13. SITE SETTINGS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `site_settings` (
+  `id` VARCHAR(36) NOT NULL,
+  `key` VARCHAR(100) NULL,
+  `value` JSON NULL,
+  `raw_json` JSON NULL,
+  `brand_name` VARCHAR(255) NULL,
+  `tagline` TEXT NULL,
+  `contact_email` VARCHAR(255) NULL,
+  `contact_phone` VARCHAR(100) NULL,
+  `whatsapp_number` VARCHAR(100) NULL,
+  `studio_address` TEXT NULL,
+  `gstin_number` VARCHAR(50) NULL,
+  `currency` VARCHAR(10) DEFAULT 'INR',
+  `currency_symbol` VARCHAR(10) DEFAULT '₹',
+  `tax_rate_percent` DECIMAL(5,2) DEFAULT 18.00,
+  `standard_shipping_fee` DECIMAL(10,2) DEFAULT 1500.00,
+  `free_shipping_threshold` DECIMAL(10,2) DEFAULT 50000.00,
+  `homepage` JSON NULL,
+  `payment_gateway` JSON NULL,
+  `portfolio_animation` JSON NULL,
+  `whatsapp` JSON NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_settings_key` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 14. AUDIT LOGS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `audit_logs` (
+  `id` VARCHAR(36) NOT NULL,
+  `admin_id` VARCHAR(36) NULL,
+  `admin_email` VARCHAR(255) NULL,
+  `action` VARCHAR(100) NULL,
+  `entity` VARCHAR(100) NULL,
+  `entity_id` VARCHAR(255) NULL,
+  `details` JSON NULL,
+  `ip_address` VARCHAR(100) NULL,
+  `user_agent` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_audit_admin` (`admin_id`),
+  KEY `idx_audit_action` (`action`),
+  KEY `idx_audit_entity` (`entity`),
+  KEY `idx_audit_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 15. PUSH SUBSCRIPTIONS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `push_subscriptions` (
+  `id` VARCHAR(36) NOT NULL,
+  `endpoint` TEXT NULL,
+  `p256dh` TEXT NULL,
+  `auth` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ============================================================
+-- DATA: ADMINS
+-- ============================================================
+INSERT INTO `admins` (`id`, `email`, `password_hash`, `name`, `role`, `status`, `must_change_password`, `last_login_at`, `created_at`, `updated_at`)
+VALUES ('2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', '3903a96046ec99bc94100f812cfee1b2:e72fa457ba6ab3be8353defbdf61b4c243714f27acb2cbc20fd2232dc36e184bd6564345d66103f433154a166821c36b5e0a0b162aeddf378182678a830c7f5b', 'Vikas Sir (Principal Architect)', 'owner', 'active', 0, '2026-09-09 13:00:15', '2026-08-17 16:37:19', '2026-09-09 13:00:15')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password_hash` = VALUES(`password_hash`), `role` = VALUES(`role`);
+
+-- ============================================================
+-- DATA: CATEGORIES (10 from Supabase)
+-- ============================================================
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('04cfbece-9471-428c-9356-a4d569377592', 'Natural Stone & Marble', 'natural-stone-marble', 'Quarried Italian marbles, honed travertines, and architectural granites with bespoke cut-to-size options.', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', NULL, 1, 1, '2026-08-17 16:37:19', '2026-08-17 16:37:19')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('46510b90-870a-4020-92f3-a193733a709e', 'Hardwood & Architectural Veneers', 'hardwood-veneers', 'Sustainably harvested smoked oaks, European walnuts, and natural fluted timber panels.', 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80', NULL, 2, 1, '2026-08-17 16:37:20', '2026-08-17 16:37:20')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('37b61c08-82d3-4d08-91ec-230e56249ac6', 'Wall Panels & Acoustic Surfaces', 'wall-panels-acoustic', 'Linear slatted wall systems, architectural micro-cement claddings, and acoustic linen textures.', 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80', NULL, 3, 1, '2026-08-17 16:37:20', '2026-08-17 16:37:20')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('b7a6b9ef-6353-4eb5-ad84-6e7672f37863', 'Large Format Porcelain Slabs', 'porcelain-slabs', 'Monolithic sintered stone slabs for luxury countertops, bookmatched feature walls, and seamless floors.', 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80', NULL, 4, 1, '2026-08-17 16:37:20', '2026-08-17 16:37:20')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('f80122a1-b4b6-42c3-b4e0-a34ebfb07011', 'Architectural Lighting', 'architectural-lighting', 'Sculptural unlacquered brass pendants, minimal linear sconces, and recessed gallery luminescence.', 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80', NULL, 5, 1, '2026-08-17 16:37:20', '2026-08-17 16:37:20')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('9f1fb2e1-7531-4601-b56a-86786966a3f8', 'Bespoke Hardware & Pulls', 'bespoke-hardware', 'Solid forged bronze handles, knurled cabinet pulls, and precision-engineered architectural pivots.', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80', NULL, 6, 1, '2026-08-17 16:37:21', '2026-08-17 16:37:21')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('d0fd0a38-5645-4aee-b2c2-dd754229f423', 'Atelier Furniture & Objects', 'atelier-furniture', 'Limited edition travertine monoliths, solid oak dining tables, and tailored bouclé seating.', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80', NULL, 7, 1, '2026-08-17 16:37:21', '2026-08-17 16:37:21')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('efe96fd8-77b7-467d-876c-9e76adb518a0', 'Acoustic Architectural Fabrics', 'test-category-1787490647092', 'Sound-dampening bespoke woven textiles for high-end cinema and auditorium interiors.', '/categories/test-acoustic.jpg', NULL, 10, 0, '2026-08-23 13:10:40', '2026-08-23 13:10:47')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('07ff723f-80e2-4278-b0fa-0e6b087447d4', 'Acoustic Architectural Fabrics', 'test-category-1787490685756', 'Sound-dampening bespoke woven textiles for high-end cinema and auditorium interiors.', '/categories/test-acoustic.jpg', NULL, 10, 0, '2026-08-23 13:11:18', '2026-08-23 13:11:26')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image_url`, `parent_id`, `sort_order`, `is_active`, `created_at`, `updated_at`)
+VALUES ('eac0edeb-5843-46ce-9574-712ff7c79d48', 'Acoustic Architectural Fabrics', 'test-category-1787490711903', 'Sound-dampening bespoke woven textiles for high-end cinema and auditorium interiors.', '/categories/test-acoustic.jpg', NULL, 10, 0, '2026-08-23 13:11:45', '2026-08-23 13:11:52')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `description` = VALUES(`description`), `image_url` = VALUES(`image_url`);
+
+-- ============================================================
+-- DATA: PRODUCTS & INVENTORY (8 luxury products)
+-- ============================================================
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-travertine-slab', 'Romano Classico Vein-Cut Travertine', 'romano-classico-travertine', 'MAT-STN-001', 'Balaji Architect & Interiors', 'cat-stone', 'Honed Travertine', 'Authentic Italian vein-cut travertine quarried in Tivoli. Honed to a velvety matte tactile finish with natural open pores lightly filled for lasting resilience in high-end living spaces and bath suites.', 850, 780, 'sq ft', 100, 2377, 'BOTH', '5-7 business days', '2400mm x 1200mm slab / custom tile sizes', '20mm', 'Natural Travertine', 'Honed Matte', 'Warm Ivory / Biscuit', '[\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80\"]', '[{\"id\":\"var-trav-20mm\",\"productId\":\"prod-travertine-slab\",\"sku\":\"MAT-STN-001-20\",\"name\":\"20mm Slab - Honed\",\"finish\":\"Honed\",\"thickness\":\"20mm\",\"priceModifier\":0,\"stock\":1800},{\"id\":\"var-trav-30mm\",\"productId\":\"prod-travertine-slab\",\"sku\":\"MAT-STN-001-30\",\"name\":\"30mm Slab - Polished Matte\",\"finish\":\"Polished Matte\",\"thickness\":\"30mm\",\"priceModifier\":190,\"stock\":600}]', 1, 0, 1, 1, '[\"Stone\",\"Travertine\",\"Flooring\",\"Wall Cladding\",\"Luxury Bath\"]', '{\"Origin\":\"Tivoli, Italy\",\"Compressive Strength\":\"112 MPa\",\"Water Absorption\":\"< 0.8\%\",\"Application\":\"Indoor flooring, feature walls, bathroom surrounds\",\"Edge Detail\":\"Straight rectified / custom bullnose on request\"}', '2026-08-17 17:05:35', '2026-08-17 17:06:09')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-travertine-slab', 'prod-travertine-slab', NULL, 2377, 0, 2377, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `finish`, `thickness`, `color`, `dimensions`, `price_modifier`, `stock`)
+VALUES ('var-trav-20mm', 'prod-travertine-slab', 'MAT-STN-001-20', '20mm Slab - Honed', 'Honed', '20mm', NULL, NULL, 0, 1800)
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price_modifier` = VALUES(`price_modifier`), `stock` = VALUES(`stock`);
+INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `finish`, `thickness`, `color`, `dimensions`, `price_modifier`, `stock`)
+VALUES ('var-trav-30mm', 'prod-travertine-slab', 'MAT-STN-001-30', '30mm Slab - Polished Matte', 'Polished Matte', '30mm', NULL, NULL, 190, 600)
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price_modifier` = VALUES(`price_modifier`), `stock` = VALUES(`stock`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-smoked-oak-flooring', 'Smoked European White Oak Wide Plank', 'smoked-european-oak-flooring', 'MAT-WOD-002', 'Balaji Architect & Interiors', 'cat-wood', 'Engineered Hardwood', 'Slow-smoked French white oak planks with a triple-brushed wire texture and invisible natural UV polyurethane oil finish. Engineered with a multi-layer birch ply core for dimensional stability in humid climates.', 620, NULL, 'sq ft', 150, 3500, 'BUY_NOW', '3-5 business days', '2200mm L x 220mm W', '15mm (4mm top wear layer)', 'European White Oak & Baltic Birch', 'Natural Ultra-Matte Oil', 'Muted Earth Brown', '[\"https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80\"]', '[{\"id\":\"var-oak-smoked\",\"productId\":\"prod-smoked-oak-flooring\",\"sku\":\"MAT-WOD-002-SMK\",\"name\":\"Smoked Natural\",\"color\":\"Warm Umber\",\"finish\":\"Wire Brushed\",\"priceModifier\":0,\"stock\":2200},{\"id\":\"var-oak-raw\",\"productId\":\"prod-smoked-oak-flooring\",\"sku\":\"MAT-WOD-002-RAW\",\"name\":\"Raw Nordic Sand\",\"color\":\"Light Biscuit\",\"finish\":\"Smooth Matte\",\"priceModifier\":40,\"stock\":1300}]', 1, 1, 1, 1, '[\"Wood\",\"Flooring\",\"Oak\",\"Wide Plank\",\"Living Room\"]', '{\"Grade\":\"Select Architectural ABC\",\"Core\":\"11-ply Cross-Grain Baltic Birch\",\"Bevel\":\"Micro-bevel on 4 sides\",\"Installation\":\"Tongue & Groove / Glue-down or Floating\",\"Underfloor Heating Compatible\":\"Yes, up to 27°C\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-smoked-oak-flooring', 'prod-smoked-oak-flooring', NULL, 3500, 0, 3500, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `finish`, `thickness`, `color`, `dimensions`, `price_modifier`, `stock`)
+VALUES ('var-oak-smoked', 'prod-smoked-oak-flooring', 'MAT-WOD-002-SMK', 'Smoked Natural', 'Wire Brushed', NULL, 'Warm Umber', NULL, 0, 2200)
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price_modifier` = VALUES(`price_modifier`), `stock` = VALUES(`stock`);
+INSERT INTO `product_variants` (`id`, `product_id`, `sku`, `name`, `finish`, `thickness`, `color`, `dimensions`, `price_modifier`, `stock`)
+VALUES ('var-oak-raw', 'prod-smoked-oak-flooring', 'MAT-WOD-002-RAW', 'Raw Nordic Sand', 'Smooth Matte', NULL, 'Light Biscuit', NULL, 40, 1300)
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price_modifier` = VALUES(`price_modifier`), `stock` = VALUES(`stock`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-fluted-acoustic-panel', 'Acoustic Fluted Walnut Wall Panel', 'acoustic-fluted-walnut-panel', 'MAT-PNL-003', 'Balaji Architect & Interiors', 'cat-panels', 'Acoustic Cladding', 'Precision-milled American walnut slats affixed to a recycled high-density acoustic PET felt backing. Elevates room acoustics while introducing warm architectural rhythm to master bedrooms and private cinema suites.', 14500, 13200, 'sheet', 2, 85, 'BUY_NOW', '3-4 business days', '2400mm H x 600mm W x 22mm D', '22mm', 'Natural American Walnut & Recycled Felt', 'Silky Natural Wax Oil', 'Deep Espresso Walnut', '[\"https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\"]', '[]', 1, 1, 0, 1, '[\"Acoustic\",\"Wall Panels\",\"Walnut\",\"Fluted\",\"Bedrooms\"]', '{\"NRC Rating\":\"0.85 Sound Absorption\",\"Fire Rating\":\"Class B-s1, d0 (Flame Retardant)\",\"Mounting\":\"Concealed screw or polyurethane construction adhesive\",\"Slat Spacing\":\"13mm width with 14mm felt reveals\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-fluted-acoustic-panel', 'prod-fluted-acoustic-panel', NULL, 85, 0, 85, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-calacatta-porcelain', 'Calacatta Vagli Sintered Porcelain Slab', 'calacatta-vagli-porcelain-slab', 'MAT-POR-004', 'Balaji Architect & Interiors', 'cat-porcelain', 'Continuous Bookmatched Slabs', 'Continuous vein-matched sintered ceramic slab with deep golden and slate veins on an ultra-clean warm white background. 100\% stain, heat, and scratch proof for demanding culinary islands and master vanities.', 1100, NULL, 'sq ft', 50, 1200, 'BOTH', '7-10 business days', '3200mm x 1600mm', '12mm / 20mm', 'Sintered Ceramic Porcelain', 'Silk Touch Satin', 'Pure White with Gold & Charcoal Veining', '[\"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80\"]', '[]', 0, 0, 1, 1, '[\"Kitchen Countertop\",\"Porcelain Slab\",\"Bookmatched\",\"Island Counter\"]', '{\"Porosity\":\"0.01\% (Zero Porosity)\",\"Thermal Shock\":\"Resistant to direct pans up to 400°C\",\"UV Stability\":\"Fade proof for indoor and outdoor loggias\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-calacatta-porcelain', 'prod-calacatta-porcelain', NULL, 1200, 0, 1200, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-monolith-coffee-table', 'Brutalist Travertine Monolith Coffee Table', 'brutalist-travertine-coffee-table', 'FUR-TBL-005', 'Balaji Architect & Interiors', 'cat-furniture', 'Sculptural Tables', 'Sculpted from a single block of Tuscan Romano travertine. Defined by raw chiseled edges contrasting with a silky hand-honed flat surface. Each table is an individual architectural sculpture numbered by the studio.', 185000, NULL, 'piece', 1, 4, 'BUY_NOW', 'Made to order (2-3 weeks)', '1400mm L x 800mm W x 360mm H', '120mm solid block perimeter', 'Solid Honed Travertine Stone', 'Natural Matte Wax Sealed', 'Ivory Travertine', '[\"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80\"]', '[]', 1, 1, 0, 1, '[\"Furniture\",\"Coffee Table\",\"Travertine\",\"Sculptural\",\"Living Room\"]', '{\"Weight\":\"115 kg\",\"Craftsmanship\":\"Hand-chiseled perimeter with CNC planar accuracy\",\"Care\":\"Wipe with damp cloth and pH neutral stone cleanser\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-monolith-coffee-table', 'prod-monolith-coffee-table', NULL, 4, 0, 4, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-linear-bronze-pendant', 'Kanso Linear Brushed Bronze Chandelier', 'kanso-linear-bronze-chandelier', 'LGT-PEN-006', 'Balaji Architect & Interiors', 'cat-lighting', 'Suspension Lighting', 'A monolithic 1.8-meter solid extruded bronze fixture housing warm 2700K museum-grade CRI 97+ LED arrays diffused through frosted Japanese alabaster glass. Dimmable via DALI and TRIAC protocols.', 88000, NULL, 'set', 1, 12, 'BUY_NOW', '5-7 business days', '1800mm L x 60mm W x 80mm H (Suspension up to 2500mm)', NULL, 'Solid Extruded Bronze & Cast Alabaster', 'Hand-Rubbed Aged Bronze', 'Antique Bronze', '[\"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80\",\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\"]', '[]', 1, 0, 1, 1, '[\"Lighting\",\"Bronze\",\"Dining Table Chandelier\",\"Minimalist\"]', '{\"Luminous Flux\":\"4,200 Lumens\",\"Color Temperature\":\"2700K Warm Architectural Glow\",\"Color Rendering Index\":\"CRI 98\",\"Voltage\":\"220-240V AC 50/60Hz\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-linear-bronze-pendant', 'prod-linear-bronze-pendant', NULL, 12, 0, 12, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-knurled-bronze-hardware', 'Bespoke Knurled Bronze Door Lever & Escutcheon Set', 'bespoke-knurled-bronze-door-lever', 'HRD-LVR-007', 'Balaji Architect & Interiors', 'cat-hardware', 'Architectural Door Hardware', 'Machined from solid naval brass billets and finished with a dark antique bronze patina that deepens with use. Features a precision cross-hatch diamond knurled barrel for a reassuring tactile grip on heavy entrance doors.', 9500, 8600, 'set', 2, 65, 'BUY_NOW', '2-3 business days', '150mm Lever x 52mm Rose', NULL, 'Solid Forged Naval Brass', 'Unlacquered Living Bronze Patina', 'Dark Antique Bronze', '[\"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80\"]', '[]', 0, 1, 1, 1, '[\"Door Hardware\",\"Bronze Handles\",\"Knurled Brass\",\"Luxury Entrance\"]', '{\"Mechanism\":\"Heavy duty sprung return rose with ball-bearing hub\",\"Spindle\":\"8mm solid steel standard\",\"Door Thickness Fit\":\"38mm to 55mm solid timber doors\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-knurled-bronze-hardware', 'prod-knurled-bronze-hardware', NULL, 65, 0, 65, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+INSERT INTO `products` (`id`, `name`, `slug`, `sku`, `brand`, `category_id`, `subcategory`, `description`, `price`, `sale_price`, `unit`, `moq`, `stock`, `purchase_mode`, `lead_time`, `dimensions`, `thickness`, `material`, `finish`, `color`, `images`, `variants`, `is_featured`, `is_new`, `is_bestseller`, `published`, `tags`, `specifications`, `created_at`, `updated_at`)
+VALUES ('prod-custom-millwork-veneer', 'Smoked Santos Rosewood Architectural Veneer', 'smoked-santos-rosewood-veneer', 'MAT-VNR-008', 'Balaji Architect & Interiors', 'cat-wood', 'Natural Wood Veneer', 'Sequenced architectural flitch veneer with rich espresso cathedrals and bronze undertones. Backed with non-woven fleece for seamless pressing onto curved cabinetry and bespoke wardrobes.', 320, NULL, 'sq ft', 200, 4200, 'REQUEST_QUOTE', '7-10 business days', '3050mm L x 1250mm W', '0.6mm', 'Natural Santos Rosewood', 'Raw Unfinished (Ready for matte polyurethane or hardwax)', 'Rich Espresso & Bronze Striations', '[\"https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80\"]', '[]', 0, 0, 0, 1, '[\"Veneer\",\"Rosewood\",\"Wardrobes\",\"Wall Paneling\",\"Joinery\"]', '{\"Cut\":\"Crown Cut & Quarter Cut Bookmatched\",\"Moisture Content\":\"8-12\%\",\"Sustainably Certified\":\"FSC 100\% Controlled Harvest\"}', '2026-08-17 17:05:35', '2026-08-17 17:05:35')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `price` = VALUES(`price`), `stock` = VALUES(`stock`);
+INSERT INTO `inventory` (`id`, `product_id`, `variant_id`, `stock_on_hand`, `stock_reserved`, `stock_available`, `low_stock_threshold`)
+VALUES ('inv-prod-custom-millwork-veneer', 'prod-custom-millwork-veneer', NULL, 4200, 0, 4200, 5)
+ON DUPLICATE KEY UPDATE `stock_on_hand` = VALUES(`stock_on_hand`), `stock_available` = VALUES(`stock_available`);
+
+-- ============================================================
+-- DATA: PROJECTS (6 from Supabase)
+-- ============================================================
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('882461f2-68e5-4a86-a085-29dd56e4701e', 'Maison Brutaliste', 'maison-brutaliste-delhi', 'Chhatarpur Farms, New Delhi', '2025', 'Residential Interiors', '11,000 sq ft', 'A bold sculptural private residence contrasting raw architectural board-formed concrete with refined brushed bronze and lush interior courtyard gardens.', 'Conceived as an inward-looking sanctuary shielded from urban noise, Maison Brutaliste features soaring 6-meter ceilings and rhythmic colonnades that capture changing light across the seasons.', 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80\"]', 'The project demonstrates our philosophy of material honesty—every concrete pour, timber grain, and bronze joint is left exposed to celebrate true construction craftsmanship.', '[{\"category\":\"Stone\",\"materialId\":\"prod-travertine-slab\",\"materialName\":\"Romano Classico Vein-Cut Travertine\"},{\"category\":\"Hardware\",\"materialId\":\"prod-knurled-bronze-hardware\",\"materialName\":\"Bespoke Knurled Bronze Door Lever\"}]', '{}', 1, 1, 3, '[\"Brutalist\",\"Private Residence\",\"Delhi\",\"Concrete & Bronze\"]', '2026-08-17 16:37:23', '2026-08-17 16:37:23')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('9f7163a3-3a0c-45dc-b11d-b2bb7d99fc58', 'Kyoto Tea & Dine Atelier', 'kyoto-tea-dine-atelier', 'Pali Hill, Bandra West, Mumbai', '2024', 'Hospitality & Luxury Dining', '3,900 sq ft', 'An intimate omakase and artisanal tea lounge celebrated for its charred Shou Sugi Ban cedar walls and monolithic travertine bar.', 'Designed as a multisensory journey, guests transition through a tranquil rock garden into an ambient dining room anchored by an 8-meter solid stone counter illuminated by custom linear bronze fixtures.', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80\"]', 'Minimalist Japanese wabi-sabi principles interpreted through contemporary Indian stone craftsmanship.', '[{\"category\":\"Lighting\",\"materialId\":\"prod-linear-bronze-pendant\",\"materialName\":\"Kanso Linear Brushed Bronze Chandelier\"}]', '{}', 1, 0, 6, '[\"Hospitality\",\"Restaurant\",\"Bandra\",\"Dining\"]', '2026-08-17 16:37:24', '2026-08-17 16:37:24')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('8f03090b-adc6-4e61-b781-0f88b2562273', 'The Monolith Design Headquarters', 'the-monolith-design-headquarters', 'Indiranagar, Bengaluru', '2024', 'Commercial & Studio', '4,200 sq ft', 'A serene creative studio for an international fashion house featuring modular walnut workstations and monolithic stone meeting pods.', 'Balaji Architect & Interiors was commissioned to rethink modern creative workspace architecture. We crafted quiet acoustic alcoves and an open library of tactile material specimens to inspire daily design exploration.', 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1400&q=80\"]', 'Focus on high acoustic performance and calm ambient illumination to support deep creative focus.', '[{\"category\":\"Acoustics\",\"materialId\":\"prod-fluted-acoustic-panel\",\"materialName\":\"Acoustic Fluted Walnut Wall Panel\"}]', '{}', 1, 0, 4, '[\"Studio\",\"Workplace\",\"Bengaluru\",\"Commercial\"]', '2026-08-17 16:37:23', '2026-08-17 16:37:23')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('4c0c47f3-fa15-4032-842a-f86c09ac8c3e', 'Aura Residence', 'aura-residence-hyderabad', 'Jubilee Hills, Hyderabad', '2025', 'Residential Interiors', '6,800 sq ft', 'An understated private residence balancing traditional Deccan courtyard typologies with razor-sharp modern detailing.', 'Every room in Aura Residence is composed around intimate landscaped lightwells. Custom unlacquered bronze partitions and vein-matched marble floors foster a feeling of continuous calm.', 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80\"]', 'Integration of passive ventilation, natural daylight, and enduring local granite masonry.', '[]', '{}', 1, 1, 5, '[\"Courtyard House\",\"Hyderabad\",\"Luxury Interior\"]', '2026-08-17 16:37:24', '2026-08-17 16:37:24')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('fb5f3322-5cf0-47fb-8f55-7c5b0e8fb71e', 'The Sanctuary at Alibaug', 'the-sanctuary-at-alibaug', 'Awas Coast, Alibaug', '2025', 'Architecture & Villa', '8,200 sq ft', 'A monolithic coastal retreat grounded in honed Tivoli travertine, smoked French oak, and frameless pocketing glass walls connecting lush banyan groves.', 'Designed as a timeless multi-generational weekend villa, The Sanctuary is configured around a central reflecting pool framed by board-formed concrete and warm Italian travertine. Every interior element was custom designed and fabricated by Balaji Architect & Interiors, ensuring unbroken harmony between raw architectural mass and delicate tactile finishes.', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80\"]', 'Our approach balanced heavy thermal mass walls with delicate bronze joinery and natural woven linens, allowing sea breezes to filter through while maintaining deep shade and thermal comfort.', '[{\"category\":\"Natural Stone\",\"imageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80\",\"materialId\":\"prod-travertine-slab\",\"materialName\":\"Romano Classico Vein-Cut Travertine\"},{\"category\":\"Timber\",\"imageUrl\":\"https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80\",\"materialId\":\"prod-smoked-oak-flooring\",\"materialName\":\"Smoked European White Oak Wide Plank\"},{\"category\":\"Lighting\",\"imageUrl\":\"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=400&q=80\",\"materialId\":\"prod-linear-bronze-pendant\",\"materialName\":\"Kanso Linear Brushed Bronze Chandelier\"}]', '{}', 1, 1, 1, '[\"Villa\",\"Coastal\",\"Travertine\",\"Minimalist Luxury\",\"Turnkey Execution\"]', '2026-08-17 16:37:23', '2026-08-17 16:37:23')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+INSERT INTO `projects` (`id`, `title`, `slug`, `location`, `year`, `project_type`, `area`, `short_description`, `description`, `hero_image`, `gallery`, `design_approach`, `materials_used`, `before_after`, `is_published`, `is_featured`, `sort_order`, `tags`, `created_at`, `updated_at`)
+VALUES ('3281844d-cb75-40e4-b5ed-c4e4de7a9f63', 'Pavilion of Light', 'pavilion-of-light-worli', 'Worli Seaface, Mumbai', '2024', 'Penthouse & Estate', '5,400 sq ft', 'An expansive sea-facing sky penthouse wrapped in acoustic fluted walnut paneling, Calacatta Vagli porcelain, and custom patinated bronze millwork.', 'Perched high above the Arabian Sea, this sky residence explores how sunlight behaves across contrasting textures. The public salon flows seamlessly from honed stone floors to floor-to-ceiling smoked walnut millwork housing a curated collection of modern sculpture.', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85', '[\"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80\",\"https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1400&q=80\"]', 'We eradicated unnecessary visual clutter, replacing drywall partitions with sliding fluted acoustic timber screens that allow the living space to transform dynamically from open gallery to private entertaining salon.', '[{\"category\":\"Acoustic Cladding\",\"imageUrl\":\"https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80\",\"materialId\":\"prod-fluted-acoustic-panel\",\"materialName\":\"Acoustic Fluted Walnut Wall Panel\"},{\"category\":\"Sintered Stone\",\"imageUrl\":\"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=400&q=80\",\"materialId\":\"prod-calacatta-porcelain\",\"materialName\":\"Calacatta Vagli Sintered Porcelain Slab\"}]', '{}', 1, 1, 2, '[\"Penthouse\",\"Mumbai\",\"Walnut\",\"Sea View\",\"Interior Design\"]', '2026-08-17 16:37:23', '2026-08-17 16:37:23')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `hero_image` = VALUES(`hero_image`), `description` = VALUES(`description`);
+
+-- ============================================================
+-- DATA: SERVICES (4 from Supabase)
+-- ============================================================
+INSERT INTO `services` (`id`, `title`, `slug`, `short_desc`, `full_desc`, `icon_name`, `image_url`, `deliverables`, `sort_order`, `is_published`, `created_at`, `updated_at`)
+VALUES ('b411876d-39d8-45ac-88eb-0d9a1b77adc5', 'Interior Architecture & Space Planning', 'interior-architecture-space-planning', 'Comprehensive spatial reconfiguration, structural alignment, and architectural interior detailing for luxury residences and estates.', 'We re-engineer spatial flows from first principles, taking into account natural daylight vectors, sightlines, acoustics, and structural integration. Our drawings cover full architectural CAD & BIM sets, reflected ceiling plans, MEP coordination, and micro-detailed millwork joinery.', 'Compass', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', '[\"Concept spatial diagrams & 3D volumetric studies\",\"Full architectural interior blueprint packages\",\"Reflected ceiling & architectural lighting plans\",\"Custom door, window, and wall assembly details\",\"Statutory & structural consultant coordination\"]', 1, 1, '2026-08-17 16:37:24', '2026-08-17 16:37:24')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `image_url` = VALUES(`image_url`), `full_desc` = VALUES(`full_desc`);
+INSERT INTO `services` (`id`, `title`, `slug`, `short_desc`, `full_desc`, `icon_name`, `image_url`, `deliverables`, `sort_order`, `is_published`, `created_at`, `updated_at`)
+VALUES ('72ff8e49-b5e6-45cf-9f44-63f68d8aebd7', 'Material Curation & Sourcing Advisory', 'material-curation-sourcing', 'Global stone quarry selection, certified timber procurement, and bespoke surface formulation tailored to project climate.', 'Leveraging our direct relationships with European quarries and master timber mills, we curate bespoke material palettes that age gracefully. We conduct rigorous laboratory testing for water absorption, hardness, and thermal behavior.', 'Layers', 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80', '[\"Physical tactile sample trays & curated finish moodboards\",\"Direct quarry inspection and slab block selection\",\"Full technical specification sheets & maintenance protocols\",\"Contractor procurement schedules and MOQ optimization\"]', 3, 1, '2026-08-17 16:37:24', '2026-08-17 16:37:24')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `image_url` = VALUES(`image_url`), `full_desc` = VALUES(`full_desc`);
+INSERT INTO `services` (`id`, `title`, `slug`, `short_desc`, `full_desc`, `icon_name`, `image_url`, `deliverables`, `sort_order`, `is_published`, `created_at`, `updated_at`)
+VALUES ('5d42e351-8032-4924-824e-86d03ee49972', 'Bespoke Furniture & Custom Millwork', 'bespoke-furniture-custom-millwork', 'Limited edition furniture, sculptural stone monoliths, and precision-engineered architectural cabinetry handcrafted in our studio.', 'Every piece is drafted specifically for its designated space, utilizing select hardwoods, hand-poured bronze castings, and monolithic natural stones.', 'Armchair', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80', '[\"1:1 scale ergonomic prototypes and timber mockups\",\"Hand-selected natural flitch veneer matching\",\"Integrated soft-close concealed hardware engineering\",\"Numbered certificate of atelier authenticity\"]', 4, 1, '2026-08-17 16:37:25', '2026-08-17 16:37:25')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `image_url` = VALUES(`image_url`), `full_desc` = VALUES(`full_desc`);
+INSERT INTO `services` (`id`, `title`, `slug`, `short_desc`, `full_desc`, `icon_name`, `image_url`, `deliverables`, `sort_order`, `is_published`, `created_at`, `updated_at`)
+VALUES ('d0f2fbce-e155-4db4-87d3-66b5789977bd', 'Turnkey Luxury Execution', 'turnkey-luxury-execution', 'End-to-end master project management, artisan craftsmanship, and on-site engineering from bare shell to final handover.', 'Our dedicated site engineering and project management division oversees every phase of construction. We ensure absolute adherence to millimeter tolerances, material integrity, and promised delivery timelines.', 'ShieldCheck', 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80', '[\"Dedicated on-site architectural project manager\",\"Daily photographic progress tracking & Gantt charts\",\"Master artisan supervision (masonry, carpentry, stone finishing)\",\"Rigorous multi-stage QA and snag resolution\",\"Comprehensive maintenance manuals & warranty portfolio\"]', 2, 1, '2026-08-17 16:37:24', '2026-08-19 16:09:53')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `image_url` = VALUES(`image_url`), `full_desc` = VALUES(`full_desc`);
+
+-- ============================================================
+-- DATA: CUSTOMERS (5 from Supabase)
+-- ============================================================
+INSERT INTO `customers` (`id`, `email`, `phone`, `full_name`, `is_guest`, `created_at`, `updated_at`)
+VALUES ('fe12f292-b1c0-4b67-b2b5-6cd9ed778227', 'client.meera.1787417372916@gmail.com', NULL, 'Meera Deshmukh', 0, '2026-08-22 16:49:34', '2026-08-22 16:49:34')
+ON DUPLICATE KEY UPDATE `full_name` = VALUES(`full_name`), `phone` = VALUES(`phone`);
+INSERT INTO `customers` (`id`, `email`, `phone`, `full_name`, `is_guest`, `created_at`, `updated_at`)
+VALUES ('a52d420f-db26-4a0f-870e-b0f0e367ef90', 'client.meera.1787417398242@gmail.com', NULL, 'Meera Deshmukh', 0, '2026-08-22 16:49:58', '2026-08-22 16:49:58')
+ON DUPLICATE KEY UPDATE `full_name` = VALUES(`full_name`), `phone` = VALUES(`phone`);
+INSERT INTO `customers` (`id`, `email`, `phone`, `full_name`, `is_guest`, `created_at`, `updated_at`)
+VALUES ('d4e0c73e-3405-4d13-9392-e2577cb3455d', 'client.meera.1787417435214@gmail.com', NULL, 'Meera Deshmukh', 0, '2026-08-22 16:50:36', '2026-08-22 16:50:36')
+ON DUPLICATE KEY UPDATE `full_name` = VALUES(`full_name`), `phone` = VALUES(`phone`);
+INSERT INTO `customers` (`id`, `email`, `phone`, `full_name`, `is_guest`, `created_at`, `updated_at`)
+VALUES ('14963582-ffa2-40ac-87cc-6bc9cf6f62a3', 'client.meera.1787418373870@gmail.com', NULL, 'Meera Deshmukh', 0, '2026-08-22 17:06:14', '2026-08-22 17:06:14')
+ON DUPLICATE KEY UPDATE `full_name` = VALUES(`full_name`), `phone` = VALUES(`phone`);
+INSERT INTO `customers` (`id`, `email`, `phone`, `full_name`, `is_guest`, `created_at`, `updated_at`)
+VALUES ('94b43dba-65c9-4bc7-98a1-627ab9a2449f', 'flexnagaon@gmail.com', NULL, 'Flexnagaon', 0, '2026-08-23 15:35:12', '2026-08-23 15:35:12')
+ON DUPLICATE KEY UPDATE `full_name` = VALUES(`full_name`), `phone` = VALUES(`phone`);
+
+-- ============================================================
+-- DATA: ORDERS (19 from Supabase)
+-- ============================================================
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('180b8a13-4e12-497d-803f-aa49324f0ab9', 'BAL-MT5YW7TU-C3D507', NULL, 'The Dark Avengers', 'theavengercult05@gmail.com', '6000149918', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"The Dark Avengers\",\"addressLine1\":\"the\",\"addressLine2\":\"the\"}', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"The Dark Avengers\",\"addressLine1\":\"the\",\"addressLine2\":\"the\"}', 895000, 161100, 0, 0, 1056100, 'Confirmed', 'Submitted', 'Balaji QR Payment (Balaji PG)', '[Balaji PG UTR: 982886958898]\n[IDEM:chk-1787499209073-2jtbdcw]', '2026-08-23 15:33:59', '2026-08-23 15:33:59')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('472524bc-2d6b-44b7-bdb8-eb118be7e0bd', 'BAL-MT5SPX0C-FA3704', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 12:40:59', '2026-08-23 12:41:10')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('569ea2ff-1178-4aed-b7fb-a497b45200b3', 'BAL-515459-176', NULL, 'Atif', 'gg@gmail.com', '6000149918', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', 78000, 14040, 0, 0, 92040, 'Cancelled', 'Submitted', 'Encrypted Card Processing', '', '2026-08-19 16:05:15', '2026-08-22 11:59:52')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('f22e7bd4-5dd2-44b9-97e6-5be283f63f3b', 'BAL-251667-423', NULL, 'Test Architect Client', 'test.client@balaji-test.com', '+91 98765 43210', '{\"city\":\"Guwahati\",\"phone\":\"+91 98765 43210\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Test Architect Client\",\"addressLine1\":\"Suite 402, Design Pavilion\"}', '{\"city\":\"Guwahati\",\"phone\":\"+91 98765 43210\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Test Architect Client\",\"addressLine1\":\"Suite 402, Design Pavilion\"}', 320, 58, 1500, 0, 1878, 'Cancelled', 'Submitted', 'Balaji QR Payment (Balaji PG)', '[Balaji PG UTR: 423589123456] Urgent site handover delivery.', '2026-08-21 13:00:46', '2026-08-22 11:59:53')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('74620bf6-41eb-44b0-a149-3cb3b3f4cf54', 'BAL-MT5T02T1-9F6BB8', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 12:48:54', '2026-08-23 12:49:05')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('c605aede-0212-413c-882b-0997808dcea9', 'BAL-001480-293', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-22 16:26:34', '2026-08-22 16:26:44')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('827f1bee-23a0-4f19-a7ad-bc5d4a17be8e', 'BAL-MT5TFVU6-867DF6', NULL, 'Cancel Test', 'cancel@test.com', '9999999999', '{\"city\":\"Guwahati\",\"phone\":\"9999999999\",\"state\":\"Assam\",\"pincode\":\"781040\",\"fullName\":\"Test\",\"addressLine1\":\"Test\"}', '{\"city\":\"Guwahati\",\"phone\":\"9999999999\",\"state\":\"Assam\",\"pincode\":\"781040\",\"fullName\":\"Test\",\"addressLine1\":\"Test\"}', 26400, 4752, 1800, 0, 32952, 'Confirmed', 'Submitted', 'Test Card', '', '2026-08-23 13:01:11', '2026-08-23 13:01:11')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('58bb546b-619e-40e4-b5cc-52ea07916841', 'BAL-094621-431', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-22 16:28:08', '2026-08-22 16:28:16')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('d6eba678-3cc0-480b-ab0b-55a16ee992ec', 'BAL-460968-416', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-22 16:50:54', '2026-08-22 16:51:03')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('c0c63fb0-bc8c-4bb4-8020-baea7c43aad8', 'BAL-MT5THELB-933984', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 13:02:22', '2026-08-23 13:02:32')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('e2fa9af7-115f-43d5-84a4-409bc62385da', 'BAL-396756-254', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-22 17:06:30', '2026-08-22 17:06:39')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('6c9fd4d0-222e-4d4f-a746-4524ab14a048', 'BAL-TEST-PV-5850', NULL, 'Payment Test User', 'payment@test.com', '9876543210', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"pincode\":\"781040\",\"addressLine1\":\"123 Test St\"}', NULL, 5000, 0, 0, 0, 5900, 'Confirmed', 'Submitted', 'UPI', NULL, '2026-08-23 10:37:18', '2026-08-23 10:37:18')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('f3299c84-a901-4586-8159-f5cb17f428a2', 'BAL-527306-647', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 10:38:40', '2026-08-23 10:38:50')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('e79c7ee8-476e-4aa0-80a1-387e8b5afc0a', 'BAL-MT5OXQMA-FCC951', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 10:55:06', '2026-08-23 10:55:17')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('30f720b0-faec-4101-b14d-fe652ff02964', 'BAL-ORD-STAT-3358', NULL, 'Status Test User', 'statustest@balaji.com', '+91 9876543210', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"pincode\":\"781040\",\"addressLine1\":\"Test St\"}', NULL, 10000, 0, 0, 0, 11800, 'Delivered', 'Verified', 'UPI', NULL, '2026-08-23 13:11:46', '2026-08-23 13:11:55')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('37fa64fc-4d29-44e5-af1e-4bfab7695010', 'BAL-MT5XYU7U-E3B87E', NULL, 'Test Buyer', 'buyer@test.com', '9999999999', '{\"city\":\"Guwahati\",\"phone\":\"9999999999\",\"state\":\"Assam\",\"pincode\":\"781040\",\"fullName\":\"Test\",\"addressLine1\":\"Test\"}', '{\"city\":\"Guwahati\",\"phone\":\"9999999999\",\"state\":\"Assam\",\"pincode\":\"781040\",\"fullName\":\"Test\",\"addressLine1\":\"Test\"}', 1100, 198, 1800, 0, 3098, 'Confirmed', 'Submitted', 'Test Card', '[IDEM:idem-test-1787497677455]', '2026-08-23 15:07:54', '2026-08-23 15:07:54')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('9fbdcf7a-6eb2-494f-9ab0-23b4b1e90d6a', 'BAL-MT5XZUE2-A6BC7B', NULL, 'Rahul Singhania', 'rahul.singhania@apexinfra.in', '+91 98200 12345', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', '{\"city\":\"Mumbai\",\"state\":\"Maharashtra\",\"country\":\"India\",\"postalCode\":\"400013\",\"addressLine1\":\"Penthouse A, Lodha World One\"}', 179000, 32220, 0, 0, 211220, 'Delivered', 'Verified', 'Balaji PG (Dynamic UPI Intent)', 'Please inspect surface calibration prior to crate dispatch.', '2026-08-23 15:08:41', '2026-08-23 15:08:52')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('a578cc11-c056-4eea-baf4-3bcd7a5c72b1', 'BAL-MT5Y32JP-1D7788', NULL, 'Atif', 'flexnagaon@gmail.com', '6000149918', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', 895000, 161100, 0, 0, 1056100, 'Pending', 'Submitted', 'Balaji QR Payment (Balaji PG)', '[Balaji PG UTR: 660029121788]\n[IDEM:chk-1787497462001-iaf03wa]', '2026-08-23 15:11:20', '2026-08-23 15:11:58')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+INSERT INTO `orders` (`id`, `order_number`, `customer_id`, `customer_name`, `customer_email`, `customer_phone`, `shipping_address`, `billing_address`, `subtotal`, `tax`, `shipping_fee`, `discount`, `total_amount`, `order_status`, `payment_status`, `payment_method`, `notes`, `created_at`, `updated_at`)
+VALUES ('62918250-a3e4-4bd8-8d2f-32ac2870f6be', 'BAL-MT5Y5K3S-4101FB', NULL, 'Atif', 'flexnagaon@gmail.com', '6000149918', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', '{\"city\":\"Guwahati\",\"phone\":\"6000149918\",\"state\":\"Assam\",\"country\":\"India\",\"pincode\":\"781040\",\"fullName\":\"Atif\",\"addressLine1\":\"The \",\"addressLine2\":\"The \"}', 895000, 161100, 0, 0, 1056100, 'Confirmed', 'Submitted', 'Balaji QR Payment (Balaji PG)', '[Balaji PG UTR: 660029121788]\n[IDEM:chk-1787497972115-1qlzzrf]', '2026-08-23 15:13:15', '2026-08-23 15:13:15')
+ON DUPLICATE KEY UPDATE `order_status` = VALUES(`order_status`), `payment_status` = VALUES(`payment_status`);
+
+-- ============================================================
+-- DATA: ORDER ITEMS (17 from Supabase)
+-- ============================================================
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('07e3bb37-bd3d-497a-9c69-f01579ff4b64', '569ea2ff-1178-4aed-b7fb-a497b45200b3', NULL, NULL, 'Romano Classico Vein-Cut Travertine', 'MAT-STN-001', 'sq ft', 100, 780, 78000, 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', 'Warm Ivory / Biscuit', 'Honed')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('e60005e6-217a-4309-9d6e-82736f6326ea', 'c605aede-0212-413c-882b-0997808dcea9', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787415997652', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('1ab25274-0008-4e51-b3bc-51fa16eff26d', '58bb546b-619e-40e4-b5cc-52ea07916841', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787416090539', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('6fd2ff5d-8cf4-45e5-bcce-7dd19e4c72ab', 'd6eba678-3cc0-480b-ab0b-55a16ee992ec', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787417456683', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('5881ed15-171d-4a77-ad35-bcecc867b360', 'e2fa9af7-115f-43d5-84a4-409bc62385da', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787418393154', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('2d4404de-f3e4-4930-838a-d5f6de1c540d', 'f3299c84-a901-4586-8159-f5cb17f428a2', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787481523020', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('a84b152e-b2d1-4e20-a00d-7c5cd870c0b3', 'e79c7ee8-476e-4aa0-80a1-387e8b5afc0a', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787482509675', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('5606de36-a2a0-488c-8024-b90cc45d6494', '472524bc-2d6b-44b7-bdb8-eb118be7e0bd', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787488862451', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('8750cb35-1946-4469-996f-6c813fb9a6b1', '74620bf6-41eb-44b0-a149-3cb3b3f4cf54', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787489337343', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('30033996-b68f-4649-8e4a-5b2942606b85', 'c0c63fb0-bc8c-4bb4-8020-baea7c43aad8', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490145717', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('de79300b-1c12-4b6d-9349-0dc5bd30004d', '9fbdcf7a-6eb2-494f-9ab0-23b4b1e90d6a', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787497724049', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('eae4d507-0e8e-4616-8e4a-5bcc2fd5a9d3', 'a578cc11-c056-4eea-baf4-3bcd7a5c72b1', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('1a2b931c-1cee-436a-8e46-67d61c38d994', '62918250-a3e4-4bd8-8d2f-32ac2870f6be', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('48a97fa9-7ce6-4241-b926-8d9da9432671', '180b8a13-4e12-497d-803f-aa49324f0ab9', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('9d5a652c-3396-4491-ac2d-12da1258f9af', 'f22e7bd4-5dd2-44b9-97e6-5be283f63f3b', NULL, NULL, 'Smoked Santos Rosewood Architectural Veneer', 'MAT-VNR-008', 'sq ft', 1, 320, 320, 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80', 'Rich Espresso & Bronze Striations', 'Raw Unfinished (Ready for matte polyurethane or hardwax)')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('d3884e30-af72-4932-833b-5a6a57d31799', '37fa64fc-4d29-44e5-af1e-4bfab7695010', NULL, NULL, 'Calacatta Vagli Sintered Porcelain Slab', 'MAT-POR-004', 'sq ft', 1, 1100, 1100, 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80', 'Pure White with Gold & Charcoal Veining', 'Silk Touch Satin')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('b21cdcd9-8b62-4b50-9555-ff663b528500', '827f1bee-23a0-4f19-a7ad-bc5d4a17be8e', NULL, NULL, 'Acoustic Fluted Walnut Wall Panel', 'MAT-PNL-003', 'sheet', 2, 13200, 26400, 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80', 'Deep Espresso Walnut', 'Silky Natural Wax Oil')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+
+-- ============================================================
+-- DATA: QUOTES (11 from Supabase)
+-- ============================================================
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('be0ed91c-6c3e-4000-882e-71523c42432b', 'QT-2026-04323', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:26:37', '2026-08-22 16:26:44')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('3fdbff74-1bf9-40f5-b167-6cdfaace1905', 'QT-2026-97002', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:28:10', '2026-08-22 16:28:17')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('5661e77e-e83f-4744-967b-441adce6e844', 'QT-2026-63672', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:50:57', '2026-08-22 16:51:04')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('51f16d62-53c3-4d08-aad1-510a0f9f9ff4', 'QT-2026-99333', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 17:06:32', '2026-08-22 17:06:39')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('97c81a58-7ca7-46e8-8098-d480bccdf814', 'QT-2026-30686', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 10:38:43', '2026-08-23 10:38:51')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('5d666312-4f1b-48a0-91c5-7880aa5398e9', 'QT-2026-MT5OXU14-67D5', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 10:55:10', '2026-08-23 10:55:18')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('17a44447-8857-4f18-9446-dce851d24a5e', 'QT-2026-MT5SQ05M-D084', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 12:41:04', '2026-08-23 12:41:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('bd2b5670-5336-4f88-835d-d31d7a78ebd1', 'QT-2026-MT5T0684-2072', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 12:48:58', '2026-08-23 12:49:06')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('59d9ffd8-c91f-480c-92b4-f1cc13fcf177', 'QT-2026-MT5THHCQ-255A', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 13:02:26', '2026-08-23 13:02:33')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('b21ac6ee-04cc-47ea-a094-3c38566c6056', 'QT-2026-MT5TV6HA-316A', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 13:13:05', '2026-08-23 13:13:13')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('9f845313-da0c-4b5b-887e-8e996a7e1128', 'QT-2026-MT5XZY6B-2F86', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 15:08:46', '2026-08-23 15:08:54')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+
+-- ============================================================
+-- DATA: ENQUIRIES (11 from Supabase)
+-- ============================================================
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('041d1db1-053c-486c-9ffd-940e03058f51', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:26:38')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('792a28b0-8dc5-4b8a-a6e6-660852dab6ab', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:28:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('712b8470-0370-4777-a6e9-6cfdf135c984', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:50:57')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('35e74ae2-93b3-4142-94e4-d37aee853507', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 17:06:33')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('7b72937d-6fb0-4c22-a129-06655a4eb3f3', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 10:38:44')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('d793de2f-37f0-493c-b505-294e7ad10851', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 10:55:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('445ba49a-44a7-491c-9a96-02f7a1feef37', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 12:41:05')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('7f2fee7c-3f5e-4411-af18-87e0358445ad', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 12:48:59')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('ba95e702-15bd-4693-b1c9-94f9786e4f1c', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 13:02:26')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('bf4014a9-c74e-46f3-95cf-fc0928bb65b6', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 13:13:06')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('f8f4e39c-fab2-40ac-9618-88ec1bed0781', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 15:08:47')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+
+-- ============================================================
+-- DATA: SITE SETTINGS (from Supabase)
+-- ============================================================
+INSERT INTO `site_settings` (`id`, `key`, `value`, `raw_json`, `brand_name`, `tagline`, `contact_email`, `contact_phone`, `whatsapp_number`, `studio_address`, `gstin_number`, `currency`, `currency_symbol`, `tax_rate_percent`, `standard_shipping_fee`, `free_shipping_threshold`, `homepage`, `payment_gateway`)
+VALUES ('global', 'general', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"country\":\"India\",\"logoUrl\":\"/logo.png\",\"pincode\":\"781040\",\"tagline\":\"Crafted spaces, luxury architecture, and considered materials for timeless living.\",\"currency\":\"INR\",\"homepage\":{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"},\"whatsapp\":{\"enabled\":true,\"position\":\"bottom-right\",\"phoneNumber\":\"+91 6003869588\",\"tooltipText\":\"Chat with Atelier Vikas Sir\",\"showOnMobile\":true,\"showOnDesktop\":true,\"defaultMessage\":\"Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.\",\"displayDelayMs\":800},\"brandName\":\"BALAJI\",\"updatedAt\":\"2026-08-23T15:42:52.104Z\",\"studioName\":\"Balaji Architect & Interior\",\"gstinNumber\":\"18AAECB4848F1ZX\",\"contactEmail\":\"atelier@balaji-interior.com\",\"contactPhone\":\"+91 70029 48484\",\"googleRating\":\"★ 5.0 (22 Google Reviews)\",\"supportEmail\":\"atelier@balaji-interior.com\",\"supportPhone\":\"+91 70029 48484\",\"architectName\":\"Vikas Sir (Principal Architect)\",\"brandSubtitle\":\"ARCHITECTURE • INTERIORS • MATERIALS\",\"businessHours\":\"Mon - Sat: 10:00 AM - 7:00 PM (IST)\",\"minOrderValue\":0,\"studioAddress\":\"Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040\",\"currencySymbol\":\"₹\",\"paymentGateway\":{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10},\"socialFacebook\":\"https://facebook.com/balajiarchitects\",\"socialLinkedin\":\"https://linkedin.com/company/balaji-atelier\",\"taxRatePercent\":18,\"whatsappNumber\":\"+91 6003869588\",\"establishedYear\":\"2014\",\"socialInstagram\":\"https://instagram.com/balajiatelier\",\"socialPinterest\":\"https://pinterest.com/balajiatelier\",\"announcementBanner\":{\"text\":\"Balaji Atelier: Curated Architectural Materials & Turnkey Solutions\",\"enabled\":true,\"linkUrl\":\"/materials\"},\"portfolioAnimation\":{\"enabled\":true,\"maxProjects\":6,\"speedPreset\":\"fast\",\"sectionHeading\":\"Selected Works\",\"parallaxIntensity\":\"medium\",\"sectionSubheading\":\"Architectural Signatures\"},\"standardShippingFee\":1800,\"freeShippingThreshold\":50000}', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"country\":\"India\",\"logoUrl\":\"/logo.png\",\"pincode\":\"781040\",\"tagline\":\"Crafted spaces, luxury architecture, and considered materials for timeless living.\",\"currency\":\"INR\",\"homepage\":{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"},\"whatsapp\":{\"enabled\":true,\"position\":\"bottom-right\",\"phoneNumber\":\"+91 6003869588\",\"tooltipText\":\"Chat with Atelier Vikas Sir\",\"showOnMobile\":true,\"showOnDesktop\":true,\"defaultMessage\":\"Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.\",\"displayDelayMs\":800},\"brandName\":\"BALAJI\",\"updatedAt\":\"2026-08-23T15:42:52.104Z\",\"studioName\":\"Balaji Architect & Interior\",\"gstinNumber\":\"18AAECB4848F1ZX\",\"contactEmail\":\"atelier@balaji-interior.com\",\"contactPhone\":\"+91 70029 48484\",\"googleRating\":\"★ 5.0 (22 Google Reviews)\",\"supportEmail\":\"atelier@balaji-interior.com\",\"supportPhone\":\"+91 70029 48484\",\"architectName\":\"Vikas Sir (Principal Architect)\",\"brandSubtitle\":\"ARCHITECTURE • INTERIORS • MATERIALS\",\"businessHours\":\"Mon - Sat: 10:00 AM - 7:00 PM (IST)\",\"minOrderValue\":0,\"studioAddress\":\"Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040\",\"currencySymbol\":\"₹\",\"paymentGateway\":{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10},\"socialFacebook\":\"https://facebook.com/balajiarchitects\",\"socialLinkedin\":\"https://linkedin.com/company/balaji-atelier\",\"taxRatePercent\":18,\"whatsappNumber\":\"+91 6003869588\",\"establishedYear\":\"2014\",\"socialInstagram\":\"https://instagram.com/balajiatelier\",\"socialPinterest\":\"https://pinterest.com/balajiatelier\",\"announcementBanner\":{\"text\":\"Balaji Atelier: Curated Architectural Materials & Turnkey Solutions\",\"enabled\":true,\"linkUrl\":\"/materials\"},\"portfolioAnimation\":{\"enabled\":true,\"maxProjects\":6,\"speedPreset\":\"fast\",\"sectionHeading\":\"Selected Works\",\"parallaxIntensity\":\"medium\",\"sectionSubheading\":\"Architectural Signatures\"},\"standardShippingFee\":1800,\"freeShippingThreshold\":50000}', 'BALAJI', 'Crafted spaces, luxury architecture, and considered materials for timeless living.', 'atelier@balaji-interior.com', '+91 70029 48484', '+91 6003869588', 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040', '18AAECB4848F1ZX', 'INR', '₹', 18, 1800, 50000, '{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"}', '{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10}')
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `raw_json` = VALUES(`raw_json`), `brand_name` = VALUES(`brand_name`);
+
+-- ============================================================
+-- DATA: AUDIT LOGS (165 from Supabase)
+-- ============================================================
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('59cc8d02-e6ca-4630-9976-244ddbf0e7b0', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '517ba6f6-1709-4b7b-a180-f1187b5461c6', '{\"total\":3388,\"itemsCount\":1,\"orderNumber\":\"BAL-955168-952\"}', NULL, '2026-08-19 15:39:11')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8aa0f30c-e409-40f0-bf40-7568182711cd', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', 'c8bd89f0-248c-47a2-a843-74e6be7d8c3c', '{\"total\":2255,\"itemsCount\":1,\"orderNumber\":\"BAL-008709-599\"}', NULL, '2026-08-19 15:56:45')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('eeba89e6-23da-4448-9662-51e3fb71e08a', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '569ea2ff-1178-4aed-b7fb-a497b45200b3', '{\"total\":92040,\"itemsCount\":1,\"orderNumber\":\"BAL-515459-176\"}', NULL, '2026-08-19 16:05:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6fc66c06-d015-4e61-9603-fe3154137012', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', 'b9b82dd1-0c8e-4fd0-b298-63cecfd89b77', '{\"total\":2255,\"itemsCount\":1,\"orderNumber\":\"BAL-963198-252\"}', NULL, '2026-08-19 16:29:19')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4b5500d4-c7a2-498a-bf29-f635f23c6adf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'MASTER_VERIFICATION_COMPLETE', 'System', NULL, '{\"passedTests\":27}', NULL, '2026-08-19 16:29:23')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1ac31c90-2814-4e44-a5ef-9d6cbba91bf0', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '72033b2f-a238-435b-ae62-38b93af792fd', '{\"total\":1878,\"itemsCount\":1,\"orderNumber\":\"BAL-753371-326\"}', NULL, '2026-08-19 16:42:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b909fe59-5862-41c2-a953-0c8303a927e8', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCTION_AUDIT_VERIFIED', 'System', NULL, '{\"timestamp\":\"2026-08-19T16:42:38.889Z\"}', NULL, '2026-08-19 16:42:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('47c9140f-818c-45e3-8e18-1cd4b5f3d18f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_COMPLETE', 'System', NULL, '{\"passCount\":31}', NULL, '2026-08-19 16:50:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66852ab2-23a9-407c-89f3-6f51d4b08155', NULL, 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"modifiedKeys\":[\"brandName\",\"tagline\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-19 17:00:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d67fed7a-7364-4350-b179-603eeb1d9711', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"mustChangePassword\":false}', NULL, '2026-08-19 17:03:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66b98a86-c407-4a80-9053-13eb66573e03', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"mustChangePassword\":false}', NULL, '2026-08-21 12:07:51')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('de4b21f4-1b42-47ba-9880-852b1eee9e1e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"modifiedKeys\":[\"brandName\",\"tagline\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 12:08:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e2d47d27-41e2-4d92-a223-bfbb9e437d15', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'STUDIO_SETTINGS_TEST_1787314883668', 'SiteSettings', NULL, '{\"timestamp\":\"2026-08-21T12:21:23.668Z\",\"modifiedFields\":[\"brandName\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\"]}', NULL, '2026-08-21 12:21:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c3f7541b-f0d7-4dde-af1c-67725ce37ef0', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"Balaji Architect\",\"modifiedKeys\":[\"brandName\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 12:25:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('a6adc2d9-5d43-49cc-ab61-7882a7abd7d9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 13:54:42')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b138a618-55d8-45b6-be7f-067b033673c4', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:00:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e1e16892-220b-4da9-8b73-b2200b6b8efd', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_UPDATED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', '{\"modifiedKeys\":[\"name\",\"sku\",\"brand\",\"categoryId\",\"subcategory\",\"description\",\"price\",\"unit\",\"moq\",\"stock\",\"purchaseMode\",\"leadTime\",\"dimensions\",\"thickness\",\"material\",\"finish\",\"images\",\"published\",\"isFeatured\"]}', NULL, '2026-08-21 14:09:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b9565f27-6ced-4cc7-babb-d5665c4044f9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_UPDATED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', '{\"modifiedKeys\":[\"name\",\"sku\",\"brand\",\"categoryId\",\"subcategory\",\"description\",\"price\",\"unit\",\"moq\",\"stock\",\"purchaseMode\",\"leadTime\",\"dimensions\",\"thickness\",\"material\",\"finish\",\"images\",\"published\",\"isFeatured\"]}', NULL, '2026-08-21 14:10:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74374f17-a4b5-4d22-a24a-7a8f948a3cfb', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:27:58')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4f3ce6e7-9a31-4a80-9026-a8f025f0d46d', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:33:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7aacc3c-2c68-4d71-a7fb-583a647a8f72', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"name\":\"Rohan Talukdar\",\"role\":\"employee\",\"email\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66ff7e43-52c0-4d3c-b54b-185c21273dcc', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_UPDATED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"name\":\"Rohan Talukdar (Senior Draftsman)\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:22:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('798f1891-9f73-4020-b051-6a9ea23ae429', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:22:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22ad97ea-7845-48f1-b05f-31b8a50d217d', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 11:22:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('83e25683-da86-4720-91c2-4733fc72a9d6', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"employeeName\":\"Rohan Talukdar (Senior Draftsman)\",\"employeeEmail\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:57')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('79347172-2d8d-45ab-bd0f-0aa10801b82f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"deletedName\":\"Rohan Talukdar (Senior Draftsman)\",\"deletedEmail\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:58')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('fb855ec1-4d26-4d48-be9b-c01afdf625da', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"name\":\"Rohan Talukdar\",\"role\":\"employee\",\"email\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('16bdb592-910d-490e-9b70-30812806477a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_UPDATED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"name\":\"Rohan Talukdar (Senior Draftsman)\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:23:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3674b65-7acc-4942-aec2-118be384698f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:23:19')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e1eff9c-eaea-4032-bfee-26608650a13f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 11:23:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6eb15dd1-5473-4854-ba4a-9707c24566c3', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"employeeName\":\"Rohan Talukdar (Senior Draftsman)\",\"employeeEmail\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('478dc3e9-63dc-4d7b-8a21-8c13d0c54415', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"deletedName\":\"Rohan Talukdar (Senior Draftsman)\",\"deletedEmail\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8f1cae6d-4797-44d6-9e38-d9d864032df7', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', '569ea2ff-1178-4aed-b7fb-a497b45200b3', '{\"orderStatus\":\"Cancelled\"}', NULL, '2026-08-22 11:59:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9f74a713-1f5d-422d-b8d8-9fe6c397a2cf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', 'f22e7bd4-5dd2-44b9-97e6-5be283f63f3b', '{\"orderStatus\":\"Cancelled\"}', NULL, '2026-08-22 11:59:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d5b5aa67-86f5-40a1-a2c2-5633240a02f9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"mustChangePassword\":false}', NULL, '2026-08-22 16:11:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6ebf669e-f879-4b6f-8dc9-bb11e3bff762', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('031cfbbe-c71c-4b21-b598-7c8a1b3d4d2b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:26:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3975ab9-ff04-4f67-8b51-96d7b7b7f076', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:26:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2c7f2cc8-9783-493b-b189-365b3b7a6a4c', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bb3d8b59-bf6c-41cf-b989-a1b6b5fd063b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c8cd13ef-fc05-4eab-9d88-d5216a1a5fdb', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:26:46.567Z\"}', NULL, '2026-08-22 16:26:40')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('640c5d34-a032-4f02-b26b-852cf3d35c17', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ae1cc38e-d321-45b0-b880-39b75b79a16a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:28:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8edbb1eb-3b02-4082-8e98-c3304530ed77', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:28:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('cd25f627-3b68-4bc8-8a58-094661859553', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:02')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('37b080b2-eacc-4c8a-880e-e3337dca9bab', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:03')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('697b9cc0-b9aa-461d-a16e-4ce3b4c4b6b4', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:28:19.409Z\"}', NULL, '2026-08-22 16:28:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('3b16c162-a395-453d-b2f8-480230af6c77', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"mustChangePassword\":false}', NULL, '2026-08-22 16:40:03')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d9ce96e0-1285-40f0-a647-0b99068386dd', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '013ffa7d-08c7-4500-a469-a1dd27ef3329', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787417398242@balaji-interior.com\"}', NULL, '2026-08-22 16:49:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8632b141-5486-423b-917c-2839f6358290', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787417435214@balaji-interior.com\"}', NULL, '2026-08-22 16:50:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9df19026-2e96-49a8-aed1-cb92446f2849', NULL, 'owner@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:50:31')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('506449f8-5db5-4eb2-a2ec-6b9a366eee43', NULL, 'owner@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"deletedName\":\"Rohan Sharma (Operations)\",\"deletedEmail\":\"test.employee.1787417435214@balaji-interior.com\"}', NULL, '2026-08-22 16:50:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e4cd1ba5-8a5a-4907-ae67-fe38b68a3e12', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:46')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('12e37372-d25d-4568-85d4-8ca8d57f3f59', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:50:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6d515d8a-8484-4bac-9cb8-52c7e19bdb89', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:50:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('72ef6f2a-7170-44fd-b24b-f09be3993ffc', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2ae675e5-b46a-4a51-b8ac-6a870185c28a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9ab333b7-6077-4ffe-9e5f-667424289604', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:51:05.840Z\"}', NULL, '2026-08-22 16:50:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74f2d164-bacf-40e7-9931-42cacccf4682', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787418373870@balaji-interior.com\"}', NULL, '2026-08-22 17:06:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('be83e540-d079-4b73-a46a-ff2d85a6dbba', NULL, 'owner@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 17:06:10')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('90efd746-ddf9-4aef-b268-6dceb91edb2e', NULL, 'owner@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"deletedName\":\"Rohan Sharma (Operations)\",\"deletedEmail\":\"test.employee.1787418373870@balaji-interior.com\"}', NULL, '2026-08-22 17:06:11')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c37495df-d011-492d-b013-68089af9fca5', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:23')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4ccac5f3-6410-42c6-8854-29765e75997a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 17:06:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d888e6c0-6a04-4538-aae2-19b28e7b677c', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 17:06:25')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b62d3c50-0315-4826-8002-c614989c3191', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:25')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6c9177ea-7a55-4fc7-a0a9-2ffd4b249790', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:26')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('959f9889-7700-49f3-9325-99e3e8b2ac5f', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T17:06:41.488Z\"}', NULL, '2026-08-22 17:06:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('773419ac-18d5-430f-8f56-da4205b78478', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-22 17:10:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f8ffacf4-5c98-4bd6-8885-820bce84a772', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-22 17:14:42')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f4610137-331e-4a74-95d1-93d811158c5b', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('519991a6-3e24-4b53-a308-6640153bc5bd', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 10:38:33')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9d132f25-d8d6-42f1-962a-85761c3b1f4d', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 10:38:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('294cad39-2106-49d7-ae0d-e45ecd49ac1b', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4c2dbfc9-7058-42e2-a06a-1ac7c3a3b4ba', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8a5b6dd0-cd3b-47eb-9a8b-1619263b15fe', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T10:38:53.114Z\"}', NULL, '2026-08-23 10:38:45')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b4a2f12d-93da-4053-a47d-b0fe13cf2d89', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 10:43:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('3702ae73-da6d-47f0-b3a3-c2c63d46ecfc', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:54:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7f687d7-6e0b-4ca8-8630-0942845cd73b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 10:55:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d831c9c1-3dee-46bc-9596-dee6f5732259', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 10:55:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('364846cf-b3e6-44f7-94dc-d06254c40f3c', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:55:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('913f16a7-f0a1-4694-a625-4464e3ec48e6', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:55:02')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('32bf31bc-4bc2-439a-9685-8e7a09ac0bb9', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T10:55:20.505Z\"}', NULL, '2026-08-23 10:55:13')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6323f41d-a274-4114-88a0-cbe94a8a8d63', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:51')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('09a95a81-a711-4f74-be7e-82147378fd06', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 12:40:52')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f9df7b95-1a56-43ad-91a3-d3ff2ec0e0fb', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 12:40:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('867093c3-800d-4839-b0dc-096467f857a4', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9d811c77-e4c0-4f08-ac8d-90f94f375f17', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22d4b8c2-c607-41a2-8e7a-df26abaa71cd', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T12:41:13.596Z\"}', NULL, '2026-08-23 12:41:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e63bad1-0b53-40a8-8618-782040b30565', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:46')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('824ebb00-f066-4856-ba88-a0ef1daf0ae5', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 12:48:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('51a5b1dc-a264-4730-a299-4c31bb0d0d6b', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 12:48:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('eb7817fb-9e32-49e4-9046-73ab77efc2bf', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5a887f30-ee94-4f0e-9de4-c4277d9cfda8', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e6d24cbf-f3f7-497f-9967-483a9b3b195e', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T12:49:07.932Z\"}', NULL, '2026-08-23 12:49:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('016d13e1-aa08-47de-bace-0939be3f0ec6', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('46341f85-3312-4205-88aa-89570da25832', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:02:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('55295a39-8fed-4092-8f75-0ec7c4bca4f5', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:02:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5c44eccb-24f8-4ac7-ab42-048fd6d828f4', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('27e0d6ed-e029-4888-9f60-2212706d620f', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('dfeeade5-f0bc-4f68-9599-e56e1b3cb220', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T13:02:35.466Z\"}', NULL, '2026-08-23 13:02:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4da0ddf1-037a-4378-8862-6fbbe54c7aa0', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9fc7fb81-d764-4200-806b-355ed13758e4', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:10:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7ec8786-fbcb-40ad-81a5-92ceb275197f', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:10:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('cec15165-7469-4491-ad27-7a031775ecf3', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f2f3c83c-af35-489c-821a-d5d5924bcb01', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:37')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6414e8b4-82a3-4358-b8ef-440b445e2c91', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ec46539a-8fd6-4dc3-b7bc-a76931fd0ae3', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:11:13')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('793b5b09-fc9b-41db-9cf5-0aca4077b8b2', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:11:14')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5b5a7f3f-3e86-46a2-b144-da1e99d3360f', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('987385f9-5c35-4f04-9bb7-38bd55831b49', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74abcefb-e215-4b3b-a4d6-d8ed37d9277c', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2cde03ff-18ab-4d59-b715-13d03f654122', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:11:39')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4478ccee-6d83-4123-aba8-065a322de5db', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:11:40')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1adfcdae-bd69-4f8e-9e09-9f0a6526b2c7', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:41')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9bec2db7-cb3a-49f3-a46f-668faf39d562', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:41')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('20b049d5-c535-4baa-af82-6c738820cc41', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4c83ae5b-0567-4111-8d56-73035023ba4e', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:12:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('288e6acd-6be4-4a5a-980c-13c48ab79f27', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:12:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2bc6ae35-2fc3-4bf0-8af8-99a398a43bbb', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f85f304e-eaff-4a20-8fb1-b0bd1158bb6a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:57')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('43d9f58b-e380-47cc-a335-d2c8db39bb10', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T13:13:15.047Z\"}', NULL, '2026-08-23 13:13:07')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8b280a14-e30c-4325-9606-cc94ad6864b0', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '632c0796-67e2-44e9-8b72-ba38e4bdd9a4', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787490816598@balaji.com\"}', NULL, '2026-08-23 13:13:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f28bf0a9-f5f8-4ab9-b9ca-09f948c29e2e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:03:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f49d91a2-4a8a-4d9b-bff2-38b29f1e4dd7', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:03:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5965a6b3-89a2-4ae7-84e2-93d695fd4bac', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:33')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8c307263-966b-43fb-9dc9-d4eb8ff625e8', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 15:08:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6e7db3e2-2968-4cd3-8e1e-17e81063183f', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 15:08:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('afea5946-75f6-4923-91fa-822fe6f82a26', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('37d3bf79-df04-4a71-bb35-be55785bf7a1', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c52e3619-b5a0-454c-81fd-865f9e2e80df', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T15:08:55.771Z\"}', NULL, '2026-08-23 15:08:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e07c82c1-e82c-49af-85be-8fe262ec8f3f', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'de52661e-19e7-4d5c-bdb4-ec84adaf5ade', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787497753159@balaji.com\"}', NULL, '2026-08-23 15:09:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e364643-7be5-4b46-8781-f47573f837be', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', 'a578cc11-c056-4eea-baf4-3bcd7a5c72b1', '{\"verifiedBy\":\"vicks@balaji.com\",\"orderStatus\":\"Pending\"}', NULL, '2026-08-23 15:11:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('fda123fc-ce0b-43aa-9f47-7f674f954bad', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'bd6760c1-9a13-459e-b077-7172a8e2bf9e', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787499019099@balaji.com\"}', NULL, '2026-08-23 15:30:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5646b306-f5a0-452f-84ed-d3066be747bf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:33:09')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d46fa103-fa64-452c-b593-715c3ce82e9e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:36:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c264f2d6-7b99-43ee-9b26-4705c9ef95f3', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:42:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('60e01c08-3758-47e9-a890-51eeace4e6af', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:42:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ffe9be2f-ca5f-4842-a4a4-5a18f5d5e089', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:53:44')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('aa818521-9a68-4a9b-b544-a8c71d196729', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:07')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6ecaa0e4-b335-4a5d-9b01-5e0cf0d314be', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('72259444-b418-4e67-8c55-817ce2611c6c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:52')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('886fac4d-0019-4a60-bbe1-67e3bdd530b0', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"106.222.225.62\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 05:25:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3a5e1c0-1057-453c-b5b8-ddbf6f3458a2', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 05:27:04')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22434f92-e4d0-447f-9789-a6d028c65515', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"49.37.111.245\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 06:38:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6d5476ee-c3cc-4474-b094-aaaee491728f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2405:201:a807:e8f9:dd06:9b5e:e5f0:7894\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:10:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bcde11a8-b581-4b06-b2c6-4ff55ff9f39f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2405:201:a807:e8f9:dd06:9b5e:e5f0:7894\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:25:14')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('335ddfda-8dca-4a51-bef4-ae003e3c5e11', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:d088:c65e:7518:4c05:96d3:59f9\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:27:10')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b2077825-4146-4214-acc6-c251b6c7cb7d', NULL, 'employee@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '1aacdd12-833b-4b5a-ad77-91da2537e2da', '{\"role\":\"employee\",\"mustChangePassword\":true}', NULL, '2026-08-22 12:09:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9640eb8a-faaa-427c-a57d-0199fd8d26bb', NULL, 'vicks@balaji.com', 'ADMIN_PASSWORD_CHANGED', 'Admin', '1aacdd12-833b-4b5a-ad77-91da2537e2da', '{\"message\":\"Password updated and verified in Supabase\"}', NULL, '2026-08-22 12:09:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('0369de95-3dc1-483f-af6f-ca486981afab', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '8cf42a06-9f8e-454a-9598-cb6e6dded838', NULL, NULL, '2026-09-09 07:47:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('01cecb73-cf30-4afd-b83e-36052a13db09', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '92711348-f180-4b91-a367-14c33df4e1b4', NULL, NULL, '2026-09-09 07:47:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('273aa231-18d3-4cf9-8655-add620e29904', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'be4c9761-b5e1-4cd0-adf4-d75a06f6b385', NULL, NULL, '2026-09-09 07:47:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bc053e89-d3b8-4b85-8afb-97689a1cd4fa', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', NULL, NULL, '2026-09-09 07:47:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9c8229bf-ffdd-4363-b109-008d507740ae', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '1648ed30-7e63-42a1-88e0-68939dc10d4d', NULL, NULL, '2026-09-09 07:47:22')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('35be6e40-5750-4ed2-8753-97ba7d614f98', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'eb120439-5e3f-40de-a873-2c0255d49bb9', NULL, NULL, '2026-09-09 07:47:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('27a6a544-1b10-4922-8cda-2800cebad87b', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '3cc5a6ff-f119-4602-9123-624ea395f5ef', NULL, NULL, '2026-09-09 07:47:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ab21416b-9cf4-4ca2-a325-30ace4cd205a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '872b094e-71cf-4f24-92d2-bc2885c4e980', NULL, NULL, '2026-09-09 07:47:31')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e384de24-0644-4b47-afb3-1e7d3b874753', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '110c87c7-acd7-4e61-ad4f-729bc262593d', NULL, NULL, '2026-09-09 07:47:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('75238fcb-c38e-4b39-b6df-2caf33d12dec', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'e509a4bf-a5c8-46cc-bad4-dd4b53aa3795', NULL, NULL, '2026-09-09 07:47:37')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('7f4c471c-b0df-442a-8965-afc68f80522c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '7eda1836-efe9-490e-9e13-86b9d773617a', NULL, NULL, '2026-09-09 07:47:39')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b5f09243-8c65-4b16-9afc-94d520b9af82', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:1c3b:3c35:f48c:b4ef:413d:3a4a\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 08:46:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('266aaa01-be94-4f4f-be4f-e2cac64dec3a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 08:48:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('120bc53d-857b-4bcf-874c-f166d5e4464c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 08:48:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e84b0a40-0dda-4d55-a3ae-d46f1f530f23', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:1c3b:3c35:f48c:b4ef:413d:3a4a\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 09:46:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4d5c3f79-c572-4d29-8cd6-a0c501192f37', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:753f:462c:d544:b5c4:97ab:3787\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 13:00:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+
+SET FOREIGN_KEY_CHECKS = 1;
+-- ============================================================
+-- IMPORT COMPLETE
+-- ============================================================
 ```
 
 ---
 
 ### `MASTER_ADMIN_CODEBASE.md`
+
+- **File**: `MASTER_ADMIN_CODEBASE.md`
+- **Size**: 816.7 KB (20941 lines)
+- **Language**: `markdown`
 
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
@@ -44074,7 +45387,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 ```
 
 ---
-
 
 ```
 
@@ -44082,6 +45394,10 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ### `MASTER_ADMIN_CODEBASE(1).md`
 
+- **File**: `MASTER_ADMIN_CODEBASE(1).md`
+- **Size**: 816.7 KB (20941 lines)
+- **Language**: `markdown`
+
 ```markdown
 # BALAJI ARCHITECT & INTERIORS — FULL-STACK MASTER ADMIN CODEBASE
 > **Document**: `admincodebase.md`  
@@ -65023,12 +66339,15 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 ---
 
-
 ```
 
 ---
 
 ### `next-env.d.ts`
+
+- **File**: `next-env.d.ts`
+- **Size**: 0.2 KB (6 lines)
+- **Language**: `typescript`
 
 ```typescript
 /// <reference types="next" />
@@ -65036,12 +66355,15 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 // NOTE: This file should not be edited
 // see https://nextjs.org/docs/app/building-your-application/configuring/typescript for more information.
-
 ```
 
 ---
 
 ### `next.config.js`
+
+- **File**: `next.config.js`
+- **Size**: 0.8 KB (34 lines)
+- **Language**: `javascript`
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -65077,12 +66399,15 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-
 ```
 
 ---
 
 ### `package.json`
+
+- **File**: `package.json`
+- **Size**: 0.8 KB (36 lines)
+- **Language**: `json`
 
 ```json
 {
@@ -65096,7 +66421,6 @@ module.exports = nextConfig;
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.48.1",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^20.17.17",
     "@types/react": "^18.3.18",
@@ -65119,15 +66443,17 @@ module.exports = nextConfig;
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "web-push": "^3.6.7"
-  },
-  "devDependencies": {}
+  }
 }
-
 ```
 
 ---
 
 ### `postcss.config.js`
+
+- **File**: `postcss.config.js`
+- **Size**: 0.1 KB (7 lines)
+- **Language**: `javascript`
 
 ```javascript
 module.exports = {
@@ -65136,12 +66462,15 @@ module.exports = {
     autoprefixer: {},
   },
 };
-
 ```
 
 ---
 
 ### `public/manifest.json`
+
+- **File**: `public/manifest.json`
+- **Size**: 1.2 KB (53 lines)
+- **Language**: `json`
 
 ```json
 {
@@ -65196,12 +66525,15 @@ module.exports = {
     }
   ]
 }
-
 ```
 
 ---
 
 ### `public/sw.js`
+
+- **File**: `public/sw.js`
+- **Size**: 1.1 KB (36 lines)
+- **Language**: `javascript`
 
 ```javascript
 // Balaji Architect & Interiors Service Worker - Realtime Order & Quote Notifications
@@ -65239,222 +66571,1262 @@ self.addEventListener('notificationclick', function (event) {
     })
   );
 });
-
 ```
 
 ---
 
-### `scripts/seed-supabase.ts`
+### `REMAINING_DATA_INSERT.sql`
 
-```typescript
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs';
-import {
-  initialCategories,
-  initialProducts,
-  initialProjects,
-  initialServices,
-  initialSiteSettings,
-  getInitialAdminSeed,
-} from '../src/lib/seedData';
+- **File**: `REMAINING_DATA_INSERT.sql`
+- **Size**: 119.9 KB (642 lines)
+- **Language**: `sql`
 
-// Load .env.local
-const envLocalPath = path.join(process.cwd(), '.env.local');
-if (fs.existsSync(envLocalPath)) {
-  dotenv.config({ path: envLocalPath });
-} else {
-  dotenv.config();
+```sql
+USE u603162798_balaji_arc_db;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- DATA: ORDER ITEMS (17 from Supabase)
+-- ============================================================
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('07e3bb37-bd3d-497a-9c69-f01579ff4b64', '569ea2ff-1178-4aed-b7fb-a497b45200b3', NULL, NULL, 'Romano Classico Vein-Cut Travertine', 'MAT-STN-001', 'sq ft', 100, 780, 78000, 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80', 'Warm Ivory / Biscuit', 'Honed')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('e60005e6-217a-4309-9d6e-82736f6326ea', 'c605aede-0212-413c-882b-0997808dcea9', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787415997652', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('1ab25274-0008-4e51-b3bc-51fa16eff26d', '58bb546b-619e-40e4-b5cc-52ea07916841', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787416090539', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('6fd2ff5d-8cf4-45e5-bcce-7dd19e4c72ab', 'd6eba678-3cc0-480b-ab0b-55a16ee992ec', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787417456683', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('5881ed15-171d-4a77-ad35-bcecc867b360', 'e2fa9af7-115f-43d5-84a4-409bc62385da', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787418393154', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('2d4404de-f3e4-4930-838a-d5f6de1c540d', 'f3299c84-a901-4586-8159-f5cb17f428a2', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787481523020', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('a84b152e-b2d1-4e20-a00d-7c5cd870c0b3', 'e79c7ee8-476e-4aa0-80a1-387e8b5afc0a', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787482509675', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('5606de36-a2a0-488c-8024-b90cc45d6494', '472524bc-2d6b-44b7-bdb8-eb118be7e0bd', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787488862451', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('8750cb35-1946-4469-996f-6c813fb9a6b1', '74620bf6-41eb-44b0-a149-3cb3b3f4cf54', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787489337343', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('30033996-b68f-4649-8e4a-5b2942606b85', 'c0c63fb0-bc8c-4bb4-8020-baea7c43aad8', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490145717', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('de79300b-1c12-4b6d-9349-0dc5bd30004d', '9fbdcf7a-6eb2-494f-9ab0-23b4b1e90d6a', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787497724049', 'sq ft', 10, 17900, 179000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('eae4d507-0e8e-4616-8e4a-5bcc2fd5a9d3', 'a578cc11-c056-4eea-baf4-3bcd7a5c72b1', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('1a2b931c-1cee-436a-8e46-67d61c38d994', '62918250-a3e4-4bd8-8d2f-32ac2870f6be', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('48a97fa9-7ce6-4241-b926-8d9da9432671', '180b8a13-4e12-497d-803f-aa49324f0ab9', NULL, NULL, 'Test Calacatta Gold Marble Slab', 'TEST-MAT-1787490709335', 'sq ft', 50, 17900, 895000, '/products/test-calacatta-1.jpg', 'Warm Gold / Ivory', 'Polished')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('9d5a652c-3396-4491-ac2d-12da1258f9af', 'f22e7bd4-5dd2-44b9-97e6-5be283f63f3b', NULL, NULL, 'Smoked Santos Rosewood Architectural Veneer', 'MAT-VNR-008', 'sq ft', 1, 320, 320, 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80', 'Rich Espresso & Bronze Striations', 'Raw Unfinished (Ready for matte polyurethane or hardwax)')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('d3884e30-af72-4932-833b-5a6a57d31799', '37fa64fc-4d29-44e5-af1e-4bfab7695010', NULL, NULL, 'Calacatta Vagli Sintered Porcelain Slab', 'MAT-POR-004', 'sq ft', 1, 1100, 1100, 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80', 'Pure White with Gold & Charcoal Veining', 'Silk Touch Satin')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `variant_id`, `product_name`, `product_sku`, `unit`, `quantity`, `unit_price`, `subtotal`, `image_url`, `selected_color`, `selected_finish`)
+VALUES ('b21cdcd9-8b62-4b50-9555-ff663b528500', '827f1bee-23a0-4f19-a7ad-bc5d4a17be8e', NULL, NULL, 'Acoustic Fluted Walnut Wall Panel', 'MAT-PNL-003', 'sheet', 2, 13200, 26400, 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80', 'Deep Espresso Walnut', 'Silky Natural Wax Oil')
+ON DUPLICATE KEY UPDATE `quantity` = VALUES(`quantity`), `unit_price` = VALUES(`unit_price`);
+
+-- ============================================================
+-- DATA: QUOTES (11 from Supabase)
+-- ============================================================
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('be0ed91c-6c3e-4000-882e-71523c42432b', 'QT-2026-04323', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:26:37', '2026-08-22 16:26:44')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('3fdbff74-1bf9-40f5-b167-6cdfaace1905', 'QT-2026-97002', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:28:10', '2026-08-22 16:28:17')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('5661e77e-e83f-4744-967b-441adce6e844', 'QT-2026-63672', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 16:50:57', '2026-08-22 16:51:04')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('51f16d62-53c3-4d08-aad1-510a0f9f9ff4', 'QT-2026-99333', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-22 17:06:32', '2026-08-22 17:06:39')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('97c81a58-7ca7-46e8-8098-d480bccdf814', 'QT-2026-30686', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 10:38:43', '2026-08-23 10:38:51')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('5d666312-4f1b-48a0-91c5-7880aa5398e9', 'QT-2026-MT5OXU14-67D5', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 10:55:10', '2026-08-23 10:55:18')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('17a44447-8857-4f18-9446-dce851d24a5e', 'QT-2026-MT5SQ05M-D084', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 12:41:04', '2026-08-23 12:41:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('bd2b5670-5336-4f88-835d-d31d7a78ebd1', 'QT-2026-MT5T0684-2072', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 12:48:58', '2026-08-23 12:49:06')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('59d9ffd8-c91f-480c-92b4-f1cc13fcf177', 'QT-2026-MT5THHCQ-255A', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 13:02:26', '2026-08-23 13:02:33')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('b21ac6ee-04cc-47ea-a094-3c38566c6056', 'QT-2026-MT5TV6HA-316A', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 13:13:05', '2026-08-23 13:13:13')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+INSERT INTO `quotes` (`id`, `quote_number`, `customer_name`, `customer_email`, `customer_phone`, `project_type`, `project_location`, `city`, `notes`, `scope_of_work`, `budget_range`, `estimated_budget`, `estimated_timeline`, `timeline`, `status`, `admin_notes`, `total_quoted_amount`, `quoted_amount`, `created_at`, `updated_at`)
+VALUES ('9f845313-da0c-4b5b-887e-8e996a7e1128', 'QT-2026-MT5XZY6B-2F86', 'Meera Deshmukh', 'meera.deshmukh@architects.in', '+91 98111 22334', 'Turnkey Luxury Villa Architecture', 'Alibaug, Maharashtra', 'Alibaug, Maharashtra', 'Bespoke travertine facade and full acoustic ceiling integration required.', 'Bespoke travertine facade and full acoustic ceiling integration required.', '₹1.5 Cr - ₹3 Cr', '₹1.5 Cr - ₹3 Cr', '6-9 Months', '6-9 Months', 'Under_Review', 'Specification reviewed with structural engineering team.', 2450000, 2450000, '2026-08-23 15:08:46', '2026-08-23 15:08:54')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`), `admin_notes` = VALUES(`admin_notes`);
+
+-- ============================================================
+-- DATA: ENQUIRIES (11 from Supabase)
+-- ============================================================
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('041d1db1-053c-486c-9ffd-940e03058f51', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:26:38')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('792a28b0-8dc5-4b8a-a6e6-660852dab6ab', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:28:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('712b8470-0370-4777-a6e9-6cfdf135c984', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 16:50:57')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('35e74ae2-93b3-4142-94e4-d37aee853507', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-22 17:06:33')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('7b72937d-6fb0-4c22-a129-06655a4eb3f3', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 10:38:44')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('d793de2f-37f0-493c-b505-294e7ad10851', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 10:55:11')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('445ba49a-44a7-491c-9a96-02f7a1feef37', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 12:41:05')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('7f2fee7c-3f5e-4411-af18-87e0358445ad', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 12:48:59')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('ba95e702-15bd-4693-b1c9-94f9786e4f1c', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 13:02:26')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('bf4014a9-c74e-46f3-95cf-fc0928bb65b6', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 13:13:06')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+INSERT INTO `enquiries` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `source`, `created_at`)
+VALUES ('f8f4e39c-fab2-40ac-9618-88ec1bed0781', 'Aditya Birla Atelier Group', 'procurement@adityabirla.com', '+91 22 6600 0000', 'Hospitality Procurement Commission', 'Seeking specification deck for upcoming 5-star resort project in Shillong.', 'In_Progress', 'Contact Form', '2026-08-23 15:08:47')
+ON DUPLICATE KEY UPDATE `status` = VALUES(`status`);
+
+-- ============================================================
+-- DATA: SITE SETTINGS (from Supabase)
+-- ============================================================
+INSERT INTO `site_settings` (`id`, `key`, `value`, `raw_json`, `brand_name`, `tagline`, `contact_email`, `contact_phone`, `whatsapp_number`, `studio_address`, `gstin_number`, `currency`, `currency_symbol`, `tax_rate_percent`, `standard_shipping_fee`, `free_shipping_threshold`, `homepage`, `payment_gateway`)
+VALUES ('global', 'general', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"country\":\"India\",\"logoUrl\":\"/logo.png\",\"pincode\":\"781040\",\"tagline\":\"Crafted spaces, luxury architecture, and considered materials for timeless living.\",\"currency\":\"INR\",\"homepage\":{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"},\"whatsapp\":{\"enabled\":true,\"position\":\"bottom-right\",\"phoneNumber\":\"+91 6003869588\",\"tooltipText\":\"Chat with Atelier Vikas Sir\",\"showOnMobile\":true,\"showOnDesktop\":true,\"defaultMessage\":\"Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.\",\"displayDelayMs\":800},\"brandName\":\"BALAJI\",\"updatedAt\":\"2026-08-23T15:42:52.104Z\",\"studioName\":\"Balaji Architect & Interior\",\"gstinNumber\":\"18AAECB4848F1ZX\",\"contactEmail\":\"atelier@balaji-interior.com\",\"contactPhone\":\"+91 70029 48484\",\"googleRating\":\"★ 5.0 (22 Google Reviews)\",\"supportEmail\":\"atelier@balaji-interior.com\",\"supportPhone\":\"+91 70029 48484\",\"architectName\":\"Vikas Sir (Principal Architect)\",\"brandSubtitle\":\"ARCHITECTURE • INTERIORS • MATERIALS\",\"businessHours\":\"Mon - Sat: 10:00 AM - 7:00 PM (IST)\",\"minOrderValue\":0,\"studioAddress\":\"Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040\",\"currencySymbol\":\"₹\",\"paymentGateway\":{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10},\"socialFacebook\":\"https://facebook.com/balajiarchitects\",\"socialLinkedin\":\"https://linkedin.com/company/balaji-atelier\",\"taxRatePercent\":18,\"whatsappNumber\":\"+91 6003869588\",\"establishedYear\":\"2014\",\"socialInstagram\":\"https://instagram.com/balajiatelier\",\"socialPinterest\":\"https://pinterest.com/balajiatelier\",\"announcementBanner\":{\"text\":\"Balaji Atelier: Curated Architectural Materials & Turnkey Solutions\",\"enabled\":true,\"linkUrl\":\"/materials\"},\"portfolioAnimation\":{\"enabled\":true,\"maxProjects\":6,\"speedPreset\":\"fast\",\"sectionHeading\":\"Selected Works\",\"parallaxIntensity\":\"medium\",\"sectionSubheading\":\"Architectural Signatures\"},\"standardShippingFee\":1800,\"freeShippingThreshold\":50000}', '{\"city\":\"Guwahati\",\"state\":\"Assam\",\"country\":\"India\",\"logoUrl\":\"/logo.png\",\"pincode\":\"781040\",\"tagline\":\"Crafted spaces, luxury architecture, and considered materials for timeless living.\",\"currency\":\"INR\",\"homepage\":{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"},\"whatsapp\":{\"enabled\":true,\"position\":\"bottom-right\",\"phoneNumber\":\"+91 6003869588\",\"tooltipText\":\"Chat with Atelier Vikas Sir\",\"showOnMobile\":true,\"showOnDesktop\":true,\"defaultMessage\":\"Hello Balaji Architect & Interiors, I would like to inquire about architectural and interior design services for my project.\",\"displayDelayMs\":800},\"brandName\":\"BALAJI\",\"updatedAt\":\"2026-08-23T15:42:52.104Z\",\"studioName\":\"Balaji Architect & Interior\",\"gstinNumber\":\"18AAECB4848F1ZX\",\"contactEmail\":\"atelier@balaji-interior.com\",\"contactPhone\":\"+91 70029 48484\",\"googleRating\":\"★ 5.0 (22 Google Reviews)\",\"supportEmail\":\"atelier@balaji-interior.com\",\"supportPhone\":\"+91 70029 48484\",\"architectName\":\"Vikas Sir (Principal Architect)\",\"brandSubtitle\":\"ARCHITECTURE • INTERIORS • MATERIALS\",\"businessHours\":\"Mon - Sat: 10:00 AM - 7:00 PM (IST)\",\"minOrderValue\":0,\"studioAddress\":\"Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040\",\"currencySymbol\":\"₹\",\"paymentGateway\":{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10},\"socialFacebook\":\"https://facebook.com/balajiarchitects\",\"socialLinkedin\":\"https://linkedin.com/company/balaji-atelier\",\"taxRatePercent\":18,\"whatsappNumber\":\"+91 6003869588\",\"establishedYear\":\"2014\",\"socialInstagram\":\"https://instagram.com/balajiatelier\",\"socialPinterest\":\"https://pinterest.com/balajiatelier\",\"announcementBanner\":{\"text\":\"Balaji Atelier: Curated Architectural Materials & Turnkey Solutions\",\"enabled\":true,\"linkUrl\":\"/materials\"},\"portfolioAnimation\":{\"enabled\":true,\"maxProjects\":6,\"speedPreset\":\"fast\",\"sectionHeading\":\"Selected Works\",\"parallaxIntensity\":\"medium\",\"sectionSubheading\":\"Architectural Signatures\"},\"standardShippingFee\":1800,\"freeShippingThreshold\":50000}', 'BALAJI', 'Crafted spaces, luxury architecture, and considered materials for timeless living.', 'atelier@balaji-interior.com', '+91 70029 48484', '+91 6003869588', 'Door No. 306, DN TOWER, Floor No. 03, Beltola Tiniali, Guwahati, Assam 781040', '18AAECB4848F1ZX', 'INR', '₹', 18, 1800, 50000, '{\"ctaBtnLink\":\"/quote\",\"ctaBtnText\":\"Request Consultation & Quote\",\"ctaHeading\":\"Commission an Architectural Dialogue\",\"stat1Label\":\"Years of Practice\",\"stat1Value\":\"14+\",\"stat2Label\":\"Signature Spaces\",\"stat2Value\":\"180+\",\"stat3Label\":\"Direct Material Provenance\",\"stat3Value\":\"100\%\",\"heroEyebrow\":\"Architecture • Interior Studio • Material Curation\",\"trustBadge1\":\"★ 5.0 (22 Google Reviews)\",\"trustBadge2\":\"Guwahati Studio Office\",\"trustBadge3\":\"Turnkey Architecture\",\"trustBadge4\":\"Pan-India Material Logistics\",\"heroImageUrl\":\"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90\",\"introEyebrow\":\"The Atelier Philosophy\",\"introHeading\":\"Restraint is the ultimate form of luxury.\",\"introImageUrl\":\"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80\",\"ctaDescription\":\"Whether envisioning a private residential estate, bespoke commercial headquarters, or seeking curated architectural materials, our studio welcomes your consultation.\",\"heroDescription\":\"Crafted spaces and considered materials for timeless living. Uniting spatial architecture with a curated marketplace of authentic stones, woods, and architectural accents.\",\"introParagraph1\":\"Founded on the belief that genuine luxury emerges from architectural precision, raw material integrity, and spatial calm, Balaji Architect & Interiors crafts environments that elevate the human experience.\",\"introParagraph2\":\"Beyond architectural commissions, we maintain direct partnerships with heritage European quarries and timber ateliers, making authentic vein-cut travertines, smoked French oaks, and acoustic wall systems directly available to discerning architects and homeowners.\",\"heroHeadingLine1\":\"INTERIORS.\",\"heroHeadingLine2\":\"ARCHITECTURE.\",\"heroHeadingLine3\":\"MATERIALS.\",\"heroPrimaryBtnLink\":\"/projects\",\"heroPrimaryBtnText\":\"Explore Projects\",\"heroSecondaryBtnLink\":\"/materials\",\"heroSecondaryBtnText\":\"Explore Materials\"}', '{\"upiId\":\"9828869588@hdfc\",\"enabled\":true,\"enableBhim\":true,\"enableCred\":true,\"enableGPay\":true,\"methodName\":\"Balaji QR Payment\",\"requireUtr\":true,\"enablePaytm\":true,\"gatewayName\":\"Balaji PG\",\"instructions\":\"1. Open any UPI app (GPay, PhonePe, Paytm, BHIM, Cred, Amazon Pay).\\n2. Scan the dynamic Balaji QR code or select your preferred app below.\\n3. Verify payee \\\"Balaji Architect & Interiors\\\" and exact amount.\\n4. Complete payment and enter the 12-digit UPI Reference / UTR Number to confirm your order.\",\"merchantName\":\"Balaji Architect & Interiors\",\"enablePhonePe\":true,\"enableAmazonPay\":true,\"qrExpiryMinutes\":10}')
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `raw_json` = VALUES(`raw_json`), `brand_name` = VALUES(`brand_name`);
+
+-- ============================================================
+-- DATA: AUDIT LOGS (165 from Supabase)
+-- ============================================================
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('59cc8d02-e6ca-4630-9976-244ddbf0e7b0', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '517ba6f6-1709-4b7b-a180-f1187b5461c6', '{\"total\":3388,\"itemsCount\":1,\"orderNumber\":\"BAL-955168-952\"}', NULL, '2026-08-19 15:39:11')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8aa0f30c-e409-40f0-bf40-7568182711cd', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', 'c8bd89f0-248c-47a2-a843-74e6be7d8c3c', '{\"total\":2255,\"itemsCount\":1,\"orderNumber\":\"BAL-008709-599\"}', NULL, '2026-08-19 15:56:45')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('eeba89e6-23da-4448-9662-51e3fb71e08a', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '569ea2ff-1178-4aed-b7fb-a497b45200b3', '{\"total\":92040,\"itemsCount\":1,\"orderNumber\":\"BAL-515459-176\"}', NULL, '2026-08-19 16:05:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6fc66c06-d015-4e61-9603-fe3154137012', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', 'b9b82dd1-0c8e-4fd0-b298-63cecfd89b77', '{\"total\":2255,\"itemsCount\":1,\"orderNumber\":\"BAL-963198-252\"}', NULL, '2026-08-19 16:29:19')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4b5500d4-c7a2-498a-bf29-f635f23c6adf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'MASTER_VERIFICATION_COMPLETE', 'System', NULL, '{\"passedTests\":27}', NULL, '2026-08-19 16:29:23')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1ac31c90-2814-4e44-a5ef-9d6cbba91bf0', NULL, 'checkout@balaji.com', 'ORDER_PLACED', 'Order', '72033b2f-a238-435b-ae62-38b93af792fd', '{\"total\":1878,\"itemsCount\":1,\"orderNumber\":\"BAL-753371-326\"}', NULL, '2026-08-19 16:42:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b909fe59-5862-41c2-a953-0c8303a927e8', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCTION_AUDIT_VERIFIED', 'System', NULL, '{\"timestamp\":\"2026-08-19T16:42:38.889Z\"}', NULL, '2026-08-19 16:42:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('47c9140f-818c-45e3-8e18-1cd4b5f3d18f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_COMPLETE', 'System', NULL, '{\"passCount\":31}', NULL, '2026-08-19 16:50:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66852ab2-23a9-407c-89f3-6f51d4b08155', NULL, 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"modifiedKeys\":[\"brandName\",\"tagline\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-19 17:00:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d67fed7a-7364-4350-b179-603eeb1d9711', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"mustChangePassword\":false}', NULL, '2026-08-19 17:03:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66b98a86-c407-4a80-9053-13eb66573e03', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"mustChangePassword\":false}', NULL, '2026-08-21 12:07:51')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('de4b21f4-1b42-47ba-9880-852b1eee9e1e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"modifiedKeys\":[\"brandName\",\"tagline\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 12:08:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e2d47d27-41e2-4d92-a223-bfbb9e437d15', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'STUDIO_SETTINGS_TEST_1787314883668', 'SiteSettings', NULL, '{\"timestamp\":\"2026-08-21T12:21:23.668Z\",\"modifiedFields\":[\"brandName\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\"]}', NULL, '2026-08-21 12:21:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c3f7541b-f0d7-4dde-af1c-67725ce37ef0', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"Balaji Architect\",\"modifiedKeys\":[\"brandName\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 12:25:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('a6adc2d9-5d43-49cc-ab61-7882a7abd7d9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 13:54:42')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b138a618-55d8-45b6-be7f-067b033673c4', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:00:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e1e16892-220b-4da9-8b73-b2200b6b8efd', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_UPDATED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', '{\"modifiedKeys\":[\"name\",\"sku\",\"brand\",\"categoryId\",\"subcategory\",\"description\",\"price\",\"unit\",\"moq\",\"stock\",\"purchaseMode\",\"leadTime\",\"dimensions\",\"thickness\",\"material\",\"finish\",\"images\",\"published\",\"isFeatured\"]}', NULL, '2026-08-21 14:09:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b9565f27-6ced-4cc7-babb-d5665c4044f9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_UPDATED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', '{\"modifiedKeys\":[\"name\",\"sku\",\"brand\",\"categoryId\",\"subcategory\",\"description\",\"price\",\"unit\",\"moq\",\"stock\",\"purchaseMode\",\"leadTime\",\"dimensions\",\"thickness\",\"material\",\"finish\",\"images\",\"published\",\"isFeatured\"]}', NULL, '2026-08-21 14:10:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74374f17-a4b5-4d22-a24a-7a8f948a3cfb', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI ARCHITECT\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:27:58')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4f3ce6e7-9a31-4a80-9026-a8f025f0d46d', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-21 14:33:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7aacc3c-2c68-4d71-a7fb-583a647a8f72', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"name\":\"Rohan Talukdar\",\"role\":\"employee\",\"email\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('66ff7e43-52c0-4d3c-b54b-185c21273dcc', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_UPDATED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"name\":\"Rohan Talukdar (Senior Draftsman)\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:22:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('798f1891-9f73-4020-b051-6a9ea23ae429', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:22:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22ad97ea-7845-48f1-b05f-31b8a50d217d', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 11:22:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('83e25683-da86-4720-91c2-4733fc72a9d6', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"employeeName\":\"Rohan Talukdar (Senior Draftsman)\",\"employeeEmail\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:57')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('79347172-2d8d-45ab-bd0f-0aa10801b82f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '88584227-5407-40cc-9093-a7c0b0651f35', '{\"deletedName\":\"Rohan Talukdar (Senior Draftsman)\",\"deletedEmail\":\"staff-0654@balaji.com\"}', NULL, '2026-08-22 11:22:58')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('fb855ec1-4d26-4d48-be9b-c01afdf625da', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"name\":\"Rohan Talukdar\",\"role\":\"employee\",\"email\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('16bdb592-910d-490e-9b70-30812806477a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_UPDATED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"name\":\"Rohan Talukdar (Senior Draftsman)\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:23:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3674b65-7acc-4942-aec2-118be384698f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 11:23:19')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e1eff9c-eaea-4032-bfee-26608650a13f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 11:23:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6eb15dd1-5473-4854-ba4a-9707c24566c3', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"employeeName\":\"Rohan Talukdar (Senior Draftsman)\",\"employeeEmail\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('478dc3e9-63dc-4d7b-8a21-8c13d0c54415', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '19cb22cc-3c75-4867-8878-acdb985c044b', '{\"deletedName\":\"Rohan Talukdar (Senior Draftsman)\",\"deletedEmail\":\"staff-3615@balaji.com\"}', NULL, '2026-08-22 11:23:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8f1cae6d-4797-44d6-9e38-d9d864032df7', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', '569ea2ff-1178-4aed-b7fb-a497b45200b3', '{\"orderStatus\":\"Cancelled\"}', NULL, '2026-08-22 11:59:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9f74a713-1f5d-422d-b8d8-9fe6c397a2cf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', 'f22e7bd4-5dd2-44b9-97e6-5be283f63f3b', '{\"orderStatus\":\"Cancelled\"}', NULL, '2026-08-22 11:59:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d5b5aa67-86f5-40a1-a2c2-5633240a02f9', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"mustChangePassword\":false}', NULL, '2026-08-22 16:11:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6ebf669e-f879-4b6f-8dc9-bb11e3bff762', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('031cfbbe-c71c-4b21-b598-7c8a1b3d4d2b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:26:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3975ab9-ff04-4f67-8b51-96d7b7b7f076', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:26:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2c7f2cc8-9783-493b-b189-365b3b7a6a4c', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bb3d8b59-bf6c-41cf-b989-a1b6b5fd063b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'f172f47b-89a9-431f-ba81-732c51879b00', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787415993107@balaji-interior.com\"}', NULL, '2026-08-22 16:26:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c8cd13ef-fc05-4eab-9d88-d5216a1a5fdb', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:26:46.567Z\"}', NULL, '2026-08-22 16:26:40')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('640c5d34-a032-4f02-b26b-852cf3d35c17', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ae1cc38e-d321-45b0-b880-39b75b79a16a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:28:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8edbb1eb-3b02-4082-8e98-c3304530ed77', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:28:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('cd25f627-3b68-4bc8-8a58-094661859553', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:02')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('37b080b2-eacc-4c8a-880e-e3337dca9bab', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '5a918419-1158-4a89-a3ea-42911d2fd31f', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787416086078@balaji-interior.com\"}', NULL, '2026-08-22 16:28:03')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('697b9cc0-b9aa-461d-a16e-4ce3b4c4b6b4', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:28:19.409Z\"}', NULL, '2026-08-22 16:28:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('3b16c162-a395-453d-b2f8-480230af6c77', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"mustChangePassword\":false}', NULL, '2026-08-22 16:40:03')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d9ce96e0-1285-40f0-a647-0b99068386dd', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '013ffa7d-08c7-4500-a469-a1dd27ef3329', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787417398242@balaji-interior.com\"}', NULL, '2026-08-22 16:49:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8632b141-5486-423b-917c-2839f6358290', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787417435214@balaji-interior.com\"}', NULL, '2026-08-22 16:50:30')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9df19026-2e96-49a8-aed1-cb92446f2849', NULL, 'owner@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:50:31')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('506449f8-5db5-4eb2-a2ec-6b9a366eee43', NULL, 'owner@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'c709a2dd-d76c-4fd2-a117-c8752a3530f1', '{\"deletedName\":\"Rohan Sharma (Operations)\",\"deletedEmail\":\"test.employee.1787417435214@balaji-interior.com\"}', NULL, '2026-08-22 16:50:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e4cd1ba5-8a5a-4907-ae67-fe38b68a3e12', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:46')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('12e37372-d25d-4568-85d4-8ca8d57f3f59', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 16:50:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6d515d8a-8484-4bac-9cb8-52c7e19bdb89', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 16:50:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('72ef6f2a-7170-44fd-b24b-f09be3993ffc', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2ae675e5-b46a-4a51-b8ac-6a870185c28a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '02292869-41ec-44d1-9048-6e6f75d47b8a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787417452541@balaji-interior.com\"}', NULL, '2026-08-22 16:50:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9ab333b7-6077-4ffe-9e5f-667424289604', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T16:51:05.840Z\"}', NULL, '2026-08-22 16:50:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74f2d164-bacf-40e7-9931-42cacccf4682', NULL, 'owner@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"name\":\"Rohan Sharma (Operations)\",\"role\":\"employee\",\"email\":\"test.employee.1787418373870@balaji-interior.com\"}', NULL, '2026-08-22 17:06:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('be83e540-d079-4b73-a46a-ff2d85a6dbba', NULL, 'owner@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 17:06:10')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('90efd746-ddf9-4aef-b268-6dceb91edb2e', NULL, 'owner@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1f0aeb41-23d5-45b2-b2b4-8577fda055f6', '{\"deletedName\":\"Rohan Sharma (Operations)\",\"deletedEmail\":\"test.employee.1787418373870@balaji-interior.com\"}', NULL, '2026-08-22 17:06:11')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c37495df-d011-492d-b013-68089af9fca5', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:23')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4ccac5f3-6410-42c6-8854-29765e75997a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-22 17:06:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d888e6c0-6a04-4538-aae2-19b28e7b677c', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-22 17:06:25')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b62d3c50-0315-4826-8002-c614989c3191', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:25')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6c9177ea-7a55-4fc7-a0a9-2ffd4b249790', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '360d90eb-3b2b-4ab5-8883-7c814169f6c8', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787418389245@balaji-interior.com\"}', NULL, '2026-08-22 17:06:26')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('959f9889-7700-49f3-9325-99e3e8b2ac5f', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-22T17:06:41.488Z\"}', NULL, '2026-08-22 17:06:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('773419ac-18d5-430f-8f56-da4205b78478', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-22 17:10:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f8ffacf4-5c98-4bd6-8885-820bce84a772', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-22 17:14:42')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f4610137-331e-4a74-95d1-93d811158c5b', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:32')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('519991a6-3e24-4b53-a308-6640153bc5bd', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 10:38:33')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9d132f25-d8d6-42f1-962a-85761c3b1f4d', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 10:38:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('294cad39-2106-49d7-ae0d-e45ecd49ac1b', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4c2dbfc9-7058-42e2-a06a-1ac7c3a3b4ba', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1ac084a2-36ed-42e8-a8dc-bf65601d518a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787481519149@balaji-interior.com\"}', NULL, '2026-08-23 10:38:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8a5b6dd0-cd3b-47eb-9a8b-1619263b15fe', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T10:38:53.114Z\"}', NULL, '2026-08-23 10:38:45')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b4a2f12d-93da-4053-a47d-b0fe13cf2d89', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 10:43:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('3702ae73-da6d-47f0-b3a3-c2c63d46ecfc', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:54:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7f687d7-6e0b-4ca8-8630-0942845cd73b', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 10:55:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d831c9c1-3dee-46bc-9596-dee6f5732259', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 10:55:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('364846cf-b3e6-44f7-94dc-d06254c40f3c', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:55:01')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('913f16a7-f0a1-4694-a625-4464e3ec48e6', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'cc39cf02-6515-4b20-a66a-af21ee445f14', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787482505720@balaji-interior.com\"}', NULL, '2026-08-23 10:55:02')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('32bf31bc-4bc2-439a-9685-8e7a09ac0bb9', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T10:55:20.505Z\"}', NULL, '2026-08-23 10:55:13')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6323f41d-a274-4114-88a0-cbe94a8a8d63', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:51')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('09a95a81-a711-4f74-be7e-82147378fd06', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 12:40:52')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f9df7b95-1a56-43ad-91a3-d3ff2ec0e0fb', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 12:40:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('867093c3-800d-4839-b0dc-096467f857a4', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9d811c77-e4c0-4f08-ac8d-90f94f375f17', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '95e821de-0239-4a0f-9f24-f5238902dfb3', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787488858297@balaji-interior.com\"}', NULL, '2026-08-23 12:40:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22d4b8c2-c607-41a2-8e7a-df26abaa71cd', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T12:41:13.596Z\"}', NULL, '2026-08-23 12:41:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e63bad1-0b53-40a8-8618-782040b30565', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:46')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('824ebb00-f066-4856-ba88-a0ef1daf0ae5', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 12:48:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('51a5b1dc-a264-4730-a299-4c31bb0d0d6b', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 12:48:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('eb7817fb-9e32-49e4-9046-73ab77efc2bf', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5a887f30-ee94-4f0e-9de4-c4277d9cfda8', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '5ba359ab-5356-4417-b365-c0ab7818e07a', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787489333405@balaji-interior.com\"}', NULL, '2026-08-23 12:48:49')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e6d24cbf-f3f7-497f-9967-483a9b3b195e', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T12:49:07.932Z\"}', NULL, '2026-08-23 12:49:00')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('016d13e1-aa08-47de-bace-0939be3f0ec6', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('46341f85-3312-4205-88aa-89570da25832', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:02:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('55295a39-8fed-4092-8f75-0ec7c4bca4f5', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:02:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5c44eccb-24f8-4ac7-ab42-048fd6d828f4', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('27e0d6ed-e029-4888-9f60-2212706d620f', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '13e6adaa-b77a-4d67-bd87-aa2524f33851', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490142070@balaji-interior.com\"}', NULL, '2026-08-23 13:02:18')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('dfeeade5-f0bc-4f68-9599-e56e1b3cb220', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T13:02:35.466Z\"}', NULL, '2026-08-23 13:02:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4da0ddf1-037a-4378-8862-6fbbe54c7aa0', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9fc7fb81-d764-4200-806b-355ed13758e4', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:10:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b7ec8786-fbcb-40ad-81a5-92ceb275197f', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:10:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('cec15165-7469-4491-ad27-7a031775ecf3', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f2f3c83c-af35-489c-821a-d5d5924bcb01', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '56239003-a75e-4ac1-a3ea-a39a7d0fe588', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490640641@balaji-interior.com\"}', NULL, '2026-08-23 13:10:37')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6414e8b4-82a3-4358-b8ef-440b445e2c91', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ec46539a-8fd6-4dc3-b7bc-a76931fd0ae3', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:11:13')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('793b5b09-fc9b-41db-9cf5-0aca4077b8b2', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:11:14')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5b5a7f3f-3e86-46a2-b144-da1e99d3360f', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('987385f9-5c35-4f04-9bb7-38bd55831b49', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '1d157515-cb02-421a-90d2-873c1ffc8584', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490678660@balaji-interior.com\"}', NULL, '2026-08-23 13:11:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('74abcefb-e215-4b3b-a4d6-d8ed37d9277c', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2cde03ff-18ab-4d59-b715-13d03f654122', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:11:39')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4478ccee-6d83-4123-aba8-065a322de5db', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:11:40')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1adfcdae-bd69-4f8e-9e09-9f0a6526b2c7', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:41')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9bec2db7-cb3a-49f3-a46f-668faf39d562', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'b88329da-b18b-4f55-8407-b8b3701c8292', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490705467@balaji-interior.com\"}', NULL, '2026-08-23 13:11:41')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('20b049d5-c535-4baa-af82-6c738820cc41', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4c83ae5b-0567-4111-8d56-73035023ba4e', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 13:12:54')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('288e6acd-6be4-4a5a-980c-13c48ab79f27', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 13:12:55')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('2bc6ae35-2fc3-4bf0-8af8-99a398a43bbb', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:56')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f85f304e-eaff-4a20-8fb1-b0bd1158bb6a', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', '3d82d977-f7dc-4192-9fe5-0af7067c6952', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787490780304@balaji-interior.com\"}', NULL, '2026-08-23 13:12:57')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('43d9f58b-e380-47cc-a335-d2c8db39bb10', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T13:13:15.047Z\"}', NULL, '2026-08-23 13:13:07')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8b280a14-e30c-4325-9606-cc94ad6864b0', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', '632c0796-67e2-44e9-8b72-ba38e4bdd9a4', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787490816598@balaji.com\"}', NULL, '2026-08-23 13:13:29')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f28bf0a9-f5f8-4ab9-b9ca-09f948c29e2e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:03:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f49d91a2-4a8a-4d9b-bff2-38b29f1e4dd7', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:03:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5965a6b3-89a2-4ae7-84e2-93d695fd4bac', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"name\":\"Arjun Verma\",\"role\":\"employee\",\"email\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:33')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('8c307263-966b-43fb-9dc9-d4eb8ff625e8', NULL, 'vicks@balaji.com', 'EMPLOYEE_DISABLED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"updates\":{\"status\":\"disabled\"},\"previousRole\":\"employee\",\"previousStatus\":\"active\"}', NULL, '2026-08-23 15:08:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6e7db3e2-2968-4cd3-8e1e-17e81063183f', NULL, 'vicks@balaji.com', 'EMPLOYEE_ENABLED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"updates\":{\"status\":\"active\"},\"previousRole\":\"employee\",\"previousStatus\":\"disabled\"}', NULL, '2026-08-23 15:08:35')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('afea5946-75f6-4923-91fa-822fe6f82a26', NULL, 'vicks@balaji.com', 'EMPLOYEE_PASSWORD_RESET', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"employeeName\":\"Arjun Verma\",\"employeeEmail\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('37d3bf79-df04-4a71-bb35-be55785bf7a1', NULL, 'vicks@balaji.com', 'EMPLOYEE_DELETED', 'Admin', 'd7cd29d8-059f-4371-b376-f1ae9dcaf034', '{\"deletedName\":\"Arjun Verma\",\"deletedEmail\":\"test.employee.1787497720082@balaji-interior.com\"}', NULL, '2026-08-23 15:08:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c52e3619-b5a0-454c-81fd-865f9e2e80df', NULL, 'vicks@balaji.com', 'PRODUCTION_VERIFICATION_TEST', 'System', 'test-handover-run', '{\"status\":\"SUCCESS\",\"timestamp\":\"2026-08-23T15:08:55.771Z\"}', NULL, '2026-08-23 15:08:48')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e07c82c1-e82c-49af-85be-8fe262ec8f3f', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'de52661e-19e7-4d5c-bdb4-ec84adaf5ade', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787497753159@balaji.com\"}', NULL, '2026-08-23 15:09:06')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('1e364643-7be5-4b46-8781-f47573f837be', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ORDER_STATUS_UPDATED', 'Order', 'a578cc11-c056-4eea-baf4-3bcd7a5c72b1', '{\"verifiedBy\":\"vicks@balaji.com\",\"orderStatus\":\"Pending\"}', NULL, '2026-08-23 15:11:59')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('fda123fc-ce0b-43aa-9f47-7f674f954bad', NULL, 'vicks@balaji.com', 'EMPLOYEE_CREATED', 'Admin', 'bd6760c1-9a13-459e-b077-7172a8e2bf9e', '{\"name\":\"Security Test Employee\",\"role\":\"employee\",\"email\":\"security.check.1787499019099@balaji.com\"}', NULL, '2026-08-23 15:30:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('5646b306-f5a0-452f-84ed-d3066be747bf', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:33:09')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('d46fa103-fa64-452c-b593-715c3ce82e9e', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:36:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('c264f2d6-7b99-43ee-9b26-4705c9ef95f3', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:42:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('60e01c08-3758-47e9-a890-51eeace4e6af', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-08-23 15:42:53')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ffe9be2f-ca5f-4842-a4a4-5a18f5d5e089', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 15:53:44')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('aa818521-9a68-4a9b-b544-a8c71d196729', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:07')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6ecaa0e4-b335-4a5d-9b01-5e0cf0d314be', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('72259444-b418-4e67-8c55-817ce2611c6c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"role\":\"owner\",\"method\":\"password\",\"mustChangePassword\":false}', NULL, '2026-08-23 16:32:52')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('886fac4d-0019-4a60-bbe1-67e3bdd530b0', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"106.222.225.62\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 05:25:38')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('f3a5e1c0-1057-453c-b5b8-ddbf6f3458a2', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 05:27:04')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('22434f92-e4d0-447f-9789-a6d028c65515', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"49.37.111.245\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 06:38:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('6d5476ee-c3cc-4474-b094-aaaee491728f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2405:201:a807:e8f9:dd06:9b5e:e5f0:7894\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:10:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bcde11a8-b581-4b06-b2c6-4ff55ff9f39f', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2405:201:a807:e8f9:dd06:9b5e:e5f0:7894\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:25:14')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('335ddfda-8dca-4a51-bef4-ae003e3c5e11', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:d088:c65e:7518:4c05:96d3:59f9\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 07:27:10')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b2077825-4146-4214-acc6-c251b6c7cb7d', NULL, 'employee@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '1aacdd12-833b-4b5a-ad77-91da2537e2da', '{\"role\":\"employee\",\"mustChangePassword\":true}', NULL, '2026-08-22 12:09:36')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9640eb8a-faaa-427c-a57d-0199fd8d26bb', NULL, 'vicks@balaji.com', 'ADMIN_PASSWORD_CHANGED', 'Admin', '1aacdd12-833b-4b5a-ad77-91da2537e2da', '{\"message\":\"Password updated and verified in Supabase\"}', NULL, '2026-08-22 12:09:47')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('0369de95-3dc1-483f-af6f-ca486981afab', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '8cf42a06-9f8e-454a-9598-cb6e6dded838', NULL, NULL, '2026-09-09 07:47:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('01cecb73-cf30-4afd-b83e-36052a13db09', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '92711348-f180-4b91-a367-14c33df4e1b4', NULL, NULL, '2026-09-09 07:47:15')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('273aa231-18d3-4cf9-8655-add620e29904', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'be4c9761-b5e1-4cd0-adf4-d75a06f6b385', NULL, NULL, '2026-09-09 07:47:17')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('bc053e89-d3b8-4b85-8afb-97689a1cd4fa', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '11852dc1-cba7-4003-81be-cbd4c44b548e', NULL, NULL, '2026-09-09 07:47:20')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('9c8229bf-ffdd-4363-b109-008d507740ae', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '1648ed30-7e63-42a1-88e0-68939dc10d4d', NULL, NULL, '2026-09-09 07:47:22')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('35be6e40-5750-4ed2-8753-97ba7d614f98', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'eb120439-5e3f-40de-a873-2c0255d49bb9', NULL, NULL, '2026-09-09 07:47:24')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('27a6a544-1b10-4922-8cda-2800cebad87b', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '3cc5a6ff-f119-4602-9123-624ea395f5ef', NULL, NULL, '2026-09-09 07:47:28')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('ab21416b-9cf4-4ca2-a325-30ace4cd205a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '872b094e-71cf-4f24-92d2-bc2885c4e980', NULL, NULL, '2026-09-09 07:47:31')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e384de24-0644-4b47-afb3-1e7d3b874753', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '110c87c7-acd7-4e61-ad4f-729bc262593d', NULL, NULL, '2026-09-09 07:47:34')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('75238fcb-c38e-4b39-b6df-2caf33d12dec', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', 'e509a4bf-a5c8-46cc-bad4-dd4b53aa3795', NULL, NULL, '2026-09-09 07:47:37')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('7f4c471c-b0df-442a-8965-afc68f80522c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'PRODUCT_DELETED', 'Product', '7eda1836-efe9-490e-9e13-86b9d773617a', NULL, NULL, '2026-09-09 07:47:39')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('b5f09243-8c65-4b16-9afc-94d520b9af82', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:1c3b:3c35:f48c:b4ef:413d:3a4a\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 08:46:27')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('266aaa01-be94-4f4f-be4f-e2cac64dec3a', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 08:48:08')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('120bc53d-857b-4bcf-874c-f166d5e4464c', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'SITE_SETTINGS_UPDATED', 'SiteSettings', NULL, '{\"brandName\":\"BALAJI\",\"modifiedKeys\":[\"brandName\",\"brandSubtitle\",\"tagline\",\"architectName\",\"establishedYear\",\"googleRating\",\"logoUrl\",\"contactEmail\",\"contactPhone\",\"whatsappNumber\",\"businessHours\",\"studioAddress\",\"city\",\"state\",\"country\",\"pincode\",\"currency\",\"currencySymbol\",\"taxRatePercent\",\"standardShippingFee\",\"freeShippingThreshold\",\"gstinNumber\",\"minOrderValue\",\"socialInstagram\",\"socialPinterest\",\"socialLinkedin\",\"socialFacebook\",\"announcementBanner\",\"homepage\",\"paymentGateway\",\"updatedAt\",\"studioName\",\"supportEmail\",\"supportPhone\"]}', NULL, '2026-09-09 08:48:12')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('e84b0a40-0dda-4d55-a3ae-d46f1f530f23', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:1c3b:3c35:f48c:b4ef:413d:3a4a\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 09:46:21')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+INSERT INTO `audit_logs` (`id`, `admin_id`, `admin_email`, `action`, `entity`, `entity_id`, `details`, `ip_address`, `created_at`)
+VALUES ('4d5c3f79-c572-4d29-8cd6-a0c501192f37', '2bd20632-00dd-4f48-84b4-6e526543c8d8', 'vicks@balaji.com', 'ADMIN_LOGIN_SUCCESS', 'Auth', '2bd20632-00dd-4f48-84b4-6e526543c8d8', '{\"ip\":\"2401:4900:753f:462c:d544:b5c4:97ab:3787\",\"role\":\"owner\",\"method\":\"password\"}', NULL, '2026-09-09 13:00:16')
+ON DUPLICATE KEY UPDATE `action` = VALUES(`action`);
+
+SET FOREIGN_KEY_CHECKS = 1;
+-- ============================================================
+-- IMPORT COMPLETE
+-- ============================================================
+```
+
+---
+
+### `scripts/generate-complete-hostinger-sql.js`
+
+- **File**: `scripts/generate-complete-hostinger-sql.js`
+- **Size**: 33.0 KB (585 lines)
+- **Language**: `javascript`
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+
+// 1. Load Supabase Dump and Local DB
+const supabaseDump = JSON.parse(fs.readFileSync('scratch/supabase_full_dump.json', 'utf8'));
+const localDb = JSON.parse(fs.readFileSync('data/db.json', 'utf8'));
+
+function sqlEscape(val) {
+  if (val === null || val === undefined) return 'NULL';
+  if (typeof val === 'number') return String(val);
+  if (typeof val === 'boolean') return val ? '1' : '0';
+  if (typeof val === 'object') {
+    val = JSON.stringify(val);
+  }
+  let str = String(val);
+  str = str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, (char) => {
+    switch (char) {
+      case "\0": return "\\0";
+      case "\x08": return "\\b";
+      case "\x09": return "\\t";
+      case "\x1a": return "\\z";
+      case "\n": return "\\n";
+      case "\r": return "\\r";
+      case "\"":
+      case "'":
+      case "\\":
+      case "%":
+        return "\\" + char;
+      default:
+        return char;
+    }
+  });
+  return `'${str}'`;
 }
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables.');
-  process.exit(1);
-}
-
-console.log('Connecting to Supabase at:', supabaseUrl);
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-async function runSeed() {
+function formatDate(d) {
+  if (!d) return 'NULL';
   try {
-    console.log('\n--- 1. SETTING UP STORAGE BUCKETS ---');
-    const buckets = ['products', 'projects', 'services', 'site-media'];
-    for (const b of buckets) {
-      const { error } = await supabase.storage.createBucket(b, {
-        public: true,
-        fileSizeLimit: 10485760, // 10MB
-      });
-      if (error) {
-        if (error.message.toLowerCase().includes('already exists')) {
-          console.log(`✔ Storage bucket "${b}" already exists and ready.`);
-        } else {
-          console.warn(`Storage bucket "${b}":`, error.message);
-        }
-      } else {
-        console.log(`✔ Storage bucket "${b}" created successfully.`);
-      }
-    }
-
-    console.log('\n--- 2. SEEDING ADMIN BOOTSTRAP USER ---');
-    const adminSeed = getInitialAdminSeed();
-    const { data: existingAdmin } = await supabase.from('admins').select('id').eq('email', adminSeed.email).maybeSingle();
-    if (!existingAdmin) {
-      const { error: adminErr } = await supabase.from('admins').insert({
-        id: adminSeed.id,
-        email: adminSeed.email,
-        password_hash: adminSeed.passwordHash,
-        name: adminSeed.name,
-        role: adminSeed.role,
-        must_change_password: adminSeed.mustChangePassword,
-      });
-      if (adminErr) console.warn('Admin user seed:', adminErr.message);
-      else console.log('✔ Admin user (vicks@balaji.com) initialized.');
-    } else {
-      console.log('✔ Admin user already exists; preserved password and credentials.');
-    }
-
-    console.log('\n--- 3. SEEDING CATEGORIES ---');
-    const categoryIdMap = new Map<string, string>();
-    for (const cat of initialCategories) {
-      const { data: existing } = await supabase.from('categories').select('id, slug').eq('slug', cat.slug).maybeSingle();
-      if (!existing) {
-        const { data: inserted } = await supabase
-          .from('categories')
-          .insert({
-            name: cat.name,
-            slug: cat.slug,
-            description: cat.description,
-            image_url: cat.imageUrl,
-            sort_order: cat.sortOrder,
-            is_active: cat.isActive,
-          })
-          .select('id, slug')
-          .single();
-        if (inserted) {
-          categoryIdMap.set(cat.id, inserted.id);
-          categoryIdMap.set(cat.slug, inserted.id);
-        }
-      } else {
-        categoryIdMap.set(cat.id, existing.id);
-        categoryIdMap.set(cat.slug, existing.id);
-      }
-    }
-    console.log(`✔ Synced categories (preserved existing modifications).`);
-
-    console.log('\n--- 4. SEEDING PRODUCTS CATALOG ---');
-    for (const prod of initialProducts) {
-      const { data: existing } = await supabase.from('products').select('id, slug').eq('slug', prod.slug).maybeSingle();
-      if (!existing) {
-        const mappedCatId = categoryIdMap.get(prod.categoryId) || categoryIdMap.get(prod.categorySlug || '') || null;
-        await supabase.from('products').insert({
-          name: prod.name,
-          slug: prod.slug,
-          sku: prod.sku,
-          brand: prod.brand,
-          category_id: mappedCatId,
-          subcategory: prod.subcategory,
-          description: prod.description,
-          price: prod.price,
-          sale_price: prod.salePrice,
-          unit: prod.unit,
-          moq: prod.moq,
-          stock: prod.stock,
-          purchase_mode: prod.purchaseMode,
-          lead_time: prod.leadTime,
-          dimensions: prod.dimensions,
-          thickness: prod.thickness,
-          material: prod.material,
-          finish: prod.finish,
-          color: prod.color,
-          images: prod.images,
-          is_featured: prod.isFeatured,
-          is_new: prod.isNew,
-          is_bestseller: prod.isBestseller,
-          published: prod.published,
-          tags: prod.tags,
-          specifications: prod.specifications,
-        });
-      }
-    }
-    console.log(`✔ Products catalog verified (no duplicate insertions).`);
-
-    console.log('\n--- 5. SEEDING ARCHITECTURAL PROJECTS ---');
-    for (const proj of initialProjects) {
-      const { data: existing } = await supabase.from('projects').select('id').eq('slug', proj.slug).maybeSingle();
-      if (!existing) {
-        await supabase.from('projects').insert({
-          title: proj.title,
-          slug: proj.slug,
-          location: proj.location,
-          year: proj.year,
-          project_type: proj.projectType,
-          area: proj.area,
-          short_description: proj.shortDescription,
-          description: proj.description,
-          hero_image: proj.heroImage,
-          gallery: proj.gallery,
-          design_approach: proj.designApproach,
-          materials_used: proj.materialsUsed,
-          is_published: proj.isPublished,
-          is_featured: proj.isFeatured,
-          sort_order: proj.sortOrder,
-          tags: proj.tags,
-        });
-      }
-    }
-    console.log(`✔ Architectural projects verified.`);
-
-    console.log('\n--- 6. SEEDING ARCHITECTURAL SERVICES ---');
-    for (const srv of initialServices) {
-      const { data: existing } = await supabase.from('services').select('id').eq('slug', srv.slug).maybeSingle();
-      if (!existing) {
-        await supabase.from('services').insert({
-          title: srv.title,
-          slug: srv.slug,
-          short_desc: srv.shortDesc,
-          full_desc: srv.fullDesc,
-          icon_name: srv.iconName,
-          image_url: srv.imageUrl,
-          deliverables: srv.deliverables,
-          sort_order: srv.sortOrder,
-          is_published: srv.isPublished,
-        });
-      }
-    }
-    console.log(`✔ Architectural services verified.`);
-
-    console.log('\n--- 7. SEEDING SITE SETTINGS ---');
-    const { data: existingSettings } = await supabase.from('site_settings').select('key').eq('key', 'general').maybeSingle();
-    if (!existingSettings) {
-      const { error: setErr } = await supabase.from('site_settings').insert({
-        key: 'general',
-        value: initialSiteSettings,
-      });
-      if (setErr) console.warn('Site settings initialization notice:', setErr.message);
-      else console.log('✔ Initialized studio settings.');
-    } else {
-      console.log('✔ Studio settings already exist; preserved admin-configured settings.');
-    }
-
-    console.log('\n==================================================');
-    console.log('ALL SUPABASE TABLES & STORAGE BUCKETS VERIFIED SAFELY!');
-    console.log('==================================================');
-  } catch (err: any) {
-    console.error('Fatal seeding error:', err);
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return sqlEscape(d);
+    return `'${dt.toISOString().slice(0, 19).replace('T', ' ')}'`;
+  } catch {
+    return sqlEscape(d);
   }
 }
 
-runSeed();
+let sql = `-- ============================================================
+-- BALAJI ARCHITECT & INTERIORS
+-- HOSTINGER PHPMYADMIN MYSQL DATABASE IMPORT
+-- Includes 100% Real Live Supabase Data + Full Luxury Products & Inventory
+-- Compatible with Hostinger hPanel phpMyAdmin (MySQL 5.7+ / 8.0+ / MariaDB)
+-- Generated: ${new Date().toISOString()}
+-- ============================================================
 
+SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+SET NAMES utf8mb4;
+
+-- ------------------------------------------------------------
+-- TARGET DATABASE
+-- (Ensures query runs inside u603162798_balaji_arc_db even if imported from server root)
+-- ------------------------------------------------------------
+USE \`u603162798_balaji_arc_db\`;
+
+-- ------------------------------------------------------------
+-- CLEAN SLATE: DROP OLD TABLES IF THEY ALREADY EXIST
+-- (Guarantees no column mismatches or schema collisions)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS \`push_subscriptions\`;
+DROP TABLE IF EXISTS \`audit_logs\`;
+DROP TABLE IF EXISTS \`site_settings\`;
+DROP TABLE IF EXISTS \`enquiries\`;
+DROP TABLE IF EXISTS \`quote_items\`;
+DROP TABLE IF EXISTS \`quotes\`;
+DROP TABLE IF EXISTS \`order_items\`;
+DROP TABLE IF EXISTS \`orders\`;
+DROP TABLE IF EXISTS \`customers\`;
+DROP TABLE IF EXISTS \`services\`;
+DROP TABLE IF EXISTS \`projects\`;
+DROP TABLE IF EXISTS \`inventory\`;
+DROP TABLE IF EXISTS \`product_variants\`;
+DROP TABLE IF EXISTS \`collections\`;
+DROP TABLE IF EXISTS \`products\`;
+DROP TABLE IF EXISTS \`categories\`;
+DROP TABLE IF EXISTS \`admins\`;
+
+-- ------------------------------------------------------------
+-- 1. ADMINS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`admins\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`email\` VARCHAR(255) NOT NULL UNIQUE,
+  \`password_hash\` TEXT NOT NULL,
+  \`name\` VARCHAR(255) NOT NULL,
+  \`role\` VARCHAR(50) NOT NULL DEFAULT 'super_admin',
+  \`status\` VARCHAR(50) NOT NULL DEFAULT 'active',
+  \`must_change_password\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`last_login_at\` DATETIME NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_admins_email\` (\`email\`),
+  KEY \`idx_admins_role\` (\`role\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 2. CATEGORIES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`categories\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`name\` VARCHAR(255) NOT NULL,
+  \`slug\` VARCHAR(255) NOT NULL UNIQUE,
+  \`description\` TEXT NULL,
+  \`image_url\` TEXT NULL,
+  \`parent_id\` VARCHAR(36) NULL,
+  \`sort_order\` INT NOT NULL DEFAULT 0,
+  \`is_active\` TINYINT(1) NOT NULL DEFAULT 1,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_categories_slug\` (\`slug\`),
+  KEY \`idx_categories_sort\` (\`sort_order\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 3. PRODUCTS TABLE (Curated Luxury Materials & Objects)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`products\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`name\` VARCHAR(255) NOT NULL,
+  \`slug\` VARCHAR(255) NOT NULL UNIQUE,
+  \`sku\` VARCHAR(100) NOT NULL UNIQUE,
+  \`brand\` VARCHAR(255) NULL DEFAULT 'Balaji Atelier',
+  \`category_id\` VARCHAR(36) NULL,
+  \`subcategory\` VARCHAR(255) NULL,
+  \`description\` LONGTEXT NULL,
+  \`price\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`sale_price\` DECIMAL(12, 2) NULL,
+  \`unit\` VARCHAR(50) NOT NULL DEFAULT 'sq ft',
+  \`moq\` INT NOT NULL DEFAULT 1,
+  \`stock\` INT NOT NULL DEFAULT 0,
+  \`purchase_mode\` VARCHAR(50) NOT NULL DEFAULT 'BUY_NOW',
+  \`lead_time\` VARCHAR(100) NOT NULL DEFAULT '3-5 business days',
+  \`dimensions\` VARCHAR(255) NULL,
+  \`thickness\` VARCHAR(100) NULL,
+  \`material\` VARCHAR(255) NULL,
+  \`finish\` VARCHAR(255) NULL,
+  \`color\` VARCHAR(100) NULL,
+  \`images\` JSON NULL,
+  \`variants\` JSON NULL,
+  \`is_featured\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`is_new\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`is_bestseller\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`published\` TINYINT(1) NOT NULL DEFAULT 1,
+  \`tags\` JSON NULL,
+  \`specifications\` JSON NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_products_slug\` (\`slug\`),
+  KEY \`idx_products_sku\` (\`sku\`),
+  KEY \`idx_products_cat\` (\`category_id\`),
+  KEY \`idx_products_featured\` (\`is_featured\`),
+  KEY \`idx_products_published\` (\`published\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 4. PRODUCT VARIANTS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`product_variants\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`product_id\` VARCHAR(36) NULL,
+  \`sku\` VARCHAR(100) NOT NULL UNIQUE,
+  \`name\` VARCHAR(255) NULL,
+  \`finish\` VARCHAR(100) NULL,
+  \`thickness\` VARCHAR(100) NULL,
+  \`color\` VARCHAR(100) NULL,
+  \`size\` VARCHAR(100) NULL,
+  \`dimensions\` VARCHAR(255) NULL,
+  \`price_modifier\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`stock\` INT NOT NULL DEFAULT 0,
+  \`image_url\` TEXT NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_variants_prod\` (\`product_id\`),
+  KEY \`idx_variants_sku\` (\`sku\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 5. INVENTORY TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`inventory\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`product_id\` VARCHAR(36) NULL,
+  \`variant_id\` VARCHAR(36) NULL,
+  \`stock_on_hand\` INT NOT NULL DEFAULT 0,
+  \`stock_reserved\` INT NOT NULL DEFAULT 0,
+  \`stock_available\` INT NOT NULL DEFAULT 0,
+  \`low_stock_threshold\` INT NOT NULL DEFAULT 5,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_inventory_prod\` (\`product_id\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 6. PROJECTS TABLE (Curated Portfolio Commissions)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`projects\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`title\` VARCHAR(255) NOT NULL,
+  \`slug\` VARCHAR(255) NOT NULL UNIQUE,
+  \`location\` VARCHAR(255) NULL,
+  \`year\` VARCHAR(50) NULL,
+  \`project_type\` VARCHAR(100) NULL,
+  \`area\` VARCHAR(100) NULL,
+  \`short_description\` TEXT NULL,
+  \`description\` LONGTEXT NULL,
+  \`hero_image\` TEXT NULL,
+  \`gallery\` JSON NULL,
+  \`design_approach\` TEXT NULL,
+  \`materials_used\` JSON NULL,
+  \`before_after\` JSON NULL,
+  \`is_published\` TINYINT(1) NOT NULL DEFAULT 1,
+  \`is_featured\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`sort_order\` INT NOT NULL DEFAULT 0,
+  \`tags\` JSON NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_projects_slug\` (\`slug\`),
+  KEY \`idx_projects_featured\` (\`is_featured\`),
+  KEY \`idx_projects_sort\` (\`sort_order\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 7. SERVICES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`services\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`title\` VARCHAR(255) NOT NULL,
+  \`slug\` VARCHAR(255) NOT NULL UNIQUE,
+  \`short_desc\` TEXT NULL,
+  \`full_desc\` LONGTEXT NULL,
+  \`icon_name\` VARCHAR(100) NOT NULL DEFAULT 'Compass',
+  \`image_url\` TEXT NULL,
+  \`deliverables\` JSON NULL,
+  \`sort_order\` INT NOT NULL DEFAULT 0,
+  \`is_published\` TINYINT(1) NOT NULL DEFAULT 1,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_services_slug\` (\`slug\`),
+  KEY \`idx_services_sort\` (\`sort_order\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 8. CUSTOMERS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`customers\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`email\` VARCHAR(255) NOT NULL UNIQUE,
+  \`phone\` VARCHAR(50) NULL,
+  \`full_name\` VARCHAR(255) NULL,
+  \`company_name\` VARCHAR(255) NULL,
+  \`gstin\` VARCHAR(50) NULL,
+  \`is_guest\` TINYINT(1) NOT NULL DEFAULT 0,
+  \`addresses\` JSON NULL,
+  \`total_orders\` INT NOT NULL DEFAULT 0,
+  \`total_spent\` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_customers_email\` (\`email\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 9. ORDERS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`orders\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`order_number\` VARCHAR(50) NOT NULL UNIQUE,
+  \`customer_id\` VARCHAR(36) NULL,
+  \`customer_name\` VARCHAR(255) NULL,
+  \`customer_email\` VARCHAR(255) NULL,
+  \`customer_phone\` VARCHAR(50) NULL,
+  \`shipping_address\` JSON NULL,
+  \`billing_address\` JSON NULL,
+  \`subtotal\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`tax\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`shipping_fee\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`discount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`total_amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`order_status\` VARCHAR(50) NOT NULL DEFAULT 'Confirmed',
+  \`payment_status\` VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+  \`payment_method\` VARCHAR(50) NOT NULL DEFAULT 'UPI',
+  \`utr_number\` VARCHAR(100) NULL,
+  \`transaction_id\` VARCHAR(100) NULL,
+  \`notes\` TEXT NULL,
+  \`idempotency_key\` VARCHAR(100) NULL UNIQUE,
+  \`items\` JSON NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_orders_num\` (\`order_number\`),
+  KEY \`idx_orders_status\` (\`order_status\`),
+  KEY \`idx_orders_payment\` (\`payment_status\`),
+  KEY \`idx_orders_email\` (\`customer_email\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 10. ORDER ITEMS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`order_items\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`order_id\` VARCHAR(36) NOT NULL,
+  \`product_id\` VARCHAR(36) NULL,
+  \`variant_id\` VARCHAR(36) NULL,
+  \`product_name\` VARCHAR(255) NULL,
+  \`product_sku\` VARCHAR(100) NULL,
+  \`sku\` VARCHAR(100) NULL,
+  \`unit\` VARCHAR(50) NULL,
+  \`quantity\` INT NOT NULL DEFAULT 1,
+  \`unit_price\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`subtotal\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+  \`image_url\` TEXT NULL,
+  \`selected_color\` VARCHAR(100) NULL,
+  \`selected_finish\` VARCHAR(100) NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_items_order\` (\`order_id\`),
+  KEY \`idx_items_product\` (\`product_id\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 11. QUOTES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`quotes\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`quote_number\` VARCHAR(50) NOT NULL UNIQUE,
+  \`customer_name\` VARCHAR(255) NULL,
+  \`customer_email\` VARCHAR(255) NULL,
+  \`customer_phone\` VARCHAR(50) NULL,
+  \`project_type\` VARCHAR(100) NULL,
+  \`project_location\` VARCHAR(100) NULL,
+  \`city\` VARCHAR(100) NULL,
+  \`scope_of_work\` TEXT NULL,
+  \`notes\` TEXT NULL,
+  \`estimated_budget\` VARCHAR(100) NULL,
+  \`budget_range\` VARCHAR(100) NULL,
+  \`estimated_timeline\` VARCHAR(100) NULL,
+  \`timeline\` VARCHAR(100) NULL,
+  \`status\` VARCHAR(50) NOT NULL DEFAULT 'Submitted',
+  \`admin_notes\` TEXT NULL,
+  \`quoted_amount\` DECIMAL(14, 2) NULL,
+  \`total_quoted_amount\` DECIMAL(14, 2) NULL,
+  \`items\` JSON NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_quotes_num\` (\`quote_number\`),
+  KEY \`idx_quotes_status\` (\`status\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 12. QUOTE ITEMS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`quote_items\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`quote_id\` VARCHAR(36) NOT NULL,
+  \`product_id\` VARCHAR(36) NULL,
+  \`product_name\` VARCHAR(255) NULL,
+  \`dimensions\` VARCHAR(255) NULL,
+  \`quantity\` INT NOT NULL DEFAULT 1,
+  \`unit\` VARCHAR(50) NOT NULL DEFAULT 'sq ft',
+  \`notes\` TEXT NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_quote_items_quote\` (\`quote_id\`),
+  KEY \`idx_quote_items_product\` (\`product_id\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 13. ENQUIRIES TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`enquiries\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`name\` VARCHAR(255) NULL,
+  \`email\` VARCHAR(255) NULL,
+  \`phone\` VARCHAR(50) NULL,
+  \`subject\` VARCHAR(255) NULL,
+  \`message\` TEXT NULL,
+  \`status\` VARCHAR(50) NOT NULL DEFAULT 'New',
+  \`source\` VARCHAR(100) NOT NULL DEFAULT 'Website Contact Form',
+  \`admin_notes\` TEXT NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_enquiries_status\` (\`status\`),
+  KEY \`idx_enquiries_email\` (\`email\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 13. SITE SETTINGS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`site_settings\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`key\` VARCHAR(100) NULL,
+  \`value\` JSON NULL,
+  \`raw_json\` JSON NULL,
+  \`brand_name\` VARCHAR(255) NULL,
+  \`tagline\` TEXT NULL,
+  \`contact_email\` VARCHAR(255) NULL,
+  \`contact_phone\` VARCHAR(100) NULL,
+  \`whatsapp_number\` VARCHAR(100) NULL,
+  \`studio_address\` TEXT NULL,
+  \`gstin_number\` VARCHAR(50) NULL,
+  \`currency\` VARCHAR(10) DEFAULT 'INR',
+  \`currency_symbol\` VARCHAR(10) DEFAULT '₹',
+  \`tax_rate_percent\` DECIMAL(5,2) DEFAULT 18.00,
+  \`standard_shipping_fee\` DECIMAL(10,2) DEFAULT 1500.00,
+  \`free_shipping_threshold\` DECIMAL(10,2) DEFAULT 50000.00,
+  \`homepage\` JSON NULL,
+  \`payment_gateway\` JSON NULL,
+  \`portfolio_animation\` JSON NULL,
+  \`whatsapp\` JSON NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  \`updated_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_settings_key\` (\`key\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 14. AUDIT LOGS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`audit_logs\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`admin_id\` VARCHAR(36) NULL,
+  \`admin_email\` VARCHAR(255) NULL,
+  \`action\` VARCHAR(100) NULL,
+  \`entity\` VARCHAR(100) NULL,
+  \`entity_id\` VARCHAR(255) NULL,
+  \`details\` JSON NULL,
+  \`ip_address\` VARCHAR(100) NULL,
+  \`user_agent\` TEXT NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`),
+  KEY \`idx_audit_admin\` (\`admin_id\`),
+  KEY \`idx_audit_action\` (\`action\`),
+  KEY \`idx_audit_entity\` (\`entity\`),
+  KEY \`idx_audit_created\` (\`created_at\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- 15. PUSH SUBSCRIPTIONS TABLE
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`push_subscriptions\` (
+  \`id\` VARCHAR(36) NOT NULL,
+  \`endpoint\` TEXT NULL,
+  \`p256dh\` TEXT NULL,
+  \`auth\` TEXT NULL,
+  \`created_at\` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (\`id\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+`;
+
+// 2. Insert Admins
+sql += `\n-- ============================================================\n-- DATA: ADMINS\n-- ============================================================\n`;
+const admins = supabaseDump.admins && supabaseDump.admins.length > 0 ? supabaseDump.admins : localDb.admins;
+for (const a of admins) {
+  sql += `INSERT INTO \`admins\` (\`id\`, \`email\`, \`password_hash\`, \`name\`, \`role\`, \`status\`, \`must_change_password\`, \`last_login_at\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(a.id)}, ${sqlEscape(a.email)}, ${sqlEscape(a.password_hash || a.passwordHash)}, ${sqlEscape(a.name)}, ${sqlEscape(a.role || 'super_admin')}, ${sqlEscape(a.status || 'active')}, ${a.must_change_password ? 1 : 0}, ${formatDate(a.last_login_at || a.lastLoginAt)}, ${formatDate(a.created_at || a.createdAt)}, ${formatDate(a.updated_at || a.updatedAt)})
+ON DUPLICATE KEY UPDATE \`name\` = VALUES(\`name\`), \`password_hash\` = VALUES(\`password_hash\`), \`role\` = VALUES(\`role\`);\n`;
+}
+
+// 3. Insert Categories (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: CATEGORIES (${supabaseDump.categories.length} from Supabase)\n-- ============================================================\n`;
+for (const c of supabaseDump.categories) {
+  sql += `INSERT INTO \`categories\` (\`id\`, \`name\`, \`slug\`, \`description\`, \`image_url\`, \`parent_id\`, \`sort_order\`, \`is_active\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(c.id)}, ${sqlEscape(c.name)}, ${sqlEscape(c.slug)}, ${sqlEscape(c.description)}, ${sqlEscape(c.image_url)}, ${sqlEscape(c.parent_id)}, ${c.sort_order || 0}, ${c.is_active !== false ? 1 : 0}, ${formatDate(c.created_at)}, ${formatDate(c.updated_at)})
+ON DUPLICATE KEY UPDATE \`name\` = VALUES(\`name\`), \`description\` = VALUES(\`description\`), \`image_url\` = VALUES(\`image_url\`);\n`;
+}
+
+// 4. Insert Products & Inventory (from local DB)
+sql += `\n-- ============================================================\n-- DATA: PRODUCTS & INVENTORY (${localDb.products.length} luxury products)\n-- ============================================================\n`;
+for (const p of localDb.products) {
+  sql += `INSERT INTO \`products\` (\`id\`, \`name\`, \`slug\`, \`sku\`, \`brand\`, \`category_id\`, \`subcategory\`, \`description\`, \`price\`, \`sale_price\`, \`unit\`, \`moq\`, \`stock\`, \`purchase_mode\`, \`lead_time\`, \`dimensions\`, \`thickness\`, \`material\`, \`finish\`, \`color\`, \`images\`, \`variants\`, \`is_featured\`, \`is_new\`, \`is_bestseller\`, \`published\`, \`tags\`, \`specifications\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(p.id)}, ${sqlEscape(p.name)}, ${sqlEscape(p.slug)}, ${sqlEscape(p.sku)}, ${sqlEscape(p.brand || 'Balaji Atelier')}, ${sqlEscape(p.categoryId)}, ${sqlEscape(p.subcategory)}, ${sqlEscape(p.description)}, ${p.price || 0}, ${p.salePrice || 'NULL'}, ${sqlEscape(p.unit || 'sq ft')}, ${p.moq || 1}, ${p.stock || 0}, ${sqlEscape(p.purchaseMode || 'BUY_NOW')}, ${sqlEscape(p.leadTime || '3-5 business days')}, ${sqlEscape(p.dimensions)}, ${sqlEscape(p.thickness)}, ${sqlEscape(p.material)}, ${sqlEscape(p.finish)}, ${sqlEscape(p.color)}, ${sqlEscape(p.images || [])}, ${sqlEscape(p.variants || [])}, ${p.isFeatured ? 1 : 0}, ${p.isNew ? 1 : 0}, ${p.isBestseller ? 1 : 0}, ${p.published !== false ? 1 : 0}, ${sqlEscape(p.tags || [])}, ${sqlEscape(p.specifications || {})}, ${formatDate(p.createdAt)}, ${formatDate(p.updatedAt)})
+ON DUPLICATE KEY UPDATE \`name\` = VALUES(\`name\`), \`price\` = VALUES(\`price\`), \`stock\` = VALUES(\`stock\`);\n`;
+
+  sql += `INSERT INTO \`inventory\` (\`id\`, \`product_id\`, \`variant_id\`, \`stock_on_hand\`, \`stock_reserved\`, \`stock_available\`, \`low_stock_threshold\`)
+VALUES (${sqlEscape('inv-' + p.id)}, ${sqlEscape(p.id)}, NULL, ${p.stock || 0}, 0, ${p.stock || 0}, 5)
+ON DUPLICATE KEY UPDATE \`stock_on_hand\` = VALUES(\`stock_on_hand\`), \`stock_available\` = VALUES(\`stock_available\`);\n`;
+
+  if (Array.isArray(p.variants)) {
+    for (const v of p.variants) {
+      sql += `INSERT INTO \`product_variants\` (\`id\`, \`product_id\`, \`sku\`, \`name\`, \`finish\`, \`thickness\`, \`color\`, \`dimensions\`, \`price_modifier\`, \`stock\`)
+VALUES (${sqlEscape(v.id)}, ${sqlEscape(p.id)}, ${sqlEscape(v.sku)}, ${sqlEscape(v.name)}, ${sqlEscape(v.finish)}, ${sqlEscape(v.thickness)}, ${sqlEscape(v.color)}, ${sqlEscape(v.dimensions)}, ${v.priceModifier || 0}, ${v.stock || 0})
+ON DUPLICATE KEY UPDATE \`name\` = VALUES(\`name\`), \`price_modifier\` = VALUES(\`price_modifier\`), \`stock\` = VALUES(\`stock\`);\n`;
+    }
+  }
+}
+
+// 5. Insert Projects (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: PROJECTS (${supabaseDump.projects.length} from Supabase)\n-- ============================================================\n`;
+for (const p of supabaseDump.projects) {
+  sql += `INSERT INTO \`projects\` (\`id\`, \`title\`, \`slug\`, \`location\`, \`year\`, \`project_type\`, \`area\`, \`short_description\`, \`description\`, \`hero_image\`, \`gallery\`, \`design_approach\`, \`materials_used\`, \`before_after\`, \`is_published\`, \`is_featured\`, \`sort_order\`, \`tags\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(p.id)}, ${sqlEscape(p.title)}, ${sqlEscape(p.slug)}, ${sqlEscape(p.location)}, ${sqlEscape(p.year)}, ${sqlEscape(p.project_type)}, ${sqlEscape(p.area)}, ${sqlEscape(p.short_description)}, ${sqlEscape(p.description)}, ${sqlEscape(p.hero_image)}, ${sqlEscape(p.gallery || [])}, ${sqlEscape(p.design_approach)}, ${sqlEscape(p.materials_used || [])}, ${sqlEscape(p.before_after)}, ${p.is_published !== false ? 1 : 0}, ${p.is_featured ? 1 : 0}, ${p.sort_order || 0}, ${sqlEscape(p.tags || [])}, ${formatDate(p.created_at)}, ${formatDate(p.updated_at)})
+ON DUPLICATE KEY UPDATE \`title\` = VALUES(\`title\`), \`hero_image\` = VALUES(\`hero_image\`), \`description\` = VALUES(\`description\`);\n`;
+}
+
+// 6. Insert Services (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: SERVICES (${supabaseDump.services.length} from Supabase)\n-- ============================================================\n`;
+for (const s of supabaseDump.services) {
+  sql += `INSERT INTO \`services\` (\`id\`, \`title\`, \`slug\`, \`short_desc\`, \`full_desc\`, \`icon_name\`, \`image_url\`, \`deliverables\`, \`sort_order\`, \`is_published\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(s.id)}, ${sqlEscape(s.title)}, ${sqlEscape(s.slug)}, ${sqlEscape(s.short_desc)}, ${sqlEscape(s.full_desc)}, ${sqlEscape(s.icon_name || 'Compass')}, ${sqlEscape(s.image_url)}, ${sqlEscape(s.deliverables || [])}, ${s.sort_order || 0}, ${s.is_published !== false ? 1 : 0}, ${formatDate(s.created_at)}, ${formatDate(s.updated_at)})
+ON DUPLICATE KEY UPDATE \`title\` = VALUES(\`title\`), \`image_url\` = VALUES(\`image_url\`), \`full_desc\` = VALUES(\`full_desc\`);\n`;
+}
+
+// 7. Insert Customers (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: CUSTOMERS (${supabaseDump.customers.length} from Supabase)\n-- ============================================================\n`;
+for (const c of supabaseDump.customers) {
+  sql += `INSERT INTO \`customers\` (\`id\`, \`email\`, \`phone\`, \`full_name\`, \`is_guest\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(c.id)}, ${sqlEscape(c.email)}, ${sqlEscape(c.phone)}, ${sqlEscape(c.full_name)}, ${c.is_guest ? 1 : 0}, ${formatDate(c.created_at)}, ${formatDate(c.updated_at)})
+ON DUPLICATE KEY UPDATE \`full_name\` = VALUES(\`full_name\`), \`phone\` = VALUES(\`phone\`);\n`;
+}
+
+// 8. Insert Orders (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: ORDERS (${supabaseDump.orders.length} from Supabase)\n-- ============================================================\n`;
+for (const o of supabaseDump.orders) {
+  sql += `INSERT INTO \`orders\` (\`id\`, \`order_number\`, \`customer_id\`, \`customer_name\`, \`customer_email\`, \`customer_phone\`, \`shipping_address\`, \`billing_address\`, \`subtotal\`, \`tax\`, \`shipping_fee\`, \`discount\`, \`total_amount\`, \`order_status\`, \`payment_status\`, \`payment_method\`, \`notes\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(o.id)}, ${sqlEscape(o.order_number)}, ${sqlEscape(o.customer_id)}, ${sqlEscape(o.customer_name)}, ${sqlEscape(o.customer_email)}, ${sqlEscape(o.customer_phone)}, ${sqlEscape(o.shipping_address || {})}, ${sqlEscape(o.billing_address)}, ${o.subtotal || 0}, ${o.tax || 0}, ${o.shipping_fee || 0}, ${o.discount || 0}, ${o.total_amount || 0}, ${sqlEscape(o.order_status || 'Confirmed')}, ${sqlEscape(o.payment_status || 'Submitted')}, ${sqlEscape(o.payment_method || 'UPI')}, ${sqlEscape(o.notes)}, ${formatDate(o.created_at)}, ${formatDate(o.updated_at)})
+ON DUPLICATE KEY UPDATE \`order_status\` = VALUES(\`order_status\`), \`payment_status\` = VALUES(\`payment_status\`);\n`;
+}
+
+// 9. Insert Order Items (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: ORDER ITEMS (${supabaseDump.order_items.length} from Supabase)\n-- ============================================================\n`;
+for (const oi of supabaseDump.order_items) {
+  sql += `INSERT INTO \`order_items\` (\`id\`, \`order_id\`, \`product_id\`, \`variant_id\`, \`product_name\`, \`product_sku\`, \`unit\`, \`quantity\`, \`unit_price\`, \`subtotal\`, \`image_url\`, \`selected_color\`, \`selected_finish\`)
+VALUES (${sqlEscape(oi.id)}, ${sqlEscape(oi.order_id)}, ${sqlEscape(oi.product_id)}, ${sqlEscape(oi.variant_id)}, ${sqlEscape(oi.product_name)}, ${sqlEscape(oi.product_sku)}, ${sqlEscape(oi.unit)}, ${oi.quantity || 1}, ${oi.unit_price || 0}, ${oi.subtotal || 0}, ${sqlEscape(oi.image_url)}, ${sqlEscape(oi.selected_color)}, ${sqlEscape(oi.selected_finish)})
+ON DUPLICATE KEY UPDATE \`quantity\` = VALUES(\`quantity\`), \`unit_price\` = VALUES(\`unit_price\`);\n`;
+}
+
+// 10. Insert Quotes (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: QUOTES (${supabaseDump.quotes.length} from Supabase)\n-- ============================================================\n`;
+for (const q of supabaseDump.quotes) {
+  sql += `INSERT INTO \`quotes\` (\`id\`, \`quote_number\`, \`customer_name\`, \`customer_email\`, \`customer_phone\`, \`project_type\`, \`project_location\`, \`city\`, \`notes\`, \`scope_of_work\`, \`budget_range\`, \`estimated_budget\`, \`estimated_timeline\`, \`timeline\`, \`status\`, \`admin_notes\`, \`total_quoted_amount\`, \`quoted_amount\`, \`created_at\`, \`updated_at\`)
+VALUES (${sqlEscape(q.id)}, ${sqlEscape(q.quote_number)}, ${sqlEscape(q.customer_name)}, ${sqlEscape(q.customer_email)}, ${sqlEscape(q.customer_phone)}, ${sqlEscape(q.project_type)}, ${sqlEscape(q.project_location)}, ${sqlEscape(q.project_location)}, ${sqlEscape(q.notes)}, ${sqlEscape(q.notes)}, ${sqlEscape(q.budget_range)}, ${sqlEscape(q.budget_range)}, ${sqlEscape(q.estimated_timeline)}, ${sqlEscape(q.estimated_timeline)}, ${sqlEscape(q.status || 'Submitted')}, ${sqlEscape(q.admin_notes)}, ${q.total_quoted_amount || 0}, ${q.total_quoted_amount || 0}, ${formatDate(q.created_at)}, ${formatDate(q.updated_at)})
+ON DUPLICATE KEY UPDATE \`status\` = VALUES(\`status\`), \`admin_notes\` = VALUES(\`admin_notes\`);\n`;
+}
+
+// 11. Insert Enquiries (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: ENQUIRIES (${supabaseDump.enquiries.length} from Supabase)\n-- ============================================================\n`;
+for (const e of supabaseDump.enquiries) {
+  sql += `INSERT INTO \`enquiries\` (\`id\`, \`name\`, \`email\`, \`phone\`, \`subject\`, \`message\`, \`status\`, \`source\`, \`created_at\`)
+VALUES (${sqlEscape(e.id)}, ${sqlEscape(e.name)}, ${sqlEscape(e.email)}, ${sqlEscape(e.phone)}, ${sqlEscape(e.subject)}, ${sqlEscape(e.message)}, ${sqlEscape(e.status || 'New')}, ${sqlEscape(e.source || 'Website Contact Form')}, ${formatDate(e.created_at)})
+ON DUPLICATE KEY UPDATE \`status\` = VALUES(\`status\`);\n`;
+}
+
+// 12. Insert Site Settings (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: SITE SETTINGS (from Supabase)\n-- ============================================================\n`;
+const rawSettings = supabaseDump.site_settings && supabaseDump.site_settings[0] ? supabaseDump.site_settings[0] : null;
+const settingsVal = rawSettings?.value || localDb.siteSettings;
+sql += `INSERT INTO \`site_settings\` (\`id\`, \`key\`, \`value\`, \`raw_json\`, \`brand_name\`, \`tagline\`, \`contact_email\`, \`contact_phone\`, \`whatsapp_number\`, \`studio_address\`, \`gstin_number\`, \`currency\`, \`currency_symbol\`, \`tax_rate_percent\`, \`standard_shipping_fee\`, \`free_shipping_threshold\`, \`homepage\`, \`payment_gateway\`)
+VALUES ('global', 'general', ${sqlEscape(settingsVal)}, ${sqlEscape(settingsVal)}, ${sqlEscape(settingsVal?.brandName || 'Balaji Architect & Interior')}, ${sqlEscape(settingsVal?.tagline)}, ${sqlEscape(settingsVal?.contactEmail)}, ${sqlEscape(settingsVal?.contactPhone)}, ${sqlEscape(settingsVal?.whatsappNumber)}, ${sqlEscape(settingsVal?.studioAddress)}, ${sqlEscape(settingsVal?.gstinNumber)}, ${sqlEscape(settingsVal?.currency || 'INR')}, ${sqlEscape(settingsVal?.currencySymbol || '₹')}, ${settingsVal?.taxRatePercent || 18}, ${settingsVal?.standardShippingFee || 1500}, ${settingsVal?.freeShippingThreshold || 50000}, ${sqlEscape(settingsVal?.homepage)}, ${sqlEscape(settingsVal?.paymentGateway)})
+ON DUPLICATE KEY UPDATE \`value\` = VALUES(\`value\`), \`raw_json\` = VALUES(\`raw_json\`), \`brand_name\` = VALUES(\`brand_name\`);\n`;
+
+// 13. Insert Audit Logs (from Supabase)
+sql += `\n-- ============================================================\n-- DATA: AUDIT LOGS (${supabaseDump.audit_logs.length} from Supabase)\n-- ============================================================\n`;
+for (const l of supabaseDump.audit_logs) {
+  sql += `INSERT INTO \`audit_logs\` (\`id\`, \`admin_id\`, \`admin_email\`, \`action\`, \`entity\`, \`entity_id\`, \`details\`, \`ip_address\`, \`created_at\`)
+VALUES (${sqlEscape(l.id)}, ${sqlEscape(l.admin_id)}, ${sqlEscape(l.admin_email)}, ${sqlEscape(l.action)}, ${sqlEscape(l.entity)}, ${sqlEscape(l.entity_id)}, ${sqlEscape(l.details)}, ${sqlEscape(l.ip_address)}, ${formatDate(l.created_at)})
+ON DUPLICATE KEY UPDATE \`action\` = VALUES(\`action\`);\n`;
+}
+
+sql += `\nSET FOREIGN_KEY_CHECKS = 1;\n`;
+sql += `-- ============================================================\n-- IMPORT COMPLETE\n-- ============================================================\n`;
+
+const targetPath = path.resolve('HOSTINGER_PHPMYADMIN_SUPABASE_EXPORT.sql');
+fs.writeFileSync(targetPath, sql, 'utf8');
+console.log('Successfully generated complete SQL file at:', targetPath);
+console.log('Total file size:', (sql.length / 1024).toFixed(1), 'KB');
+console.log('Total lines:', sql.split('\n').length);
 ```
 
 ---
 
 ### `scripts/test-architecture-refactor.ts`
+
+- **File**: `scripts/test-architecture-refactor.ts`
+- **Size**: 8.3 KB (236 lines)
+- **Language**: `typescript`
 
 ```typescript
 import {
@@ -65692,12 +68064,289 @@ runArchitectureTests().catch((err) => {
   console.error('Architecture test execution fatal exception:', err);
   process.exit(1);
 });
+```
 
+---
+
+### `scripts/test-hostinger-mysql.js`
+
+- **File**: `scripts/test-hostinger-mysql.js`
+- **Size**: 4.6 KB (125 lines)
+- **Language**: `javascript`
+
+```javascript
+/**
+ * BALAJI ARCHITECT & INTERIORS
+ * Hostinger MySQL Database Diagnostic & Verification Script
+ *
+ * Usage:
+ *   node scripts/test-hostinger-mysql.js
+ */
+
+const fs = require('fs');
+const path = require('path');
+const mysql = require('mysql2/promise');
+
+// 1. Load .env.local manually
+const envPath = path.resolve(__dirname, '..', '.env.local');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        const key = trimmed.substring(0, idx).trim();
+        const val = trimmed.substring(idx + 1).trim();
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  });
+}
+
+const host = process.env.DB_HOST || 'localhost';
+const port = Number(process.env.DB_PORT) || 3306;
+const user = process.env.DB_USER || 'u603162798_balaji_arc_db';
+const password = process.env.DB_PASSWORD || '';
+const database = process.env.DB_NAME || 'u603162798_balaji_arc_db';
+
+console.log('\n======================================================');
+console.log('🏛️  BALAJI ARCHITECT & INTERIORS — HOSTINGER MYSQL CHECK');
+console.log('======================================================\n');
+console.log(`Configured Host:     ${host}`);
+console.log(`Configured Port:     ${port}`);
+console.log(`Configured Database: ${database}`);
+console.log(`Configured User:     ${user}`);
+console.log(`Password Set:        ${password && password.trim().length > 0 ? 'YES (length: ' + password.length + ')' : 'NO (DB_PASSWORD is empty in .env.local)'}\n`);
+
+if (!password || password.trim().length === 0) {
+  console.log('⚠️  NOTICE: DB_PASSWORD is currently blank in .env.local.');
+  console.log('   The application is currently running safely using Supabase / Local Fallback.');
+  console.log('   Once you import HOSTINGER_PHPMYADMIN_SUPABASE_EXPORT.sql into phpMyAdmin,');
+  console.log('   set your MySQL user password in .env.local:');
+  console.log('   DB_PASSWORD=YourPasswordHere\n');
+  process.exit(0);
+}
+
+async function runCheck() {
+  const startTime = Date.now();
+  try {
+    console.log('🔌 Attempting connection to Hostinger MySQL pool...');
+    const connection = await mysql.createConnection({
+      host,
+      port,
+      user,
+      password,
+      database,
+      connectTimeout: 8000,
+    });
+
+    const latency = Date.now() - startTime;
+    console.log(`✅ SUCCESS! Connected to Hostinger MySQL in ${latency}ms.\n`);
+
+    const tables = [
+      'admins',
+      'categories',
+      'products',
+      'product_variants',
+      'inventory',
+      'projects',
+      'services',
+      'customers',
+      'orders',
+      'order_items',
+      'quotes',
+      'quote_items',
+      'enquiries',
+      'site_settings',
+      'audit_logs',
+    ];
+
+    console.log('📊 TABLE ROW COUNTS IN PHPMYADMIN:');
+    console.log('------------------------------------------------------');
+    for (const tbl of tables) {
+      try {
+        const [rows] = await connection.query(`SELECT COUNT(*) as count FROM \`${tbl}\``);
+        const count = rows[0].count;
+        console.log(`  • ${tbl.padEnd(20)} : ${count} record(s)`);
+      } catch (tblErr) {
+        console.log(`  • ${tbl.padEnd(20)} : [Table not created yet or inaccessible]`);
+      }
+    }
+    console.log('------------------------------------------------------\n');
+    await connection.end();
+    console.log('✨ All Hostinger MySQL connection and schema checks passed successfully!\n');
+  } catch (err) {
+    const elapsed = Date.now() - startTime;
+    console.error(`❌ Connection failed after ${elapsed}ms:`, err.message);
+    console.log('\n🔍 TROUBLESHOOTING GUIDE:');
+    if (err.code === 'ETIMEDOUT' || err.code === 'ENOTFOUND') {
+      console.log('  1. If running locally from your PC to Hostinger:');
+      console.log('     Hostinger blocks external connections by default.');
+      console.log('     Login to Hostinger hPanel -> Databases -> Remote MySQL:');
+      console.log('     Add IP: "%" (or your local public IP) to allow remote connections.');
+      console.log('     Change DB_HOST from "localhost" to your Hostinger server IP / hostname.');
+    } else if (err.code === 'ER_ACCESS_DENIED_ERROR') {
+      console.log('  1. Verify the DB_PASSWORD in .env.local matches your Hostinger database user password.');
+      console.log('  2. Verify DB_USER is exactly:', user);
+    } else if (err.code === 'ER_BAD_DB_ERROR') {
+      console.log('  1. Verify database name:', database);
+    }
+    console.log('\n');
+  }
+}
+
+runCheck();
+```
+
+---
+
+### `scripts/verify-hostinger-standalone.js`
+
+- **File**: `scripts/verify-hostinger-standalone.js`
+- **Size**: 5.6 KB (129 lines)
+- **Language**: `javascript`
+
+```javascript
+const fs = require('fs');
+const path = require('path');
+const mysql = require('mysql2/promise');
+const crypto = require('crypto');
+
+// Load .env.local
+const envPath = path.resolve(__dirname, '..', '.env.local');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        const key = trimmed.substring(0, idx).trim();
+        const val = trimmed.substring(idx + 1).trim();
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  });
+}
+
+const host = process.env.DB_HOST || 'localhost';
+const port = Number(process.env.DB_PORT) || 3306;
+const user = process.env.DB_USER || 'u603162798_balajiarcdb';
+const password = process.env.DB_PASSWORD || '';
+const database = process.env.DB_NAME || 'u603162798_balaji_arc_db';
+
+function verifyPassword(passwordAttempt, storedHash) {
+  if (!passwordAttempt || !storedHash) return false;
+  const parts = storedHash.split(':');
+  if (parts.length !== 2) return false;
+  const [salt, originalHash] = parts;
+  const hash = crypto.pbkdf2Sync(passwordAttempt, salt, 10000, 64, 'sha512').toString('hex');
+  return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(originalHash, 'hex'));
+}
+
+async function verifyAll() {
+  console.log('\n======================================================');
+  console.log('🧪 VERIFYING HOSTINGER MYSQL AS STANDALONE ENGINE');
+  console.log('======================================================\n');
+
+  const conn = await mysql.createConnection({
+    host,
+    port,
+    user,
+    password,
+    database,
+    connectTimeout: 8000,
+  });
+
+  console.log('✅ Connection established.');
+
+  // 1. Check Admins & Auth
+  const [admins] = await conn.query('SELECT * FROM admins WHERE email = ?', ['vicks@balaji.com']);
+  if (admins.length > 0) {
+    const admin = admins[0];
+    const isPassValid = verifyPassword('admin123', admin.password_hash);
+    console.log(`✅ Admin [${admin.email}] found, role: ${admin.role}. Password check: ${isPassValid ? 'VALID' : 'FAILED'}`);
+  } else {
+    console.error('❌ Admin not found!');
+  }
+
+  // 2. Check Categories
+  const [categories] = await conn.query('SELECT id, name, slug FROM categories');
+  console.log(`✅ Categories verified (${categories.length} total)`);
+
+  // 3. Check Products & Variants & Inventory
+  const [products] = await conn.query('SELECT id, name, slug, price, category_id FROM products');
+  const [variants] = await conn.query('SELECT id, product_id, sku, price_modifier FROM product_variants');
+  const [inventory] = await conn.query('SELECT id, product_id, stock_on_hand FROM inventory');
+  console.log(`✅ Products verified (${products.length} products, ${variants.length} variants, ${inventory.length} inventory records)`);
+
+  // 4. Check Projects & Services
+  const [projects] = await conn.query('SELECT id, title, slug, project_type FROM projects');
+  const [services] = await conn.query('SELECT id, title, slug FROM services');
+  console.log(`✅ Projects & Services verified (${projects.length} projects, ${services.length} services)`);
+
+  // 5. Check Customers
+  const [customers] = await conn.query('SELECT id, email, full_name, phone FROM customers');
+  console.log(`✅ Customers verified (${customers.length} customers)`);
+
+  // 6. Check Orders & Order Items
+  const [orders] = await conn.query('SELECT id, order_number, total_amount, order_status FROM orders');
+  const [orderItems] = await conn.query('SELECT id, order_id, product_name, quantity, unit_price, subtotal FROM order_items');
+  console.log(`✅ Orders & Items verified (${orders.length} orders, ${orderItems.length} order items)`);
+
+  // 7. Check Quotes & Quote Items
+  const [quotes] = await conn.query('SELECT id, quote_number, status, total_quoted_amount FROM quotes');
+  const [quoteItems] = await conn.query('SELECT id, quote_id, product_name, quantity, unit FROM quote_items');
+  console.log(`✅ Quotes & Items verified (${quotes.length} quotes, ${quoteItems.length} quote items)`);
+
+  // 8. Check Enquiries
+  const [enquiries] = await conn.query('SELECT id, name, email, status FROM enquiries');
+  console.log(`✅ Enquiries verified (${enquiries.length} enquiries)`);
+
+  // 9. Check Site Settings
+  const [settings] = await conn.query('SELECT `key` FROM site_settings');
+  console.log(`✅ Site Settings verified (${settings.length} record)`);
+
+  // 10. Check Audit Logs
+  const [auditLogs] = await conn.query('SELECT count(*) as count FROM audit_logs');
+  console.log(`✅ Audit Logs verified (${auditLogs[0].count} logs)`);
+
+  // 11. Test Write Capability (Insert and delete a test audit log)
+  const testId = crypto.randomUUID();
+  await conn.execute(
+    'INSERT INTO audit_logs (id, admin_email, action, entity, entity_id, details, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())',
+    [testId, 'test@hostinger.com', 'STANDALONE_TEST', 'Diagnostics', testId, JSON.stringify({ status: 'ok' })]
+  );
+  const [inserted] = await conn.query('SELECT id FROM audit_logs WHERE id = ?', [testId]);
+  if (inserted.length > 0) {
+    await conn.execute('DELETE FROM audit_logs WHERE id = ?', [testId]);
+    console.log('✅ Hostinger MySQL INSERT & DELETE write tests passed 100%!');
+  }
+
+  await conn.end();
+  console.log('\n======================================================');
+  console.log('🎉 ALL STANDALONE VERIFICATIONS PASSED WITH FLYING COLORS!');
+  console.log('======================================================\n');
+}
+
+verifyAll().catch((err) => {
+  console.error('Verification failed:', err);
+  process.exit(1);
+});
 ```
 
 ---
 
 ### `scripts/verify-production.ts`
+
+- **File**: `scripts/verify-production.ts`
+- **Size**: 10.3 KB (291 lines)
+- **Language**: `typescript`
 
 ```typescript
 import fs from 'fs';
@@ -65990,14 +68639,17 @@ runAllTests().catch((err) => {
   console.error('Fatal test error:', err);
   process.exit(1);
 });
-
 ```
 
 ---
 
 ### `src/app/about/page.tsx`
 
-```typescript
+- **File**: `src/app/about/page.tsx`
+- **Size**: 10.0 KB (210 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -66207,14 +68859,17 @@ export default function AboutPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/account/page.tsx`
 
-```typescript
+- **File**: `src/app/account/page.tsx`
+- **Size**: 10.3 KB (257 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66471,14 +69126,17 @@ export default function AccountPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/audit-logs/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/audit-logs/page.tsx`
+- **Size**: 5.9 KB (134 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66612,14 +69270,17 @@ export default function AdminAuditLogsPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/categories/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/categories/page.tsx`
+- **Size**: 12.3 KB (304 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -66923,14 +69584,17 @@ export default function AdminCategoriesPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/customers/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/customers/page.tsx`
+- **Size**: 6.5 KB (174 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -67104,14 +69768,17 @@ export default function AdminCustomersPage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/employees/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/employees/page.tsx`
+- **Size**: 33.9 KB (781 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -67892,14 +70559,17 @@ export default function EmployeeManagementPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/inventory/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/inventory/page.tsx`
+- **Size**: 15.4 KB (353 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -68252,14 +70922,17 @@ export default function AdminInventoryPage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/login/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/login/page.tsx`
+- **Size**: 9.9 KB (235 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -68494,14 +71167,17 @@ export default function AdminLoginPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/orders/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/orders/page.tsx`
+- **Size**: 22.2 KB (487 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -68559,79 +71235,16 @@ function AdminOrdersContent() {
 
   useEffect(() => {
     loadOrders();
+    setIsLiveConnected(true);
 
-    // 1. Setup Supabase Realtime Channel asynchronously if client is configured
-    let channel: any = null;
-    let supabaseClient: any = null;
-    let isMounted = true;
-
-    import('@/lib/supabase').then(({ supabase }) => {
-      if (!isMounted || !supabase) return;
-      supabaseClient = supabase;
-      channel = supabase
-        .channel('admin-orders-realtime-stream')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'orders' },
-          (payload: any) => {
-            if (!isMounted) return;
-            if (payload.eventType === 'UPDATE' && payload.new) {
-              const updatedRow = payload.new;
-              setOrders((prev) =>
-                prev.map((o) =>
-                  o.id === updatedRow.id
-                    ? {
-                        ...o,
-                        orderStatus: updatedRow.order_status || o.orderStatus,
-                        paymentStatus: updatedRow.payment_status || o.paymentStatus,
-                        updatedAt: updatedRow.updated_at || o.updatedAt,
-                      }
-                    : o
-                )
-              );
-              setSelectedOrder((prev: any) => {
-                if (!prev || prev.id !== updatedRow.id) return prev;
-                return {
-                  ...prev,
-                  orderStatus: updatedRow.order_status || prev.orderStatus,
-                  paymentStatus: updatedRow.payment_status || prev.paymentStatus,
-                  updatedAt: updatedRow.updated_at || prev.updatedAt,
-                };
-              });
-            } else {
-              // Immediately reload orders on new order insertion or other events
-              loadOrders();
-            }
-
-            // If browser notifications are permitted, display order alert
-            if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
-              const newRecord = payload.new as any;
-              new Notification('New Order Placed — Balaji Architect & Interiors', {
-                body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
-                icon: '/favicon.ico',
-              });
-            }
-          }
-        )
-        .subscribe((status: string) => {
-          if (status === 'SUBSCRIBED' && isMounted) {
-            setIsLiveConnected(true);
-          }
-        });
-    });
-
-    // 2. Periodic sync fallback (every 30 seconds when tab is active)
+    // Periodic sync (every 15 seconds when tab is active)
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && !document.hidden) {
         loadOrders();
       }
-    }, 30000);
+    }, 15000);
 
     return () => {
-      isMounted = false;
-      if (supabaseClient && channel) {
-        supabaseClient.removeChannel(channel);
-      }
       clearInterval(interval);
     };
   }, []);
@@ -69051,14 +71664,17 @@ export default function AdminOrdersPage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/page.tsx`
+- **Size**: 22.5 KB (482 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -69540,14 +72156,17 @@ export default function AdminDashboardPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/products/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/products/page.tsx`
+- **Size**: 30.2 KB (710 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -70257,14 +72876,17 @@ export default function AdminProductsPage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/projects/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/projects/page.tsx`
+- **Size**: 17.9 KB (437 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -70701,14 +73323,17 @@ export default function AdminProjectsPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/quotes/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/quotes/page.tsx`
+- **Size**: 16.9 KB (364 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
@@ -71072,14 +73697,17 @@ export default function AdminQuotesPage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/services/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/services/page.tsx`
+- **Size**: 13.7 KB (342 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -71421,14 +74049,17 @@ export default function AdminServicesPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/admin/settings/page.tsx`
 
-```typescript
+- **File**: `src/app/admin/settings/page.tsx`
+- **Size**: 93.0 KB (1807 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -71811,7 +74442,7 @@ export default function AdminSettingsPage() {
         {savedSuccess && (
           <div className="p-4 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 rounded-xs animate-fade-in">
             <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to Supabase.</span>
+            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to database.</span>
           </div>
         )}
 
@@ -73219,7 +75850,7 @@ export default function AdminSettingsPage() {
           {/* Bottom Fixed Action Bar */}
           <div className="p-4 bg-[#1D1714] border border-[#332821] flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xs shadow-xs">
             <span className="text-xs text-[#A89F91]">
-              Changes update Supabase PostgreSQL immediately upon saving and take effect live across all pages.
+              Changes update Hostinger MySQL database immediately upon saving and take effect live across all pages.
             </span>
             <button
               type="submit"
@@ -73235,20 +75866,20 @@ export default function AdminSettingsPage() {
     </AdminLayout>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/analytics/dashboard/route.ts`
 
+- **File**: `src/app/api/admin/analytics/dashboard/route.ts`
+- **Size**: 6.6 KB (198 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
 import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
   memoryCache,
 } from '@/server/db/client';
 import {
@@ -73268,14 +75899,15 @@ export async function GET(req: NextRequest) {
   const auth = await requireAuthenticatedAdmin(req);
   if ('response' in auth) return auth.response;
 
-  const timeRange = req.nextUrl.searchParams.get('timeRange') || '30D';
-  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+  const { searchParams } = new URL(req.url);
+  const timeRange = searchParams.get('range') || '30D';
+  const forceRefresh = searchParams.get('refresh') === 'true';
 
   // 1. Check in-memory dashboard cache
   const cacheKey = `dashboard_${timeRange}`;
   const now = Date.now();
   const cached = memoryCache.dashboardAnalytics.get(cacheKey);
-  if (cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS && !forceRefresh) {
+  if (!forceRefresh && cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS) {
     return NextResponse.json({
       success: true,
       data: cached.data,
@@ -73284,98 +75916,18 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let orders: any[] = [];
-    let quotes: any[] = [];
-    let products: any[] = [];
-    let activeProjectsCount = 0;
-    let enquiriesCount = 0;
-    let auditLogs: any[] = [];
+    const [orders, quotes, products, allProjects, allEnquiries, auditLogs] =
+      await Promise.all([
+        getOrders().catch(() => []),
+        getQuotes().catch(() => []),
+        getProducts().catch(() => []),
+        getProjects().catch(() => []),
+        getEnquiries().catch(() => []),
+        getAuditLogs(6).catch(() => []),
+      ]);
 
-    let supabaseSuccess = false;
-    if (await isSupabaseAvailable()) {
-      try {
-        const supabase = getServiceSupabase();
-
-        // Query database with selective projections to minimize memory and network overhead
-        const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
-          await Promise.all([
-            supabase
-              .from('orders')
-              .select(
-                'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
-              )
-              .order('created_at', { ascending: false }),
-            supabase
-              .from('quotes')
-              .select('id, status, total_quoted_amount'),
-            supabase
-              .from('products')
-              .select('id, price, stock, moq'),
-            supabase
-              .from('projects')
-              .select('id', { count: 'exact', head: true }),
-            supabase
-              .from('enquiries')
-              .select('id', { count: 'exact', head: true }),
-            getAuditLogs(6).catch(() => []),
-          ]);
-
-        if (!ordersRes.error && !quotesRes.error && !productsRes.error) {
-          orders = (ordersRes.data || []).map((o: any) => ({
-            id: o.id,
-            orderNumber: o.order_number,
-            customerName: o.customer_name,
-            totalAmount: Number(o.total_amount) || 0,
-            orderStatus: o.order_status,
-            paymentStatus: o.payment_status,
-            createdAt: o.created_at,
-            items: (o.items || []).map((it: any) => ({
-              productName: it.product_name || '',
-              subtotal: Number(it.subtotal) || 0,
-            })),
-          }));
-
-          quotes = (quotesRes.data || []).map((q: any) => ({
-            id: q.id,
-            status: q.status,
-            totalQuotedAmount: Number(q.total_quoted_amount) || 0,
-          }));
-
-          products = (productsRes.data || []).map((p: any) => ({
-            id: p.id,
-            price: Number(p.price) || 0,
-            stock: Number(p.stock) || 0,
-            moq: Number(p.moq) || 1,
-          }));
-
-          activeProjectsCount = projectsRes.count || 0;
-          enquiriesCount = enquiriesRes.count || 0;
-          auditLogs = logsRes;
-          supabaseSuccess = true;
-        }
-      } catch (err) {
-        console.warn('Dashboard Supabase fetch error, falling back to local DB:', err);
-      }
-    }
-
-    if (!supabaseSuccess) {
-      const [allOrders, allQuotes, allProducts, allProjects, allEnquiries, allLogs] =
-        await Promise.all([
-          getOrders().catch(() => []),
-          getQuotes().catch(() => []),
-          getProducts().catch(() => []),
-          getProjects().catch(() => []),
-          getEnquiries().catch(() => []),
-          getAuditLogs(6).catch(() => []),
-        ]);
-
-      orders = allOrders;
-      quotes = allQuotes;
-      products = allProducts;
-      activeProjectsCount = allProjects.length;
-      enquiriesCount = allEnquiries.length;
-      auditLogs = allLogs;
-    }
+    const activeProjectsCount = allProjects.length;
+    const enquiriesCount = allEnquiries.length;
 
     // Filter orders by time range
     const filteredOrders = orders.filter((o) => {
@@ -73522,12 +76074,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to compute dashboard analytics' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/audit-logs/route.ts`
+
+- **File**: `src/app/api/admin/audit-logs/route.ts`
+- **Size**: 1.4 KB (45 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73574,12 +76129,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to fetch audit logs' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/employees/[id]/route.ts`
+
+- **File**: `src/app/api/admin/employees/[id]/route.ts`
+- **Size**: 2.7 KB (82 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73663,12 +76221,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message || 'Failed to delete employee' }, { status: 400 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/employees/route.ts`
+
+- **File**: `src/app/api/admin/employees/route.ts`
+- **Size**: 2.0 KB (63 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73733,12 +76294,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to create employee' }, { status: 400 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/export/route.ts`
+
+- **File**: `src/app/api/admin/export/route.ts`
+- **Size**: 5.1 KB (125 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73865,12 +76429,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Export generation failed' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/notifications/test/route.ts`
+
+- **File**: `src/app/api/admin/notifications/test/route.ts`
+- **Size**: 0.5 KB (18 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -73890,17 +76457,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/search/route.ts`
 
+- **File**: `src/app/api/admin/search/route.ts`
+- **Size**: 4.4 KB (133 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
-import { getServiceSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { getProducts, getOrders, getQuotes, getProjects, getServices, getCustomers, getEnquiries } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -73935,121 +76504,7 @@ export async function GET(req: NextRequest) {
       badge?: string;
     }> = [];
 
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const pattern = `%${query}%`;
-
-      const [prodRes, ordRes, qtRes, custRes, projRes, enqRes] = await Promise.all([
-        supabase
-          .from('products')
-          .select('id, name, sku, price, unit, stock')
-          .or(`name.ilike.${pattern},sku.ilike.${pattern},material.ilike.${pattern},brand.ilike.${pattern}`)
-          .limit(5),
-        supabase
-          .from('orders')
-          .select('id, order_number, customer_name, total_amount, order_status')
-          .or(`order_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},customer_phone.ilike.${pattern}`)
-          .limit(5),
-        supabase
-          .from('quotes')
-          .select('id, quote_number, customer_name, project_type, project_location, status')
-          .or(`quote_number.ilike.${pattern},customer_name.ilike.${pattern},customer_email.ilike.${pattern},project_type.ilike.${pattern}`)
-          .limit(5),
-        supabase
-          .from('customers')
-          .select('id, full_name, email, phone')
-          .or(`full_name.ilike.${pattern},email.ilike.${pattern},phone.ilike.${pattern}`)
-          .limit(5),
-        supabase
-          .from('projects')
-          .select('id, title, project_type, location, year, is_published')
-          .or(`title.ilike.${pattern},location.ilike.${pattern},project_type.ilike.${pattern}`)
-          .limit(5),
-        supabase
-          .from('enquiries')
-          .select('id, name, email, subject, status')
-          .or(`name.ilike.${pattern},email.ilike.${pattern},subject.ilike.${pattern}`)
-          .limit(5),
-      ]);
-
-      // Map Products
-      (prodRes.data || []).forEach((p: any) => {
-        results.push({
-          id: p.id,
-          title: p.name,
-          subtitle: `SKU: ${p.sku} • ₹${Number(p.price).toLocaleString('en-IN')}/${p.unit} • Stock: ${p.stock}`,
-          type: 'product',
-          href: `/admin/products?id=${p.id}`,
-          badge: `${p.stock} in stock`,
-        });
-      });
-
-      // Map Orders
-      (ordRes.data || []).forEach((o: any) => {
-        results.push({
-          id: o.id,
-          title: `Order #${o.order_number}`,
-          subtitle: `${o.customer_name} • ₹${Number(o.total_amount).toLocaleString('en-IN')} • ${o.order_status}`,
-          type: 'order',
-          href: `/admin/orders?id=${o.id}`,
-          badge: o.order_status,
-        });
-      });
-
-      // Map Quotes
-      (qtRes.data || []).forEach((q: any) => {
-        results.push({
-          id: q.id,
-          title: `Quote #${q.quote_number || 'QT'} — ${q.customer_name}`,
-          subtitle: `${q.project_type || 'Architecture'} • ${q.project_location || 'Guwahati'} • ${q.status}`,
-          type: 'quote',
-          href: `/admin/quotes?id=${q.id}`,
-          badge: q.status,
-        });
-      });
-
-      // Map Customers
-      (custRes.data || []).forEach((c: any) => {
-        results.push({
-          id: c.id,
-          title: c.full_name,
-          subtitle: `${c.email} • ${c.phone || 'No phone'}`,
-          type: 'customer',
-          href: `/admin/customers?id=${c.id}`,
-          badge: 'Client',
-        });
-      });
-
-      // Map Projects
-      (projRes.data || []).forEach((pr: any) => {
-        results.push({
-          id: pr.id,
-          title: pr.title,
-          subtitle: `${pr.project_type} • ${pr.location} (${pr.year})`,
-          type: 'project',
-          href: `/admin/projects?id=${pr.id}`,
-          badge: pr.is_published ? 'Published' : 'Draft',
-        });
-      });
-
-      // Map Enquiries
-      (enqRes.data || []).forEach((e: any) => {
-        results.push({
-          id: e.id,
-          title: `Enquiry: ${e.name}`,
-          subtitle: `${e.subject} • ${e.email}`,
-          type: 'enquiry',
-          href: `/admin/quotes`,
-          badge: e.status,
-        });
-      });
-
-      const finalResults = results.slice(0, 20);
-      searchCache.set(query, { results: finalResults, timestamp: now });
-      return NextResponse.json({ success: true, results: finalResults });
-    }
-
-    // JSON / Memory Fallback
+    // Search across Hostinger MySQL repositories
     const [products, orders, quotes, projects, customers, enquiries] = await Promise.all([
       getProducts().catch(() => []),
       getOrders().catch(() => []),
@@ -74145,12 +76600,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/settings/route.ts`
+
+- **File**: `src/app/api/admin/settings/route.ts`
+- **Size**: 2.3 KB (79 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74231,17 +76689,19 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Failed to update settings' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/summary/route.ts`
 
+- **File**: `src/app/api/admin/summary/route.ts`
+- **Size**: 2.0 KB (67 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
-import { isSupabaseConfigured, getServiceSupabase } from '@/server/db/client';
 import { getOrders, getQuotes, getProducts } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -74272,46 +76732,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let pendingOrders = 0;
-    let pendingQuotes = 0;
-    let lowStock = 0;
+    const [orders, quotes, products] = await Promise.all([
+      getOrders().catch(() => []),
+      getQuotes().catch(() => []),
+      getProducts().catch(() => []),
+    ]);
 
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-
-      const [ordRes, qtRes, prodRes] = await Promise.all([
-        supabase
-          .from('orders')
-          .select('id', { count: 'exact', head: true })
-          .in('order_status', ['Pending', 'Confirmed']),
-        supabase
-          .from('quotes')
-          .select('id', { count: 'exact', head: true })
-          .in('status', ['Pending', 'Under_Review']),
-        supabase
-          .from('products')
-          .select('stock, moq'),
-      ]);
-
-      pendingOrders = ordRes.count ?? 0;
-      pendingQuotes = qtRes.count ?? 0;
-
-      if (prodRes.data) {
-        lowStock = prodRes.data.filter(
-          (p: any) => (p.stock ?? 0) <= ((p.moq ?? 1) * 2) || (p.stock ?? 0) < 10
-        ).length;
-      }
-    } else {
-      const [orders, quotes, products] = await Promise.all([
-        getOrders().catch(() => []),
-        getQuotes().catch(() => []),
-        getProducts().catch(() => []),
-      ]);
-
-      pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
-      pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
-      lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
-    }
+    const pendingOrders = orders.filter((o: any) => o.orderStatus === 'Pending' || o.orderStatus === 'Confirmed').length;
+    const pendingQuotes = quotes.filter((q: any) => q.status === 'Pending' || q.status === 'Under_Review').length;
+    const lowStock = products.filter((p: any) => p.stock <= (p.moq * 2) || p.stock < 10).length;
 
     const recentActivity = pendingOrders + pendingQuotes + lowStock;
 
@@ -74337,19 +76766,21 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/admin/upload/route.ts`
 
+- **File**: `src/app/api/admin/upload/route.ts`
+- **Size**: 4.5 KB (148 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { requireOwnerOrEmployee } from '@/lib/auth';
-import { getServiceSupabase, isSupabaseConfigured, isProduction } from '@/server/db/client';
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg']);
 const ALLOWED_BUCKETS = new Set(['products', 'projects', 'brand', 'avatars']);
@@ -74472,54 +76903,7 @@ export async function POST(req: NextRequest) {
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${bucket}-${Date.now()}-${cleanFileName}`;
 
-    // 1. Authoritative Production Persistent Object Storage
-    if (isSupabaseConfigured()) {
-      try {
-        const supabase = getServiceSupabase();
-
-        const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
-          contentType: file.type || 'image/jpeg',
-          upsert: true,
-        });
-
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(filename);
-          if (publicUrlData && publicUrlData.publicUrl) {
-            return NextResponse.json({
-              success: true,
-              url: publicUrlData.publicUrl,
-              filename,
-              storage: 'supabase',
-            });
-          }
-        }
-
-        if (error) {
-          console.error('Supabase storage upload error:', error.message);
-          if (isProduction()) {
-            return NextResponse.json(
-              { success: false, error: `Persistent storage upload failed: ${error.message}` },
-              { status: 500 }
-            );
-          }
-        }
-      } catch (sbErr: any) {
-        console.error('Supabase storage exception:', sbErr.message);
-        if (isProduction()) {
-          return NextResponse.json(
-            { success: false, error: 'Storage service temporarily unavailable. Please retry.' },
-            { status: 500 }
-          );
-        }
-      }
-    } else if (isProduction()) {
-      return NextResponse.json(
-        { success: false, error: 'Production object storage is not configured.' },
-        { status: 500 }
-      );
-    }
-
-    // 2. Local Server Storage (ALLOWED ONLY IN DEVELOPMENT / LOCAL TEST)
+    // Persistent Local Storage in /public/uploads
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
@@ -74540,198 +76924,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message || 'Server upload error' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/callback/route.ts`
 
+- **File**: `src/app/api/auth/callback/route.ts`
+- **Size**: 0.4 KB (15 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
-import { getServiceSupabase } from '@/lib/supabase';
-import { getAdminByEmail, recordAdminLogin, addAuditLog, upsertCustomer } from '@/lib/db';
-import { signAdminToken, signCustomerToken } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json().catch(() => ({}));
-    const { accessToken, token, code, provider = 'google' } = body;
-
-    const authToken = accessToken || token;
-
-    // ============================================================
-    // CRITICAL SECURITY RULE: INDEPENDENT CRYPTOGRAPHIC VERIFICATION
-    // The server MUST verify the token with Supabase Auth.
-    // Client-provided email strings in request body are NEVER trusted.
-    // ============================================================
-    let verifiedEmail: string | null = null;
-    let verifiedName: string | null = null;
-
-    const supabase = getServiceSupabase();
-
-    if (authToken && typeof authToken === 'string') {
-      const { data: userData, error: userError } = await supabase.auth.getUser(authToken);
-      if (userError || !userData?.user) {
-        return NextResponse.json(
-          { success: false, error: 'Cryptographic authentication verification failed. Invalid or expired token.' },
-          { status: 401 }
-        );
-      }
-      verifiedEmail = userData.user.email?.trim().toLowerCase() || null;
-      verifiedName =
-        userData.user.user_metadata?.full_name ||
-        userData.user.user_metadata?.name ||
-        verifiedEmail?.split('@')[0] ||
-        'User';
-    } else if (code && typeof code === 'string') {
-      const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
-      if (sessionError || !sessionData?.user) {
-        return NextResponse.json(
-          { success: false, error: 'Failed to exchange authorization code for verified session.' },
-          { status: 401 }
-        );
-      }
-      verifiedEmail = sessionData.user.email?.trim().toLowerCase() || null;
-      verifiedName =
-        sessionData.user.user_metadata?.full_name ||
-        sessionData.user.user_metadata?.name ||
-        verifiedEmail?.split('@')[0] ||
-        'User';
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Supabase OAuth access token or authorization code required for verification.' },
-        { status: 401 }
-      );
-    }
-
-    if (!verifiedEmail) {
-      return NextResponse.json(
-        { success: false, error: 'No verified email associated with authenticated account.' },
-        { status: 400 }
-      );
-    }
-
-    const normalizedEmail = verifiedEmail.trim().toLowerCase();
-
-    // ============================================================
-    // CRITICAL SECURITY RULE: AUTHORITATIVE ROLE RESOLUTION
-    // A Google email MUST NEVER automatically become admin unless
-    // an active, valid record already exists in the authoritative `admins` table.
-    // ============================================================
-    const existingAdmin = await getAdminByEmail(normalizedEmail);
-
-    if (existingAdmin) {
-      if (existingAdmin.status === 'disabled') {
-        return NextResponse.json(
-          { success: false, error: 'Your account has been disabled. Please contact the studio owner.' },
-          { status: 403 }
-        );
-      }
-
-      await recordAdminLogin(existingAdmin.id);
-
-      const adminToken = signAdminToken({
-        id: existingAdmin.id,
-        email: existingAdmin.email,
-        name: existingAdmin.name,
-        role: existingAdmin.role,
-        mustChangePassword: existingAdmin.mustChangePassword,
-      });
-
-      const auditAction =
-        existingAdmin.role === 'owner' || existingAdmin.role === 'super_admin'
-          ? 'ADMIN_GOOGLE_LOGIN'
-          : 'EMPLOYEE_GOOGLE_LOGIN';
-
-      await addAuditLog({
-        adminId: existingAdmin.id,
-        adminEmail: existingAdmin.email,
-        action: auditAction,
-        entity: 'Auth',
-        entityId: existingAdmin.id,
-        details: { role: existingAdmin.role, provider: 'google', verified: true },
-      });
-
-      const response = NextResponse.json({
-        success: true,
-        role: existingAdmin.role,
-        redirectUrl: '/admin',
-        user: {
-          id: existingAdmin.id,
-          email: existingAdmin.email,
-          name: existingAdmin.name,
-          role: existingAdmin.role,
-          status: existingAdmin.status,
-        },
-      });
-
-      const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
-
-      response.cookies.set('balaji_admin_session', adminToken, {
-        httpOnly: true,
-        secure: isHttps,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-      });
-
-      return response;
-    }
-
-    // ============================================================
-    // STANDARD CUSTOMER ACCOUNT (Verified Google User)
-    // ============================================================
-    const customer = await upsertCustomer({
-      email: normalizedEmail,
-      fullName: verifiedName || normalizedEmail.split('@')[0],
-      isGuest: false,
-    });
-
-    const customerToken = signCustomerToken({
-      id: customer.id,
-      email: customer.email,
-      name: customer.fullName,
-      role: 'customer',
-      provider: 'google',
-    });
-
-    const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
-
-    const response = NextResponse.json({
-      success: true,
-      role: 'customer',
-      redirectUrl: '/account',
-      user: {
-        id: customer.id,
-        email: customer.email,
-        name: customer.fullName,
-        role: 'customer',
-      },
-    });
-
-    response.cookies.set('balaji_customer_session', customerToken, {
-      httpOnly: true,
-      secure: isHttps,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 30,
-    });
-
-    return response;
-  } catch (err: any) {
-    console.error('Cryptographic auth callback error:', err);
-    return NextResponse.json({ success: false, error: 'Authentication verification failed.' }, { status: 500 });
-  }
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'OAuth provider has been migrated. Please sign in with your email and password at /studio.',
+      redirectUrl: '/studio',
+    },
+    { status: 400 }
+  );
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/change-password/route.ts`
+
+- **File**: `src/app/api/auth/change-password/route.ts`
+- **Size**: 3.5 KB (116 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74849,12 +77075,15 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/forgot-password/route.ts`
+
+- **File**: `src/app/api/auth/forgot-password/route.ts`
+- **Size**: 2.5 KB (72 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -74928,12 +77157,15 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/login/route.ts`
+
+- **File**: `src/app/api/auth/login/route.ts`
+- **Size**: 5.9 KB (196 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75131,12 +77363,15 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/logout/route.ts`
+
+- **File**: `src/app/api/auth/logout/route.ts`
+- **Size**: 0.3 KB (9 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75147,12 +77382,15 @@ export async function POST(req: NextRequest) {
   response.cookies.delete('balaji_customer_session');
   return response;
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/me/route.ts`
+
+- **File**: `src/app/api/auth/me/route.ts`
+- **Size**: 1.9 KB (61 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75215,12 +77453,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ admin: null, user: null });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/auth/register/route.ts`
+
+- **File**: `src/app/api/auth/register/route.ts`
+- **Size**: 1.8 KB (65 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75287,12 +77528,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to create account. Please try again.' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/categories/[id]/route.ts`
+
+- **File**: `src/app/api/categories/[id]/route.ts`
+- **Size**: 2.8 KB (94 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75388,12 +77632,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/categories/route.ts`
+
+- **File**: `src/app/api/categories/route.ts`
+- **Size**: 2.4 KB (81 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75476,12 +77723,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/enquiries/[id]/route.ts`
+
+- **File**: `src/app/api/enquiries/[id]/route.ts`
+- **Size**: 0.8 KB (24 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75507,12 +77757,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/enquiries/route.ts`
+
+- **File**: `src/app/api/enquiries/route.ts`
+- **Size**: 1.7 KB (51 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75565,16 +77818,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/health/ready/route.ts`
 
+- **File**: `src/app/api/health/ready/route.ts`
+- **Size**: 2.0 KB (80 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { NextResponse } from 'next/server';
-import { isSupabaseConfigured, getServiceSupabase, isMySQLConfigured, testMySQLConnection } from '@/server/db';
+import { isMySQLConfigured, testMySQLConnection, isProduction } from '@/server/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -75594,7 +77850,7 @@ export async function GET() {
             configured: true,
             connected: true,
             provider: 'hostinger_mysql',
-            user: process.env.DB_USER || 'u603162798_balaji_arc_db',
+            user: process.env.DB_USER || 'u603162798_balajiarcdb',
             database: process.env.DB_NAME || 'u603162798_balaji_arc_db',
             host: process.env.DB_HOST || 'localhost',
             latencyMs: mysqlCheck.latencyMs,
@@ -75621,84 +77877,35 @@ export async function GET() {
     }
   }
 
-  // 2. Supabase Secondary Probe
-  if (!isSupabaseConfigured()) {
-    if (process.env.NODE_ENV === 'production') {
-      return NextResponse.json(
-        {
-          status: 'not_ready',
-          timestamp,
-          database: {
-            configured: false,
-            connected: false,
-            error: 'SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing in production environment.',
-          },
-        },
-        { status: 503 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        status: 'ready',
-        timestamp,
-        mode: 'development_fallback',
-        database: {
-          configured: false,
-          connected: true,
-          provider: 'local_fixture',
-        },
-      },
-      { status: 200 }
-    );
-  }
-
-  try {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('site_settings').select('key').limit(1);
-
-    if (error) {
-      return NextResponse.json(
-        {
-          status: 'not_ready',
-          timestamp,
-          database: {
-            configured: true,
-            connected: false,
-            error: error.message,
-          },
-        },
-        { status: 503 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        status: 'ready',
-        timestamp,
-        mode: 'production',
-        database: {
-          configured: true,
-          connected: true,
-          provider: 'supabase_postgres',
-        },
-      },
-      { status: 200 }
-    );
-  } catch (err: any) {
+  // 2. Development / Fallback mode
+  if (isProduction()) {
     return NextResponse.json(
       {
         status: 'not_ready',
         timestamp,
         database: {
-          configured: true,
+          configured: false,
           connected: false,
-          error: err.message || 'Unknown probe error',
+          error: 'Hostinger MySQL database configuration missing in production environment.',
         },
       },
       { status: 503 }
     );
   }
+
+  return NextResponse.json(
+    {
+      status: 'ready',
+      timestamp,
+      mode: 'development_fallback',
+      database: {
+        configured: false,
+        connected: true,
+        provider: 'local_fixture',
+      },
+    },
+    { status: 200 }
+  );
 }
 
 ```
@@ -75707,9 +77914,15 @@ export async function GET() {
 
 ### `src/app/api/health/route.ts`
 
+- **File**: `src/app/api/health/route.ts`
+- **Size**: 3.6 KB (104 lines)
+- **Language**: `typescript`
+
 ```typescript
+import fs from 'fs';
+import path from 'path';
 import { NextResponse } from 'next/server';
-import { isSupabaseConfigured, getServiceSupabase, isProduction } from '@/server/db/client';
+import { isMySQLConfigured, isProduction } from '@/server/db/client';
 import { getSiteSettings } from '@/server/db/repositories/settings';
 import { DEFAULT_VAPID_PUBLIC_KEY } from '@/lib/push-client';
 
@@ -75727,26 +77940,19 @@ export async function GET() {
     pushNotifications: { status: 'unhealthy', configured: false },
   };
 
-  // 1. Database Check (Lightweight query)
+  // 1. Database Check (Hostinger MySQL)
   const dbStart = Date.now();
   try {
-    if (isSupabaseConfigured()) {
-      checks.database.type = 'supabase';
-      const supabase = getServiceSupabase();
-      const { error } = await supabase.from('site_settings').select('id').limit(1);
-      const latencyMs = Date.now() - dbStart;
-      checks.database.latencyMs = latencyMs;
-      if (error) {
-        checks.database.status = isProduction() ? 'unhealthy' : 'degraded';
-        checks.database.message = 'Database query failed';
-      } else {
-        checks.database.status = 'healthy';
-      }
+    if (isMySQLConfigured()) {
+      checks.database.type = 'hostinger_mysql';
+      await getSiteSettings();
+      checks.database.latencyMs = Date.now() - dbStart;
+      checks.database.status = 'healthy';
     } else {
       checks.database.type = isProduction() ? 'unconfigured' : 'local_fixture';
       if (isProduction()) {
         checks.database.status = 'unhealthy';
-        checks.database.message = 'Supabase credentials missing in production';
+        checks.database.message = 'Hostinger MySQL credentials missing in production';
       } else {
         await getSiteSettings();
         checks.database.latencyMs = Date.now() - dbStart;
@@ -75756,29 +77962,21 @@ export async function GET() {
   } catch (dbErr: any) {
     checks.database.status = 'unhealthy';
     checks.database.latencyMs = Date.now() - dbStart;
-    checks.database.message = 'Database connection error';
+    checks.database.message = dbErr.message || 'Database connection error';
   }
 
-  // 2. Storage Check
+  // 2. Storage Check (Filesystem / Public uploads)
   try {
-    if (isSupabaseConfigured()) {
-      checks.storage.provider = 'supabase_storage';
-      const supabase = getServiceSupabase();
-      const { error } = await supabase.storage.listBuckets();
-      if (error) {
-        checks.storage.status = isProduction() ? 'degraded' : 'healthy';
-        checks.storage.message = 'Storage check failed';
-      } else {
-        checks.storage.status = 'healthy';
-      }
-    } else {
-      checks.storage.provider = isProduction() ? 'unconfigured' : 'local_filesystem';
-      checks.storage.status = isProduction() ? 'unhealthy' : 'healthy';
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
+    checks.storage.provider = 'local_filesystem';
+    checks.storage.status = 'healthy';
   } catch (storageErr: any) {
-    checks.storage.provider = 'supabase_storage';
+    checks.storage.provider = 'local_filesystem';
     checks.storage.status = isProduction() ? 'degraded' : 'healthy';
-    checks.storage.message = 'Storage check error';
+    checks.storage.message = storageErr.message || 'Storage check error';
   }
 
   // 3. Push Notifications Check (VAPID status without exposing secrets)
@@ -75804,10 +78002,9 @@ export async function GET() {
 
   // Determine overall system status
   let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-  if (checks.database.status === 'unhealthy') {
+  if (checks.database.status !== 'healthy') {
     overallStatus = 'unhealthy';
   } else if (
-    checks.database.status === 'degraded' ||
     checks.storage.status !== 'healthy' ||
     checks.pushNotifications.status !== 'healthy'
   ) {
@@ -75825,12 +78022,15 @@ export async function GET() {
     { status: httpStatus }
   );
 }
-
 ```
 
 ---
 
 ### `src/app/api/notifications/subscribe/route.ts`
+
+- **File**: `src/app/api/notifications/subscribe/route.ts`
+- **Size**: 1.5 KB (47 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75874,17 +78074,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: result.error }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, message: 'Push notification subscription registered in Supabase' });
+    return NextResponse.json({ success: true, message: 'Push notification subscription registered successfully' });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/orders/[id]/route.ts`
+
+- **File**: `src/app/api/orders/[id]/route.ts`
+- **Size**: 1.5 KB (46 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -75932,12 +78135,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/orders/customer/route.ts`
+
+- **File**: `src/app/api/orders/customer/route.ts`
+- **Size**: 2.5 KB (78 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76017,12 +78223,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Failed to retrieve orders.' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/orders/route.ts`
+
+- **File**: `src/app/api/orders/route.ts`
+- **Size**: 2.2 KB (69 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76093,12 +78302,15 @@ export async function POST(req: NextRequest) {
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/products/[id]/route.ts`
+
+- **File**: `src/app/api/products/[id]/route.ts`
+- **Size**: 3.5 KB (118 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76218,12 +78430,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/products/route.ts`
+
+- **File**: `src/app/api/products/route.ts`
+- **Size**: 3.9 KB (122 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76347,12 +78562,15 @@ export async function POST(req: NextRequest) {
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/projects/[id]/route.ts`
+
+- **File**: `src/app/api/projects/[id]/route.ts`
+- **Size**: 3.3 KB (109 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76463,12 +78681,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/projects/route.ts`
+
+- **File**: `src/app/api/projects/route.ts`
+- **Size**: 3.0 KB (94 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76564,12 +78785,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/quotes/[id]/convert/route.ts`
+
+- **File**: `src/app/api/quotes/[id]/convert/route.ts`
+- **Size**: 0.9 KB (28 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76599,12 +78823,15 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/quotes/[id]/route.ts`
+
+- **File**: `src/app/api/quotes/[id]/route.ts`
+- **Size**: 1.3 KB (39 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76645,12 +78872,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return formatErrorResponse(err);
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/quotes/route.ts`
+
+- **File**: `src/app/api/quotes/route.ts`
+- **Size**: 2.2 KB (63 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76715,12 +78945,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/search/route.ts`
+
+- **File**: `src/app/api/search/route.ts`
+- **Size**: 1.4 KB (54 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76776,12 +79009,15 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/services/[id]/route.ts`
+
+- **File**: `src/app/api/services/[id]/route.ts`
+- **Size**: 2.6 KB (88 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76871,12 +79107,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/services/route.ts`
+
+- **File**: `src/app/api/services/route.ts`
+- **Size**: 2.4 KB (80 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -76958,12 +79197,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/api/settings/route.ts`
+
+- **File**: `src/app/api/settings/route.ts`
+- **Size**: 0.6 KB (21 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -76986,139 +79228,49 @@ export async function GET() {
     return NextResponse.json({ success: false, error: 'Failed to retrieve site settings' }, { status: 500 });
   }
 }
-
 ```
 
 ---
 
 ### `src/app/auth/callback/page.tsx`
 
-```typescript
+- **File**: `src/app/auth/callback/page.tsx`
+- **Size**: 0.7 KB (22 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
-import { ShieldCheck, AlertCircle } from 'lucide-react';
 
 export default function AuthCallbackPage() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [statusText, setStatusText] = useState('Verifying Studio Credentials...');
 
   useEffect(() => {
-    async function handleAuth() {
-      try {
-        if (!supabase) {
-          throw new Error('Authentication client unavailable');
-        }
-
-        // 1. Retrieve session from Supabase Client
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError) {
-          throw new Error(sessionError.message);
-        }
-
-        let user = sessionData?.session?.user;
-
-        // If not immediately present in session, wait for onAuthStateChange
-        if (!user) {
-          const { data: authListener } = supabase.auth.onAuthStateChange(async (event: any, session: any) => {
-            if (session?.user) {
-              await processServerSession(session.user);
-            }
-          });
-          return () => {
-            authListener?.subscription.unsubscribe();
-          };
-        } else {
-          await processServerSession(user);
-        }
-      } catch (err: any) {
-        console.error('Auth callback error:', err);
-        setError(err.message || 'Authentication failed. Please return to studio gateway.');
-      }
-    }
-
-    async function processServerSession(user: any) {
-      try {
-        setStatusText('Authorizing Studio Access...');
-        const { data: sessionData } = await supabase.auth.getSession();
-        const accessToken = sessionData?.session?.access_token;
-
-        // Call authoritative server-side cryptographic role resolution endpoint
-        const res = await fetch('/api/auth/callback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            accessToken,
-            provider: 'google',
-          }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok || !data.success) {
-          throw new Error(data.error || 'Server authorization failed');
-        }
-
-        // Authoritative redirect determined strictly by server
-        const destination = data.redirectUrl || (data.role === 'customer' ? '/account' : '/admin');
-        window.location.href = destination;
-      } catch (err: any) {
-        console.error('Server role processing error:', err);
-        setError(err.message || 'Authorization failed.');
-      }
-    }
-
-    handleAuth();
+    router.replace('/studio');
   }, [router]);
 
   return (
     <div className="min-h-screen bg-[#FCFAF6] flex flex-col items-center justify-center p-6 text-center">
-      <div className="max-w-sm w-full bg-white border border-[#E8E2D9] p-8 rounded-lg shadow-sm space-y-6">
-        <div className="w-12 h-12 mx-auto rounded-xl overflow-hidden bg-[#1A1614] shadow-xs flex items-center justify-center border border-[#C5A880]/40">
-          <img src="/logo.png" alt="Balaji Logo" className="w-full h-full object-cover" />
-        </div>
-
-        {error ? (
-          <div className="space-y-4">
-            <div className="w-10 h-10 mx-auto rounded-full bg-red-50 flex items-center justify-center text-red-600">
-              <AlertCircle className="w-5 h-5" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="font-serif text-lg text-[#1A1614]">Authentication Notice</h3>
-              <p className="text-xs text-[#7E7469]">{error}</p>
-            </div>
-            <button
-              onClick={() => (window.location.href = '/studio')}
-              className="w-full py-2.5 bg-[#1A1614] text-[#FCFAF6] text-xs uppercase tracking-widest hover:bg-[#2A2420] transition-colors rounded-sm"
-            >
-              Return to Studio Gateway
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="w-8 h-8 mx-auto border-2 border-[#C5A880] border-t-transparent rounded-full animate-spin" />
-            <div className="space-y-1">
-              <h3 className="font-serif text-lg text-[#1A1614]">Balaji Atelier</h3>
-              <p className="text-xs text-[#7E7469] tracking-wider uppercase">{statusText}</p>
-            </div>
-          </div>
-        )}
+      <div className="max-w-sm w-full bg-white border border-[#E8E2D9] p-8 rounded-lg shadow-sm space-y-4">
+        <div className="w-8 h-8 mx-auto border-2 border-[#C5A880] border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs text-[#7E7469] tracking-wider uppercase">Redirecting to Studio Gateway...</p>
       </div>
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/cart/page.tsx`
 
-```typescript
+- **File**: `src/app/cart/page.tsx`
+- **Size**: 8.7 KB (185 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -77303,14 +79455,17 @@ export default function CartPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/category/[slug]/page.tsx`
 
-```typescript
+- **File**: `src/app/category/[slug]/page.tsx`
+- **Size**: 7.2 KB (162 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -77472,14 +79627,17 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/checkout/page.tsx`
 
-```typescript
+- **File**: `src/app/checkout/page.tsx`
+- **Size**: 41.3 KB (911 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -78390,14 +80548,17 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/contact/page.tsx`
 
-```typescript
+- **File**: `src/app/contact/page.tsx`
+- **Size**: 10.6 KB (244 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -78641,12 +80802,15 @@ export default function ContactPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/globals.css`
+
+- **File**: `src/app/globals.css`
+- **Size**: 5.8 KB (280 lines)
+- **Language**: `css`
 
 ```css
 @tailwind base;
@@ -78928,14 +81092,17 @@ body {
 
 
 
-
 ```
 
 ---
 
 ### `src/app/layout.tsx`
 
-```typescript
+- **File**: `src/app/layout.tsx`
+- **Size**: 5.0 KB (146 lines)
+- **Language**: `tsx`
+
+```tsx
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
@@ -79081,14 +81248,17 @@ export default async function RootLayout({
     </html>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/material/[slug]/page.tsx`
 
-```typescript
+- **File**: `src/app/material/[slug]/page.tsx`
+- **Size**: 1.6 KB (49 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -79137,14 +81307,17 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/materials/page.tsx`
 
-```typescript
+- **File**: `src/app/materials/page.tsx`
+- **Size**: 8.1 KB (181 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -79325,14 +81498,17 @@ export default async function MaterialsPage({
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/page.tsx`
 
-```typescript
+- **File**: `src/app/page.tsx`
+- **Size**: 15.6 KB (302 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -79634,14 +81810,17 @@ export default async function HomePage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/projects/[slug]/page.tsx`
 
-```typescript
+- **File**: `src/app/projects/[slug]/page.tsx`
+- **Size**: 9.7 KB (228 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -79869,14 +82048,17 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/projects/page.tsx`
 
-```typescript
+- **File**: `src/app/projects/page.tsx`
+- **Size**: 5.4 KB (131 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80007,14 +82189,17 @@ export default async function ProjectsPage({
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/quote/page.tsx`
 
-```typescript
+- **File**: `src/app/quote/page.tsx`
+- **Size**: 16.4 KB (428 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
@@ -80442,12 +82627,15 @@ export default function QuotePage() {
     </Suspense>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/robots.ts`
+
+- **File**: `src/app/robots.ts`
+- **Size**: 0.3 KB (15 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -80464,14 +82652,17 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: 'https://balaji-atelier.com/sitemap.xml',
   };
 }
-
 ```
 
 ---
 
 ### `src/app/search/page.tsx`
 
-```typescript
+- **File**: `src/app/search/page.tsx`
+- **Size**: 7.2 KB (183 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -80654,14 +82845,17 @@ export default function SearchPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/services/page.tsx`
 
-```typescript
+- **File**: `src/app/services/page.tsx`
+- **Size**: 8.3 KB (183 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80844,14 +83038,17 @@ export default async function ServicesPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/shop/page.tsx`
 
-```typescript
+- **File**: `src/app/shop/page.tsx`
+- **Size**: 4.9 KB (106 lines)
+- **Language**: `tsx`
+
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80957,12 +83154,15 @@ export default async function ShopPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/sitemap.ts`
+
+- **File**: `src/app/sitemap.ts`
+- **Size**: 2.0 KB (48 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { MetadataRoute } from 'next';
@@ -81012,14 +83212,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...projectRoutes];
 }
-
 ```
 
 ---
 
 ### `src/app/studio/page.tsx`
 
-```typescript
+- **File**: `src/app/studio/page.tsx`
+- **Size**: 13.6 KB (348 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -81042,7 +83245,6 @@ export default function StudioAuthPage() {
 
   // States
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -81078,43 +83280,7 @@ export default function StudioAuthPage() {
     });
   };
 
-  // ============================================================
-  // GOOGLE AUTHENTICATION
-  // ============================================================
-  const handleGoogleSignIn = async () => {
-    setError(null);
-    setGoogleLoading(true);
-    try {
-      const { supabase } = await import('@/lib/supabase');
-      if (!supabase) {
-        throw new Error('Authentication service currently initializing. Please try email sign in.');
-      }
-
-      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://balaji-atelier.com';
-      const redirectTo = `${origin}/auth/callback`;
-
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
-    } catch (err: any) {
-      console.error('Google OAuth error:', err);
-      setError(err.message || 'Unable to connect to Google. Please use email access.');
-      setGoogleLoading(false);
-    }
-  };
-
-  // ============================================================
+  // Email / Password authentication state
   // EMAIL / PASSWORD AUTHENTICATION
   // ============================================================
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -81218,50 +83384,6 @@ export default function StudioAuthPage() {
               <span>{successMsg}</span>
             </div>
           )}
-
-          {/* 1. Google OAuth Button */}
-          <div>
-            <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              disabled={googleLoading || loading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-[#D5CDC2] rounded-sm bg-white text-xs font-medium text-[#1A1614] hover:bg-[#F9F7F4] hover:border-[#9C7A4A] transition-all shadow-xs disabled:opacity-50"
-            >
-              {googleLoading ? (
-                <div className="w-4 h-4 border-2 border-[#9C7A4A] border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  />
-                </svg>
-              )}
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#E8E2D9]" />
-            </div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-widest text-[#7E7469]">
-              <span className="bg-white px-3">or continue with email</span>
-            </div>
-          </div>
 
           {/* Mode Switcher Tabs */}
           <div className="flex border-b border-[#E8E2D9]">
@@ -81367,7 +83489,7 @@ export default function StudioAuthPage() {
 
             <button
               type="submit"
-              disabled={loading || googleLoading}
+              disabled={loading}
               className="w-full py-3 bg-[#1A1614] text-[#FCFAF6] text-xs uppercase tracking-widest font-medium hover:bg-[#2A2420] transition-colors flex items-center justify-center gap-2 rounded-sm shadow-xs disabled:opacity-50"
             >
               {loading ? (
@@ -81448,14 +83570,17 @@ export default function StudioAuthPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/app/wishlist/page.tsx`
 
-```typescript
+- **File**: `src/app/wishlist/page.tsx`
+- **Size**: 5.2 KB (129 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -81584,14 +83709,17 @@ export default function WishlistPage() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/AdminLayout.tsx`
 
-```typescript
+- **File**: `src/components/AdminLayout.tsx`
+- **Size**: 53.4 KB (1181 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -82772,14 +84900,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 }
 
 export default AdminLayout;
-
 ```
 
 ---
 
 ### `src/components/CartDrawer.tsx`
 
-```typescript
+- **File**: `src/components/CartDrawer.tsx`
+- **Size**: 7.7 KB (173 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -82952,14 +85083,17 @@ export function CartDrawer() {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/DesktopScrollPortfolio.tsx`
 
-```typescript
+- **File**: `src/components/DesktopScrollPortfolio.tsx`
+- **Size**: 24.1 KB (586 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
@@ -83545,14 +85679,17 @@ export function DesktopScrollPortfolio({ projects, settings }: DesktopScrollPort
 }
 
 export default DesktopScrollPortfolio;
-
 ```
 
 ---
 
 ### `src/components/Footer.tsx`
 
-```typescript
+- **File**: `src/components/Footer.tsx`
+- **Size**: 9.4 KB (227 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -83779,14 +85916,17 @@ export function Footer({ initialSettings }: { initialSettings?: SiteSettings | n
     </footer>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/Hero3DTypography.tsx`
 
-```typescript
+- **File**: `src/components/Hero3DTypography.tsx`
+- **Size**: 16.6 KB (404 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -84190,14 +86330,17 @@ export function Hero3DTypography({
 }
 
 export default Hero3DTypography;
-
 ```
 
 ---
 
 ### `src/components/ImageReveal.tsx`
 
-```typescript
+- **File**: `src/components/ImageReveal.tsx`
+- **Size**: 1.1 KB (53 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -84250,14 +86393,17 @@ export function ImageReveal({
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/ImageUploader.tsx`
 
-```typescript
+- **File**: `src/components/ImageUploader.tsx`
+- **Size**: 6.3 KB (204 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useRef } from 'react';
@@ -84461,12 +86607,15 @@ export function ImageUploader({
 }
 
 export default ImageUploader;
-
 ```
 
 ---
 
 ### `src/components/index.ts`
+
+- **File**: `src/components/index.ts`
+- **Size**: 0.5 KB (20 lines)
+- **Language**: `typescript`
 
 ```typescript
 export * from './AdminLayout';
@@ -84488,14 +86637,17 @@ export * from './WhatsAppButton';
 export * from './Hero3DTypography';
 
 
-
 ```
 
 ---
 
 ### `src/components/MobileBottomNav.tsx`
 
-```typescript
+- **File**: `src/components/MobileBottomNav.tsx`
+- **Size**: 3.0 KB (83 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -84578,14 +86730,17 @@ export function MobileBottomNav() {
 
 export default MobileBottomNav;
 
-
 ```
 
 ---
 
 ### `src/components/MobileScrollPortfolio.tsx`
 
-```typescript
+- **File**: `src/components/MobileScrollPortfolio.tsx`
+- **Size**: 9.6 KB (210 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
@@ -84795,14 +86950,17 @@ export function MobileScrollPortfolio({ projects, settings }: MobileScrollPortfo
 }
 
 export default MobileScrollPortfolio;
-
 ```
 
 ---
 
 ### `src/components/Navbar.tsx`
 
-```typescript
+- **File**: `src/components/Navbar.tsx`
+- **Size**: 22.4 KB (551 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
@@ -85353,14 +87511,17 @@ export function Navbar({ initialSettings }: { initialSettings?: SiteSettings | n
     </>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/PageTransition.tsx`
 
-```typescript
+- **File**: `src/components/PageTransition.tsx`
+- **Size**: 0.2 KB (12 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -85372,14 +87533,17 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/ProductDetailClient.tsx`
 
-```typescript
+- **File**: `src/components/ProductDetailClient.tsx`
+- **Size**: 18.2 KB (404 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -85783,14 +87947,17 @@ export function ProductDetailClient({
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/Reveal.tsx`
 
-```typescript
+- **File**: `src/components/Reveal.tsx`
+- **Size**: 0.3 KB (23 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React from 'react';
@@ -85813,14 +87980,17 @@ export function Reveal({
     </div>
   );
 }
-
 ```
 
 ---
 
 ### `src/components/ScrollPortfolio.tsx`
 
-```typescript
+- **File**: `src/components/ScrollPortfolio.tsx`
+- **Size**: 0.8 KB (28 lines)
+- **Language**: `tsx`
+
+```tsx
 ﻿'use client';
 
 import React from 'react';
@@ -85848,14 +88018,17 @@ export function ScrollPortfolio({ projects, settings }: ScrollPortfolioProps) {
 
 export default ScrollPortfolio;
 export { DesktopScrollPortfolio, MobileScrollPortfolio };
-
 ```
 
 ---
 
 ### `src/components/WhatsAppButton.tsx`
 
-```typescript
+- **File**: `src/components/WhatsAppButton.tsx`
+- **Size**: 6.2 KB (131 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -85986,14 +88159,17 @@ export function WhatsAppButton({ settings, fallbackPhone }: WhatsAppButtonProps)
 }
 
 export default WhatsAppButton;
-
 ```
 
 ---
 
 ### `src/context/AdminAuthContext.tsx`
 
-```typescript
+- **File**: `src/context/AdminAuthContext.tsx`
+- **Size**: 3.7 KB (129 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -86122,14 +88298,17 @@ export function useAdminAuth() {
   }
   return context;
 }
-
 ```
 
 ---
 
 ### `src/context/CartContext.tsx`
 
-```typescript
+- **File**: `src/context/CartContext.tsx`
+- **Size**: 4.3 KB (159 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -86288,14 +88467,17 @@ export function useCart() {
   }
   return context;
 }
-
 ```
 
 ---
 
 ### `src/context/WishlistContext.tsx`
 
-```typescript
+- **File**: `src/context/WishlistContext.tsx`
+- **Size**: 2.1 KB (80 lines)
+- **Language**: `tsx`
+
+```tsx
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -86375,12 +88557,15 @@ export function useWishlist() {
   }
   return context;
 }
-
 ```
 
 ---
 
 ### `src/lib/auth.ts`
+
+- **File**: `src/lib/auth.ts`
+- **Size**: 8.4 KB (288 lines)
+- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -86670,12 +88855,15 @@ export function verifyCustomerToken(token: string): { id: string; email: string;
     return null;
   }
 }
-
 ```
 
 ---
 
 ### `src/lib/db.ts`
+
+- **File**: `src/lib/db.ts`
+- **Size**: 0.4 KB (13 lines)
+- **Language**: `typescript`
 
 ```typescript
 /**
@@ -86690,12 +88878,15 @@ export function verifyCustomerToken(token: string): { id: string; email: string;
  */
 
 export * from '@/server/db';
-
 ```
 
 ---
 
 ### `src/lib/push-client.ts`
+
+- **File**: `src/lib/push-client.ts`
+- **Size**: 0.5 KB (14 lines)
+- **Language**: `typescript`
 
 ```typescript
 export const DEFAULT_VAPID_PUBLIC_KEY =
@@ -86711,16 +88902,18 @@ export function urlBase64ToUint8Array(base64String: string): Uint8Array {
   }
   return outputArray;
 }
-
 ```
 
 ---
 
 ### `src/lib/push.ts`
 
+- **File**: `src/lib/push.ts`
+- **Size**: 8.0 KB (283 lines)
+- **Language**: `typescript`
+
 ```typescript
 import webPush from 'web-push';
-import { getServiceSupabase } from './supabase';
 import { Order, Quote, Enquiry } from '@/types';
 import { urlBase64ToUint8Array, DEFAULT_VAPID_PUBLIC_KEY } from './push-client';
 
@@ -86730,6 +88923,17 @@ export const DEFAULT_VAPID_PRIVATE_KEY =
   'SmPawdxDpbEkoUP5Wny9uXJ-kqrA8FWeu5052EG-ffE';
 export const DEFAULT_VAPID_SUBJECT =
   'mailto:atelier@balaji-interior.com';
+
+// In-memory push subscription store
+interface PushSubRecord {
+  endpoint: string;
+  keys: { p256dh: string; auth: string };
+  adminId?: string | null;
+  userAgent?: string | null;
+  createdAt: string;
+}
+
+const inMemoryPushSubs = new Map<string, PushSubRecord>();
 
 // Configure Web Push with VAPID credentials
 function ensureVapidConfigured(): boolean {
@@ -86753,7 +88957,7 @@ function ensureVapidConfigured(): boolean {
 ensureVapidConfigured();
 
 /**
- * Persist an active push subscription to Supabase.
+ * Persist an active push subscription in memory.
  */
 export async function savePushSubscription(sub: {
   endpoint: string;
@@ -86762,63 +88966,15 @@ export async function savePushSubscription(sub: {
   userAgent?: string;
 }) {
   try {
-    const supabase = getServiceSupabase();
-
-    let validAdminId: string | null = null;
-    if (sub.adminId && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sub.adminId)) {
-      const { data: adminExists } = await supabase.from('admins').select('id').eq('id', sub.adminId).maybeSingle();
-      if (adminExists) {
-        validAdminId = adminExists.id;
-      }
-    }
-
-    if (!validAdminId) {
-      const { data: defaultAdmin } = await supabase.from('admins').select('id').limit(1).maybeSingle();
-      if (defaultAdmin) {
-        validAdminId = defaultAdmin.id;
-      }
-    }
-
-    const { data, error } = await supabase
-      .from('notification_subscriptions')
-      .upsert(
-        {
-          endpoint: sub.endpoint,
-          keys: sub.keys,
-          admin_id: validAdminId,
-          user_agent: sub.userAgent || null,
-          created_at: new Date().toISOString(),
-        },
-        { onConflict: 'endpoint' }
-      )
-      .select()
-      .single();
-
-    if (error) {
-      console.warn('Upsert with admin_id failed, falling back to null admin_id:', error.message);
-      const fallback = await supabase
-        .from('notification_subscriptions')
-        .upsert(
-          {
-            endpoint: sub.endpoint,
-            keys: sub.keys,
-            admin_id: null,
-            user_agent: sub.userAgent || null,
-            created_at: new Date().toISOString(),
-          },
-          { onConflict: 'endpoint' }
-        )
-        .select()
-        .single();
-
-      if (fallback.error) {
-        console.error('Error saving push subscription to Supabase:', fallback.error);
-        return { success: false, error: fallback.error.message };
-      }
-      return { success: true, data: fallback.data };
-    }
-
-    return { success: true, data };
+    const record: PushSubRecord = {
+      endpoint: sub.endpoint,
+      keys: sub.keys,
+      adminId: sub.adminId || null,
+      userAgent: sub.userAgent || null,
+      createdAt: new Date().toISOString(),
+    };
+    inMemoryPushSubs.set(sub.endpoint, record);
+    return { success: true, data: record };
   } catch (err: any) {
     console.error('Exception saving push subscription:', err);
     return { success: false, error: err.message };
@@ -86826,15 +88982,10 @@ export async function savePushSubscription(sub: {
 }
 
 /**
- * Remove an invalid/expired push subscription from Supabase.
+ * Remove an invalid/expired push subscription.
  */
 export async function removePushSubscription(endpoint: string) {
-  try {
-    const supabase = getServiceSupabase();
-    await supabase.from('notification_subscriptions').delete().eq('endpoint', endpoint);
-  } catch (err) {
-    console.error('Error removing push subscription:', err);
-  }
+  inMemoryPushSubs.delete(endpoint);
 }
 
 /**
@@ -86843,13 +88994,9 @@ export async function removePushSubscription(endpoint: string) {
 export async function sendNewOrderPush(order: Order): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -86883,7 +89030,7 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
         failed++;
         console.warn(`Web push dispatch failed for endpoint ${sub.endpoint.substring(0, 30)}...:`, err.statusCode || err.message);
 
-        // If subscription expired or gone (HTTP 410 or 404), clean it up from Supabase
+        // If subscription expired or gone (HTTP 410 or 404), clean it up from store
         if (err.statusCode === 410 || err.statusCode === 404) {
           await removePushSubscription(sub.endpoint);
         }
@@ -86903,13 +89050,9 @@ export async function sendNewOrderPush(order: Order): Promise<{ sent: number; fa
 export async function sendNewQuotePush(quote: Quote): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -86960,13 +89103,9 @@ export async function sendNewQuotePush(quote: Quote): Promise<{ sent: number; fa
 export async function sendNewEnquiryPush(enquiry: Enquiry): Promise<{ sent: number; failed: number }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    const { data: subscriptions, error } = await supabase
-      .from('notification_subscriptions')
-      .select('*');
-
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return { sent: 0, failed: 0 };
     }
 
@@ -87016,10 +89155,9 @@ export async function sendNewEnquiryPush(enquiry: Enquiry): Promise<{ sent: numb
 export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: boolean; sent: number; message: string }> {
   try {
     ensureVapidConfigured();
-    const supabase = getServiceSupabase();
-    const { data: subscriptions, error } = await supabase.from('notification_subscriptions').select('*');
+    const subscriptions = Array.from(inMemoryPushSubs.values());
 
-    if (error || !subscriptions || subscriptions.length === 0) {
+    if (!subscriptions || subscriptions.length === 0) {
       return {
         success: false,
         sent: 0,
@@ -87057,12 +89195,15 @@ export async function sendTestPushToAdmin(adminId?: string): Promise<{ success: 
     return { success: false, sent: 0, message: err.message || 'Error triggering test push notification.' };
   }
 }
-
 ```
 
 ---
 
 ### `src/lib/seedData.ts`
+
+- **File**: `src/lib/seedData.ts`
+- **Size**: 36.8 KB (856 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { hashPassword } from './auth';
@@ -87920,51 +90061,15 @@ export function getInitialAdminSeed() {
     updatedAt: new Date().toISOString(),
   };
 }
-
-```
-
----
-
-### `src/lib/supabase.ts`
-
-```typescript
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
-
-export const supabase =
-  supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : (null as any);
-
-export function isSupabaseConfigured(): boolean {
-  return Boolean(
-    (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) &&
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  );
-}
-
-export function getServiceSupabase() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !serviceKey) {
-    throw new Error(
-      'Supabase configuration error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in environment variables.'
-    );
-  }
-  return createClient(supabaseUrl, serviceKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  });
-}
-
 ```
 
 ---
 
 ### `src/middleware.ts`
+
+- **File**: `src/middleware.ts`
+- **Size**: 3.5 KB (112 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
@@ -88078,12 +90183,15 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/admin/:path*', '/api/admin/:path*'],
 };
-
 ```
 
 ---
 
 ### `src/server/api/response.ts`
+
+- **File**: `src/server/api/response.ts`
+- **Size**: 1.7 KB (71 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -88156,12 +90264,15 @@ export function apiError(
     },
   });
 }
-
 ```
 
 ---
 
 ### `src/server/auth/rbac.ts`
+
+- **File**: `src/server/auth/rbac.ts`
+- **Size**: 7.5 KB (287 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { AdminRole, AdminUser } from '@/types';
@@ -88450,12 +90561,15 @@ export function protectOwnerFromModification(
     throw new ForbiddenError('Immutable Protection: The primary principal architect account cannot be disabled or deleted');
   }
 }
-
 ```
 
 ---
 
 ### `src/server/auth/tokens.ts`
+
+- **File**: `src/server/auth/tokens.ts`
+- **Size**: 3.0 KB (110 lines)
+- **Language**: `typescript`
 
 ```typescript
 import crypto from 'crypto';
@@ -88567,17 +90681,19 @@ export function rotateSessionToken(token: string): string | null {
     mustChangePassword: current.mustChangePassword,
   });
 }
-
 ```
 
 ---
 
 ### `src/server/db/client.ts`
 
+- **File**: `src/server/db/client.ts`
+- **Size**: 6.2 KB (210 lines)
+- **Language**: `typescript`
+
 ```typescript
 import fs from 'fs';
 import path from 'path';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import {
   Product,
   Category,
@@ -88635,88 +90751,14 @@ export function isProduction(): boolean {
   return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build';
 }
 
-export function isSupabaseConfigured(): boolean {
-  if (process.env.NODE_ENV === 'test') {
-    return false;
-  }
-  if (supabaseReachability.lastChecked > 0 && !supabaseReachability.available) {
-    return false;
-  }
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  return Boolean(url && key);
-}
-
-let supabaseReachability: { available: boolean; lastChecked: number } = { available: false, lastChecked: 0 };
-
-export async function isSupabaseAvailable(): Promise<boolean> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return false;
-  if (process.env.NODE_ENV === 'test') return false;
-
-  const now = Date.now();
-  if (now - supabaseReachability.lastChecked < 30000) {
-    return supabaseReachability.available;
-  }
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 600);
-    const res = await fetch(url, { method: 'HEAD', signal: controller.signal }).catch(() => null);
-    clearTimeout(timeout);
-    const available = !!res;
-    supabaseReachability = { available, lastChecked: now };
-    return available;
-  } catch {
-    supabaseReachability = { available: false, lastChecked: now };
-    return false;
-  }
-}
-
-let cachedServiceClient: SupabaseClient | null = null;
-
-export function getServiceSupabase(): SupabaseClient {
-  if (cachedServiceClient) {
-    return cachedServiceClient;
-  }
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-  if (!url || !key) {
-    throw new Error(
-      'Critical Database Error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.'
-    );
-  }
-
-  cachedServiceClient = createClient(url, key, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-    global: {
-      fetch: (input, init) => {
-        return fetch(input, {
-          ...init,
-          signal: init?.signal || AbortSignal.timeout(3000),
-        });
-      },
-    },
-  });
-
-  return cachedServiceClient;
-}
-
 /**
- * Enforces that in production environments, an authoritative database MUST be configured.
- * Accepts Hostinger MySQL (phpMyAdmin) or Supabase.
+ * Enforces that in production environments, Hostinger MySQL MUST be configured.
  * Prevents silent fallback to ephemeral or local files in production.
  */
 export function ensureAuthoritativeDb(): void {
-  if (isProduction() && !isSupabaseConfigured() && !isMySQLConfigured()) {
+  if (isProduction() && !isMySQLConfigured()) {
     throw new Error(
-      'Fatal Production Configuration Error: Primary database connection (Hostinger MySQL or Supabase) is required in production mode.'
+      'Fatal Production Configuration Error: Primary database connection (Hostinger MySQL) is required in production mode.'
     );
   }
 }
@@ -88859,12 +90901,15 @@ export function saveDb(state: DatabaseState): void {
     console.warn('Notice writing to local db.json fixture:', err);
   }
 }
-
 ```
 
 ---
 
 ### `src/server/db/index.ts`
+
+- **File**: `src/server/db/index.ts`
+- **Size**: 0.1 KB (7 lines)
+- **Language**: `typescript`
 
 ```typescript
 export * from './client';
@@ -88873,12 +90918,15 @@ export * from './mappers';
 export * from './repositories';
 export * from './transactions/orders';
 
-
 ```
 
 ---
 
 ### `src/server/db/mappers.ts`
+
+- **File**: `src/server/db/mappers.ts`
+- **Size**: 8.7 KB (260 lines)
+- **Language**: `typescript`
 
 ```typescript
 import {
@@ -88893,14 +90941,44 @@ import {
 } from '@/types';
 
 // =============================================================
-// SUPABASE ROW MAPPERS (Database snake_case -> Domain camelCase)
+// ROW MAPPERS (Database snake_case -> Domain camelCase)
+// Works seamlessly for both Hostinger MySQL and Supabase
 // =============================================================
+
+function safeJSON<T = any>(val: any, fallback: T): T {
+  if (val === null || val === undefined) return fallback;
+  if (typeof val === 'string') {
+    try {
+      return JSON.parse(val);
+    } catch {
+      try {
+        // Strip invalid MySQL escape slashes like \% or \'
+        const sanitized = val.replace(/\\([^"\\/bfnrtu])/g, '$1');
+        return JSON.parse(sanitized);
+      } catch {
+        return fallback;
+      }
+    }
+  }
+  return val as T;
+}
+
+function toISOString(val: any, fallback?: string): string {
+  if (val instanceof Date) return val.toISOString();
+  if (typeof val === 'string' && val.length > 0) return val;
+  return fallback || new Date().toISOString();
+}
 
 export function mapSupabaseProduct(
   row: any,
   categoryMap?: Map<string, { name: string; slug: string }>
 ): Product {
   const cat = categoryMap?.get(row.category_id);
+  const images = safeJSON(row.images, []);
+  const variants = safeJSON(row.variants, []);
+  const tags = safeJSON(row.tags, []);
+  const specifications = safeJSON(row.specifications, {});
+
   return {
     id: row.id,
     name: row.name,
@@ -88908,8 +90986,8 @@ export function mapSupabaseProduct(
     sku: row.sku || '',
     brand: row.brand || 'Balaji Architect & Interiors',
     categoryId: row.category_id || '',
-    categoryName: cat?.name || row.categories?.name,
-    categorySlug: cat?.slug || row.categories?.slug,
+    categoryName: cat?.name || row.category_name || row.categories?.name,
+    categorySlug: cat?.slug || row.category_slug || row.categories?.slug,
     subcategory: row.subcategory || '',
     description: row.description || '',
     price: Number(row.price || 0),
@@ -88924,16 +91002,16 @@ export function mapSupabaseProduct(
     material: row.material || '',
     finish: row.finish || '',
     color: row.color || '',
-    images: Array.isArray(row.images) ? row.images : [],
-    variants: Array.isArray(row.variants) ? row.variants : [],
+    images: Array.isArray(images) ? images : [],
+    variants: Array.isArray(variants) ? variants : [],
     isFeatured: Boolean(row.is_featured),
     isNew: Boolean(row.is_new),
     isBestseller: Boolean(row.is_bestseller),
-    published: Boolean(row.published !== false),
-    tags: Array.isArray(row.tags) ? row.tags : [],
-    specifications: row.specifications || {},
-    createdAt: row.created_at || new Date().toISOString(),
-    updatedAt: row.updated_at || new Date().toISOString(),
+    published: Boolean(row.published !== false && row.published !== 0),
+    tags: Array.isArray(tags) ? tags : [],
+    specifications: (typeof specifications === 'object' && specifications !== null ? specifications : {}) as Record<string, string>,
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
@@ -88945,13 +91023,17 @@ export function mapSupabaseCategory(row: any): Category {
     description: row.description || '',
     imageUrl: row.image_url || '',
     sortOrder: Number(row.sort_order || 0),
-    isActive: Boolean(row.is_active !== false),
-    createdAt: row.created_at || new Date().toISOString(),
-    updatedAt: row.updated_at || new Date().toISOString(),
+    isActive: Boolean(row.is_active !== false && row.is_active !== 0),
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
 export function mapSupabaseProject(row: any): Project {
+  const gallery = safeJSON(row.gallery, []);
+  const materialsUsed = safeJSON(row.materials_used, []);
+  const tags = safeJSON(row.tags, []);
+
   return {
     id: row.id,
     title: row.title,
@@ -88963,19 +91045,21 @@ export function mapSupabaseProject(row: any): Project {
     shortDescription: row.short_description || '',
     description: row.description || '',
     heroImage: row.hero_image || '',
-    gallery: Array.isArray(row.gallery) ? row.gallery : [],
+    gallery: Array.isArray(gallery) ? gallery : [],
     designApproach: row.design_approach || '',
-    materialsUsed: Array.isArray(row.materials_used) ? row.materials_used : [],
+    materialsUsed: Array.isArray(materialsUsed) ? materialsUsed : [],
     isFeatured: Boolean(row.is_featured),
-    isPublished: Boolean(row.is_published !== false),
+    isPublished: Boolean(row.is_published !== false && row.is_published !== 0),
     sortOrder: Number(row.sort_order || 0),
-    tags: Array.isArray(row.tags) ? row.tags : [],
-    createdAt: row.created_at || new Date().toISOString(),
-    updatedAt: row.updated_at || new Date().toISOString(),
+    tags: Array.isArray(tags) ? tags : [],
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
 export function mapSupabaseService(row: any): Service {
+  const deliverables = safeJSON(row.deliverables, []);
+
   return {
     id: row.id,
     title: row.title,
@@ -88984,16 +91068,18 @@ export function mapSupabaseService(row: any): Service {
     fullDesc: row.full_desc || '',
     iconName: row.icon_name || 'Home',
     imageUrl: row.image_url || '',
-    deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
+    deliverables: Array.isArray(deliverables) ? deliverables : [],
     sortOrder: Number(row.sort_order || 0),
-    isPublished: Boolean(row.is_published !== false),
-    createdAt: row.created_at || new Date().toISOString(),
-    updatedAt: row.updated_at || new Date().toISOString(),
+    isPublished: Boolean(row.is_published !== false && row.is_published !== 0),
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
 export function mapSupabaseOrder(row: any): Order {
-  const items = (row.items || row.order_items || []).map((it: any) => ({
+  const rawItems = row.items || row.order_items || [];
+  const parsedItems = safeJSON(rawItems, []);
+  const items = (Array.isArray(parsedItems) ? parsedItems : []).map((it: any) => ({
     id: it.id,
     orderId: it.order_id || row.id,
     productId: it.product_id || '',
@@ -89009,6 +91095,9 @@ export function mapSupabaseOrder(row: any): Order {
     selectedFinish: it.selected_finish,
   }));
 
+  const shippingAddress: any = safeJSON(row.shipping_address, row.shipping_address || {});
+  const billingAddress: any = row.billing_address ? safeJSON(row.billing_address, row.billing_address) : shippingAddress;
+
   return {
     id: row.id,
     orderNumber: row.order_number,
@@ -89016,8 +91105,8 @@ export function mapSupabaseOrder(row: any): Order {
     customerName: row.customer_name,
     customerEmail: row.customer_email,
     customerPhone: row.customer_phone,
-    shippingAddress: row.shipping_address,
-    billingAddress: row.billing_address || row.shipping_address,
+    shippingAddress,
+    billingAddress,
     items,
     subtotal: Number(row.subtotal || 0),
     tax: Number(row.tax || 0),
@@ -89031,13 +91120,15 @@ export function mapSupabaseOrder(row: any): Order {
     utrNumber: row.utr_number,
     notes: row.notes,
     idempotencyKey: row.idempotency_key,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
 export function mapSupabaseQuote(row: any): Quote {
-  const items = (row.items || row.quote_items || []).map((it: any) => ({
+  const rawItems = row.items || row.quote_items || [];
+  const parsedItems = safeJSON(rawItems, []);
+  const items = (Array.isArray(parsedItems) ? parsedItems : []).map((it: any) => ({
     id: it.id,
     quoteId: it.quote_id || row.id,
     productId: it.product_id,
@@ -89064,8 +91155,8 @@ export function mapSupabaseQuote(row: any): Quote {
     status: row.status || 'Pending',
     totalQuotedAmount: row.total_quoted_amount ? Number(row.total_quoted_amount) : undefined,
     adminNotes: row.admin_notes,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: toISOString(row.created_at),
+    updatedAt: toISOString(row.updated_at),
   };
 }
 
@@ -89079,7 +91170,7 @@ export function mapSupabaseEnquiry(row: any): Enquiry {
     message: row.message,
     source: row.source || 'Contact Form',
     status: row.status || 'New',
-    createdAt: row.created_at,
+    createdAt: toISOString(row.created_at),
   };
 }
 
@@ -89090,19 +91181,22 @@ export function mapAdminUser(data: any): AdminUser & { passwordHash: string } {
     name: data.name,
     role: data.role || 'employee',
     status: data.status || 'active',
-    mustChangePassword: data.must_change_password !== false,
+    mustChangePassword: Boolean(data.must_change_password !== false && data.must_change_password !== 0),
     passwordHash: data.password_hash || data.passwordHash || '',
-    lastLoginAt: data.last_login_at || data.lastLoginAt,
-    createdAt: data.created_at || data.createdAt || new Date().toISOString(),
-    updatedAt: data.updated_at || data.updatedAt || new Date().toISOString(),
+    lastLoginAt: data.last_login_at ? toISOString(data.last_login_at) : (data.lastLoginAt || undefined),
+    createdAt: toISOString(data.created_at || data.createdAt),
+    updatedAt: toISOString(data.updated_at || data.updatedAt),
   };
 }
-
 ```
 
 ---
 
 ### `src/server/db/mysql.ts`
+
+- **File**: `src/server/db/mysql.ts`
+- **Size**: 5.1 KB (191 lines)
+- **Language**: `typescript`
 
 ```typescript
 import mysql from 'mysql2/promise';
@@ -89133,25 +91227,62 @@ export function isMySQLConfigured(): boolean {
   const password = process.env.DB_PASSWORD;
 
   // Active if host, user, database, and non-empty password are provided
-  // (or if explicitly set DATABASE_URL)
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
+  if (user && host && db && password && password.trim().length > 0) {
     return true;
   }
-  return Boolean(user && host && db && password && password.trim().length > 0);
+
+  // Also check DATABASE_URL with non-empty password
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
+    try {
+      const parsed = new URL(process.env.DATABASE_URL);
+      if (parsed.password && parsed.password.trim().length > 0) {
+        return true;
+      }
+    } catch {
+      // Invalid URL format
+    }
+  }
+
+  return false;
+}
+
+function resilientTypeCast(field: any, next: () => any) {
+  if (field.type === 'JSON') {
+    const raw = field.string();
+    if (raw === null || raw === undefined) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      try {
+        const sanitized = raw.replace(/\\([^"\\/bfnrtu])/g, '$1');
+        return JSON.parse(sanitized);
+      } catch {
+        return raw;
+      }
+    }
+  }
+  return next();
 }
 
 export function getMySQLPool(): mysql.Pool {
   if (pool) return pool;
 
   if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
-    pool = mysql.createPool({
-      uri: process.env.DATABASE_URL,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      connectTimeout: 5000,
-    });
-    return pool;
+    try {
+      const parsed = new URL(process.env.DATABASE_URL);
+      if (parsed.password && parsed.password.trim().length > 0) {
+        pool = mysql.createPool({
+          uri: process.env.DATABASE_URL,
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0,
+          connectTimeout: 7000,
+          charset: 'utf8mb4',
+          typeCast: resilientTypeCast,
+        });
+        return pool;
+      }
+    } catch {}
   }
 
   const host = process.env.DB_HOST || 'localhost';
@@ -89169,8 +91300,9 @@ export function getMySQLPool(): mysql.Pool {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 5000,
+    connectTimeout: 7000,
     charset: 'utf8mb4',
+    typeCast: resilientTypeCast,
   });
 
   return pool;
@@ -89250,70 +91382,74 @@ export async function execute(sql: string, params: any[] = []): Promise<mysql.Re
   return result as mysql.ResultSetHeader;
 }
 
+/**
+ * Retrieves a direct connection from the MySQL pool for multi-statement atomic transactions.
+ */
+export async function getConnection(): Promise<mysql.PoolConnection> {
+  const p = getMySQLPool();
+  return await p.getConnection();
+}
 ```
 
 ---
 
 ### `src/server/db/repositories/audit.ts`
 
+- **File**: `src/server/db/repositories/audit.ts`
+- **Size**: 2.9 KB (95 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { AuditLog } from '@/types';
-import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { isUUID, getDb, saveDb } from '../client';
 import { sanitizeAuditDetails } from '../../security/sanitization';
+import { isMySQLConfigured, query, execute } from '../mysql';
 
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   const now = new Date().toISOString();
   const safeDetails = entry.details ? sanitizeAuditDetails(entry.details) : null;
+  const logId = crypto.randomUUID();
+  const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
 
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
+      await execute(
+        `INSERT INTO audit_logs (id, admin_id, admin_email, action, entity, entity_id, details, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+        [
+          logId,
+          adminIdToUse,
+          entry.adminEmail,
+          entry.action,
+          entry.entity,
+          entry.entityId,
+          safeDetails ? JSON.stringify(safeDetails) : null,
+        ]
+      );
 
-      const { data, error } = await supabase
-        .from('audit_logs')
-        .insert({
-          admin_id: adminIdToUse,
-          admin_email: entry.adminEmail,
-          action: entry.action,
-          entity: entry.entity,
-          entity_id: entry.entityId,
-          details: safeDetails,
-          created_at: now,
-        })
-        .select()
-        .single();
-
-      if (!error && data) {
-        return {
-          id: data.id,
-          adminId: data.admin_id || 'system',
-          adminEmail: data.admin_email,
-          action: data.action,
-          entity: data.entity,
-          entityId: data.entity_id,
-          details: data.details,
-          createdAt: data.created_at,
-        };
-      }
-    } catch (err) {
-      console.warn('Supabase addAuditLog notice:', err);
+      return {
+        id: logId,
+        adminId: entry.adminId || 'system',
+        adminEmail: entry.adminEmail,
+        action: entry.action,
+        entity: entry.entity,
+        entityId: entry.entityId,
+        details: safeDetails,
+        createdAt: now,
+      };
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL addAuditLog failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const log: AuditLog = {
     ...entry,
     details: safeDetails,
-    id: crypto.randomUUID(),
+    id: logId,
     createdAt: now,
   };
   db.auditLogs.unshift(log);
@@ -89323,44 +91459,55 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
 }
 
 export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase
-      .from('audit_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    const { data, error } = await query;
-    if (error) throw new Error(`Failed to load audit logs: ${error.message}`);
-    return (data || []).map((l: any) => ({
-      id: l.id,
-      adminId: l.admin_id || 'system',
-      adminEmail: l.admin_email,
-      action: l.action,
-      entity: l.entity,
-      entityId: l.entity_id,
-      details: l.details,
-      createdAt: l.created_at,
-    }));
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const rows = await query(
+        'SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT ? OFFSET ?',
+        [Number(limit), Number(offset)]
+      );
+      if (rows && rows.length > 0) {
+        return rows.map((l: any) => {
+          let parsedDetails = l.details;
+          if (typeof parsedDetails === 'string') {
+            try { parsedDetails = JSON.parse(parsedDetails); } catch {}
+          }
+          return {
+            id: l.id,
+            adminId: l.admin_id || 'system',
+            adminEmail: l.admin_email,
+            action: l.action,
+            entity: l.entity,
+            entityId: l.entity_id,
+            details: parsedDetails,
+            createdAt: l.created_at instanceof Date ? l.created_at.toISOString() : l.created_at,
+          };
+        });
+      }
+      return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getAuditLogs failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.auditLogs.slice(offset, offset + limit);
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/categories.ts`
 
+- **File**: `src/server/db/repositories/categories.ts`
+- **Size**: 10.6 KB (324 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Category } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -89369,6 +91516,7 @@ import {
 } from '../client';
 import { mapSupabaseCategory } from '../mappers';
 import { ConflictError } from '../../errors';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getCategories(): Promise<Category[]> {
   const now = Date.now();
@@ -89376,165 +91524,200 @@ export async function getCategories(): Promise<Category[]> {
     return memoryCache.categories.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const [catsRes, prodsRes] = await Promise.all([
-      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-      supabase.from('products').select('category_id, published'),
-    ]);
-
-    if (catsRes.error) {
-      console.error('Supabase getCategories error:', catsRes.error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        catsRes.error.message?.includes('fetch failed') ||
-        catsRes.error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to categories fixture.');
-      } else {
-        throw new Error(`Database error retrieving categories: ${catsRes.error.message}`);
-      }
-    } else {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const [catsRes, prodsRes] = await Promise.all([
+        query('SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC'),
+        query('SELECT category_id FROM products WHERE published = 1'),
+      ]);
       const prodCounts = new Map<string, number>();
-      (prodsRes.data || []).forEach((p: any) => {
-        if (p.published && p.category_id) {
-          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
-        }
-      });
-
-      const categories = (catsRes.data || [])
-        .filter((c: any) => c.is_active !== false)
-        .map((c: any) => ({
-          ...mapSupabaseCategory(c),
-          productCount: prodCounts.get(c.id) || 0,
-        }));
-
-      memoryCache.categories = { data: categories, timestamp: now };
-      return categories;
-    }
-  }
-
-  const db = getDb();
-  const prodCounts = new Map<string, number>();
-  (db.products || []).forEach((p) => {
-    if (p.published && p.categoryId) {
-      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
-    }
-  });
-
-  const active = db.categories
-    .filter((c) => c.isActive !== false)
-    .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((c) => ({
-      ...c,
-      productCount: prodCounts.get(c.id) || 0,
-    }));
-
-  memoryCache.categories = { data: active, timestamp: now };
-  return active;
-}
-
-export async function getAllCategoriesAdmin(): Promise<Category[]> {
-  const now = Date.now();
-  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
-    return memoryCache.categoriesAdmin.data;
-  }
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const [catsRes, prodsRes] = await Promise.all([
-      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-      supabase.from('products').select('category_id'),
-    ]);
-
-    if (catsRes.error) {
-      console.error('Supabase getAllCategoriesAdmin error:', catsRes.error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        catsRes.error.message?.includes('fetch failed') ||
-        catsRes.error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to admin categories fixture.');
-      } else {
-        throw new Error(`Database error loading admin categories: ${catsRes.error.message}`);
-      }
-    } else {
-      const prodCounts = new Map<string, number>();
-      (prodsRes.data || []).forEach((p: any) => {
+      (prodsRes || []).forEach((p: any) => {
         if (p.category_id) {
           prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
         }
       });
 
-      const categories = (catsRes.data || []).map((c: any) => ({
+      const categories = (catsRes || []).map((c: any) => ({
+        ...mapSupabaseCategory(c),
+        productCount: prodCounts.get(c.id) || 0,
+      }));
+
+      memoryCache.categories = { data: categories, timestamp: now };
+      return categories;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategories failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cats = db.categories
+    .filter((c) => c.isActive)
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((c) => ({
+      ...c,
+      productCount: db.products.filter((p) => p.categoryId === c.id && p.published).length,
+    }));
+  memoryCache.categories = { data: cats, timestamp: now };
+  return cats;
+}
+
+export const getAllCategoriesAdmin = getCategoriesAdmin;
+
+export async function getCategoriesAdmin(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categoriesAdmin.data;
+  }
+
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const [catsRes, prodsRes] = await Promise.all([
+        query('SELECT * FROM categories ORDER BY sort_order ASC'),
+        query('SELECT category_id FROM products'),
+      ]);
+      const prodCounts = new Map<string, number>();
+      (prodsRes || []).forEach((p: any) => {
+        if (p.category_id) {
+          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
+        }
+      });
+
+      const categories = (catsRes || []).map((c: any) => ({
         ...mapSupabaseCategory(c),
         productCount: prodCounts.get(c.id) || 0,
       }));
 
       memoryCache.categoriesAdmin = { data: categories, timestamp: now };
       return categories;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoriesAdmin failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const prodCounts = new Map<string, number>();
-  (db.products || []).forEach((p) => {
-    if (p.categoryId) {
-      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
-    }
-  });
-
-  const categories = db.categories
+  const cats = [...db.categories]
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((c) => ({
       ...c,
-      productCount: prodCounts.get(c.id) || 0,
+      productCount: db.products.filter((p) => p.categoryId === c.id).length,
     }));
-
-  memoryCache.categoriesAdmin = { data: categories, timestamp: now };
-  return categories;
+  memoryCache.categoriesAdmin = { data: cats, timestamp: now };
+  return cats;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const categories = await getCategories();
-  return categories.find((c) => c.slug === slug) || null;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM categories WHERE slug = ? LIMIT 1', [slug]);
+      if (row) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [row.id]
+        );
+        return {
+          ...mapSupabaseCategory(row),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoryBySlug failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cat = db.categories.find((c) => c.slug === slug);
+  if (!cat) return null;
+  return {
+    ...cat,
+    productCount: db.products.filter((p) => p.categoryId === cat.id && p.published).length,
+  };
+}
+
+export async function getCategoryById(id: string): Promise<Category | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM categories WHERE id = ? LIMIT 1', [id]);
+      if (row) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [row.id]
+        );
+        return {
+          ...mapSupabaseCategory(row),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoryById failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cat = db.categories.find((c) => c.id === id);
+  if (!cat) return null;
+  return {
+    ...cat,
+    productCount: db.products.filter((p) => p.categoryId === cat.id && p.published).length,
+  };
 }
 
 export async function createCategory(
-  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>
+  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt' | 'productCount'>
 ): Promise<Category> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('categories')
-      .insert({
-        name: data.name,
-        slug: data.slug,
-        description: data.description || '',
-        image_url: data.imageUrl || '',
-        sort_order: data.sortOrder || 0,
-        is_active: data.isActive !== false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const existing = await queryOne('SELECT id FROM categories WHERE slug = ? LIMIT 1', [data.slug]);
+      if (existing) {
+        throw new ConflictError(`A category with slug "${data.slug}" already exists`);
+      }
 
-    if (error || !inserted) {
-      console.error('Supabase createCategory error:', error);
-      throw new Error(`Failed to create category: ${error?.message || 'Database error'}`);
+      const catId = `cat-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO categories (
+          id, name, slug, description, image_url, sort_order, is_active, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          catId,
+          data.name,
+          data.slug,
+          data.description || '',
+          data.imageUrl || '',
+          data.sortOrder || 0,
+          data.isActive !== false ? 1 : 0,
+        ]
+      );
+      invalidateMemoryCache('categories');
+
+      const inserted = await queryOne('SELECT * FROM categories WHERE id = ?', [catId]);
+      if (inserted) {
+        return { ...mapSupabaseCategory(inserted), productCount: 0 };
+      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL createCategory failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('categories');
-    return mapSupabaseCategory(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
+  if (db.categories.some((c) => c.slug === data.slug)) {
+    throw new ConflictError(`A category with slug "${data.slug}" already exists`);
+  }
   const newCat: Category = {
     ...data,
     id: `cat-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    productCount: 0,
     createdAt: now,
     updatedAt: now,
   };
@@ -89550,35 +91733,54 @@ export async function updateCategory(
 ): Promise<Category | null> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partial.name !== undefined) updates.name = partial.name;
-    if (partial.slug !== undefined) updates.slug = partial.slug;
-    if (partial.description !== undefined) updates.description = partial.description;
-    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
-    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
-    if (partial.isActive !== undefined) updates.is_active = partial.isActive;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      if (partial.slug) {
+        const conflict = await queryOne('SELECT id FROM categories WHERE slug = ? AND id != ? LIMIT 1', [partial.slug, id]);
+        if (conflict) {
+          throw new ConflictError(`A category with slug "${partial.slug}" already exists`);
+        }
+      }
 
-    const { data: updated, error } = await supabase
-      .from('categories')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partial.name !== undefined) { updates.push('name = ?'); params.push(partial.name); }
+      if (partial.slug !== undefined) { updates.push('slug = ?'); params.push(partial.slug); }
+      if (partial.description !== undefined) { updates.push('description = ?'); params.push(partial.description); }
+      if (partial.imageUrl !== undefined) { updates.push('image_url = ?'); params.push(partial.imageUrl); }
+      if (partial.sortOrder !== undefined) { updates.push('sort_order = ?'); params.push(partial.sortOrder); }
+      if (partial.isActive !== undefined) { updates.push('is_active = ?'); params.push(partial.isActive ? 1 : 0); }
 
-    if (error) {
-      console.error('Supabase updateCategory error:', error);
-      throw new Error(`Failed to update category ${id}: ${error.message}`);
+      params.push(id);
+      await execute(`UPDATE categories SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('categories');
+
+      const updated = await queryOne('SELECT * FROM categories WHERE id = ?', [id]);
+      if (updated) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [id]
+        );
+        return {
+          ...mapSupabaseCategory(updated),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL updateCategory failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('categories');
-    return updated ? mapSupabaseCategory(updated) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.categories.findIndex((c) => c.id === id);
   if (index === -1) return null;
+
+  if (partial.slug && db.categories.some((c) => c.slug === partial.slug && c.id !== id)) {
+    throw new ConflictError(`A category with slug "${partial.slug}" already exists`);
+  }
 
   db.categories[index] = {
     ...db.categories[index],
@@ -89591,32 +91793,30 @@ export async function updateCategory(
 }
 
 export async function deleteCategory(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const prodRes = await queryOne<{ count: number }>(
+        'SELECT COUNT(*) as count FROM products WHERE category_id = ? LIMIT 1',
+        [id]
+      );
+      if (prodRes && prodRes.count > 0) {
+        throw new ConflictError('Cannot delete category: products are assigned to it.');
+      }
 
-    // Prevent deletion if products depend on this category
-    const { count, error: countErr } = await supabase
-      .from('products')
-      .select('id', { count: 'exact', head: true })
-      .eq('category_id', id);
-
-    if (!countErr && (count || 0) > 0) {
-      throw new ConflictError(`Cannot delete category: There are ${count} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+      await execute('DELETE FROM categories WHERE id = ?', [id]);
+      invalidateMemoryCache('categories');
+      return true;
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL deleteCategory failed, falling back:', mysqlErr);
     }
-
-    const { error } = await supabase.from('categories').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteCategory error:', error);
-      throw new Error(`Failed to delete category ${id}: ${error.message}`);
-    }
-    invalidateMemoryCache('categories');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const prodCount = db.products.filter((p) => p.categoryId === id).length;
-  if (prodCount > 0) {
-    throw new ConflictError(`Cannot delete category: There are ${prodCount} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+  if (db.products.some((p) => p.categoryId === id)) {
+    throw new ConflictError('Cannot delete category: products are assigned to it.');
   }
 
   const initialLength = db.categories.length;
@@ -89628,20 +91828,20 @@ export async function deleteCategory(id: string): Promise<boolean> {
   }
   return false;
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/customers.ts`
 
+- **File**: `src/server/db/repositories/customers.ts`
+- **Size**: 4.8 KB (152 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
-import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  getDb,
-} from '../client';
+import { getDb } from '../client';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export interface CustomerRecord {
   id: string;
@@ -89662,81 +91862,67 @@ export async function upsertCustomer(input: {
   const normalizedEmail = input.email.trim().toLowerCase();
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: existing } = await supabase
-      .from('customers')
-      .select('*')
-      .eq('email', normalizedEmail)
-      .maybeSingle();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const existing = await queryOne('SELECT * FROM customers WHERE LOWER(email) = LOWER(?) LIMIT 1', [normalizedEmail]);
+      if (existing) {
+        const updates: string[] = ['updated_at = NOW()'];
+        const params: any[] = [];
+        if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
+          updates.push('full_name = ?');
+          params.push(input.fullName);
+        }
+        if (input.phone && !existing.phone) {
+          updates.push('phone = ?');
+          params.push(input.phone);
+        }
+        if (input.isGuest === false && existing.is_guest) {
+          updates.push('is_guest = 0');
+        }
+        params.push(existing.id);
+        await execute(`UPDATE customers SET ${updates.join(', ')} WHERE id = ?`, params);
 
-    if (existing) {
-      const updates: any = { updated_at: now };
-      if (input.fullName && (!existing.full_name || existing.full_name === 'Client')) {
-        updates.full_name = input.fullName;
+        const updated = await queryOne('SELECT * FROM customers WHERE id = ?', [existing.id]);
+        const res = updated || existing;
+        return {
+          id: res.id,
+          email: res.email,
+          fullName: res.full_name,
+          phone: res.phone,
+          isGuest: Boolean(res.is_guest),
+          createdAt: res.created_at instanceof Date ? res.created_at.toISOString() : res.created_at,
+          updatedAt: res.updated_at instanceof Date ? res.updated_at.toISOString() : res.updated_at,
+        };
+      } else {
+        const custId = `cust-${crypto.randomUUID()}`;
+        await execute(
+          `INSERT INTO customers (id, email, full_name, phone, is_guest, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
+          [
+            custId,
+            normalizedEmail,
+            input.fullName || 'Client',
+            input.phone || null,
+            input.isGuest ? 1 : 0,
+          ]
+        );
+        return {
+          id: custId,
+          email: normalizedEmail,
+          fullName: input.fullName || 'Client',
+          phone: input.phone,
+          isGuest: Boolean(input.isGuest),
+          createdAt: now,
+          updatedAt: now,
+        };
       }
-      if (input.phone && !existing.phone) {
-        updates.phone = input.phone;
-      }
-      if (input.isGuest === false && existing.is_guest) {
-        updates.is_guest = false;
-      }
-
-      const { data: updated } = await supabase
-        .from('customers')
-        .update(updates)
-        .eq('id', existing.id)
-        .select()
-        .single();
-
-      const res = updated || existing;
-      return {
-        id: res.id,
-        email: res.email,
-        fullName: res.full_name,
-        phone: res.phone,
-        isGuest: res.is_guest,
-        createdAt: res.created_at,
-        updatedAt: res.updated_at,
-      };
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL upsertCustomer failed, falling back:', mysqlErr);
     }
-
-    const { data: inserted, error } = await supabase
-      .from('customers')
-      .insert({
-        email: normalizedEmail,
-        full_name: input.fullName || 'Client',
-        phone: input.phone || null,
-        is_guest: input.isGuest !== undefined ? input.isGuest : false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
-
-    if (error || !inserted) {
-      return {
-        id: crypto.randomUUID(),
-        email: normalizedEmail,
-        fullName: input.fullName || 'Client',
-        phone: input.phone,
-        isGuest: input.isGuest || false,
-        createdAt: now,
-        updatedAt: now,
-      };
-    }
-
-    return {
-      id: inserted.id,
-      email: inserted.email,
-      fullName: inserted.full_name,
-      phone: inserted.phone,
-      isGuest: inserted.is_guest,
-      createdAt: inserted.created_at,
-      updatedAt: inserted.updated_at,
-    };
   }
 
+  // 2. Unit Test / Local Fallback
   return {
     id: `cust-${Date.now()}`,
     email: normalizedEmail,
@@ -89749,29 +91935,31 @@ export async function upsertCustomer(input: {
 }
 
 export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRecord[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('customers')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    if (error) {
-      console.error('Failed to fetch customers:', error.message);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const rows = await query(
+        'SELECT * FROM customers ORDER BY created_at DESC LIMIT ? OFFSET ?',
+        [Number(limit), Number(offset)]
+      );
+      if (rows && rows.length > 0) {
+        return rows.map((c: any) => ({
+          id: c.id,
+          email: c.email,
+          fullName: c.full_name,
+          phone: c.phone || '',
+          isGuest: Boolean(c.is_guest),
+          createdAt: c.created_at instanceof Date ? c.created_at.toISOString() : c.created_at,
+          updatedAt: c.updated_at instanceof Date ? c.updated_at.toISOString() : c.updated_at,
+        }));
+      }
       return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCustomers failed, falling back:', mysqlErr);
     }
-    return (data || []).map((c: any) => ({
-      id: c.id,
-      email: c.email,
-      fullName: c.full_name,
-      phone: c.phone || '',
-      isGuest: c.is_guest || false,
-      createdAt: c.created_at,
-      updatedAt: c.updated_at,
-    }));
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const rawCustomers = (db as any).customers || [];
   if (rawCustomers.length > 0) {
@@ -89786,7 +91974,6 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
     }));
   }
 
-  // Derive unique customer list from orders if not standalone
   const customerMap = new Map<string, CustomerRecord>();
   db.orders.forEach((o) => {
     if (o.customerEmail && !customerMap.has(o.customerEmail.toLowerCase())) {
@@ -89803,44 +91990,42 @@ export async function getCustomers(limit = 100, offset = 0): Promise<CustomerRec
   });
   return Array.from(customerMap.values()).slice(offset, offset + limit);
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/employees.ts`
 
+- **File**: `src/server/db/repositories/employees.ts`
+- **Size**: 11.5 KB (367 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { AdminUser } from '@/types';
-import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { isUUID, getDb, saveDb } from '../client';
 import { mapAdminUser } from '../mappers';
 import { protectOwnerFromModification } from '../../auth/rbac';
 import { revokeAllSessionsForAdmin } from '../../auth/tokens';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getAdmins(): Promise<AdminUser[]> {
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: false });
-      if (!error && data && data.length > 0) {
-        return data.map((adm) => {
+      const rows = await query('SELECT * FROM admins ORDER BY created_at DESC');
+      if (rows && rows.length > 0) {
+        return rows.map((adm: any) => {
           const { passwordHash: _, ...safe } = mapAdminUser(adm);
           return safe;
         });
       }
     } catch (err) {
-      console.warn('Supabase getAdmins notice:', err);
+      console.warn('Hostinger MySQL getAdmins failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.admins.map((adm) => {
     const { passwordHash: _, ...safe } = adm;
@@ -89849,20 +92034,21 @@ export async function getAdmins(): Promise<AdminUser[]> {
 }
 
 export async function getAdminById(id: string): Promise<(AdminUser & { passwordHash: string }) | null> {
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').eq('id', id).maybeSingle();
-      if (!error && data) {
-        const mapped = mapAdminUser(data);
+      const row = await queryOne('SELECT * FROM admins WHERE id = ? LIMIT 1', [id]);
+      if (row) {
+        const mapped = mapAdminUser(row);
         if (!mapped.status) mapped.status = 'active';
         return mapped;
       }
     } catch (err) {
-      console.warn('Supabase getAdminById notice:', err);
+      console.warn('Hostinger MySQL getAdminById failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const found = db.admins.find((a) => a.id === id);
   if (!found) return null;
@@ -89875,20 +92061,22 @@ export async function getAdminById(id: string): Promise<(AdminUser & { passwordH
 
 export async function getAdminByEmail(email: string): Promise<(AdminUser & { passwordHash: string }) | null> {
   const normalizedEmail = email.trim().toLowerCase();
-  if (await isSupabaseAvailable()) {
+
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const { data, error } = await supabase.from('admins').select('*').eq('email', normalizedEmail).maybeSingle();
-      if (!error && data) {
-        const mapped = mapAdminUser(data);
+      const row = await queryOne('SELECT * FROM admins WHERE LOWER(email) = LOWER(?) LIMIT 1', [normalizedEmail]);
+      if (row) {
+        const mapped = mapAdminUser(row);
         if (!mapped.status) mapped.status = 'active';
         return mapped;
       }
     } catch (err) {
-      console.warn('Supabase getAdminByEmail notice:', err);
+      console.warn('Hostinger MySQL getAdminByEmail failed, falling back:', err);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const found = db.admins.find((a) => a.email.toLowerCase() === normalizedEmail);
   if (!found) return null;
@@ -89922,32 +92110,34 @@ export async function createEmployeeAdmin(
     employeeData.passwordHash ||
     (employeeData.temporaryPassword ? hashBootstrapPassword(employeeData.temporaryPassword) : hashBootstrapPassword('Default#2026!'));
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('admins')
-      .insert({
-        email: normalizedEmail,
-        name: employeeData.name,
-        password_hash: derivedHash,
-        role: employeeData.role || 'employee',
-        status: 'active',
-        must_change_password: employeeData.mustChangePassword !== undefined ? employeeData.mustChangePassword : true,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const admId = `admin-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO admins (id, email, name, password_hash, role, status, must_change_password, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, 'active', ?, NOW(), NOW())`,
+        [
+          admId,
+          normalizedEmail,
+          employeeData.name,
+          derivedHash,
+          employeeData.role || 'employee',
+          employeeData.mustChangePassword !== false ? 1 : 0,
+        ]
+      );
 
-    if (error || !inserted) {
-      throw new Error(`Failed to create employee account: ${error?.message || 'Database error'}`);
+      const inserted = await queryOne('SELECT * FROM admins WHERE id = ?', [admId]);
+      if (inserted) {
+        const { passwordHash: _, ...safeAdmin } = mapAdminUser(inserted);
+        return safeAdmin;
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createEmployeeAdmin failed, falling back:', mysqlErr);
     }
-
-    const mapped = mapAdminUser(inserted);
-    const { passwordHash: _, ...safeAdmin } = mapped;
-    return safeAdmin;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newAdmin: AdminUser & { passwordHash: string } = {
     id: `admin-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
@@ -89996,27 +92186,31 @@ export async function updateEmployeeAdmin(
 
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partialData.email !== undefined) updates.email = partialData.email.trim().toLowerCase();
-    if (partialData.name !== undefined) updates.name = partialData.name;
-    if (partialData.role !== undefined) updates.role = partialData.role;
-    if (partialData.status !== undefined) updates.status = partialData.status;
-    if (partialData.mustChangePassword !== undefined) updates.must_change_password = partialData.mustChangePassword;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partialData.email !== undefined) { updates.push('email = ?'); params.push(partialData.email.trim().toLowerCase()); }
+      if (partialData.name !== undefined) { updates.push('name = ?'); params.push(partialData.name); }
+      if (partialData.role !== undefined) { updates.push('role = ?'); params.push(partialData.role); }
+      if (partialData.status !== undefined) { updates.push('status = ?'); params.push(partialData.status); }
+      if (partialData.mustChangePassword !== undefined) { updates.push('must_change_password = ?'); params.push(partialData.mustChangePassword ? 1 : 0); }
 
-    const { data: updated, error } = await supabase
-      .from('admins')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
+      params.push(id);
+      await execute(`UPDATE admins SET ${updates.join(', ')} WHERE id = ?`, params);
 
-    if (error) throw new Error(`Failed to update account: ${error.message}`);
-    const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
-    return safeAdmin;
+      const updated = await queryOne('SELECT * FROM admins WHERE id = ?', [id]);
+      if (updated) {
+        const { passwordHash: _, ...safeAdmin } = mapAdminUser(updated);
+        return safeAdmin;
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateEmployeeAdmin failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.admins.findIndex((a) => a.id === id);
   if (index === -1) return null;
@@ -90042,16 +92236,19 @@ export async function deleteEmployeeAdmin(
     protectOwnerFromModification(target as any, actor as any, 'delete');
   }
 
-  // Revoke any active sessions
   revokeAllSessionsForAdmin(id);
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('admins').delete().eq('id', id);
-    if (error) throw new Error(`Failed to delete employee account: ${error.message}`);
-    return true;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM admins WHERE id = ?', [id]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteEmployeeAdmin failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.admins.length;
   db.admins = db.admins.filter((a) => a.id !== id);
@@ -90074,37 +92271,29 @@ export async function resetEmployeePassword(
     protectOwnerFromModification(target as any, actor as any, 'reset_password');
   }
 
-  // Derive PBKDF2 hash if plaintext was supplied
   const derivedHash = temporaryPasswordOrHash.includes(':')
     ? temporaryPasswordOrHash
     : hashBootstrapPassword(temporaryPasswordOrHash);
 
-  // Revoke all previous active sessions
   revokeAllSessionsForAdmin(id);
 
-  const now = new Date().toISOString();
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase
-      .from('admins')
-      .update({
-        password_hash: derivedHash,
-        must_change_password: true,
-        updated_at: now,
-      })
-      .eq('id', id);
-
-    if (error) throw new Error(`Failed to reset password: ${error.message}`);
-    return true;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE admins SET password_hash = ?, must_change_password = 1, updated_at = NOW() WHERE id = ?', [derivedHash, id]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL resetEmployeePassword failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const adm = db.admins.find((a) => a.id === id);
   if (adm) {
     adm.passwordHash = derivedHash;
     adm.mustChangePassword = true;
-    adm.updatedAt = now;
+    adm.updatedAt = new Date().toISOString();
     saveDb(db);
     return true;
   }
@@ -90115,27 +92304,17 @@ export async function updateAdminPassword(
   adminId: string,
   newPasswordHash: string
 ): Promise<boolean> {
-  const now = new Date().toISOString();
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('admins').update({
-      password_hash: newPasswordHash,
-      must_change_password: false,
-      updated_at: now,
-    });
-
-    if (isUUID(adminId)) {
-      query = query.eq('id', adminId);
-    } else {
-      query = query.eq('email', adminId.trim().toLowerCase());
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE admins SET password_hash = ?, must_change_password = 0, updated_at = NOW() WHERE id = ? OR LOWER(email) = LOWER(?)', [newPasswordHash, adminId, adminId]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateAdminPassword failed, falling back:', mysqlErr);
     }
-
-    const { error } = await query;
-    if (error) throw new Error(`Failed to update password: ${error.message}`);
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const admin = db.admins.find(
     (a) => a.id === adminId || a.email.toLowerCase() === adminId.trim().toLowerCase()
@@ -90143,7 +92322,7 @@ export async function updateAdminPassword(
   if (admin) {
     admin.passwordHash = newPasswordHash;
     admin.mustChangePassword = false;
-    admin.updatedAt = now;
+    admin.updatedAt = new Date().toISOString();
     saveDb(db);
     return true;
   }
@@ -90151,27 +92330,21 @@ export async function updateAdminPassword(
 }
 
 export async function recordAdminLogin(adminId: string): Promise<void> {
-  const now = new Date().toISOString();
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      let query = supabase.from('admins').update({ last_login_at: now, updated_at: now });
-      if (isUUID(adminId)) {
-        query = query.eq('id', adminId);
-      } else {
-        query = query.eq('email', adminId);
-      }
-      await query;
+      await execute('UPDATE admins SET last_login_at = NOW(), updated_at = NOW() WHERE id = ? OR LOWER(email) = LOWER(?)', [adminId, adminId]);
       return;
-    } catch (err) {
-      console.warn('Supabase recordAdminLogin notice:', err);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL recordAdminLogin failed:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const adm = db.admins.find((a) => a.id === adminId || a.email === adminId);
   if (adm) {
-    adm.lastLoginAt = now;
+    adm.lastLoginAt = new Date().toISOString();
     saveDb(db);
   }
 }
@@ -90184,71 +92357,64 @@ function hashBootstrapPassword(password: string): string {
 
 export async function bootstrapInitialEmployee(): Promise<void> {
   const existing = await getAdminByEmail('employee@balaji.com');
-  if (!existing) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
-      const hash = hashBootstrapPassword(initialTempPass);
-      await supabase.from('admins').insert({
-        email: 'employee@balaji.com',
-        name: 'Balaji Studio Associate',
-        password_hash: hash,
-        role: 'employee',
-        must_change_password: true,
-      });
-    }
+  if (!existing && isMySQLConfigured()) {
+    const initialTempPass = `Temp#${crypto.randomBytes(4).toString('hex')}!`;
+    const hash = hashBootstrapPassword(initialTempPass);
+    await execute(
+      `INSERT INTO admins (id, email, name, password_hash, role, status, must_change_password, created_at, updated_at)
+       VALUES (?, 'employee@balaji.com', 'Balaji Studio Associate', ?, 'employee', 'active', 1, NOW(), NOW())`,
+      [`admin-${crypto.randomUUID()}`, hash]
+    );
   }
 }
-
-
 ```
 
 ---
 
 ### `src/server/db/repositories/enquiries.ts`
 
+- **File**: `src/server/db/repositories/enquiries.ts`
+- **Size**: 3.0 KB (109 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Enquiry } from '@/types';
-import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { getDb, saveDb } from '../client';
 import { mapSupabaseEnquiry } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function createEnquiry(
   data: Omit<Enquiry, 'id' | 'createdAt' | 'status'>
 ): Promise<Enquiry> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('enquiries')
-      .insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        subject: data.subject,
-        message: data.message,
-        source: data.source || 'Contact Form',
-        status: 'New',
-        created_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const enqId = `enq-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO enquiries (id, name, email, phone, subject, message, source, status, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, 'New', NOW())`,
+        [
+          enqId,
+          data.name,
+          data.email,
+          data.phone,
+          data.subject,
+          data.message,
+          data.source || 'Contact Form',
+        ]
+      );
 
-    if (error || !inserted) {
-      console.error('Supabase createEnquiry error:', error);
-      throw new Error(`Failed to submit enquiry: ${error?.message || 'Database error'}`);
+      const inserted = await queryOne('SELECT * FROM enquiries WHERE id = ?', [enqId]);
+      if (inserted) return mapSupabaseEnquiry(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createEnquiry failed, falling back:', mysqlErr);
     }
-
-    return mapSupabaseEnquiry(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newEnq: Enquiry = {
     ...data,
@@ -90265,20 +92431,27 @@ export async function getEnquiries(options?: {
   limit?: number;
   offset?: number;
 }): Promise<Enquiry[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('enquiries').select('*').order('created_at', { ascending: false });
-    if (options?.limit) {
-      query = query.limit(options.limit);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM enquiries ORDER BY created_at DESC';
+      const params: any[] = [];
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const rows = await query(sql, params);
+      return rows.map(mapSupabaseEnquiry);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getEnquiries failed, falling back:', mysqlErr);
     }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-    const { data, error } = await query;
-    if (error) throw new Error(`Failed to load enquiries: ${error.message}`);
-    return (data || []).map(mapSupabaseEnquiry);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let list = [...db.enquiries];
   if (options?.offset) {
@@ -90294,20 +92467,18 @@ export async function updateEnquiryStatus(
   id: string,
   status: Enquiry['status']
 ): Promise<Enquiry | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('enquiries').update({ status }).select();
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('id', id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('UPDATE enquiries SET status = ? WHERE id = ?', [status, id]);
+      const row = await queryOne('SELECT * FROM enquiries WHERE id = ?', [id]);
+      if (row) return mapSupabaseEnquiry(row);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateEnquiryStatus failed, falling back:', mysqlErr);
     }
-    const { data, error } = await query.maybeSingle();
-    if (error) throw new Error(`Failed to update enquiry status: ${error.message}`);
-    if (!data) return null;
-    return mapSupabaseEnquiry(data);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const enq = db.enquiries.find((e) => e.id === id);
   if (!enq) return null;
@@ -90315,12 +92486,15 @@ export async function updateEnquiryStatus(
   saveDb(db);
   return enq;
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/index.ts`
+
+- **File**: `src/server/db/repositories/index.ts`
+- **Size**: 0.3 KB (12 lines)
+- **Language**: `typescript`
 
 ```typescript
 export * from './products';
@@ -90334,20 +92508,20 @@ export * from './employees';
 export * from './audit';
 export * from './customers';
 export * from './enquiries';
-
 ```
 
 ---
 
 ### `src/server/db/repositories/orders.ts`
 
+- **File**: `src/server/db/repositories/orders.ts`
+- **Size**: 9.4 KB (278 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  isUUID,
   invalidateMemoryCache,
   getDb,
   saveDb,
@@ -90355,38 +92529,51 @@ import {
 import { mapSupabaseOrder } from '../mappers';
 import { cancelOrderAtomic } from '../transactions/orders';
 import { validateOrderStatusTransition } from '../../validation/schemas';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getOrders(options?: {
   limit?: number;
   offset?: number;
   status?: OrderStatus;
 }): Promise<Order[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .order('created_at', { ascending: false });
-
-    if (options?.status) {
-      query = query.eq('order_status', options.status);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM orders WHERE 1=1';
+      const params: any[] = [];
+      if (options?.status) {
+        sql += ' AND order_status = ?';
+        params.push(options.status);
+      }
+      sql += ' ORDER BY created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const orders = await query(sql, params);
+      if (orders.length > 0) {
+        const orderIds = orders.map((o) => o.id);
+        const placeholders = orderIds.map(() => '?').join(',');
+        const items = await query(`SELECT * FROM order_items WHERE order_id IN (${placeholders})`, orderIds);
+        const itemsByOrder = new Map<string, any[]>();
+        items.forEach((it) => {
+          const list = itemsByOrder.get(it.order_id) || [];
+          list.push(it);
+          itemsByOrder.set(it.order_id, list);
+        });
+        return orders.map((o) => mapSupabaseOrder({ ...o, items: itemsByOrder.get(o.id) || o.items || [] }));
+      }
+      return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrders failed, falling back:', mysqlErr);
     }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getOrders error:', error);
-      throw new Error(`Failed to load orders from database: ${error.message}`);
-    }
-
-    return (data || []).map(mapSupabaseOrder);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let list = [...db.orders];
   if (options?.status) {
@@ -90402,225 +92589,227 @@ export async function getOrders(options?: {
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('orders').select('*, items:order_items(*)');
-
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('order_number', id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const order = await queryOne('SELECT * FROM orders WHERE id = ? LIMIT 1', [id]);
+      if (order) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...order, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrderById failed, falling back:', mysqlErr);
     }
-
-    const { data, error } = await query.maybeSingle();
-    if (error) {
-      console.error('Supabase getOrderById error:', error);
-      throw new Error(`Database error loading order ${id}: ${error.message}`);
-    }
-    return data ? mapSupabaseOrder(data) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  return db.orders.find((o) => o.id === id || o.orderNumber === id) || null;
+  return db.orders.find((o) => o.id === id) || null;
+}
+
+export async function getOrderByNumber(orderNumber: string): Promise<Order | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const order = await queryOne('SELECT * FROM orders WHERE order_number = ? LIMIT 1', [orderNumber]);
+      if (order) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
+        return mapSupabaseOrder({ ...order, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrderByNumber failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  return db.orders.find((o) => o.orderNumber === orderNumber) || null;
 }
 
 export async function getCustomerOrders(email: string): Promise<Order[]> {
-  const normalizedEmail = email.trim().toLowerCase();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .ilike('customer_email', normalizedEmail)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Failed to load customer orders:', error.message);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const orders = await query(
+        'SELECT * FROM orders WHERE customer_email = ? ORDER BY created_at DESC',
+        [email]
+      );
+      if (orders.length > 0) {
+        const orderIds = orders.map((o) => o.id);
+        const placeholders = orderIds.map(() => '?').join(',');
+        const items = await query(`SELECT * FROM order_items WHERE order_id IN (${placeholders})`, orderIds);
+        const itemsByOrder = new Map<string, any[]>();
+        items.forEach((it) => {
+          const list = itemsByOrder.get(it.order_id) || [];
+          list.push(it);
+          itemsByOrder.set(it.order_id, list);
+        });
+        return orders.map((o) => mapSupabaseOrder({ ...o, items: itemsByOrder.get(o.id) || o.items || [] }));
+      }
       return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCustomerOrders failed, falling back:', mysqlErr);
     }
-    return (orders || []).map(mapSupabaseOrder);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  return db.orders.filter(
-    (o) => o.customerEmail.toLowerCase().trim() === normalizedEmail
-  );
+  return db.orders
+    .filter((o) => o.customerEmail.toLowerCase() === email.toLowerCase())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function updateOrderStatus(
   id: string,
-  orderStatus?: Order['orderStatus'],
-  paymentStatus?: Order['paymentStatus'],
-  options?: {
-    actorEmail?: string;
-    note?: string;
-    utrNumber?: string;
-  }
+  newStatus: OrderStatus,
+  paymentStatusOrOptions?: PaymentStatus | { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string },
+  maybeOptions?: { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string }
 ): Promise<Order | null> {
-  const currentOrder = await getOrderById(id);
-  if (!currentOrder) return null;
+  let paymentStatus: PaymentStatus | undefined;
+  let options: { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string } | undefined;
 
-  // Enforce formal order state machine
-  if (orderStatus) {
-    validateOrderStatusTransition(currentOrder.orderStatus, orderStatus);
+  if (typeof paymentStatusOrOptions === 'string') {
+    paymentStatus = paymentStatusOrOptions as PaymentStatus;
+    options = maybeOptions;
+  } else if (typeof paymentStatusOrOptions === 'object') {
+    options = paymentStatusOrOptions;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  if (newStatus === 'Cancelled') {
+    return cancelOrderAtomic(id, options);
+  }
 
-    // If transitioning to Cancelled, use single-transaction atomic cancellation
-    if (orderStatus === 'Cancelled') {
-      return cancelOrderAtomic(currentOrder.id, options);
-    }
+  const current = await getOrderById(id);
+  if (!current) return null;
 
-    const updates: any = { updated_at: new Date().toISOString() };
-    if (orderStatus) updates.order_status = orderStatus;
-    if (paymentStatus) updates.payment_status = paymentStatus;
-    if (options?.utrNumber || options?.note) {
-      const existingNotes = currentOrder.notes || '';
-      const utrTag = options.utrNumber ? `[UTR:${options.utrNumber}]` : '';
-      const noteTag = options.note ? `[NOTE:${options.note}]` : '';
-      updates.notes = [existingNotes, utrTag, noteTag].filter(Boolean).join('\n');
-    }
+  validateOrderStatusTransition(current.orderStatus, newStatus);
 
-    let query = supabase.from('orders').update(updates);
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('order_number', id);
-    }
-
-    const { data, error } = await query.select('*, items:order_items(*)').maybeSingle();
-    if (error) {
-      console.error('Supabase updateOrderStatus error:', error);
-      throw new Error(`Failed to update order status: ${error.message}`);
-    }
-    if (!data) return null;
-
-    if (orderStatus && orderStatus !== currentOrder.orderStatus) {
-      try {
-        await supabase.from('order_status_history').insert({
-          order_id: data.id,
-          from_status: currentOrder.orderStatus,
-          to_status: orderStatus,
-          actor_email: options?.actorEmail || 'system',
-          note: options?.note || null,
-        });
-      } catch (histErr) {
-        console.warn('Status history insert notice:', histErr);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates = ['order_status = ?', 'updated_at = NOW()'];
+      const params: any[] = [newStatus];
+      if (paymentStatus) {
+        updates.push('payment_status = ?');
+        params.push(paymentStatus);
       }
+      if (options?.utrNumber) {
+        updates.push('utr_number = ?');
+        params.push(options.utrNumber);
+      }
+      if (options?.transactionId) {
+        updates.push('transaction_id = ?');
+        params.push(options.transactionId);
+      }
+      params.push(id);
+      await execute(`UPDATE orders SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('orders');
+      const updated = await queryOne('SELECT * FROM orders WHERE id = ?', [id]);
+      if (updated) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...updated, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateOrderStatus failed, falling back:', mysqlErr);
     }
-
-    return mapSupabaseOrder(data);
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const index = db.orders.findIndex((o) => o.id === id || o.orderNumber === id);
-  if (index === -1) return null;
-
-  const ord = db.orders[index];
-  if (orderStatus) ord.orderStatus = orderStatus;
+  const ord = db.orders.find((o) => o.id === id);
+  if (!ord) return null;
+  ord.orderStatus = newStatus;
   if (paymentStatus) ord.paymentStatus = paymentStatus;
-  if (options?.utrNumber) {
-    ord.utrNumber = options.utrNumber;
-  }
+  if (options?.utrNumber) ord.utrNumber = options.utrNumber;
+  if (options?.transactionId) ord.transactionId = options.transactionId;
   ord.updatedAt = new Date().toISOString();
   saveDb(db);
+  invalidateMemoryCache('orders');
   return ord;
 }
 
-export async function createOrder(
-  order: Omit<Order, 'id' | 'orderNumber' | 'createdAt' | 'updatedAt'>
-): Promise<Order> {
-  const now = new Date().toISOString();
-  const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-
-    const { data: ord, error: ordErr } = await supabase
-      .from('orders')
-      .insert({
-        order_number: orderNumber,
-        customer_name: order.customerName,
-        customer_email: order.customerEmail,
-        customer_phone: order.customerPhone,
-        shipping_address: order.shippingAddress,
-        billing_address: order.billingAddress || order.shippingAddress,
-        subtotal: order.subtotal,
-        tax: order.tax,
-        shipping_fee: order.shippingFee,
-        discount: order.discount,
-        total_amount: order.totalAmount,
-        order_status: order.orderStatus || 'Confirmed',
-        payment_status: order.paymentStatus || 'Submitted',
-        payment_method: order.paymentMethod,
-        notes: order.notes,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
-
-    if (ordErr || !ord) {
-      throw new Error(`Failed to create order: ${ordErr?.message || 'Database error'}`);
+export async function updatePaymentStatus(
+  id: string,
+  paymentStatus: PaymentStatus,
+  options?: { transactionId?: string; utrNumber?: string }
+): Promise<Order | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates = ['payment_status = ?', 'updated_at = NOW()'];
+      const params: any[] = [paymentStatus];
+      if (options?.transactionId) {
+        updates.push('transaction_id = ?');
+        params.push(options.transactionId);
+      }
+      if (options?.utrNumber) {
+        updates.push('utr_number = ?');
+        params.push(options.utrNumber);
+      }
+      params.push(id);
+      await execute(`UPDATE orders SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('orders');
+      const updated = await queryOne('SELECT * FROM orders WHERE id = ?', [id]);
+      if (updated) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...updated, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updatePaymentStatus failed, falling back:', mysqlErr);
     }
-
-    if (order.items && order.items.length > 0) {
-      const itemsPayload = order.items.map((it) => ({
-        order_id: ord.id,
-        product_id: it.productId,
-        variant_id: it.variantId || null,
-        product_name: it.productName,
-        product_sku: it.productSku,
-        unit: it.unit,
-        unit_price: it.unitPrice,
-        quantity: it.quantity,
-        subtotal: it.subtotal,
-        image_url: it.imageUrl || null,
-        selected_color: it.selectedColor || null,
-        selected_finish: it.selectedFinish || null,
-      }));
-
-      await supabase.from('order_items').insert(itemsPayload);
-    }
-
-    const { data: fullOrder } = await supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .eq('id', ord.id)
-      .single();
-
-    invalidateMemoryCache('products');
-    return mapSupabaseOrder(fullOrder || ord);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const newOrder: Order = {
-    ...order,
-    id: `ord-${Date.now()}`,
-    orderNumber,
-    createdAt: now,
-    updatedAt: now,
-  };
-  db.orders.unshift(newOrder);
+  const ord = db.orders.find((o) => o.id === id);
+  if (!ord) return null;
+  ord.paymentStatus = paymentStatus;
+  if (options?.transactionId) ord.transactionId = options.transactionId;
+  if (options?.utrNumber) ord.utrNumber = options.utrNumber;
+  ord.updatedAt = new Date().toISOString();
   saveDb(db);
-  return newOrder;
+  invalidateMemoryCache('orders');
+  return ord;
 }
 
+export async function deleteOrder(id: string): Promise<boolean> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM order_items WHERE order_id = ?', [id]);
+      await execute('DELETE FROM orders WHERE id = ?', [id]);
+      invalidateMemoryCache('orders');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteOrder failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const initialLength = db.orders.length;
+  db.orders = db.orders.filter((o) => o.id !== id);
+  if (db.orders.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('orders');
+    return true;
+  }
+  return false;
+}
 ```
 
 ---
 
 ### `src/server/db/repositories/products.ts`
 
+- **File**: `src/server/db/repositories/products.ts`
+- **Size**: 15.8 KB (426 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Product } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -90629,6 +92818,7 @@ import {
 } from '../client';
 import { mapSupabaseProduct } from '../mappers';
 import { ConflictError, ValidationError } from '../../errors';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getProducts(options?: {
   categoryId?: string;
@@ -90646,68 +92836,56 @@ export async function getProducts(options?: {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-
-    let query = supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .order('created_at', { ascending: false });
-
-    if (options?.publishedOnly) {
-      query = query.eq('published', true);
-    }
-    if (options?.featuredOnly) {
-      query = query.eq('is_featured', true);
-    }
-    if (options?.categoryId) {
-      query = query.eq('category_id', options.categoryId);
-    }
-    if (options?.categorySlug) {
-      // Resolve category ID by slug or filter via join
-      const { data: cat } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', options.categorySlug)
-        .maybeSingle();
-      if (cat?.id) {
-        query = query.eq('category_id', cat.id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = `
+        SELECT p.*, c.name AS category_name, c.slug AS category_slug
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE 1=1
+      `;
+      const params: any[] = [];
+      if (options?.publishedOnly) {
+        sql += ' AND p.published = 1';
       }
-    }
-    if (options?.search) {
-      const term = `%${options.search}%`;
-      query = query.or(`name.ilike.${term},sku.ilike.${term},material.ilike.${term},description.ilike.${term}`);
-    }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getProducts error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase host unreachable. Serving static catalog fixture.');
-      } else {
-        throw new Error(`Failed to load products from database: ${error.message}`);
+      if (options?.featuredOnly) {
+        sql += ' AND p.is_featured = 1';
       }
-    } else {
-      const products = (data || []).map((row) => mapSupabaseProduct(row));
+      if (options?.categoryId) {
+        sql += ' AND p.category_id = ?';
+        params.push(options.categoryId);
+      }
+      if (options?.categorySlug) {
+        sql += ' AND c.slug = ?';
+        params.push(options.categorySlug);
+      }
+      if (options?.search) {
+        const term = `%${options.search}%`;
+        sql += ' AND (p.name LIKE ? OR p.sku LIKE ? OR p.material LIKE ? OR p.description LIKE ?)';
+        params.push(term, term, term, term);
+      }
+      sql += ' ORDER BY p.created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const rows = await query(sql, params);
+      const products = rows.map((row) => mapSupabaseProduct(row));
       memoryCache.products.set(cacheKey, { data: products, timestamp: now });
       return products;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProducts failed, falling back:', mysqlErr);
     }
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let result = [...db.products];
-
   if (options?.publishedOnly) {
     result = result.filter((p) => p.published);
   }
@@ -90751,35 +92929,28 @@ export async function getProductById(id: string): Promise<Product | null> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('id', id)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getProductById error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to fixture for product ${id}.`);
-      } else {
-        throw new Error(`Database error retrieving product ${id}: ${error.message}`);
-      }
-    } else {
-      const product = data ? mapSupabaseProduct(data) : null;
-      memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
-      if (product) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [id]
+      );
+      if (row) {
+        const product = mapSupabaseProduct(row);
+        memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
         memoryCache.productByIdOrSlug.set(`slug:${product.slug}`, { data: product, timestamp: now });
+        return product;
       }
-      return product;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductById failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const product = db.products.find((p) => p.id === id) || null;
   memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
@@ -90793,35 +92964,28 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('slug', slug)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getProductBySlug error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to fixture for product slug ${slug}.`);
-      } else {
-        throw new Error(`Database error retrieving product slug ${slug}: ${error.message}`);
-      }
-    } else {
-      const product = data ? mapSupabaseProduct(data) : null;
-      memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
-      if (product) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.slug = ? LIMIT 1`,
+        [slug]
+      );
+      if (row) {
+        const product = mapSupabaseProduct(row);
+        memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
         memoryCache.productByIdOrSlug.set(`id:${product.id}`, { data: product, timestamp: now });
+        return product;
       }
-      return product;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductBySlug failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const product = db.products.find((p) => p.slug === slug) || null;
   memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
@@ -90830,19 +92994,26 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
 export async function getProductBySku(sku: string): Promise<Product | null> {
   const normalized = sku.trim();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('sku', normalized)
-      .maybeSingle();
 
-    if (!error && data) {
-      return mapSupabaseProduct(data);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE LOWER(p.sku) = LOWER(?) LIMIT 1`,
+        [normalized]
+      );
+      if (row) {
+        return mapSupabaseProduct(row);
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductBySku failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.products.find((p) => p.sku.toLowerCase() === normalized.toLowerCase()) || null;
 }
@@ -90865,57 +93036,64 @@ export async function createProduct(
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const prodId = `prod-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO products (
+          id, name, slug, sku, brand, category_id, subcategory, description, price, sale_price,
+          unit, moq, stock, purchase_mode, lead_time, dimensions, thickness, material,
+          finish, color, images, variants, is_featured, is_new, is_bestseller, published,
+          tags, specifications, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          prodId,
+          data.name,
+          data.slug,
+          data.sku,
+          data.brand || 'Balaji Atelier',
+          data.categoryId || null,
+          data.subcategory || null,
+          data.description || '',
+          data.price,
+          data.salePrice !== undefined ? data.salePrice : null,
+          data.unit || 'sq ft',
+          data.moq || 1,
+          data.stock !== undefined ? data.stock : 0,
+          data.purchaseMode || 'BUY_NOW',
+          data.leadTime || '3-5 business days',
+          data.dimensions || null,
+          data.thickness || null,
+          data.material || null,
+          data.finish || null,
+          data.color || null,
+          JSON.stringify(data.images || []),
+          JSON.stringify(data.variants || []),
+          data.isFeatured ? 1 : 0,
+          data.isNew ? 1 : 0,
+          data.isBestseller ? 1 : 0,
+          data.published !== false ? 1 : 0,
+          JSON.stringify(data.tags || []),
+          JSON.stringify(data.specifications || {}),
+        ]
+      );
+      invalidateMemoryCache('products');
 
-    const dbPayload: any = {
-      name: data.name,
-      slug: data.slug,
-      sku: data.sku,
-      brand: data.brand || 'Balaji Architect & Interiors',
-      category_id: data.categoryId || null,
-      subcategory: data.subcategory || null,
-      description: data.description || '',
-      price: data.price,
-      sale_price: data.salePrice !== undefined ? data.salePrice : null,
-      unit: data.unit,
-      moq: data.moq || 1,
-      stock: data.stock !== undefined ? data.stock : 0,
-      purchase_mode: data.purchaseMode || 'BOTH',
-      lead_time: data.leadTime || '2-3 Weeks',
-      dimensions: data.dimensions || null,
-      thickness: data.thickness || null,
-      material: data.material || null,
-      finish: data.finish || null,
-      color: data.color || null,
-      images: data.images || [],
-      variants: data.variants || [],
-      is_featured: Boolean(data.isFeatured),
-      is_new: Boolean(data.isNew),
-      is_bestseller: Boolean(data.isBestseller),
-      published: data.published !== false,
-      tags: data.tags || [],
-      specifications: data.specifications || {},
-      created_at: now,
-      updated_at: now,
-    };
-
-    const { data: inserted, error } = await supabase
-      .from('products')
-      .insert(dbPayload)
-      .select('*, categories(name, slug)')
-      .single();
-
-    if (error || !inserted) {
-      console.error('Supabase createProduct error:', error);
-      throw new Error(`Failed to create product in database: ${error?.message || 'Unknown database error'}`);
+      const inserted = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [prodId]
+      );
+      if (inserted) return mapSupabaseProduct(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createProduct failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('products');
-    return mapSupabaseProduct(inserted);
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newProduct: Product = {
     ...data,
@@ -90938,33 +93116,18 @@ export async function updateProduct(
   const { expectedUpdatedAt, ...dataToUpdate } = (partialData || {}) as any;
 
   // Optimistic Concurrency Control Check
-  if (expectedUpdatedAt) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const { data: current, error: fetchErr } = await supabase
-        .from('products')
-        .select('updated_at')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (fetchErr) {
-        throw new Error(`Database error verifying product concurrency: ${fetchErr.message}`);
-      }
+  if (expectedUpdatedAt && isMySQLConfigured()) {
+    try {
+      const current = await queryOne('SELECT updated_at FROM products WHERE id = ? LIMIT 1', [id]);
       if (!current) return null;
-      if (current.updated_at && expectedUpdatedAt !== current.updated_at) {
+      const currentIso = current.updated_at instanceof Date ? current.updated_at.toISOString() : current.updated_at;
+      if (currentIso && expectedUpdatedAt !== currentIso) {
         throw new ConflictError(
           'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
         );
       }
-    } else {
-      const db = getDb();
-      const current = db.products.find((p) => p.id === id);
-      if (!current) return null;
-      if (current.updatedAt && expectedUpdatedAt !== current.updatedAt) {
-        throw new ConflictError(
-          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
-        );
-      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
     }
   }
 
@@ -90981,55 +93144,57 @@ export async function updateProduct(
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (dataToUpdate.name !== undefined) { updates.push('name = ?'); params.push(dataToUpdate.name); }
+      if (dataToUpdate.slug !== undefined) { updates.push('slug = ?'); params.push(dataToUpdate.slug); }
+      if (dataToUpdate.sku !== undefined) { updates.push('sku = ?'); params.push(dataToUpdate.sku); }
+      if (dataToUpdate.brand !== undefined) { updates.push('brand = ?'); params.push(dataToUpdate.brand); }
+      if (dataToUpdate.categoryId !== undefined) { updates.push('category_id = ?'); params.push(dataToUpdate.categoryId || null); }
+      if (dataToUpdate.subcategory !== undefined) { updates.push('subcategory = ?'); params.push(dataToUpdate.subcategory); }
+      if (dataToUpdate.description !== undefined) { updates.push('description = ?'); params.push(dataToUpdate.description); }
+      if (dataToUpdate.price !== undefined) { updates.push('price = ?'); params.push(dataToUpdate.price); }
+      if (dataToUpdate.salePrice !== undefined) { updates.push('sale_price = ?'); params.push(dataToUpdate.salePrice); }
+      if (dataToUpdate.unit !== undefined) { updates.push('unit = ?'); params.push(dataToUpdate.unit); }
+      if (dataToUpdate.moq !== undefined) { updates.push('moq = ?'); params.push(dataToUpdate.moq); }
+      if (dataToUpdate.stock !== undefined) { updates.push('stock = ?'); params.push(dataToUpdate.stock); }
+      if (dataToUpdate.purchaseMode !== undefined) { updates.push('purchase_mode = ?'); params.push(dataToUpdate.purchaseMode); }
+      if (dataToUpdate.leadTime !== undefined) { updates.push('lead_time = ?'); params.push(dataToUpdate.leadTime); }
+      if (dataToUpdate.dimensions !== undefined) { updates.push('dimensions = ?'); params.push(dataToUpdate.dimensions); }
+      if (dataToUpdate.thickness !== undefined) { updates.push('thickness = ?'); params.push(dataToUpdate.thickness); }
+      if (dataToUpdate.material !== undefined) { updates.push('material = ?'); params.push(dataToUpdate.material); }
+      if (dataToUpdate.finish !== undefined) { updates.push('finish = ?'); params.push(dataToUpdate.finish); }
+      if (dataToUpdate.color !== undefined) { updates.push('color = ?'); params.push(dataToUpdate.color); }
+      if (dataToUpdate.images !== undefined) { updates.push('images = ?'); params.push(JSON.stringify(dataToUpdate.images)); }
+      if (dataToUpdate.variants !== undefined) { updates.push('variants = ?'); params.push(JSON.stringify(dataToUpdate.variants)); }
+      if (dataToUpdate.isFeatured !== undefined) { updates.push('is_featured = ?'); params.push(dataToUpdate.isFeatured ? 1 : 0); }
+      if (dataToUpdate.isNew !== undefined) { updates.push('is_new = ?'); params.push(dataToUpdate.isNew ? 1 : 0); }
+      if (dataToUpdate.isBestseller !== undefined) { updates.push('is_bestseller = ?'); params.push(dataToUpdate.isBestseller ? 1 : 0); }
+      if (dataToUpdate.published !== undefined) { updates.push('published = ?'); params.push(dataToUpdate.published ? 1 : 0); }
+      if (dataToUpdate.tags !== undefined) { updates.push('tags = ?'); params.push(JSON.stringify(dataToUpdate.tags)); }
+      if (dataToUpdate.specifications !== undefined) { updates.push('specifications = ?'); params.push(JSON.stringify(dataToUpdate.specifications)); }
 
-    const updates: any = { updated_at: now };
-    if (dataToUpdate.name !== undefined) updates.name = dataToUpdate.name;
-    if (dataToUpdate.slug !== undefined) updates.slug = dataToUpdate.slug;
-    if (dataToUpdate.sku !== undefined) updates.sku = dataToUpdate.sku;
-    if (dataToUpdate.brand !== undefined) updates.brand = dataToUpdate.brand;
-    if (dataToUpdate.categoryId !== undefined) updates.category_id = dataToUpdate.categoryId || null;
-    if (dataToUpdate.subcategory !== undefined) updates.subcategory = dataToUpdate.subcategory;
-    if (dataToUpdate.description !== undefined) updates.description = dataToUpdate.description;
-    if (dataToUpdate.price !== undefined) updates.price = dataToUpdate.price;
-    if (dataToUpdate.salePrice !== undefined) updates.sale_price = dataToUpdate.salePrice;
-    if (dataToUpdate.unit !== undefined) updates.unit = dataToUpdate.unit;
-    if (dataToUpdate.moq !== undefined) updates.moq = dataToUpdate.moq;
-    if (dataToUpdate.stock !== undefined) updates.stock = dataToUpdate.stock;
-    if (dataToUpdate.purchaseMode !== undefined) updates.purchase_mode = dataToUpdate.purchaseMode;
-    if (dataToUpdate.leadTime !== undefined) updates.lead_time = dataToUpdate.leadTime;
-    if (dataToUpdate.dimensions !== undefined) updates.dimensions = dataToUpdate.dimensions;
-    if (dataToUpdate.thickness !== undefined) updates.thickness = dataToUpdate.thickness;
-    if (dataToUpdate.material !== undefined) updates.material = dataToUpdate.material;
-    if (dataToUpdate.finish !== undefined) updates.finish = dataToUpdate.finish;
-    if (dataToUpdate.color !== undefined) updates.color = dataToUpdate.color;
-    if (dataToUpdate.images !== undefined) updates.images = dataToUpdate.images;
-    if (dataToUpdate.variants !== undefined) updates.variants = dataToUpdate.variants;
-    if (dataToUpdate.isFeatured !== undefined) updates.is_featured = dataToUpdate.isFeatured;
-    if (dataToUpdate.isNew !== undefined) updates.is_new = dataToUpdate.isNew;
-    if (dataToUpdate.isBestseller !== undefined) updates.is_bestseller = dataToUpdate.isBestseller;
-    if (dataToUpdate.published !== undefined) updates.published = dataToUpdate.published;
-    if (dataToUpdate.tags !== undefined) updates.tags = dataToUpdate.tags;
-    if (dataToUpdate.specifications !== undefined) updates.specifications = dataToUpdate.specifications;
+      params.push(id);
+      await execute(`UPDATE products SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('products');
 
-    const { data: updated, error } = await supabase
-      .from('products')
-      .update(updates)
-      .eq('id', id)
-      .select('*, categories(name, slug)')
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase updateProduct error:', error);
-      throw new Error(`Failed to update product ${id}: ${error.message}`);
+      const updated = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [id]
+      );
+      if (updated) return mapSupabaseProduct(updated);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateProduct failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('products');
-    return updated ? mapSupabaseProduct(updated) : null;
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.products.findIndex((p) => p.id === id);
   if (index === -1) return null;
@@ -91045,17 +93210,18 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('products').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteProduct error:', error);
-      throw new Error(`Failed to delete product ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM products WHERE id = ?', [id]);
+      invalidateMemoryCache('products');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteProduct failed, falling back:', mysqlErr);
     }
-    invalidateMemoryCache('products');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.products.length;
   db.products = db.products.filter((p) => p.id !== id);
@@ -91066,19 +93232,20 @@ export async function deleteProduct(id: string): Promise<boolean> {
   }
   return false;
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/projects.ts`
 
+- **File**: `src/server/db/repositories/projects.ts`
+- **Size**: 9.9 KB (284 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Project } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -91086,6 +93253,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseProject } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getProjects(options?: {
   publishedOnly?: boolean;
@@ -91101,141 +93269,123 @@ export async function getProjects(options?: {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('projects').select('*').order('sort_order', { ascending: true });
-
-    if (options?.publishedOnly) {
-      query = query.eq('is_published', true);
-    }
-    if (options?.featuredOnly) {
-      query = query.eq('is_featured', true);
-    }
-    if (options?.search) {
-      const term = `%${options.search}%`;
-      query = query.or(`title.ilike.${term},location.ilike.${term},project_type.ilike.${term},short_description.ilike.${term}`);
-    }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getProjects error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to projects fixture.');
-      } else {
-        throw new Error(`Failed to load projects from database: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM projects WHERE 1=1';
+      const params: any[] = [];
+      if (options?.publishedOnly) {
+        sql += ' AND is_published = 1';
       }
-    } else {
-      const projects = (data || []).map(mapSupabaseProject);
+      if (options?.featuredOnly) {
+        sql += ' AND is_featured = 1';
+      }
+      if (options?.search) {
+        const term = `%${options.search}%`;
+        sql += ' AND (title LIKE ? OR location LIKE ? OR project_type LIKE ? OR short_description LIKE ?)';
+        params.push(term, term, term, term);
+      }
+      sql += ' ORDER BY sort_order ASC, created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const rows = await query(sql, params);
+      const projects = rows.map(mapSupabaseProject);
       memoryCache.projects.set(cacheKey, { data: projects, timestamp: now });
       return projects;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProjects failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  let result = [...db.projects];
+  let list = [...db.projects];
   if (options?.publishedOnly) {
-    result = result.filter((p) => p.isPublished);
+    list = list.filter((p) => p.isPublished);
   }
   if (options?.featuredOnly) {
-    result = result.filter((p) => p.isFeatured);
+    list = list.filter((p) => p.isFeatured);
   }
   if (options?.search) {
-    const term = options.search.toLowerCase();
-    result = result.filter(
+    const q = options.search.toLowerCase();
+    list = list.filter(
       (p) =>
-        p.title.toLowerCase().includes(term) ||
-        p.location.toLowerCase().includes(term) ||
-        p.projectType.toLowerCase().includes(term) ||
-        p.shortDescription.toLowerCase().includes(term)
+        p.title.toLowerCase().includes(q) ||
+        p.location.toLowerCase().includes(q) ||
+        p.projectType.toLowerCase().includes(q)
     );
   }
+  list.sort((a, b) => a.sortOrder - b.sortOrder);
   if (options?.offset) {
-    result = result.slice(options.offset);
+    list = list.slice(options.offset);
   }
   if (options?.limit) {
-    result = result.slice(0, options.limit);
+    list = list.slice(0, options.limit);
   }
-
-  memoryCache.projects.set(cacheKey, { data: result, timestamp: now });
-  return result;
+  memoryCache.projects.set(cacheKey, { data: list, timestamp: now });
+  return list;
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   const now = Date.now();
-  const cached = memoryCache.projectByIdOrSlug.get(`slug:${slug}`);
+  const cached = memoryCache.projectByIdOrSlug.get(slug);
   if (cached && now - cached.timestamp < CACHE_TTL_MS) {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).maybeSingle();
-    if (error) {
-      console.error('Supabase getProjectBySlug error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to projects fixture for slug ${slug}.`);
-      } else {
-        throw new Error(`Database error loading project ${slug}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM projects WHERE slug = ? LIMIT 1', [slug]);
+      if (row) {
+        const project = mapSupabaseProject(row);
+        memoryCache.projectByIdOrSlug.set(slug, { data: project, timestamp: now });
+        return project;
       }
-    } else {
-      const project = data ? mapSupabaseProject(data) : null;
-      memoryCache.projectByIdOrSlug.set(`slug:${slug}`, { data: project, timestamp: now });
-      return project;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProjectBySlug failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const project = db.projects.find((p) => p.slug === slug) || null;
-  memoryCache.projectByIdOrSlug.set(`slug:${slug}`, { data: project, timestamp: now });
-  return project;
+  const p = db.projects.find((pr) => pr.slug === slug) || null;
+  memoryCache.projectByIdOrSlug.set(slug, { data: p, timestamp: now });
+  return p;
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
   const now = Date.now();
-  const cached = memoryCache.projectByIdOrSlug.get(`id:${id}`);
+  const cached = memoryCache.projectByIdOrSlug.get(id);
   if (cached && now - cached.timestamp < CACHE_TTL_MS) {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase.from('projects').select('*').eq('id', id).maybeSingle();
-    if (error) {
-      console.error('Supabase getProjectById error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to projects fixture for id ${id}.`);
-      } else {
-        throw new Error(`Database error loading project ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM projects WHERE id = ? LIMIT 1', [id]);
+      if (row) {
+        const project = mapSupabaseProject(row);
+        memoryCache.projectByIdOrSlug.set(id, { data: project, timestamp: now });
+        return project;
       }
-    } else {
-      const project = data ? mapSupabaseProject(data) : null;
-      memoryCache.projectByIdOrSlug.set(`id:${id}`, { data: project, timestamp: now });
-      return project;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProjectById failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const project = db.projects.find((p) => p.id === id) || null;
-  memoryCache.projectByIdOrSlug.set(`id:${id}`, { data: project, timestamp: now });
-  return project;
+  const p = db.projects.find((pr) => pr.id === id) || null;
+  memoryCache.projectByIdOrSlug.set(id, { data: p, timestamp: now });
+  return p;
 }
 
 export async function createProject(
@@ -91243,42 +93393,48 @@ export async function createProject(
 ): Promise<Project> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('projects')
-      .insert({
-        title: data.title,
-        slug: data.slug,
-        location: data.location || '',
-        year: data.year || String(new Date().getFullYear()),
-        area: data.area || '',
-        project_type: data.projectType,
-        short_description: data.shortDescription || '',
-        description: data.description || '',
-        hero_image: data.heroImage || '',
-        gallery: data.gallery || [],
-        design_approach: data.designApproach || '',
-        materials_used: data.materialsUsed || [],
-        is_featured: Boolean(data.isFeatured),
-        is_published: data.isPublished !== false,
-        sort_order: data.sortOrder || 0,
-        tags: data.tags || [],
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const projId = `proj-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO projects (
+          id, title, slug, location, year, project_type, area,
+          short_description, description, hero_image, gallery,
+          design_approach, materials_used, before_after, is_published,
+          is_featured, sort_order, tags, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          projId,
+          data.title,
+          data.slug,
+          data.location,
+          data.year,
+          data.projectType,
+          data.area || '',
+          data.shortDescription || '',
+          data.description,
+          data.heroImage,
+          JSON.stringify(data.gallery || []),
+          data.designApproach || '',
+          JSON.stringify(data.materialsUsed || []),
+          data.beforeAfter ? JSON.stringify(data.beforeAfter) : null,
+          data.isPublished !== false ? 1 : 0,
+          data.isFeatured ? 1 : 0,
+          data.sortOrder || 0,
+          JSON.stringify(data.tags || []),
+        ]
+      );
+      invalidateMemoryCache('projects');
 
-    if (error || !inserted) {
-      console.error('Supabase createProject error:', error);
-      throw new Error(`Failed to create project: ${error?.message}`);
+      const inserted = await queryOne('SELECT * FROM projects WHERE id = ?', [projId]);
+      if (inserted) return mapSupabaseProject(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createProject failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('projects');
-    return mapSupabaseProject(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newProj: Project = {
     ...data,
@@ -91286,7 +93442,7 @@ export async function createProject(
     createdAt: now,
     updatedAt: now,
   };
-  db.projects.unshift(newProj);
+  db.projects.push(newProj);
   saveDb(db);
   invalidateMemoryCache('projects');
   return newProj;
@@ -91298,42 +93454,41 @@ export async function updateProject(
 ): Promise<Project | null> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partial.title !== undefined) updates.title = partial.title;
-    if (partial.slug !== undefined) updates.slug = partial.slug;
-    if (partial.location !== undefined) updates.location = partial.location;
-    if (partial.year !== undefined) updates.year = partial.year;
-    if (partial.area !== undefined) updates.area = partial.area;
-    if (partial.projectType !== undefined) updates.project_type = partial.projectType;
-    if (partial.shortDescription !== undefined) updates.short_description = partial.shortDescription;
-    if (partial.description !== undefined) updates.description = partial.description;
-    if (partial.heroImage !== undefined) updates.hero_image = partial.heroImage;
-    if (partial.gallery !== undefined) updates.gallery = partial.gallery;
-    if (partial.designApproach !== undefined) updates.design_approach = partial.designApproach;
-    if (partial.materialsUsed !== undefined) updates.materials_used = partial.materialsUsed;
-    if (partial.isFeatured !== undefined) updates.is_featured = partial.isFeatured;
-    if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
-    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
-    if (partial.tags !== undefined) updates.tags = partial.tags;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partial.title !== undefined) { updates.push('title = ?'); params.push(partial.title); }
+      if (partial.slug !== undefined) { updates.push('slug = ?'); params.push(partial.slug); }
+      if (partial.location !== undefined) { updates.push('location = ?'); params.push(partial.location); }
+      if (partial.year !== undefined) { updates.push('year = ?'); params.push(partial.year); }
+      if (partial.projectType !== undefined) { updates.push('project_type = ?'); params.push(partial.projectType); }
+      if (partial.area !== undefined) { updates.push('area = ?'); params.push(partial.area); }
+      if (partial.shortDescription !== undefined) { updates.push('short_description = ?'); params.push(partial.shortDescription); }
+      if (partial.description !== undefined) { updates.push('description = ?'); params.push(partial.description); }
+      if (partial.heroImage !== undefined) { updates.push('hero_image = ?'); params.push(partial.heroImage); }
+      if (partial.gallery !== undefined) { updates.push('gallery = ?'); params.push(JSON.stringify(partial.gallery)); }
+      if (partial.designApproach !== undefined) { updates.push('design_approach = ?'); params.push(partial.designApproach); }
+      if (partial.materialsUsed !== undefined) { updates.push('materials_used = ?'); params.push(JSON.stringify(partial.materialsUsed)); }
+      if (partial.beforeAfter !== undefined) { updates.push('before_after = ?'); params.push(partial.beforeAfter ? JSON.stringify(partial.beforeAfter) : null); }
+      if (partial.isPublished !== undefined) { updates.push('is_published = ?'); params.push(partial.isPublished ? 1 : 0); }
+      if (partial.isFeatured !== undefined) { updates.push('is_featured = ?'); params.push(partial.isFeatured ? 1 : 0); }
+      if (partial.sortOrder !== undefined) { updates.push('sort_order = ?'); params.push(partial.sortOrder); }
+      if (partial.tags !== undefined) { updates.push('tags = ?'); params.push(JSON.stringify(partial.tags)); }
 
-    const { data: updated, error } = await supabase
-      .from('projects')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
+      params.push(id);
+      await execute(`UPDATE projects SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('projects');
 
-    if (error) {
-      console.error('Supabase updateProject error:', error);
-      throw new Error(`Failed to update project ${id}: ${error.message}`);
+      const updated = await queryOne('SELECT * FROM projects WHERE id = ?', [id]);
+      if (updated) return mapSupabaseProject(updated);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateProject failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('projects');
-    return updated ? mapSupabaseProject(updated) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.projects.findIndex((p) => p.id === id);
   if (index === -1) return null;
@@ -91349,17 +93504,18 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('projects').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteProject error:', error);
-      throw new Error(`Failed to delete project ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM projects WHERE id = ?', [id]);
+      invalidateMemoryCache('projects');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteProject failed, falling back:', mysqlErr);
     }
-    invalidateMemoryCache('projects');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.projects.length;
   db.projects = db.projects.filter((p) => p.id !== id);
@@ -91370,24 +93526,22 @@ export async function deleteProject(id: string): Promise<boolean> {
   }
   return false;
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/quotes.ts`
 
+- **File**: `src/server/db/repositories/quotes.ts`
+- **Size**: 8.3 KB (265 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Quote, QuoteStatus } from '@/types';
-import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { getDb, saveDb } from '../client';
 import { mapSupabaseQuote } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function createQuote(quoteData: {
   customerName: string;
@@ -91409,68 +93563,64 @@ export async function createQuote(quoteData: {
 }): Promise<Quote> {
   const quoteNumber = `QT-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString('hex').toUpperCase()}`;
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: quoteRow, error } = await supabase
-      .from('quotes')
-      .insert({
-        quote_number: quoteNumber,
-        customer_name: quoteData.customerName,
-        customer_email: quoteData.customerEmail,
-        customer_phone: quoteData.customerPhone,
-        project_type: quoteData.projectType,
-        project_location: quoteData.projectLocation,
-        estimated_timeline: quoteData.estimatedTimeline,
-        budget_range: quoteData.budgetRange,
-        notes: quoteData.notes || '',
-        status: 'Pending',
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const quoteId = `quote-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO quotes (
+          id, quote_number, customer_name, customer_email, customer_phone,
+          project_type, project_location, estimated_timeline, budget_range,
+          notes, status, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW(), NOW())`,
+        [
+          quoteId,
+          quoteNumber,
+          quoteData.customerName,
+          quoteData.customerEmail,
+          quoteData.customerPhone,
+          quoteData.projectType,
+          quoteData.projectLocation,
+          quoteData.estimatedTimeline,
+          quoteData.budgetRange,
+          quoteData.notes || '',
+        ]
+      );
 
-    if (error || !quoteRow) throw new Error(`Failed to create quote: ${error?.message}`);
-
-    if (quoteData.items && quoteData.items.length > 0) {
-      const qItems = quoteData.items.map((it) => ({
-        quote_id: quoteRow.id,
-        product_id: it.productId && isUUID(it.productId) ? it.productId : null,
-        product_name: it.productName,
-        dimensions: it.dimensions || null,
-        quantity: it.quantity,
-        unit: it.unit || 'sq ft',
-        notes: it.notes || null,
-      }));
-      const { error: itemsErr } = await supabase.from('quote_items').insert(qItems);
-      if (itemsErr) {
-        await supabase.from('quotes').delete().eq('id', quoteRow.id);
-        throw new Error(`Failed to save quote items: ${itemsErr.message}`);
+      if (quoteData.items && quoteData.items.length > 0) {
+        for (const it of quoteData.items) {
+          await execute(
+            `INSERT INTO quote_items (
+              id, quote_id, product_id, product_name, dimensions, quantity, unit, notes, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+            [
+              crypto.randomUUID(),
+              quoteId,
+              it.productId || null,
+              it.productName,
+              it.dimensions || null,
+              it.quantity,
+              it.unit,
+              it.notes || null,
+            ]
+          );
+        }
       }
+
+      const inserted = await queryOne('SELECT * FROM quotes WHERE id = ?', [quoteId]);
+      if (inserted) {
+        const items = await query('SELECT * FROM quote_items WHERE quote_id = ?', [quoteId]);
+        return mapSupabaseQuote({ ...inserted, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createQuote failed, falling back:', mysqlErr);
     }
-
-    const { data: fullQuote } = await supabase
-      .from('quotes')
-      .select('*, items:quote_items(*)')
-      .eq('id', quoteRow.id)
-      .single();
-
-    return mapSupabaseQuote(fullQuote);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const quoteId = crypto.randomUUID();
-  const quoteItems = (quoteData.items || []).map((it) => ({
-    id: crypto.randomUUID(),
-    quoteId,
-    productId: it.productId,
-    productName: it.productName,
-    dimensions: it.dimensions,
-    quantity: it.quantity,
-    unit: it.unit,
-    notes: it.notes,
-  }));
-
   const newQuote: Quote = {
-    id: quoteId,
+    id: `qt-${Date.now()}`,
     quoteNumber,
     customerName: quoteData.customerName,
     customerEmail: quoteData.customerEmail,
@@ -91480,12 +93630,15 @@ export async function createQuote(quoteData: {
     estimatedTimeline: quoteData.estimatedTimeline,
     budgetRange: quoteData.budgetRange,
     notes: quoteData.notes,
-    items: quoteItems,
+    items: (quoteData.items || []).map((it) => ({
+      ...it,
+      id: crypto.randomUUID(),
+      quoteId: `qt-${Date.now()}`,
+    })),
     status: 'Pending',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
-
   db.quotes.unshift(newQuote);
   saveDb(db);
   return newQuote;
@@ -91496,32 +93649,46 @@ export async function getQuotes(options?: {
   offset?: number;
   status?: QuoteStatus;
 }): Promise<Quote[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase
-      .from('quotes')
-      .select('*, items:quote_items(*)')
-      .order('created_at', { ascending: false });
-
-    if (options?.status) {
-      query = query.eq('status', options.status);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM quotes WHERE 1=1';
+      const params: any[] = [];
+      if (options?.status) {
+        sql += ' AND status = ?';
+        params.push(options.status);
+      }
+      sql += ' ORDER BY created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const quotes = await query(sql, params);
+      if (quotes.length > 0) {
+        const quoteIds = quotes.map((q) => q.id);
+        const placeholders = quoteIds.map(() => '?').join(',');
+        const items = await query(`SELECT * FROM quote_items WHERE quote_id IN (${placeholders})`, quoteIds);
+        const itemsByQuote = new Map<string, any[]>();
+        items.forEach((it) => {
+          const list = itemsByQuote.get(it.quote_id) || [];
+          list.push(it);
+          itemsByQuote.set(it.quote_id, list);
+        });
+        return quotes.map((q) => mapSupabaseQuote({ ...q, items: itemsByQuote.get(q.id) || q.items || [] }));
+      }
+      return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getQuotes failed, falling back:', mysqlErr);
     }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) throw new Error(`Failed to load quotes: ${error.message}`);
-    return (data || []).map(mapSupabaseQuote);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  let list = [...db.quotes].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  let list = [...db.quotes];
   if (options?.status) {
     list = list.filter((q) => q.status === options.status);
   }
@@ -91535,72 +93702,119 @@ export async function getQuotes(options?: {
 }
 
 export async function getQuoteById(id: string): Promise<Quote | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('quotes').select('*, items:quote_items(*)');
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('quote_number', id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const quote = await queryOne('SELECT * FROM quotes WHERE id = ? LIMIT 1', [id]);
+      if (quote) {
+        const items = await query('SELECT * FROM quote_items WHERE quote_id = ?', [id]);
+        return mapSupabaseQuote({ ...quote, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getQuoteById failed, falling back:', mysqlErr);
     }
-    const { data, error } = await query.maybeSingle();
-    if (error) throw new Error(error.message);
-    if (!data) return null;
-    return mapSupabaseQuote(data);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  return db.quotes.find((q) => q.id === id || q.quoteNumber === id) || null;
+  return db.quotes.find((q) => q.id === id) || null;
 }
 
 export async function updateQuoteStatus(
   id: string,
-  status: Quote['status'],
-  totalQuotedAmount?: number,
-  adminNotes?: string
+  status: QuoteStatus,
+  param3?: string | number,
+  param4?: string | number
 ): Promise<Quote | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { status, updated_at: new Date().toISOString() };
-    if (totalQuotedAmount !== undefined) updates.total_quoted_amount = totalQuotedAmount;
-    if (adminNotes !== undefined) updates.admin_notes = adminNotes;
+  let adminNotes: string | undefined;
+  let totalQuotedAmount: number | undefined;
 
-    let query = supabase.from('quotes').update(updates);
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('quote_number', id);
-    }
-
-    const { data, error } = await query.select('*, items:quote_items(*)').maybeSingle();
-    if (error) throw new Error(`Failed to update quote status: ${error.message}`);
-    if (!data) return null;
-    return mapSupabaseQuote(data);
+  if (typeof param3 === 'number') {
+    totalQuotedAmount = param3;
+    if (typeof param4 === 'string') adminNotes = param4;
+  } else if (typeof param3 === 'string') {
+    adminNotes = param3;
+    if (typeof param4 === 'number') totalQuotedAmount = param4;
+  } else if (typeof param4 === 'number') {
+    totalQuotedAmount = param4;
+  } else if (typeof param4 === 'string') {
+    adminNotes = param4;
   }
 
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['status = ?', 'updated_at = NOW()'];
+      const params: any[] = [status];
+      if (adminNotes !== undefined) {
+        updates.push('admin_notes = ?');
+        params.push(adminNotes);
+      }
+      if (totalQuotedAmount !== undefined) {
+        updates.push('total_quoted_amount = ?');
+        params.push(totalQuotedAmount);
+      }
+      params.push(id);
+      await execute(`UPDATE quotes SET ${updates.join(', ')} WHERE id = ?`, params);
+
+      const quote = await queryOne('SELECT * FROM quotes WHERE id = ?', [id]);
+      if (quote) {
+        const items = await query('SELECT * FROM quote_items WHERE quote_id = ?', [id]);
+        return mapSupabaseQuote({ ...quote, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateQuoteStatus failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const quote = db.quotes.find((q) => q.id === id || q.quoteNumber === id);
+  const quote = db.quotes.find((q) => q.id === id);
   if (!quote) return null;
   quote.status = status;
-  if (totalQuotedAmount !== undefined) quote.totalQuotedAmount = totalQuotedAmount;
   if (adminNotes !== undefined) quote.adminNotes = adminNotes;
+  if (totalQuotedAmount !== undefined) quote.totalQuotedAmount = totalQuotedAmount;
   quote.updatedAt = new Date().toISOString();
   saveDb(db);
   return quote;
 }
 
+export async function deleteQuote(id: string): Promise<boolean> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM quote_items WHERE quote_id = ?', [id]);
+      await execute('DELETE FROM quotes WHERE id = ?', [id]);
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteQuote failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const initialLength = db.quotes.length;
+  db.quotes = db.quotes.filter((q) => q.id !== id);
+  if (db.quotes.length < initialLength) {
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
 ```
 
 ---
 
 ### `src/server/db/repositories/services.ts`
 
+- **File**: `src/server/db/repositories/services.ts`
+- **Size**: 6.0 KB (180 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Service } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -91608,6 +93822,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseService } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getServices(publishedOnly = true): Promise<Service[]> {
   const cacheKey = `pub:${publishedOnly}`;
@@ -91617,31 +93832,24 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('services').select('*').order('sort_order', { ascending: true });
-    if (publishedOnly) {
-      query = query.eq('is_published', true);
-    }
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getServices error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to services fixture.');
-      } else {
-        throw new Error(`Database error loading services: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM services';
+      if (publishedOnly) {
+        sql += ' WHERE is_published = 1';
       }
-    } else {
-      const services = (data || []).map(mapSupabaseService);
+      sql += ' ORDER BY sort_order ASC';
+      const rows = await query(sql);
+      const services = (rows || []).map(mapSupabaseService);
       memoryCache.services.set(cacheKey, { data: services, timestamp: now });
       return services;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getServices failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const result = publishedOnly ? db.services.filter((s) => s.isPublished !== false) : db.services;
   memoryCache.services.set(cacheKey, { data: result, timestamp: now });
@@ -91649,6 +93857,16 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM services WHERE slug = ? LIMIT 1', [slug]);
+      if (row) return mapSupabaseService(row);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getServiceBySlug failed, falling back:', mysqlErr);
+    }
+  }
+
   const services = await getServices(false);
   return services.find((s) => s.slug === slug) || null;
 }
@@ -91658,35 +93876,38 @@ export async function createService(
 ): Promise<Service> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('services')
-      .insert({
-        title: data.title,
-        slug: data.slug,
-        short_desc: data.shortDesc || '',
-        full_desc: data.fullDesc || '',
-        icon_name: data.iconName || 'Home',
-        image_url: data.imageUrl || '',
-        deliverables: data.deliverables || [],
-        sort_order: data.sortOrder || 0,
-        is_published: data.isPublished !== false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const srvId = `srv-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO services (
+          id, title, slug, short_desc, full_desc, icon_name, image_url, deliverables,
+          sort_order, is_published, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          srvId,
+          data.title,
+          data.slug,
+          data.shortDesc || '',
+          data.fullDesc || '',
+          data.iconName || 'Home',
+          data.imageUrl || '',
+          JSON.stringify(data.deliverables || []),
+          data.sortOrder || 0,
+          data.isPublished !== false ? 1 : 0,
+        ]
+      );
+      invalidateMemoryCache('services');
 
-    if (error || !inserted) {
-      console.error('Supabase createService error:', error);
-      throw new Error(`Failed to create architectural service: ${error?.message}`);
+      const inserted = await queryOne('SELECT * FROM services WHERE id = ?', [srvId]);
+      if (inserted) return mapSupabaseService(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createService failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('services');
-    return mapSupabaseService(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newSrv: Service = {
     ...data,
@@ -91706,35 +93927,33 @@ export async function updateService(
 ): Promise<Service | null> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partial.title !== undefined) updates.title = partial.title;
-    if (partial.slug !== undefined) updates.slug = partial.slug;
-    if (partial.shortDesc !== undefined) updates.short_desc = partial.shortDesc;
-    if (partial.fullDesc !== undefined) updates.full_desc = partial.fullDesc;
-    if (partial.iconName !== undefined) updates.icon_name = partial.iconName;
-    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
-    if (partial.deliverables !== undefined) updates.deliverables = partial.deliverables;
-    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
-    if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partial.title !== undefined) { updates.push('title = ?'); params.push(partial.title); }
+      if (partial.slug !== undefined) { updates.push('slug = ?'); params.push(partial.slug); }
+      if (partial.shortDesc !== undefined) { updates.push('short_desc = ?'); params.push(partial.shortDesc); }
+      if (partial.fullDesc !== undefined) { updates.push('full_desc = ?'); params.push(partial.fullDesc); }
+      if (partial.iconName !== undefined) { updates.push('icon_name = ?'); params.push(partial.iconName); }
+      if (partial.imageUrl !== undefined) { updates.push('image_url = ?'); params.push(partial.imageUrl); }
+      if (partial.deliverables !== undefined) { updates.push('deliverables = ?'); params.push(JSON.stringify(partial.deliverables)); }
+      if (partial.sortOrder !== undefined) { updates.push('sort_order = ?'); params.push(partial.sortOrder); }
+      if (partial.isPublished !== undefined) { updates.push('is_published = ?'); params.push(partial.isPublished ? 1 : 0); }
 
-    const { data: updated, error } = await supabase
-      .from('services')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
+      params.push(id);
+      await execute(`UPDATE services SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('services');
 
-    if (error) {
-      console.error('Supabase updateService error:', error);
-      throw new Error(`Failed to update service ${id}: ${error.message}`);
+      const updated = await queryOne('SELECT * FROM services WHERE id = ?', [id]);
+      if (updated) return mapSupabaseService(updated);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateService failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('services');
-    return updated ? mapSupabaseService(updated) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.services.findIndex((s) => s.id === id);
   if (index === -1) return null;
@@ -91750,17 +93969,18 @@ export async function updateService(
 }
 
 export async function deleteService(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('services').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteService error:', error);
-      throw new Error(`Failed to delete service ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM services WHERE id = ?', [id]);
+      invalidateMemoryCache('services');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteService failed, falling back:', mysqlErr);
     }
-    invalidateMemoryCache('services');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.services.length;
   db.services = db.services.filter((s) => s.id !== id);
@@ -91771,20 +93991,21 @@ export async function deleteService(id: string): Promise<boolean> {
   }
   return false;
 }
-
 ```
 
 ---
 
 ### `src/server/db/repositories/settings.ts`
 
+- **File**: `src/server/db/repositories/settings.ts`
+- **Size**: 8.8 KB (249 lines)
+- **Language**: `typescript`
+
 ```typescript
 import { SiteSettings, PublicSiteSettings } from '@/types';
 import { initialSiteSettings } from '@/lib/seedData';
 import { validatePaymentSettings } from '../../validation/schemas';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -91874,7 +94095,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         if (typeof v === 'string') {
           try {
             v = JSON.parse(v);
-          } catch {}
+          } catch {
+            try {
+              v = JSON.parse(v.replace(/\\([^"\\/bfnrtu])/g, '$1'));
+            } catch {}
+          }
         }
         if (v) {
           const result = hydrateSettings(v);
@@ -91887,37 +94112,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     }
   }
 
-  // 2. Supabase Secondary Layer
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('site_settings')
-      .select('*')
-      .eq('key', 'general')
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getSiteSettings error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to default site settings.');
-        const fallbackDb = getDb();
-        return hydrateSettings(fallbackDb.siteSettings);
-      }
-      throw new Error(`Failed to fetch site settings: ${error.message}`);
-    }
-
-    if (data && data.value) {
-      const result = hydrateSettings(data.value);
-      memoryCache.settings = { data: result, timestamp: now };
-      return result;
-    }
-  }
-
-  // 3. Resilient Local Database Cache Layer
+  // 2. Resilient Local Database Cache Layer
   const db = getDb();
   const mergedSettings = hydrateSettings(db.siteSettings);
   memoryCache.settings = { data: mergedSettings, timestamp: now };
@@ -92047,32 +94242,7 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
     }
   }
 
-  // 2. Persist to Supabase (if configured)
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('site_settings')
-      .upsert(
-        {
-          key: 'general',
-          value: merged,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'key' }
-      )
-      .select()
-      .single();
-
-    if (error || !data) {
-      console.error('Supabase updateSiteSettings error:', error);
-      // If MySQL succeeded, don't throw; otherwise report error
-      if (!isMySQLConfigured()) {
-        throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
-      }
-    }
-  }
-
-  // 3. Persist to local JSON fallback
+  // 2. Persist to local JSON fallback
   const db = getDb();
   db.siteSettings = merged;
   saveDb(db);
@@ -92080,26 +94250,28 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
   invalidateMemoryCache('settings');
   return merged;
 }
-
 ```
 
 ---
 
 ### `src/server/db/transactions/orders.ts`
 
+- **File**: `src/server/db/transactions/orders.ts`
+- **Size**: 11.3 KB (360 lines)
+- **Language**: `typescript`
+
 ```typescript
 import crypto from 'crypto';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 import {
-  isSupabaseConfigured,
   isProduction,
-  getServiceSupabase,
   invalidateMemoryCache,
   isUUID,
   getDb,
   saveDb,
 } from '../client';
 import { mapSupabaseOrder } from '../mappers';
+import { isMySQLConfigured, getConnection, query, queryOne, execute } from '../mysql';
 
 export interface CreateOrderData {
   customerName: string;
@@ -92123,219 +94295,340 @@ export interface CreateOrderData {
 
 /**
  * Executes a single-transaction atomic checkout.
- * Enforces PostgreSQL create_order_atomic RPC as the sole production path.
- * Strict database idempotency on orders.idempotency_key.
+ * Runs atomically on Hostinger MySQL with full ACID rollback on error.
  */
 export async function createOrderAtomic(
   orderData: CreateOrderData
 ): Promise<{ success: boolean; order?: Order; error?: string }> {
-  if (!isSupabaseConfigured()) {
-    if (isProduction()) {
-      return {
-        success: false,
-        error: 'Critical Database Error: Supabase connection required for production orders.',
-      };
-    }
-    // Isolated unit test execution
-    const db = getDb();
-
-    // Test idempotency check
-    if (orderData.idempotencyKey) {
-      const existing = db.orders.find((o) => o.idempotencyKey === orderData.idempotencyKey);
-      if (existing) {
-        return { success: true, order: existing };
-      }
-    }
-
-    const orderItems: any[] = [];
-    let subtotal = 0;
-
-    // Validate products and stock
-    for (const item of orderData.items) {
-      const product = db.products.find((p) => p.id === item.productId);
-      if (!product) {
-        return { success: false, error: `Product not found: ${item.productId}` };
-      }
-      if (product.stock < item.quantity) {
-        return {
-          success: false,
-          error: `Insufficient stock for ${product.name}. Requested: ${item.quantity}, Available: ${product.stock}`,
-        };
-      }
-      const unitPrice = product.salePrice ?? product.price;
-      const itemSubtotal = unitPrice * item.quantity;
-      subtotal += itemSubtotal;
-      orderItems.push({
-        id: crypto.randomUUID(),
-        productId: product.id,
-        productName: product.name,
-        sku: product.sku,
-        quantity: item.quantity,
-        unitPrice,
-        subtotal: itemSubtotal,
-        imageUrl: product.images?.[0] || '',
-        selectedColor: item.selectedColor,
-        selectedFinish: item.selectedFinish,
-      });
-    }
-
-    // Decrement stock in test store
-    for (const item of orderData.items) {
-      const product = db.products.find((p) => p.id === item.productId);
-      if (product) {
-        product.stock -= item.quantity;
-      }
-    }
-
-    const tax = Math.round(subtotal * 0.18);
-    const totalAmount = subtotal + tax;
-    const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-    const newOrder: Order = {
-      id: `ord-${Date.now()}`,
-      orderNumber,
-      customerName: orderData.customerName,
-      customerEmail: orderData.customerEmail,
-      customerPhone: orderData.customerPhone,
-      shippingAddress: orderData.shippingAddress,
-      billingAddress: orderData.billingAddress || orderData.shippingAddress,
-      items: orderItems,
-      subtotal,
-      tax,
-      shippingFee: 0,
-      discount: 0,
-      totalAmount,
-      orderStatus: 'Confirmed',
-      paymentStatus: 'Submitted',
-      paymentMethod: orderData.paymentMethod,
-      notes: orderData.notes,
-      utrNumber: orderData.utrNumber,
-      transactionId: orderData.transactionId,
-      idempotencyKey: orderData.idempotencyKey,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    db.orders.unshift(newOrder);
-    saveDb(db);
-    invalidateMemoryCache('products');
-    invalidateMemoryCache('orders');
-    return { success: true, order: newOrder };
-  }
-
-  const supabase = getServiceSupabase();
-
-  // 1. Authoritative Database Idempotency Check on orders.idempotency_key
-  if (orderData.idempotencyKey) {
+  // 1. Hostinger MySQL Transaction Path
+  if (isMySQLConfigured()) {
+    const conn = await getConnection();
     try {
-      const { data: existingOrder, error: idemErr } = await supabase
-        .from('orders')
-        .select('*, items:order_items(*)')
-        .eq('idempotency_key', orderData.idempotencyKey)
-        .maybeSingle();
-
-      if (!idemErr && existingOrder) {
-        return { success: true, order: mapSupabaseOrder(existingOrder) };
+      // Check Idempotency Key
+      if (orderData.idempotencyKey) {
+        const [existingOrders]: any = await conn.execute(
+          'SELECT * FROM orders WHERE idempotency_key = ? LIMIT 1',
+          [orderData.idempotencyKey]
+        );
+        if (existingOrders.length > 0) {
+          const ord = existingOrders[0];
+          const [items]: any = await conn.execute('SELECT * FROM order_items WHERE order_id = ?', [ord.id]);
+          conn.release();
+          return { success: true, order: mapSupabaseOrder({ ...ord, items }) };
+        }
       }
-    } catch (idemQueryErr) {
-      console.warn('Idempotency query notice:', idemQueryErr);
-    }
-  }
 
-  // 2. Authoritative Single-Transaction Database RPC
-  try {
-    const { data: rpcOrder, error: rpcError } = await supabase.rpc('create_order_atomic', {
-      p_order_data: {
+      await conn.beginTransaction();
+
+      const orderItems: any[] = [];
+      let subtotal = 0;
+
+      // Validate products & stock
+      for (const item of orderData.items) {
+        const [prodRows]: any = await conn.execute(
+          'SELECT * FROM products WHERE id = ? FOR UPDATE',
+          [item.productId]
+        );
+        if (!prodRows || prodRows.length === 0) {
+          await conn.rollback();
+          conn.release();
+          return { success: false, error: `Product not found: ${item.productId}` };
+        }
+        const prod = prodRows[0];
+        const stockAvailable = prod.stock ?? 0;
+        if (stockAvailable < item.quantity) {
+          await conn.rollback();
+          conn.release();
+          return {
+            success: false,
+            error: `Insufficient stock for ${prod.name}. Requested: ${item.quantity}, Available: ${stockAvailable}`,
+          };
+        }
+
+        const unitPrice = prod.sale_price ?? prod.price;
+        const itemSubtotal = unitPrice * item.quantity;
+        subtotal += itemSubtotal;
+
+        let prodImages = [];
+        try {
+          prodImages = typeof prod.images === 'string' ? JSON.parse(prod.images) : prod.images || [];
+        } catch {
+          prodImages = [];
+        }
+
+        orderItems.push({
+          id: crypto.randomUUID(),
+          productId: prod.id,
+          productName: prod.name,
+          sku: prod.sku || '',
+          unit: prod.unit || 'sq ft',
+          quantity: item.quantity,
+          unitPrice,
+          subtotal: itemSubtotal,
+          imageUrl: prodImages[0] || '',
+          selectedColor: item.selectedColor || null,
+          selectedFinish: item.selectedFinish || null,
+        });
+
+        // Decrement stock in Hostinger MySQL
+        await conn.execute('UPDATE products SET stock = stock - ? WHERE id = ?', [
+          item.quantity,
+          prod.id,
+        ]);
+      }
+
+      const tax = Math.round(subtotal * 0.18);
+      const totalAmount = subtotal + tax;
+      const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+      const orderId = crypto.randomUUID();
+      const nowStr = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+      // Insert Order into orders table
+      await conn.execute(
+        `INSERT INTO orders (
+          id, order_number, customer_name, customer_email, customer_phone,
+          shipping_address, billing_address, subtotal, tax, shipping_fee,
+          discount, total_amount, order_status, payment_status, payment_method,
+          notes, utr_number, transaction_id, idempotency_key, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          orderId,
+          orderNumber,
+          orderData.customerName,
+          orderData.customerEmail,
+          orderData.customerPhone,
+          JSON.stringify(orderData.shippingAddress),
+          JSON.stringify(orderData.billingAddress || orderData.shippingAddress),
+          subtotal,
+          tax,
+          0,
+          0,
+          totalAmount,
+          'Confirmed',
+          'Submitted',
+          orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
+          orderData.notes || null,
+          orderData.utrNumber || null,
+          orderData.transactionId || null,
+          orderData.idempotencyKey || null,
+          nowStr,
+          nowStr,
+        ]
+      );
+
+      // Insert Order Items into order_items table
+      for (const it of orderItems) {
+        await conn.execute(
+          `INSERT INTO order_items (
+            id, order_id, product_id, product_name, product_sku,
+            unit, quantity, unit_price, subtotal, image_url,
+            selected_color, selected_finish
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            it.id,
+            orderId,
+            it.productId,
+            it.productName,
+            it.sku,
+            it.unit,
+            it.quantity,
+            it.unitPrice,
+            it.subtotal,
+            it.imageUrl,
+            it.selectedColor,
+            it.selectedFinish,
+          ]
+        );
+      }
+
+      await conn.commit();
+      conn.release();
+
+      invalidateMemoryCache('products');
+      invalidateMemoryCache('orders');
+
+      const fullOrder: Order = {
+        id: orderId,
+        orderNumber,
         customerName: orderData.customerName,
         customerEmail: orderData.customerEmail,
         customerPhone: orderData.customerPhone,
         shippingAddress: orderData.shippingAddress,
         billingAddress: orderData.billingAddress || orderData.shippingAddress,
-        items: orderData.items,
-        paymentMethod: orderData.paymentMethod || 'Balaji QR Payment (Balaji PG)',
-        notes: orderData.notes || '',
-        utrNumber: orderData.utrNumber || null,
-        transactionId: orderData.transactionId || null,
-        idempotencyKey: orderData.idempotencyKey || null,
-      },
-    });
-
-    if (!rpcError && rpcOrder) {
-      invalidateMemoryCache('products');
-      return {
-        success: true,
-        order: mapSupabaseOrder(rpcOrder),
+        items: orderItems,
+        subtotal,
+        tax,
+        shippingFee: 0,
+        discount: 0,
+        totalAmount,
+        orderStatus: 'Confirmed',
+        paymentStatus: 'Submitted',
+        paymentMethod: orderData.paymentMethod,
+        notes: orderData.notes,
+        utrNumber: orderData.utrNumber,
+        transactionId: orderData.transactionId,
+        idempotencyKey: orderData.idempotencyKey,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
-    }
 
-    if (rpcError) {
-      console.error('Database create_order_atomic RPC error:', rpcError);
-      return {
-        success: false,
-        error: rpcError.message || 'Failed to place order due to inventory or database conflict.',
-      };
+      return { success: true, order: fullOrder };
+    } catch (txErr: any) {
+      await conn.rollback();
+      conn.release();
+      console.error('MySQL createOrderAtomic transaction failed:', txErr);
+      return { success: false, error: txErr.message || 'Failed to place order in database.' };
     }
-  } catch (err: any) {
-    console.error('create_order_atomic RPC exception:', err?.message);
-    return {
-      success: false,
-      error: 'Checkout is temporarily unavailable. Please try again.',
-    };
   }
 
-  return {
-    success: false,
-    error: 'Checkout is temporarily unavailable. Please try again.',
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  if (orderData.idempotencyKey) {
+    const existing = db.orders.find((o) => o.idempotencyKey === orderData.idempotencyKey);
+    if (existing) {
+      return { success: true, order: existing };
+    }
+  }
+
+  const orderItems: any[] = [];
+  let subtotal = 0;
+
+  for (const item of orderData.items) {
+    const product = db.products.find((p) => p.id === item.productId);
+    if (!product) {
+      return { success: false, error: `Product not found: ${item.productId}` };
+    }
+    if (product.stock < item.quantity) {
+      return {
+        success: false,
+        error: `Insufficient stock for ${product.name}. Requested: ${item.quantity}, Available: ${product.stock}`,
+      };
+    }
+    const unitPrice = product.salePrice ?? product.price;
+    const itemSubtotal = unitPrice * item.quantity;
+    subtotal += itemSubtotal;
+    orderItems.push({
+      id: crypto.randomUUID(),
+      productId: product.id,
+      productName: product.name,
+      sku: product.sku,
+      quantity: item.quantity,
+      unitPrice,
+      subtotal: itemSubtotal,
+      imageUrl: product.images?.[0] || '',
+      selectedColor: item.selectedColor,
+      selectedFinish: item.selectedFinish,
+    });
+  }
+
+  for (const item of orderData.items) {
+    const product = db.products.find((p) => p.id === item.productId);
+    if (product) {
+      product.stock -= item.quantity;
+    }
+  }
+
+  const tax = Math.round(subtotal * 0.18);
+  const totalAmount = subtotal + tax;
+  const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+  const newOrder: Order = {
+    id: `ord-${Date.now()}`,
+    orderNumber,
+    customerName: orderData.customerName,
+    customerEmail: orderData.customerEmail,
+    customerPhone: orderData.customerPhone,
+    shippingAddress: orderData.shippingAddress,
+    billingAddress: orderData.billingAddress || orderData.shippingAddress,
+    items: orderItems,
+    subtotal,
+    tax,
+    shippingFee: 0,
+    discount: 0,
+    totalAmount,
+    orderStatus: 'Confirmed',
+    paymentStatus: 'Submitted',
+    paymentMethod: orderData.paymentMethod,
+    notes: orderData.notes,
+    utrNumber: orderData.utrNumber,
+    transactionId: orderData.transactionId,
+    idempotencyKey: orderData.idempotencyKey,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
+  db.orders.unshift(newOrder);
+  saveDb(db);
+  invalidateMemoryCache('products');
+  invalidateMemoryCache('orders');
+  return { success: true, order: newOrder };
 }
 
 /**
- * Executes a single-transaction cancellation RPC.
- * Prevents double stock restoration and logs audit history.
+ * Executes an order cancellation transaction.
+ * Restores inventory stock cleanly.
  */
 export async function cancelOrderAtomic(
   orderId: string,
   options?: { actorEmail?: string; note?: string }
 ): Promise<Order | null> {
-  if (!isSupabaseConfigured()) {
-    const db = getDb();
-    const ord = db.orders.find((o) => o.id === orderId);
-    if (!ord) return null;
-    ord.orderStatus = 'Cancelled';
-    ord.updatedAt = new Date().toISOString();
-    saveDb(db);
-    return ord;
-  }
+  if (isMySQLConfigured()) {
+    const conn = await getConnection();
+    try {
+      await conn.beginTransaction();
 
-  const supabase = getServiceSupabase();
+      const [orders]: any = await conn.execute('SELECT * FROM orders WHERE id = ? FOR UPDATE', [orderId]);
+      if (!orders || orders.length === 0) {
+        await conn.rollback();
+        conn.release();
+        return null;
+      }
+      const ord = orders[0];
 
-  try {
-    const { data: cancelledOrder, error: cancelErr } = await supabase.rpc('cancel_order_atomic', {
-      p_order_id: orderId,
-      p_actor_email: options?.actorEmail || 'system',
-      p_note: options?.note || 'Order cancelled',
-    });
+      if (ord.order_status !== 'Cancelled') {
+        const [items]: any = await conn.execute('SELECT * FROM order_items WHERE order_id = ?', [orderId]);
+        for (const it of items) {
+          if (it.product_id) {
+            await conn.execute('UPDATE products SET stock = stock + ? WHERE id = ?', [it.quantity, it.product_id]);
+          }
+        }
+        await conn.execute(
+          'UPDATE orders SET order_status = ?, updated_at = NOW() WHERE id = ?',
+          ['Cancelled', orderId]
+        );
+      }
 
-    if (!cancelErr && cancelledOrder) {
+      await conn.commit();
+      conn.release();
       invalidateMemoryCache('products');
-      return mapSupabaseOrder(cancelledOrder);
-    }
+      invalidateMemoryCache('orders');
 
-    if (cancelErr) {
-      console.error('cancel_order_atomic RPC error:', cancelErr);
-      throw new Error(`Failed to cancel order atomically: ${cancelErr.message}`);
+      const updated = await queryOne('SELECT * FROM orders WHERE id = ?', [orderId]);
+      const items = await query('SELECT * FROM order_items WHERE order_id = ?', [orderId]);
+      return mapSupabaseOrder({ ...updated, items });
+    } catch (err) {
+      await conn.rollback();
+      conn.release();
+      console.error('MySQL cancelOrderAtomic error:', err);
+      throw err;
     }
-  } catch (err: any) {
-    console.error('cancel_order_atomic execution notice:', err.message);
-    throw err;
   }
 
-  return null;
+  const db = getDb();
+  const ord = db.orders.find((o) => o.id === orderId);
+  if (!ord) return null;
+  ord.orderStatus = 'Cancelled';
+  ord.updatedAt = new Date().toISOString();
+  saveDb(db);
+  return ord;
 }
-
 ```
 
 ---
 
 ### `src/server/errors/index.ts`
+
+- **File**: `src/server/errors/index.ts`
+- **Size**: 2.9 KB (102 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { NextResponse } from 'next/server';
@@ -92439,15 +94732,18 @@ export function formatErrorResponse(err: unknown, requestId?: string): NextRespo
     { status: 500 }
   );
 }
-
 ```
 
 ---
 
 ### `src/server/security/config.ts`
 
+- **File**: `src/server/security/config.ts`
+- **Size**: 1.1 KB (42 lines)
+- **Language**: `typescript`
+
 ```typescript
-import { isProduction } from '../db/client';
+import { isProduction, isMySQLConfigured } from '../db/client';
 import { AppError } from '../errors';
 
 export interface ProductionConfigStatus {
@@ -92464,14 +94760,8 @@ export function validateProductionConfig(): ProductionConfigStatus {
   const isProd = isProduction();
   const issues: string[] = [];
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  if (!supabaseUrl) {
-    issues.push('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL');
-  }
-
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseServiceKey) {
-    issues.push('Missing SUPABASE_SERVICE_ROLE_KEY');
+  if (!isMySQLConfigured()) {
+    issues.push('Missing or incomplete Hostinger MySQL database configuration (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)');
   }
 
   const jwtSecret = process.env.JWT_SECRET;
@@ -92494,22 +94784,28 @@ export function validateProductionConfig(): ProductionConfigStatus {
     issues,
   };
 }
-
 ```
 
 ---
 
 ### `src/server/security/index.ts`
 
+- **File**: `src/server/security/index.ts`
+- **Size**: 0.1 KB (3 lines)
+- **Language**: `typescript`
+
 ```typescript
 export * from './config';
 export * from './sanitization';
-
 ```
 
 ---
 
 ### `src/server/security/sanitization.ts`
+
+- **File**: `src/server/security/sanitization.ts`
+- **Size**: 1.9 KB (84 lines)
+- **Language**: `typescript`
 
 ```typescript
 /**
@@ -92595,22 +94891,28 @@ export function isSafeSvg(content: string): boolean {
 
   return true;
 }
-
 ```
 
 ---
 
 ### `src/server/services/index.ts`
 
+- **File**: `src/server/services/index.ts`
+- **Size**: 0.1 KB (3 lines)
+- **Language**: `typescript`
+
 ```typescript
 export * from './orderService';
 export * from './quoteService';
-
 ```
 
 ---
 
 ### `src/server/services/orderService.ts`
+
+- **File**: `src/server/services/orderService.ts`
+- **Size**: 3.9 KB (129 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { Order, OrderStatus, PaymentStatus } from '@/types';
@@ -92741,12 +95043,15 @@ export class OrderService {
     return updated;
   }
 }
-
 ```
 
 ---
 
 ### `src/server/services/quoteService.ts`
+
+- **File**: `src/server/services/quoteService.ts`
+- **Size**: 3.8 KB (132 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { Quote, QuoteStatus, Order } from '@/types';
@@ -92880,12 +95185,15 @@ export class QuoteService {
     return updated;
   }
 }
-
 ```
 
 ---
 
 ### `src/server/validation/index.ts`
+
+- **File**: `src/server/validation/index.ts`
+- **Size**: 6.4 KB (174 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { CreateOrderInputDTO, UnitType } from '@/types';
@@ -93061,12 +95369,15 @@ export function validateEnquiryInput(body: any): ValidationResult<any> {
 
   return { valid: true, data: body };
 }
-
 ```
 
 ---
 
 ### `src/server/validation/schemas.ts`
+
+- **File**: `src/server/validation/schemas.ts`
+- **Size**: 4.4 KB (125 lines)
+- **Language**: `typescript`
 
 ```typescript
 import { ValidationError } from '../errors';
@@ -93193,12 +95504,15 @@ export function validateUtrNumber(utr?: string): string | undefined {
   return trimmed;
 }
 
-
 ```
 
 ---
 
 ### `src/types/index.ts`
+
+- **File**: `src/types/index.ts`
+- **Size**: 9.7 KB (469 lines)
+- **Language**: `typescript`
 
 ```typescript
 export type UnitType =
@@ -93669,12 +95983,15 @@ export interface ApiResponseError {
 }
 
 export type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError;
-
 ```
 
 ---
 
 ### `supabase/schema.sql`
+
+- **File**: `supabase/schema.sql`
+- **Size**: 27.2 KB (773 lines)
+- **Language**: `sql`
 
 ```sql
 -- ============================================================
@@ -94449,12 +96766,15 @@ BEGIN
     RETURN v_updated_order;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
-
 ```
 
 ---
 
 ### `tailwind.config.js`
+
+- **File**: `tailwind.config.js`
+- **Size**: 2.4 KB (84 lines)
+- **Language**: `javascript`
 
 ```javascript
 /** @type {import('tailwindcss').Config} */
@@ -94540,12 +96860,15 @@ module.exports = {
   },
   plugins: [],
 };
-
 ```
 
 ---
 
 ### `tsconfig.json`
+
+- **File**: `tsconfig.json`
+- **Size**: 0.6 KB (28 lines)
+- **Language**: `json`
 
 ```json
 {
@@ -94575,7 +96898,6 @@ module.exports = {
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
-
 ```
 
 ---

@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 import { Category } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -11,6 +9,7 @@ import {
 } from '../client';
 import { mapSupabaseCategory } from '../mappers';
 import { ConflictError } from '../../errors';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getCategories(): Promise<Category[]> {
   const now = Date.now();
@@ -18,165 +17,200 @@ export async function getCategories(): Promise<Category[]> {
     return memoryCache.categories.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const [catsRes, prodsRes] = await Promise.all([
-      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-      supabase.from('products').select('category_id, published'),
-    ]);
-
-    if (catsRes.error) {
-      console.error('Supabase getCategories error:', catsRes.error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        catsRes.error.message?.includes('fetch failed') ||
-        catsRes.error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to categories fixture.');
-      } else {
-        throw new Error(`Database error retrieving categories: ${catsRes.error.message}`);
-      }
-    } else {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const [catsRes, prodsRes] = await Promise.all([
+        query('SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC'),
+        query('SELECT category_id FROM products WHERE published = 1'),
+      ]);
       const prodCounts = new Map<string, number>();
-      (prodsRes.data || []).forEach((p: any) => {
-        if (p.published && p.category_id) {
-          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
-        }
-      });
-
-      const categories = (catsRes.data || [])
-        .filter((c: any) => c.is_active !== false)
-        .map((c: any) => ({
-          ...mapSupabaseCategory(c),
-          productCount: prodCounts.get(c.id) || 0,
-        }));
-
-      memoryCache.categories = { data: categories, timestamp: now };
-      return categories;
-    }
-  }
-
-  const db = getDb();
-  const prodCounts = new Map<string, number>();
-  (db.products || []).forEach((p) => {
-    if (p.published && p.categoryId) {
-      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
-    }
-  });
-
-  const active = db.categories
-    .filter((c) => c.isActive !== false)
-    .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((c) => ({
-      ...c,
-      productCount: prodCounts.get(c.id) || 0,
-    }));
-
-  memoryCache.categories = { data: active, timestamp: now };
-  return active;
-}
-
-export async function getAllCategoriesAdmin(): Promise<Category[]> {
-  const now = Date.now();
-  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
-    return memoryCache.categoriesAdmin.data;
-  }
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const [catsRes, prodsRes] = await Promise.all([
-      supabase.from('categories').select('*').order('sort_order', { ascending: true }),
-      supabase.from('products').select('category_id'),
-    ]);
-
-    if (catsRes.error) {
-      console.error('Supabase getAllCategoriesAdmin error:', catsRes.error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        catsRes.error.message?.includes('fetch failed') ||
-        catsRes.error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to admin categories fixture.');
-      } else {
-        throw new Error(`Database error loading admin categories: ${catsRes.error.message}`);
-      }
-    } else {
-      const prodCounts = new Map<string, number>();
-      (prodsRes.data || []).forEach((p: any) => {
+      (prodsRes || []).forEach((p: any) => {
         if (p.category_id) {
           prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
         }
       });
 
-      const categories = (catsRes.data || []).map((c: any) => ({
+      const categories = (catsRes || []).map((c: any) => ({
+        ...mapSupabaseCategory(c),
+        productCount: prodCounts.get(c.id) || 0,
+      }));
+
+      memoryCache.categories = { data: categories, timestamp: now };
+      return categories;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategories failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cats = db.categories
+    .filter((c) => c.isActive)
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((c) => ({
+      ...c,
+      productCount: db.products.filter((p) => p.categoryId === c.id && p.published).length,
+    }));
+  memoryCache.categories = { data: cats, timestamp: now };
+  return cats;
+}
+
+export const getAllCategoriesAdmin = getCategoriesAdmin;
+
+export async function getCategoriesAdmin(): Promise<Category[]> {
+  const now = Date.now();
+  if (memoryCache.categoriesAdmin && now - memoryCache.categoriesAdmin.timestamp < CACHE_TTL_MS) {
+    return memoryCache.categoriesAdmin.data;
+  }
+
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const [catsRes, prodsRes] = await Promise.all([
+        query('SELECT * FROM categories ORDER BY sort_order ASC'),
+        query('SELECT category_id FROM products'),
+      ]);
+      const prodCounts = new Map<string, number>();
+      (prodsRes || []).forEach((p: any) => {
+        if (p.category_id) {
+          prodCounts.set(p.category_id, (prodCounts.get(p.category_id) || 0) + 1);
+        }
+      });
+
+      const categories = (catsRes || []).map((c: any) => ({
         ...mapSupabaseCategory(c),
         productCount: prodCounts.get(c.id) || 0,
       }));
 
       memoryCache.categoriesAdmin = { data: categories, timestamp: now };
       return categories;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoriesAdmin failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const prodCounts = new Map<string, number>();
-  (db.products || []).forEach((p) => {
-    if (p.categoryId) {
-      prodCounts.set(p.categoryId, (prodCounts.get(p.categoryId) || 0) + 1);
-    }
-  });
-
-  const categories = db.categories
+  const cats = [...db.categories]
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((c) => ({
       ...c,
-      productCount: prodCounts.get(c.id) || 0,
+      productCount: db.products.filter((p) => p.categoryId === c.id).length,
     }));
-
-  memoryCache.categoriesAdmin = { data: categories, timestamp: now };
-  return categories;
+  memoryCache.categoriesAdmin = { data: cats, timestamp: now };
+  return cats;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const categories = await getCategories();
-  return categories.find((c) => c.slug === slug) || null;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM categories WHERE slug = ? LIMIT 1', [slug]);
+      if (row) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [row.id]
+        );
+        return {
+          ...mapSupabaseCategory(row),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoryBySlug failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cat = db.categories.find((c) => c.slug === slug);
+  if (!cat) return null;
+  return {
+    ...cat,
+    productCount: db.products.filter((p) => p.categoryId === cat.id && p.published).length,
+  };
+}
+
+export async function getCategoryById(id: string): Promise<Category | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM categories WHERE id = ? LIMIT 1', [id]);
+      if (row) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [row.id]
+        );
+        return {
+          ...mapSupabaseCategory(row),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCategoryById failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const cat = db.categories.find((c) => c.id === id);
+  if (!cat) return null;
+  return {
+    ...cat,
+    productCount: db.products.filter((p) => p.categoryId === cat.id && p.published).length,
+  };
 }
 
 export async function createCategory(
-  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>
+  data: Omit<Category, 'id' | 'createdAt' | 'updatedAt' | 'productCount'>
 ): Promise<Category> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('categories')
-      .insert({
-        name: data.name,
-        slug: data.slug,
-        description: data.description || '',
-        image_url: data.imageUrl || '',
-        sort_order: data.sortOrder || 0,
-        is_active: data.isActive !== false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const existing = await queryOne('SELECT id FROM categories WHERE slug = ? LIMIT 1', [data.slug]);
+      if (existing) {
+        throw new ConflictError(`A category with slug "${data.slug}" already exists`);
+      }
 
-    if (error || !inserted) {
-      console.error('Supabase createCategory error:', error);
-      throw new Error(`Failed to create category: ${error?.message || 'Database error'}`);
+      const catId = `cat-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO categories (
+          id, name, slug, description, image_url, sort_order, is_active, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          catId,
+          data.name,
+          data.slug,
+          data.description || '',
+          data.imageUrl || '',
+          data.sortOrder || 0,
+          data.isActive !== false ? 1 : 0,
+        ]
+      );
+      invalidateMemoryCache('categories');
+
+      const inserted = await queryOne('SELECT * FROM categories WHERE id = ?', [catId]);
+      if (inserted) {
+        return { ...mapSupabaseCategory(inserted), productCount: 0 };
+      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL createCategory failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('categories');
-    return mapSupabaseCategory(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
+  if (db.categories.some((c) => c.slug === data.slug)) {
+    throw new ConflictError(`A category with slug "${data.slug}" already exists`);
+  }
   const newCat: Category = {
     ...data,
     id: `cat-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`,
+    productCount: 0,
     createdAt: now,
     updatedAt: now,
   };
@@ -192,35 +226,54 @@ export async function updateCategory(
 ): Promise<Category | null> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partial.name !== undefined) updates.name = partial.name;
-    if (partial.slug !== undefined) updates.slug = partial.slug;
-    if (partial.description !== undefined) updates.description = partial.description;
-    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
-    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
-    if (partial.isActive !== undefined) updates.is_active = partial.isActive;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      if (partial.slug) {
+        const conflict = await queryOne('SELECT id FROM categories WHERE slug = ? AND id != ? LIMIT 1', [partial.slug, id]);
+        if (conflict) {
+          throw new ConflictError(`A category with slug "${partial.slug}" already exists`);
+        }
+      }
 
-    const { data: updated, error } = await supabase
-      .from('categories')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partial.name !== undefined) { updates.push('name = ?'); params.push(partial.name); }
+      if (partial.slug !== undefined) { updates.push('slug = ?'); params.push(partial.slug); }
+      if (partial.description !== undefined) { updates.push('description = ?'); params.push(partial.description); }
+      if (partial.imageUrl !== undefined) { updates.push('image_url = ?'); params.push(partial.imageUrl); }
+      if (partial.sortOrder !== undefined) { updates.push('sort_order = ?'); params.push(partial.sortOrder); }
+      if (partial.isActive !== undefined) { updates.push('is_active = ?'); params.push(partial.isActive ? 1 : 0); }
 
-    if (error) {
-      console.error('Supabase updateCategory error:', error);
-      throw new Error(`Failed to update category ${id}: ${error.message}`);
+      params.push(id);
+      await execute(`UPDATE categories SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('categories');
+
+      const updated = await queryOne('SELECT * FROM categories WHERE id = ?', [id]);
+      if (updated) {
+        const countRes = await queryOne<{ count: number }>(
+          'SELECT COUNT(*) as count FROM products WHERE category_id = ? AND published = 1',
+          [id]
+        );
+        return {
+          ...mapSupabaseCategory(updated),
+          productCount: countRes?.count || 0,
+        };
+      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL updateCategory failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('categories');
-    return updated ? mapSupabaseCategory(updated) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.categories.findIndex((c) => c.id === id);
   if (index === -1) return null;
+
+  if (partial.slug && db.categories.some((c) => c.slug === partial.slug && c.id !== id)) {
+    throw new ConflictError(`A category with slug "${partial.slug}" already exists`);
+  }
 
   db.categories[index] = {
     ...db.categories[index],
@@ -233,32 +286,30 @@ export async function updateCategory(
 }
 
 export async function deleteCategory(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const prodRes = await queryOne<{ count: number }>(
+        'SELECT COUNT(*) as count FROM products WHERE category_id = ? LIMIT 1',
+        [id]
+      );
+      if (prodRes && prodRes.count > 0) {
+        throw new ConflictError('Cannot delete category: products are assigned to it.');
+      }
 
-    // Prevent deletion if products depend on this category
-    const { count, error: countErr } = await supabase
-      .from('products')
-      .select('id', { count: 'exact', head: true })
-      .eq('category_id', id);
-
-    if (!countErr && (count || 0) > 0) {
-      throw new ConflictError(`Cannot delete category: There are ${count} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+      await execute('DELETE FROM categories WHERE id = ?', [id]);
+      invalidateMemoryCache('categories');
+      return true;
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
+      console.warn('Hostinger MySQL deleteCategory failed, falling back:', mysqlErr);
     }
-
-    const { error } = await supabase.from('categories').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteCategory error:', error);
-      throw new Error(`Failed to delete category ${id}: ${error.message}`);
-    }
-    invalidateMemoryCache('categories');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const prodCount = db.products.filter((p) => p.categoryId === id).length;
-  if (prodCount > 0) {
-    throw new ConflictError(`Cannot delete category: There are ${prodCount} active material/product item(s) assigned to this category. Please reassign or delete them first.`);
+  if (db.products.some((p) => p.categoryId === id)) {
+    throw new ConflictError('Cannot delete category: products are assigned to it.');
   }
 
   const initialLength = db.categories.length;

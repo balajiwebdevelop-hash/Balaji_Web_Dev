@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuthenticatedAdmin } from '@/lib/auth';
 import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
   memoryCache,
 } from '@/server/db/client';
 import {
@@ -23,14 +20,15 @@ export async function GET(req: NextRequest) {
   const auth = await requireAuthenticatedAdmin(req);
   if ('response' in auth) return auth.response;
 
-  const timeRange = req.nextUrl.searchParams.get('timeRange') || '30D';
-  const forceRefresh = req.nextUrl.searchParams.get('refresh') === 'true';
+  const { searchParams } = new URL(req.url);
+  const timeRange = searchParams.get('range') || '30D';
+  const forceRefresh = searchParams.get('refresh') === 'true';
 
   // 1. Check in-memory dashboard cache
   const cacheKey = `dashboard_${timeRange}`;
   const now = Date.now();
   const cached = memoryCache.dashboardAnalytics.get(cacheKey);
-  if (cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS && !forceRefresh) {
+  if (!forceRefresh && cached && now - cached.timestamp < DASHBOARD_CACHE_TTL_MS) {
     return NextResponse.json({
       success: true,
       data: cached.data,
@@ -39,98 +37,18 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let orders: any[] = [];
-    let quotes: any[] = [];
-    let products: any[] = [];
-    let activeProjectsCount = 0;
-    let enquiriesCount = 0;
-    let auditLogs: any[] = [];
+    const [orders, quotes, products, allProjects, allEnquiries, auditLogs] =
+      await Promise.all([
+        getOrders().catch(() => []),
+        getQuotes().catch(() => []),
+        getProducts().catch(() => []),
+        getProjects().catch(() => []),
+        getEnquiries().catch(() => []),
+        getAuditLogs(6).catch(() => []),
+      ]);
 
-    let supabaseSuccess = false;
-    if (await isSupabaseAvailable()) {
-      try {
-        const supabase = getServiceSupabase();
-
-        // Query database with selective projections to minimize memory and network overhead
-        const [ordersRes, quotesRes, productsRes, projectsRes, enquiriesRes, logsRes] =
-          await Promise.all([
-            supabase
-              .from('orders')
-              .select(
-                'id, order_number, customer_name, total_amount, order_status, payment_status, created_at, items:order_items(product_name, subtotal)'
-              )
-              .order('created_at', { ascending: false }),
-            supabase
-              .from('quotes')
-              .select('id, status, total_quoted_amount'),
-            supabase
-              .from('products')
-              .select('id, price, stock, moq'),
-            supabase
-              .from('projects')
-              .select('id', { count: 'exact', head: true }),
-            supabase
-              .from('enquiries')
-              .select('id', { count: 'exact', head: true }),
-            getAuditLogs(6).catch(() => []),
-          ]);
-
-        if (!ordersRes.error && !quotesRes.error && !productsRes.error) {
-          orders = (ordersRes.data || []).map((o: any) => ({
-            id: o.id,
-            orderNumber: o.order_number,
-            customerName: o.customer_name,
-            totalAmount: Number(o.total_amount) || 0,
-            orderStatus: o.order_status,
-            paymentStatus: o.payment_status,
-            createdAt: o.created_at,
-            items: (o.items || []).map((it: any) => ({
-              productName: it.product_name || '',
-              subtotal: Number(it.subtotal) || 0,
-            })),
-          }));
-
-          quotes = (quotesRes.data || []).map((q: any) => ({
-            id: q.id,
-            status: q.status,
-            totalQuotedAmount: Number(q.total_quoted_amount) || 0,
-          }));
-
-          products = (productsRes.data || []).map((p: any) => ({
-            id: p.id,
-            price: Number(p.price) || 0,
-            stock: Number(p.stock) || 0,
-            moq: Number(p.moq) || 1,
-          }));
-
-          activeProjectsCount = projectsRes.count || 0;
-          enquiriesCount = enquiriesRes.count || 0;
-          auditLogs = logsRes;
-          supabaseSuccess = true;
-        }
-      } catch (err) {
-        console.warn('Dashboard Supabase fetch error, falling back to local DB:', err);
-      }
-    }
-
-    if (!supabaseSuccess) {
-      const [allOrders, allQuotes, allProducts, allProjects, allEnquiries, allLogs] =
-        await Promise.all([
-          getOrders().catch(() => []),
-          getQuotes().catch(() => []),
-          getProducts().catch(() => []),
-          getProjects().catch(() => []),
-          getEnquiries().catch(() => []),
-          getAuditLogs(6).catch(() => []),
-        ]);
-
-      orders = allOrders;
-      quotes = allQuotes;
-      products = allProducts;
-      activeProjectsCount = allProjects.length;
-      enquiriesCount = allEnquiries.length;
-      auditLogs = allLogs;
-    }
+    const activeProjectsCount = allProjects.length;
+    const enquiriesCount = allEnquiries.length;
 
     // Filter orders by time range
     const filteredOrders = orders.filter((o) => {

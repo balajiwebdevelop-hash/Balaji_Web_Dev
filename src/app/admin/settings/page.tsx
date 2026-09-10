@@ -380,7 +380,7 @@ export default function AdminSettingsPage() {
         {savedSuccess && (
           <div className="p-4 bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2 rounded-xs animate-fade-in">
             <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to Supabase.</span>
+            <span className="font-medium">All studio settings, Balaji PG configuration, and homepage content saved to database.</span>
           </div>
         )}
 
@@ -1788,7 +1788,7 @@ export default function AdminSettingsPage() {
           {/* Bottom Fixed Action Bar */}
           <div className="p-4 bg-[#1D1714] border border-[#332821] flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xs shadow-xs">
             <span className="text-xs text-[#A89F91]">
-              Changes update Supabase PostgreSQL immediately upon saving and take effect live across all pages.
+              Changes update Hostinger MySQL database immediately upon saving and take effect live across all pages.
             </span>
             <button
               type="submit"

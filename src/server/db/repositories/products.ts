@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 import { Product } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -11,6 +9,7 @@ import {
 } from '../client';
 import { mapSupabaseProduct } from '../mappers';
 import { ConflictError, ValidationError } from '../../errors';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getProducts(options?: {
   categoryId?: string;
@@ -28,68 +27,56 @@ export async function getProducts(options?: {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-
-    let query = supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .order('created_at', { ascending: false });
-
-    if (options?.publishedOnly) {
-      query = query.eq('published', true);
-    }
-    if (options?.featuredOnly) {
-      query = query.eq('is_featured', true);
-    }
-    if (options?.categoryId) {
-      query = query.eq('category_id', options.categoryId);
-    }
-    if (options?.categorySlug) {
-      // Resolve category ID by slug or filter via join
-      const { data: cat } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', options.categorySlug)
-        .maybeSingle();
-      if (cat?.id) {
-        query = query.eq('category_id', cat.id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = `
+        SELECT p.*, c.name AS category_name, c.slug AS category_slug
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE 1=1
+      `;
+      const params: any[] = [];
+      if (options?.publishedOnly) {
+        sql += ' AND p.published = 1';
       }
-    }
-    if (options?.search) {
-      const term = `%${options.search}%`;
-      query = query.or(`name.ilike.${term},sku.ilike.${term},material.ilike.${term},description.ilike.${term}`);
-    }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getProducts error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase host unreachable. Serving static catalog fixture.');
-      } else {
-        throw new Error(`Failed to load products from database: ${error.message}`);
+      if (options?.featuredOnly) {
+        sql += ' AND p.is_featured = 1';
       }
-    } else {
-      const products = (data || []).map((row) => mapSupabaseProduct(row));
+      if (options?.categoryId) {
+        sql += ' AND p.category_id = ?';
+        params.push(options.categoryId);
+      }
+      if (options?.categorySlug) {
+        sql += ' AND c.slug = ?';
+        params.push(options.categorySlug);
+      }
+      if (options?.search) {
+        const term = `%${options.search}%`;
+        sql += ' AND (p.name LIKE ? OR p.sku LIKE ? OR p.material LIKE ? OR p.description LIKE ?)';
+        params.push(term, term, term, term);
+      }
+      sql += ' ORDER BY p.created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const rows = await query(sql, params);
+      const products = rows.map((row) => mapSupabaseProduct(row));
       memoryCache.products.set(cacheKey, { data: products, timestamp: now });
       return products;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProducts failed, falling back:', mysqlErr);
     }
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let result = [...db.products];
-
   if (options?.publishedOnly) {
     result = result.filter((p) => p.published);
   }
@@ -133,35 +120,28 @@ export async function getProductById(id: string): Promise<Product | null> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('id', id)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getProductById error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to fixture for product ${id}.`);
-      } else {
-        throw new Error(`Database error retrieving product ${id}: ${error.message}`);
-      }
-    } else {
-      const product = data ? mapSupabaseProduct(data) : null;
-      memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
-      if (product) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [id]
+      );
+      if (row) {
+        const product = mapSupabaseProduct(row);
+        memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
         memoryCache.productByIdOrSlug.set(`slug:${product.slug}`, { data: product, timestamp: now });
+        return product;
       }
-      return product;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductById failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const product = db.products.find((p) => p.id === id) || null;
   memoryCache.productByIdOrSlug.set(`id:${id}`, { data: product, timestamp: now });
@@ -175,35 +155,28 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('slug', slug)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getProductBySlug error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn(`Supabase unreachable. Falling back to fixture for product slug ${slug}.`);
-      } else {
-        throw new Error(`Database error retrieving product slug ${slug}: ${error.message}`);
-      }
-    } else {
-      const product = data ? mapSupabaseProduct(data) : null;
-      memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
-      if (product) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.slug = ? LIMIT 1`,
+        [slug]
+      );
+      if (row) {
+        const product = mapSupabaseProduct(row);
+        memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
         memoryCache.productByIdOrSlug.set(`id:${product.id}`, { data: product, timestamp: now });
+        return product;
       }
-      return product;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductBySlug failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const product = db.products.find((p) => p.slug === slug) || null;
   memoryCache.productByIdOrSlug.set(`slug:${slug}`, { data: product, timestamp: now });
@@ -212,19 +185,26 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
 export async function getProductBySku(sku: string): Promise<Product | null> {
   const normalized = sku.trim();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('sku', normalized)
-      .maybeSingle();
 
-    if (!error && data) {
-      return mapSupabaseProduct(data);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE LOWER(p.sku) = LOWER(?) LIMIT 1`,
+        [normalized]
+      );
+      if (row) {
+        return mapSupabaseProduct(row);
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getProductBySku failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.products.find((p) => p.sku.toLowerCase() === normalized.toLowerCase()) || null;
 }
@@ -247,57 +227,64 @@ export async function createProduct(
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const prodId = `prod-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO products (
+          id, name, slug, sku, brand, category_id, subcategory, description, price, sale_price,
+          unit, moq, stock, purchase_mode, lead_time, dimensions, thickness, material,
+          finish, color, images, variants, is_featured, is_new, is_bestseller, published,
+          tags, specifications, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          prodId,
+          data.name,
+          data.slug,
+          data.sku,
+          data.brand || 'Balaji Atelier',
+          data.categoryId || null,
+          data.subcategory || null,
+          data.description || '',
+          data.price,
+          data.salePrice !== undefined ? data.salePrice : null,
+          data.unit || 'sq ft',
+          data.moq || 1,
+          data.stock !== undefined ? data.stock : 0,
+          data.purchaseMode || 'BUY_NOW',
+          data.leadTime || '3-5 business days',
+          data.dimensions || null,
+          data.thickness || null,
+          data.material || null,
+          data.finish || null,
+          data.color || null,
+          JSON.stringify(data.images || []),
+          JSON.stringify(data.variants || []),
+          data.isFeatured ? 1 : 0,
+          data.isNew ? 1 : 0,
+          data.isBestseller ? 1 : 0,
+          data.published !== false ? 1 : 0,
+          JSON.stringify(data.tags || []),
+          JSON.stringify(data.specifications || {}),
+        ]
+      );
+      invalidateMemoryCache('products');
 
-    const dbPayload: any = {
-      name: data.name,
-      slug: data.slug,
-      sku: data.sku,
-      brand: data.brand || 'Balaji Architect & Interiors',
-      category_id: data.categoryId || null,
-      subcategory: data.subcategory || null,
-      description: data.description || '',
-      price: data.price,
-      sale_price: data.salePrice !== undefined ? data.salePrice : null,
-      unit: data.unit,
-      moq: data.moq || 1,
-      stock: data.stock !== undefined ? data.stock : 0,
-      purchase_mode: data.purchaseMode || 'BOTH',
-      lead_time: data.leadTime || '2-3 Weeks',
-      dimensions: data.dimensions || null,
-      thickness: data.thickness || null,
-      material: data.material || null,
-      finish: data.finish || null,
-      color: data.color || null,
-      images: data.images || [],
-      variants: data.variants || [],
-      is_featured: Boolean(data.isFeatured),
-      is_new: Boolean(data.isNew),
-      is_bestseller: Boolean(data.isBestseller),
-      published: data.published !== false,
-      tags: data.tags || [],
-      specifications: data.specifications || {},
-      created_at: now,
-      updated_at: now,
-    };
-
-    const { data: inserted, error } = await supabase
-      .from('products')
-      .insert(dbPayload)
-      .select('*, categories(name, slug)')
-      .single();
-
-    if (error || !inserted) {
-      console.error('Supabase createProduct error:', error);
-      throw new Error(`Failed to create product in database: ${error?.message || 'Unknown database error'}`);
+      const inserted = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [prodId]
+      );
+      if (inserted) return mapSupabaseProduct(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createProduct failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('products');
-    return mapSupabaseProduct(inserted);
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newProduct: Product = {
     ...data,
@@ -320,33 +307,18 @@ export async function updateProduct(
   const { expectedUpdatedAt, ...dataToUpdate } = (partialData || {}) as any;
 
   // Optimistic Concurrency Control Check
-  if (expectedUpdatedAt) {
-    if (isSupabaseConfigured()) {
-      const supabase = getServiceSupabase();
-      const { data: current, error: fetchErr } = await supabase
-        .from('products')
-        .select('updated_at')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (fetchErr) {
-        throw new Error(`Database error verifying product concurrency: ${fetchErr.message}`);
-      }
+  if (expectedUpdatedAt && isMySQLConfigured()) {
+    try {
+      const current = await queryOne('SELECT updated_at FROM products WHERE id = ? LIMIT 1', [id]);
       if (!current) return null;
-      if (current.updated_at && expectedUpdatedAt !== current.updated_at) {
+      const currentIso = current.updated_at instanceof Date ? current.updated_at.toISOString() : current.updated_at;
+      if (currentIso && expectedUpdatedAt !== currentIso) {
         throw new ConflictError(
           'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
         );
       }
-    } else {
-      const db = getDb();
-      const current = db.products.find((p) => p.id === id);
-      if (!current) return null;
-      if (current.updatedAt && expectedUpdatedAt !== current.updatedAt) {
-        throw new ConflictError(
-          'Concurrent Modification Conflict: This item has been updated by another administrator. Please refresh before saving.'
-        );
-      }
+    } catch (mysqlErr: any) {
+      if (mysqlErr instanceof ConflictError) throw mysqlErr;
     }
   }
 
@@ -363,55 +335,57 @@ export async function updateProduct(
     throw new ValidationError('Stock quantity cannot be negative.');
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (dataToUpdate.name !== undefined) { updates.push('name = ?'); params.push(dataToUpdate.name); }
+      if (dataToUpdate.slug !== undefined) { updates.push('slug = ?'); params.push(dataToUpdate.slug); }
+      if (dataToUpdate.sku !== undefined) { updates.push('sku = ?'); params.push(dataToUpdate.sku); }
+      if (dataToUpdate.brand !== undefined) { updates.push('brand = ?'); params.push(dataToUpdate.brand); }
+      if (dataToUpdate.categoryId !== undefined) { updates.push('category_id = ?'); params.push(dataToUpdate.categoryId || null); }
+      if (dataToUpdate.subcategory !== undefined) { updates.push('subcategory = ?'); params.push(dataToUpdate.subcategory); }
+      if (dataToUpdate.description !== undefined) { updates.push('description = ?'); params.push(dataToUpdate.description); }
+      if (dataToUpdate.price !== undefined) { updates.push('price = ?'); params.push(dataToUpdate.price); }
+      if (dataToUpdate.salePrice !== undefined) { updates.push('sale_price = ?'); params.push(dataToUpdate.salePrice); }
+      if (dataToUpdate.unit !== undefined) { updates.push('unit = ?'); params.push(dataToUpdate.unit); }
+      if (dataToUpdate.moq !== undefined) { updates.push('moq = ?'); params.push(dataToUpdate.moq); }
+      if (dataToUpdate.stock !== undefined) { updates.push('stock = ?'); params.push(dataToUpdate.stock); }
+      if (dataToUpdate.purchaseMode !== undefined) { updates.push('purchase_mode = ?'); params.push(dataToUpdate.purchaseMode); }
+      if (dataToUpdate.leadTime !== undefined) { updates.push('lead_time = ?'); params.push(dataToUpdate.leadTime); }
+      if (dataToUpdate.dimensions !== undefined) { updates.push('dimensions = ?'); params.push(dataToUpdate.dimensions); }
+      if (dataToUpdate.thickness !== undefined) { updates.push('thickness = ?'); params.push(dataToUpdate.thickness); }
+      if (dataToUpdate.material !== undefined) { updates.push('material = ?'); params.push(dataToUpdate.material); }
+      if (dataToUpdate.finish !== undefined) { updates.push('finish = ?'); params.push(dataToUpdate.finish); }
+      if (dataToUpdate.color !== undefined) { updates.push('color = ?'); params.push(dataToUpdate.color); }
+      if (dataToUpdate.images !== undefined) { updates.push('images = ?'); params.push(JSON.stringify(dataToUpdate.images)); }
+      if (dataToUpdate.variants !== undefined) { updates.push('variants = ?'); params.push(JSON.stringify(dataToUpdate.variants)); }
+      if (dataToUpdate.isFeatured !== undefined) { updates.push('is_featured = ?'); params.push(dataToUpdate.isFeatured ? 1 : 0); }
+      if (dataToUpdate.isNew !== undefined) { updates.push('is_new = ?'); params.push(dataToUpdate.isNew ? 1 : 0); }
+      if (dataToUpdate.isBestseller !== undefined) { updates.push('is_bestseller = ?'); params.push(dataToUpdate.isBestseller ? 1 : 0); }
+      if (dataToUpdate.published !== undefined) { updates.push('published = ?'); params.push(dataToUpdate.published ? 1 : 0); }
+      if (dataToUpdate.tags !== undefined) { updates.push('tags = ?'); params.push(JSON.stringify(dataToUpdate.tags)); }
+      if (dataToUpdate.specifications !== undefined) { updates.push('specifications = ?'); params.push(JSON.stringify(dataToUpdate.specifications)); }
 
-    const updates: any = { updated_at: now };
-    if (dataToUpdate.name !== undefined) updates.name = dataToUpdate.name;
-    if (dataToUpdate.slug !== undefined) updates.slug = dataToUpdate.slug;
-    if (dataToUpdate.sku !== undefined) updates.sku = dataToUpdate.sku;
-    if (dataToUpdate.brand !== undefined) updates.brand = dataToUpdate.brand;
-    if (dataToUpdate.categoryId !== undefined) updates.category_id = dataToUpdate.categoryId || null;
-    if (dataToUpdate.subcategory !== undefined) updates.subcategory = dataToUpdate.subcategory;
-    if (dataToUpdate.description !== undefined) updates.description = dataToUpdate.description;
-    if (dataToUpdate.price !== undefined) updates.price = dataToUpdate.price;
-    if (dataToUpdate.salePrice !== undefined) updates.sale_price = dataToUpdate.salePrice;
-    if (dataToUpdate.unit !== undefined) updates.unit = dataToUpdate.unit;
-    if (dataToUpdate.moq !== undefined) updates.moq = dataToUpdate.moq;
-    if (dataToUpdate.stock !== undefined) updates.stock = dataToUpdate.stock;
-    if (dataToUpdate.purchaseMode !== undefined) updates.purchase_mode = dataToUpdate.purchaseMode;
-    if (dataToUpdate.leadTime !== undefined) updates.lead_time = dataToUpdate.leadTime;
-    if (dataToUpdate.dimensions !== undefined) updates.dimensions = dataToUpdate.dimensions;
-    if (dataToUpdate.thickness !== undefined) updates.thickness = dataToUpdate.thickness;
-    if (dataToUpdate.material !== undefined) updates.material = dataToUpdate.material;
-    if (dataToUpdate.finish !== undefined) updates.finish = dataToUpdate.finish;
-    if (dataToUpdate.color !== undefined) updates.color = dataToUpdate.color;
-    if (dataToUpdate.images !== undefined) updates.images = dataToUpdate.images;
-    if (dataToUpdate.variants !== undefined) updates.variants = dataToUpdate.variants;
-    if (dataToUpdate.isFeatured !== undefined) updates.is_featured = dataToUpdate.isFeatured;
-    if (dataToUpdate.isNew !== undefined) updates.is_new = dataToUpdate.isNew;
-    if (dataToUpdate.isBestseller !== undefined) updates.is_bestseller = dataToUpdate.isBestseller;
-    if (dataToUpdate.published !== undefined) updates.published = dataToUpdate.published;
-    if (dataToUpdate.tags !== undefined) updates.tags = dataToUpdate.tags;
-    if (dataToUpdate.specifications !== undefined) updates.specifications = dataToUpdate.specifications;
+      params.push(id);
+      await execute(`UPDATE products SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('products');
 
-    const { data: updated, error } = await supabase
-      .from('products')
-      .update(updates)
-      .eq('id', id)
-      .select('*, categories(name, slug)')
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase updateProduct error:', error);
-      throw new Error(`Failed to update product ${id}: ${error.message}`);
+      const updated = await queryOne(
+        `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.id = ? LIMIT 1`,
+        [id]
+      );
+      if (updated) return mapSupabaseProduct(updated);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateProduct failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('products');
-    return updated ? mapSupabaseProduct(updated) : null;
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.products.findIndex((p) => p.id === id);
   if (index === -1) return null;
@@ -427,17 +401,18 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('products').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteProduct error:', error);
-      throw new Error(`Failed to delete product ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM products WHERE id = ?', [id]);
+      invalidateMemoryCache('products');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteProduct failed, falling back:', mysqlErr);
     }
-    invalidateMemoryCache('products');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.products.length;
   db.products = db.products.filter((p) => p.id !== id);

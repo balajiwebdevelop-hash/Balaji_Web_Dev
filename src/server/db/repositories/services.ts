@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 import { Service } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -10,6 +8,7 @@ import {
   saveDb,
 } from '../client';
 import { mapSupabaseService } from '../mappers';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getServices(publishedOnly = true): Promise<Service[]> {
   const cacheKey = `pub:${publishedOnly}`;
@@ -19,31 +18,24 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
     return cached.data;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('services').select('*').order('sort_order', { ascending: true });
-    if (publishedOnly) {
-      query = query.eq('is_published', true);
-    }
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getServices error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to services fixture.');
-      } else {
-        throw new Error(`Database error loading services: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM services';
+      if (publishedOnly) {
+        sql += ' WHERE is_published = 1';
       }
-    } else {
-      const services = (data || []).map(mapSupabaseService);
+      sql += ' ORDER BY sort_order ASC';
+      const rows = await query(sql);
+      const services = (rows || []).map(mapSupabaseService);
       memoryCache.services.set(cacheKey, { data: services, timestamp: now });
       return services;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getServices failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const result = publishedOnly ? db.services.filter((s) => s.isPublished !== false) : db.services;
   memoryCache.services.set(cacheKey, { data: result, timestamp: now });
@@ -51,6 +43,16 @@ export async function getServices(publishedOnly = true): Promise<Service[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const row = await queryOne('SELECT * FROM services WHERE slug = ? LIMIT 1', [slug]);
+      if (row) return mapSupabaseService(row);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getServiceBySlug failed, falling back:', mysqlErr);
+    }
+  }
+
   const services = await getServices(false);
   return services.find((s) => s.slug === slug) || null;
 }
@@ -60,35 +62,38 @@ export async function createService(
 ): Promise<Service> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: inserted, error } = await supabase
-      .from('services')
-      .insert({
-        title: data.title,
-        slug: data.slug,
-        short_desc: data.shortDesc || '',
-        full_desc: data.fullDesc || '',
-        icon_name: data.iconName || 'Home',
-        image_url: data.imageUrl || '',
-        deliverables: data.deliverables || [],
-        sort_order: data.sortOrder || 0,
-        is_published: data.isPublished !== false,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const srvId = `srv-${crypto.randomUUID()}`;
+      await execute(
+        `INSERT INTO services (
+          id, title, slug, short_desc, full_desc, icon_name, image_url, deliverables,
+          sort_order, is_published, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          srvId,
+          data.title,
+          data.slug,
+          data.shortDesc || '',
+          data.fullDesc || '',
+          data.iconName || 'Home',
+          data.imageUrl || '',
+          JSON.stringify(data.deliverables || []),
+          data.sortOrder || 0,
+          data.isPublished !== false ? 1 : 0,
+        ]
+      );
+      invalidateMemoryCache('services');
 
-    if (error || !inserted) {
-      console.error('Supabase createService error:', error);
-      throw new Error(`Failed to create architectural service: ${error?.message}`);
+      const inserted = await queryOne('SELECT * FROM services WHERE id = ?', [srvId]);
+      if (inserted) return mapSupabaseService(inserted);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL createService failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('services');
-    return mapSupabaseService(inserted);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const newSrv: Service = {
     ...data,
@@ -108,35 +113,33 @@ export async function updateService(
 ): Promise<Service | null> {
   const now = new Date().toISOString();
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const updates: any = { updated_at: now };
-    if (partial.title !== undefined) updates.title = partial.title;
-    if (partial.slug !== undefined) updates.slug = partial.slug;
-    if (partial.shortDesc !== undefined) updates.short_desc = partial.shortDesc;
-    if (partial.fullDesc !== undefined) updates.full_desc = partial.fullDesc;
-    if (partial.iconName !== undefined) updates.icon_name = partial.iconName;
-    if (partial.imageUrl !== undefined) updates.image_url = partial.imageUrl;
-    if (partial.deliverables !== undefined) updates.deliverables = partial.deliverables;
-    if (partial.sortOrder !== undefined) updates.sort_order = partial.sortOrder;
-    if (partial.isPublished !== undefined) updates.is_published = partial.isPublished;
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates: string[] = ['updated_at = NOW()'];
+      const params: any[] = [];
+      if (partial.title !== undefined) { updates.push('title = ?'); params.push(partial.title); }
+      if (partial.slug !== undefined) { updates.push('slug = ?'); params.push(partial.slug); }
+      if (partial.shortDesc !== undefined) { updates.push('short_desc = ?'); params.push(partial.shortDesc); }
+      if (partial.fullDesc !== undefined) { updates.push('full_desc = ?'); params.push(partial.fullDesc); }
+      if (partial.iconName !== undefined) { updates.push('icon_name = ?'); params.push(partial.iconName); }
+      if (partial.imageUrl !== undefined) { updates.push('image_url = ?'); params.push(partial.imageUrl); }
+      if (partial.deliverables !== undefined) { updates.push('deliverables = ?'); params.push(JSON.stringify(partial.deliverables)); }
+      if (partial.sortOrder !== undefined) { updates.push('sort_order = ?'); params.push(partial.sortOrder); }
+      if (partial.isPublished !== undefined) { updates.push('is_published = ?'); params.push(partial.isPublished ? 1 : 0); }
 
-    const { data: updated, error } = await supabase
-      .from('services')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .maybeSingle();
+      params.push(id);
+      await execute(`UPDATE services SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('services');
 
-    if (error) {
-      console.error('Supabase updateService error:', error);
-      throw new Error(`Failed to update service ${id}: ${error.message}`);
+      const updated = await queryOne('SELECT * FROM services WHERE id = ?', [id]);
+      if (updated) return mapSupabaseService(updated);
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateService failed, falling back:', mysqlErr);
     }
-
-    invalidateMemoryCache('services');
-    return updated ? mapSupabaseService(updated) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const index = db.services.findIndex((s) => s.id === id);
   if (index === -1) return null;
@@ -152,17 +155,18 @@ export async function updateService(
 }
 
 export async function deleteService(id: string): Promise<boolean> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { error } = await supabase.from('services').delete().eq('id', id);
-    if (error) {
-      console.error('Supabase deleteService error:', error);
-      throw new Error(`Failed to delete service ${id}: ${error.message}`);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM services WHERE id = ?', [id]);
+      invalidateMemoryCache('services');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteService failed, falling back:', mysqlErr);
     }
-    invalidateMemoryCache('services');
-    return true;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const initialLength = db.services.length;
   db.services = db.services.filter((s) => s.id !== id);

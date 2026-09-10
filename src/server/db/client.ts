@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import {
   Product,
   Category,
@@ -58,88 +57,14 @@ export function isProduction(): boolean {
   return process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build';
 }
 
-export function isSupabaseConfigured(): boolean {
-  if (process.env.NODE_ENV === 'test') {
-    return false;
-  }
-  if (supabaseReachability.lastChecked > 0 && !supabaseReachability.available) {
-    return false;
-  }
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  return Boolean(url && key);
-}
-
-let supabaseReachability: { available: boolean; lastChecked: number } = { available: false, lastChecked: 0 };
-
-export async function isSupabaseAvailable(): Promise<boolean> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return false;
-  if (process.env.NODE_ENV === 'test') return false;
-
-  const now = Date.now();
-  if (now - supabaseReachability.lastChecked < 30000) {
-    return supabaseReachability.available;
-  }
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 600);
-    const res = await fetch(url, { method: 'HEAD', signal: controller.signal }).catch(() => null);
-    clearTimeout(timeout);
-    const available = !!res;
-    supabaseReachability = { available, lastChecked: now };
-    return available;
-  } catch {
-    supabaseReachability = { available: false, lastChecked: now };
-    return false;
-  }
-}
-
-let cachedServiceClient: SupabaseClient | null = null;
-
-export function getServiceSupabase(): SupabaseClient {
-  if (cachedServiceClient) {
-    return cachedServiceClient;
-  }
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-  if (!url || !key) {
-    throw new Error(
-      'Critical Database Error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.'
-    );
-  }
-
-  cachedServiceClient = createClient(url, key, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-    global: {
-      fetch: (input, init) => {
-        return fetch(input, {
-          ...init,
-          signal: init?.signal || AbortSignal.timeout(3000),
-        });
-      },
-    },
-  });
-
-  return cachedServiceClient;
-}
-
 /**
- * Enforces that in production environments, an authoritative database MUST be configured.
- * Accepts Hostinger MySQL (phpMyAdmin) or Supabase.
+ * Enforces that in production environments, Hostinger MySQL MUST be configured.
  * Prevents silent fallback to ephemeral or local files in production.
  */
 export function ensureAuthoritativeDb(): void {
-  if (isProduction() && !isSupabaseConfigured() && !isMySQLConfigured()) {
+  if (isProduction() && !isMySQLConfigured()) {
     throw new Error(
-      'Fatal Production Configuration Error: Primary database connection (Hostinger MySQL or Supabase) is required in production mode.'
+      'Fatal Production Configuration Error: Primary database connection (Hostinger MySQL) is required in production mode.'
     );
   }
 }

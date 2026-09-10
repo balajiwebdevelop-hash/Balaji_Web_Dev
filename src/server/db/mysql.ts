@@ -26,25 +26,62 @@ export function isMySQLConfigured(): boolean {
   const password = process.env.DB_PASSWORD;
 
   // Active if host, user, database, and non-empty password are provided
-  // (or if explicitly set DATABASE_URL)
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
+  if (user && host && db && password && password.trim().length > 0) {
     return true;
   }
-  return Boolean(user && host && db && password && password.trim().length > 0);
+
+  // Also check DATABASE_URL with non-empty password
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
+    try {
+      const parsed = new URL(process.env.DATABASE_URL);
+      if (parsed.password && parsed.password.trim().length > 0) {
+        return true;
+      }
+    } catch {
+      // Invalid URL format
+    }
+  }
+
+  return false;
+}
+
+function resilientTypeCast(field: any, next: () => any) {
+  if (field.type === 'JSON') {
+    const raw = field.string();
+    if (raw === null || raw === undefined) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      try {
+        const sanitized = raw.replace(/\\([^"\\/bfnrtu])/g, '$1');
+        return JSON.parse(sanitized);
+      } catch {
+        return raw;
+      }
+    }
+  }
+  return next();
 }
 
 export function getMySQLPool(): mysql.Pool {
   if (pool) return pool;
 
   if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('mysql://')) {
-    pool = mysql.createPool({
-      uri: process.env.DATABASE_URL,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      connectTimeout: 5000,
-    });
-    return pool;
+    try {
+      const parsed = new URL(process.env.DATABASE_URL);
+      if (parsed.password && parsed.password.trim().length > 0) {
+        pool = mysql.createPool({
+          uri: process.env.DATABASE_URL,
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0,
+          connectTimeout: 7000,
+          charset: 'utf8mb4',
+          typeCast: resilientTypeCast,
+        });
+        return pool;
+      }
+    } catch {}
   }
 
   const host = process.env.DB_HOST || 'localhost';
@@ -62,8 +99,9 @@ export function getMySQLPool(): mysql.Pool {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    connectTimeout: 5000,
+    connectTimeout: 7000,
     charset: 'utf8mb4',
+    typeCast: resilientTypeCast,
   });
 
   return pool;
@@ -141,4 +179,12 @@ export async function execute(sql: string, params: any[] = []): Promise<mysql.Re
   const p = getMySQLPool();
   const [result] = await p.execute(sql, params);
   return result as mysql.ResultSetHeader;
+}
+
+/**
+ * Retrieves a direct connection from the MySQL pool for multi-statement atomic transactions.
+ */
+export async function getConnection(): Promise<mysql.PoolConnection> {
+  const p = getMySQLPool();
+  return await p.getConnection();
 }

@@ -1,60 +1,53 @@
 import crypto from 'crypto';
 import { AuditLog } from '@/types';
-import {
-  isSupabaseConfigured,
-  isSupabaseAvailable,
-  getServiceSupabase,
-  isUUID,
-  getDb,
-  saveDb,
-} from '../client';
+import { isUUID, getDb, saveDb } from '../client';
 import { sanitizeAuditDetails } from '../../security/sanitization';
+import { isMySQLConfigured, query, execute } from '../mysql';
 
 export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Promise<AuditLog> {
   const now = new Date().toISOString();
   const safeDetails = entry.details ? sanitizeAuditDetails(entry.details) : null;
+  const logId = crypto.randomUUID();
+  const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
 
-  if (await isSupabaseAvailable()) {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
     try {
-      const supabase = getServiceSupabase();
-      const adminIdToUse = entry.adminId && isUUID(entry.adminId) ? entry.adminId : null;
+      await execute(
+        `INSERT INTO audit_logs (id, admin_id, admin_email, action, entity, entity_id, details, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+        [
+          logId,
+          adminIdToUse,
+          entry.adminEmail,
+          entry.action,
+          entry.entity,
+          entry.entityId,
+          safeDetails ? JSON.stringify(safeDetails) : null,
+        ]
+      );
 
-      const { data, error } = await supabase
-        .from('audit_logs')
-        .insert({
-          admin_id: adminIdToUse,
-          admin_email: entry.adminEmail,
-          action: entry.action,
-          entity: entry.entity,
-          entity_id: entry.entityId,
-          details: safeDetails,
-          created_at: now,
-        })
-        .select()
-        .single();
-
-      if (!error && data) {
-        return {
-          id: data.id,
-          adminId: data.admin_id || 'system',
-          adminEmail: data.admin_email,
-          action: data.action,
-          entity: data.entity,
-          entityId: data.entity_id,
-          details: data.details,
-          createdAt: data.created_at,
-        };
-      }
-    } catch (err) {
-      console.warn('Supabase addAuditLog notice:', err);
+      return {
+        id: logId,
+        adminId: entry.adminId || 'system',
+        adminEmail: entry.adminEmail,
+        action: entry.action,
+        entity: entry.entity,
+        entityId: entry.entityId,
+        details: safeDetails,
+        createdAt: now,
+      };
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL addAuditLog failed, falling back:', mysqlErr);
     }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   const log: AuditLog = {
     ...entry,
     details: safeDetails,
-    id: crypto.randomUUID(),
+    id: logId,
     createdAt: now,
   };
   db.auditLogs.unshift(log);
@@ -64,28 +57,38 @@ export async function addAuditLog(entry: Omit<AuditLog, 'id' | 'createdAt'>): Pr
 }
 
 export async function getAuditLogs(limit = 100, offset = 0): Promise<AuditLog[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase
-      .from('audit_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    const { data, error } = await query;
-    if (error) throw new Error(`Failed to load audit logs: ${error.message}`);
-    return (data || []).map((l: any) => ({
-      id: l.id,
-      adminId: l.admin_id || 'system',
-      adminEmail: l.admin_email,
-      action: l.action,
-      entity: l.entity,
-      entityId: l.entity_id,
-      details: l.details,
-      createdAt: l.created_at,
-    }));
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const rows = await query(
+        'SELECT * FROM audit_logs ORDER BY created_at DESC LIMIT ? OFFSET ?',
+        [Number(limit), Number(offset)]
+      );
+      if (rows && rows.length > 0) {
+        return rows.map((l: any) => {
+          let parsedDetails = l.details;
+          if (typeof parsedDetails === 'string') {
+            try { parsedDetails = JSON.parse(parsedDetails); } catch {}
+          }
+          return {
+            id: l.id,
+            adminId: l.admin_id || 'system',
+            adminEmail: l.admin_email,
+            action: l.action,
+            entity: l.entity,
+            entityId: l.entity_id,
+            details: parsedDetails,
+            createdAt: l.created_at instanceof Date ? l.created_at.toISOString() : l.created_at,
+          };
+        });
+      }
+      return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getAuditLogs failed, falling back:', mysqlErr);
+    }
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   return db.auditLogs.slice(offset, offset + limit);
 }

@@ -2,8 +2,6 @@ import { SiteSettings, PublicSiteSettings } from '@/types';
 import { initialSiteSettings } from '@/lib/seedData';
 import { validatePaymentSettings } from '../../validation/schemas';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
   memoryCache,
   invalidateMemoryCache,
   CACHE_TTL_MS,
@@ -93,7 +91,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         if (typeof v === 'string') {
           try {
             v = JSON.parse(v);
-          } catch {}
+          } catch {
+            try {
+              v = JSON.parse(v.replace(/\\([^"\\/bfnrtu])/g, '$1'));
+            } catch {}
+          }
         }
         if (v) {
           const result = hydrateSettings(v);
@@ -106,37 +108,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     }
   }
 
-  // 2. Supabase Secondary Layer
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('site_settings')
-      .select('*')
-      .eq('key', 'general')
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getSiteSettings error:', error);
-      if (
-        process.env.NEXT_PHASE === 'phase-production-build' ||
-        error.message?.includes('fetch failed') ||
-        error.message?.includes('ENOTFOUND')
-      ) {
-        console.warn('Supabase unreachable. Falling back to default site settings.');
-        const fallbackDb = getDb();
-        return hydrateSettings(fallbackDb.siteSettings);
-      }
-      throw new Error(`Failed to fetch site settings: ${error.message}`);
-    }
-
-    if (data && data.value) {
-      const result = hydrateSettings(data.value);
-      memoryCache.settings = { data: result, timestamp: now };
-      return result;
-    }
-  }
-
-  // 3. Resilient Local Database Cache Layer
+  // 2. Resilient Local Database Cache Layer
   const db = getDb();
   const mergedSettings = hydrateSettings(db.siteSettings);
   memoryCache.settings = { data: mergedSettings, timestamp: now };
@@ -266,32 +238,7 @@ export async function updateSiteSettings(partial: Partial<SiteSettings>): Promis
     }
   }
 
-  // 2. Persist to Supabase (if configured)
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from('site_settings')
-      .upsert(
-        {
-          key: 'general',
-          value: merged,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'key' }
-      )
-      .select()
-      .single();
-
-    if (error || !data) {
-      console.error('Supabase updateSiteSettings error:', error);
-      // If MySQL succeeded, don't throw; otherwise report error
-      if (!isMySQLConfigured()) {
-        throw new Error(`Failed to save studio settings to database: ${error?.message || 'Database error'}`);
-      }
-    }
-  }
-
-  // 3. Persist to local JSON fallback
+  // 2. Persist to local JSON fallback
   const db = getDb();
   db.siteSettings = merged;
   saveDb(db);

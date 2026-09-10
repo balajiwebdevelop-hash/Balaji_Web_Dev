@@ -1,9 +1,6 @@
 import crypto from 'crypto';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 import {
-  isSupabaseConfigured,
-  getServiceSupabase,
-  isUUID,
   invalidateMemoryCache,
   getDb,
   saveDb,
@@ -11,38 +8,51 @@ import {
 import { mapSupabaseOrder } from '../mappers';
 import { cancelOrderAtomic } from '../transactions/orders';
 import { validateOrderStatusTransition } from '../../validation/schemas';
+import { isMySQLConfigured, query, queryOne, execute } from '../mysql';
 
 export async function getOrders(options?: {
   limit?: number;
   offset?: number;
   status?: OrderStatus;
 }): Promise<Order[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .order('created_at', { ascending: false });
-
-    if (options?.status) {
-      query = query.eq('order_status', options.status);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      let sql = 'SELECT * FROM orders WHERE 1=1';
+      const params: any[] = [];
+      if (options?.status) {
+        sql += ' AND order_status = ?';
+        params.push(options.status);
+      }
+      sql += ' ORDER BY created_at DESC';
+      if (options?.limit) {
+        sql += ' LIMIT ?';
+        params.push(Number(options.limit));
+        if (options?.offset) {
+          sql += ' OFFSET ?';
+          params.push(Number(options.offset));
+        }
+      }
+      const orders = await query(sql, params);
+      if (orders.length > 0) {
+        const orderIds = orders.map((o) => o.id);
+        const placeholders = orderIds.map(() => '?').join(',');
+        const items = await query(`SELECT * FROM order_items WHERE order_id IN (${placeholders})`, orderIds);
+        const itemsByOrder = new Map<string, any[]>();
+        items.forEach((it) => {
+          const list = itemsByOrder.get(it.order_id) || [];
+          list.push(it);
+          itemsByOrder.set(it.order_id, list);
+        });
+        return orders.map((o) => mapSupabaseOrder({ ...o, items: itemsByOrder.get(o.id) || o.items || [] }));
+      }
+      return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrders failed, falling back:', mysqlErr);
     }
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 50) - 1);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      console.error('Supabase getOrders error:', error);
-      throw new Error(`Failed to load orders from database: ${error.message}`);
-    }
-
-    return (data || []).map(mapSupabaseOrder);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
   let list = [...db.orders];
   if (options?.status) {
@@ -58,209 +68,210 @@ export async function getOrders(options?: {
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    let query = supabase.from('orders').select('*, items:order_items(*)');
-
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('order_number', id);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const order = await queryOne('SELECT * FROM orders WHERE id = ? LIMIT 1', [id]);
+      if (order) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...order, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrderById failed, falling back:', mysqlErr);
     }
-
-    const { data, error } = await query.maybeSingle();
-    if (error) {
-      console.error('Supabase getOrderById error:', error);
-      throw new Error(`Database error loading order ${id}: ${error.message}`);
-    }
-    return data ? mapSupabaseOrder(data) : null;
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  return db.orders.find((o) => o.id === id || o.orderNumber === id) || null;
+  return db.orders.find((o) => o.id === id) || null;
+}
+
+export async function getOrderByNumber(orderNumber: string): Promise<Order | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const order = await queryOne('SELECT * FROM orders WHERE order_number = ? LIMIT 1', [orderNumber]);
+      if (order) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
+        return mapSupabaseOrder({ ...order, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getOrderByNumber failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  return db.orders.find((o) => o.orderNumber === orderNumber) || null;
 }
 
 export async function getCustomerOrders(email: string): Promise<Order[]> {
-  const normalizedEmail = email.trim().toLowerCase();
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .ilike('customer_email', normalizedEmail)
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Failed to load customer orders:', error.message);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const orders = await query(
+        'SELECT * FROM orders WHERE customer_email = ? ORDER BY created_at DESC',
+        [email]
+      );
+      if (orders.length > 0) {
+        const orderIds = orders.map((o) => o.id);
+        const placeholders = orderIds.map(() => '?').join(',');
+        const items = await query(`SELECT * FROM order_items WHERE order_id IN (${placeholders})`, orderIds);
+        const itemsByOrder = new Map<string, any[]>();
+        items.forEach((it) => {
+          const list = itemsByOrder.get(it.order_id) || [];
+          list.push(it);
+          itemsByOrder.set(it.order_id, list);
+        });
+        return orders.map((o) => mapSupabaseOrder({ ...o, items: itemsByOrder.get(o.id) || o.items || [] }));
+      }
       return [];
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL getCustomerOrders failed, falling back:', mysqlErr);
     }
-    return (orders || []).map(mapSupabaseOrder);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  return db.orders.filter(
-    (o) => o.customerEmail.toLowerCase().trim() === normalizedEmail
-  );
+  return db.orders
+    .filter((o) => o.customerEmail.toLowerCase() === email.toLowerCase())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function updateOrderStatus(
   id: string,
-  orderStatus?: Order['orderStatus'],
-  paymentStatus?: Order['paymentStatus'],
-  options?: {
-    actorEmail?: string;
-    note?: string;
-    utrNumber?: string;
-  }
+  newStatus: OrderStatus,
+  paymentStatusOrOptions?: PaymentStatus | { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string },
+  maybeOptions?: { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string }
 ): Promise<Order | null> {
-  const currentOrder = await getOrderById(id);
-  if (!currentOrder) return null;
+  let paymentStatus: PaymentStatus | undefined;
+  let options: { actorEmail?: string; note?: string; utrNumber?: string; transactionId?: string } | undefined;
 
-  // Enforce formal order state machine
-  if (orderStatus) {
-    validateOrderStatusTransition(currentOrder.orderStatus, orderStatus);
+  if (typeof paymentStatusOrOptions === 'string') {
+    paymentStatus = paymentStatusOrOptions as PaymentStatus;
+    options = maybeOptions;
+  } else if (typeof paymentStatusOrOptions === 'object') {
+    options = paymentStatusOrOptions;
   }
 
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
+  if (newStatus === 'Cancelled') {
+    return cancelOrderAtomic(id, options);
+  }
 
-    // If transitioning to Cancelled, use single-transaction atomic cancellation
-    if (orderStatus === 'Cancelled') {
-      return cancelOrderAtomic(currentOrder.id, options);
-    }
+  const current = await getOrderById(id);
+  if (!current) return null;
 
-    const updates: any = { updated_at: new Date().toISOString() };
-    if (orderStatus) updates.order_status = orderStatus;
-    if (paymentStatus) updates.payment_status = paymentStatus;
-    if (options?.utrNumber || options?.note) {
-      const existingNotes = currentOrder.notes || '';
-      const utrTag = options.utrNumber ? `[UTR:${options.utrNumber}]` : '';
-      const noteTag = options.note ? `[NOTE:${options.note}]` : '';
-      updates.notes = [existingNotes, utrTag, noteTag].filter(Boolean).join('\n');
-    }
+  validateOrderStatusTransition(current.orderStatus, newStatus);
 
-    let query = supabase.from('orders').update(updates);
-    if (isUUID(id)) {
-      query = query.eq('id', id);
-    } else {
-      query = query.eq('order_number', id);
-    }
-
-    const { data, error } = await query.select('*, items:order_items(*)').maybeSingle();
-    if (error) {
-      console.error('Supabase updateOrderStatus error:', error);
-      throw new Error(`Failed to update order status: ${error.message}`);
-    }
-    if (!data) return null;
-
-    if (orderStatus && orderStatus !== currentOrder.orderStatus) {
-      try {
-        await supabase.from('order_status_history').insert({
-          order_id: data.id,
-          from_status: currentOrder.orderStatus,
-          to_status: orderStatus,
-          actor_email: options?.actorEmail || 'system',
-          note: options?.note || null,
-        });
-      } catch (histErr) {
-        console.warn('Status history insert notice:', histErr);
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates = ['order_status = ?', 'updated_at = NOW()'];
+      const params: any[] = [newStatus];
+      if (paymentStatus) {
+        updates.push('payment_status = ?');
+        params.push(paymentStatus);
       }
+      if (options?.utrNumber) {
+        updates.push('utr_number = ?');
+        params.push(options.utrNumber);
+      }
+      if (options?.transactionId) {
+        updates.push('transaction_id = ?');
+        params.push(options.transactionId);
+      }
+      params.push(id);
+      await execute(`UPDATE orders SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('orders');
+      const updated = await queryOne('SELECT * FROM orders WHERE id = ?', [id]);
+      if (updated) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...updated, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updateOrderStatus failed, falling back:', mysqlErr);
     }
-
-    return mapSupabaseOrder(data);
   }
 
-  // Development / Test Local Fallback
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const index = db.orders.findIndex((o) => o.id === id || o.orderNumber === id);
-  if (index === -1) return null;
-
-  const ord = db.orders[index];
-  if (orderStatus) ord.orderStatus = orderStatus;
+  const ord = db.orders.find((o) => o.id === id);
+  if (!ord) return null;
+  ord.orderStatus = newStatus;
   if (paymentStatus) ord.paymentStatus = paymentStatus;
-  if (options?.utrNumber) {
-    ord.utrNumber = options.utrNumber;
-  }
+  if (options?.utrNumber) ord.utrNumber = options.utrNumber;
+  if (options?.transactionId) ord.transactionId = options.transactionId;
   ord.updatedAt = new Date().toISOString();
   saveDb(db);
+  invalidateMemoryCache('orders');
   return ord;
 }
 
-export async function createOrder(
-  order: Omit<Order, 'id' | 'orderNumber' | 'createdAt' | 'updatedAt'>
-): Promise<Order> {
-  const now = new Date().toISOString();
-  const orderNumber = `BAL-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-
-  if (isSupabaseConfigured()) {
-    const supabase = getServiceSupabase();
-
-    const { data: ord, error: ordErr } = await supabase
-      .from('orders')
-      .insert({
-        order_number: orderNumber,
-        customer_name: order.customerName,
-        customer_email: order.customerEmail,
-        customer_phone: order.customerPhone,
-        shipping_address: order.shippingAddress,
-        billing_address: order.billingAddress || order.shippingAddress,
-        subtotal: order.subtotal,
-        tax: order.tax,
-        shipping_fee: order.shippingFee,
-        discount: order.discount,
-        total_amount: order.totalAmount,
-        order_status: order.orderStatus || 'Confirmed',
-        payment_status: order.paymentStatus || 'Submitted',
-        payment_method: order.paymentMethod,
-        notes: order.notes,
-        created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
-
-    if (ordErr || !ord) {
-      throw new Error(`Failed to create order: ${ordErr?.message || 'Database error'}`);
+export async function updatePaymentStatus(
+  id: string,
+  paymentStatus: PaymentStatus,
+  options?: { transactionId?: string; utrNumber?: string }
+): Promise<Order | null> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      const updates = ['payment_status = ?', 'updated_at = NOW()'];
+      const params: any[] = [paymentStatus];
+      if (options?.transactionId) {
+        updates.push('transaction_id = ?');
+        params.push(options.transactionId);
+      }
+      if (options?.utrNumber) {
+        updates.push('utr_number = ?');
+        params.push(options.utrNumber);
+      }
+      params.push(id);
+      await execute(`UPDATE orders SET ${updates.join(', ')} WHERE id = ?`, params);
+      invalidateMemoryCache('orders');
+      const updated = await queryOne('SELECT * FROM orders WHERE id = ?', [id]);
+      if (updated) {
+        const items = await query('SELECT * FROM order_items WHERE order_id = ?', [id]);
+        return mapSupabaseOrder({ ...updated, items });
+      }
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL updatePaymentStatus failed, falling back:', mysqlErr);
     }
-
-    if (order.items && order.items.length > 0) {
-      const itemsPayload = order.items.map((it) => ({
-        order_id: ord.id,
-        product_id: it.productId,
-        variant_id: it.variantId || null,
-        product_name: it.productName,
-        product_sku: it.productSku,
-        unit: it.unit,
-        unit_price: it.unitPrice,
-        quantity: it.quantity,
-        subtotal: it.subtotal,
-        image_url: it.imageUrl || null,
-        selected_color: it.selectedColor || null,
-        selected_finish: it.selectedFinish || null,
-      }));
-
-      await supabase.from('order_items').insert(itemsPayload);
-    }
-
-    const { data: fullOrder } = await supabase
-      .from('orders')
-      .select('*, items:order_items(*)')
-      .eq('id', ord.id)
-      .single();
-
-    invalidateMemoryCache('products');
-    return mapSupabaseOrder(fullOrder || ord);
   }
 
+  // 2. Unit Test / Local Fallback
   const db = getDb();
-  const newOrder: Order = {
-    ...order,
-    id: `ord-${Date.now()}`,
-    orderNumber,
-    createdAt: now,
-    updatedAt: now,
-  };
-  db.orders.unshift(newOrder);
+  const ord = db.orders.find((o) => o.id === id);
+  if (!ord) return null;
+  ord.paymentStatus = paymentStatus;
+  if (options?.transactionId) ord.transactionId = options.transactionId;
+  if (options?.utrNumber) ord.utrNumber = options.utrNumber;
+  ord.updatedAt = new Date().toISOString();
   saveDb(db);
-  return newOrder;
+  invalidateMemoryCache('orders');
+  return ord;
+}
+
+export async function deleteOrder(id: string): Promise<boolean> {
+  // 1. Hostinger MySQL Primary Layer
+  if (isMySQLConfigured()) {
+    try {
+      await execute('DELETE FROM order_items WHERE order_id = ?', [id]);
+      await execute('DELETE FROM orders WHERE id = ?', [id]);
+      invalidateMemoryCache('orders');
+      return true;
+    } catch (mysqlErr) {
+      console.warn('Hostinger MySQL deleteOrder failed, falling back:', mysqlErr);
+    }
+  }
+
+  // 2. Unit Test / Local Fallback
+  const db = getDb();
+  const initialLength = db.orders.length;
+  db.orders = db.orders.filter((o) => o.id !== id);
+  if (db.orders.length < initialLength) {
+    saveDb(db);
+    invalidateMemoryCache('orders');
+    return true;
+  }
+  return false;
 }

@@ -55,79 +55,16 @@ function AdminOrdersContent() {
 
   useEffect(() => {
     loadOrders();
+    setIsLiveConnected(true);
 
-    // 1. Setup Supabase Realtime Channel asynchronously if client is configured
-    let channel: any = null;
-    let supabaseClient: any = null;
-    let isMounted = true;
-
-    import('@/lib/supabase').then(({ supabase }) => {
-      if (!isMounted || !supabase) return;
-      supabaseClient = supabase;
-      channel = supabase
-        .channel('admin-orders-realtime-stream')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'orders' },
-          (payload: any) => {
-            if (!isMounted) return;
-            if (payload.eventType === 'UPDATE' && payload.new) {
-              const updatedRow = payload.new;
-              setOrders((prev) =>
-                prev.map((o) =>
-                  o.id === updatedRow.id
-                    ? {
-                        ...o,
-                        orderStatus: updatedRow.order_status || o.orderStatus,
-                        paymentStatus: updatedRow.payment_status || o.paymentStatus,
-                        updatedAt: updatedRow.updated_at || o.updatedAt,
-                      }
-                    : o
-                )
-              );
-              setSelectedOrder((prev: any) => {
-                if (!prev || prev.id !== updatedRow.id) return prev;
-                return {
-                  ...prev,
-                  orderStatus: updatedRow.order_status || prev.orderStatus,
-                  paymentStatus: updatedRow.payment_status || prev.paymentStatus,
-                  updatedAt: updatedRow.updated_at || prev.updatedAt,
-                };
-              });
-            } else {
-              // Immediately reload orders on new order insertion or other events
-              loadOrders();
-            }
-
-            // If browser notifications are permitted, display order alert
-            if (payload.eventType === 'INSERT' && 'Notification' in window && Notification.permission === 'granted') {
-              const newRecord = payload.new as any;
-              new Notification('New Order Placed — Balaji Architect & Interiors', {
-                body: `Order #${newRecord.order_number || 'New'} received from ${newRecord.customer_name || 'Customer'}.`,
-                icon: '/favicon.ico',
-              });
-            }
-          }
-        )
-        .subscribe((status: string) => {
-          if (status === 'SUBSCRIBED' && isMounted) {
-            setIsLiveConnected(true);
-          }
-        });
-    });
-
-    // 2. Periodic sync fallback (every 30 seconds when tab is active)
+    // Periodic sync (every 15 seconds when tab is active)
     const interval = setInterval(() => {
       if (typeof document !== 'undefined' && !document.hidden) {
         loadOrders();
       }
-    }, 30000);
+    }, 15000);
 
     return () => {
-      isMounted = false;
-      if (supabaseClient && channel) {
-        supabaseClient.removeChannel(channel);
-      }
       clearInterval(interval);
     };
   }, []);

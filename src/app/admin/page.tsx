@@ -250,8 +250,8 @@ export default function AdminDashboardPage() {
 
             {/* Visual Bar Graph */}
             <div className="h-52 flex items-end justify-between gap-3 sm:gap-6 pt-6 px-2">
-              {salesGraphData.length === 0 ? (
-                <p className="text-xs text-[#7E7469] py-16 text-center w-full">No sales transactions in selected period.</p>
+              {salesGraphData.length === 0 || salesGraphData.every((item: any) => item.val === 0) ? (
+                <p className="text-xs text-[#7E7469] py-16 text-center w-full">No sales transactions recorded yet.</p>
               ) : (
                 salesGraphData.map((item: any) => (
                   <div key={item.label} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
@@ -367,7 +367,7 @@ export default function AdminDashboardPage() {
               <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">
                 <span className="text-[10px] text-[#8E8275] uppercase block">Pipeline Value</span>
                 <span className="font-serif text-lg text-champagne truncate block">
-                  ₹{(kpis.totalQuotesValuation / 1000).toFixed(0)}k
+                  {kpis.totalQuotesValuation === 0 ? '₹0' : `₹${(kpis.totalQuotesValuation / 1000).toFixed(0)}k`}
                 </span>
               </div>
               <div className="p-3 bg-[#1A1410] border border-[#241C16] rounded-xs space-y-1">

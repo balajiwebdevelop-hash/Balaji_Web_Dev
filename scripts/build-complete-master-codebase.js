@@ -4,7 +4,7 @@ const path = require('path');
 const rootDir = path.resolve(__dirname, '..');
 
 const allowedExts = new Set(['.ts', '.tsx', '.js', '.jsx', '.json', '.sql', '.css', '.html', '.md']);
-const ignoreDirs = new Set(['node_modules', '.git', '.next', '.gemini', 'dist', 'build', 'out', 'scratch']);
+const ignoreDirs = new Set(['node_modules', '.git', '.next', '.gemini', '.antigravity', 'dist', 'build', 'out', 'scratch']);
 const ignoreFiles = new Set([
   'package-lock.json',
   'build-complete-master-codebase.js',

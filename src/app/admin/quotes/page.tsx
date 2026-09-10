@@ -2,16 +2,34 @@
 
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { FileText, Eye, Check, X, RefreshCw, Send, DollarSign, Clock } from 'lucide-react';
+import {
+  FileText,
+  Eye,
+  Check,
+  X,
+  RefreshCw,
+  Send,
+  DollarSign,
+  Clock,
+  Search,
+  Building2,
+  CheckCircle2,
+  AlertCircle,
+  MapPin,
+  Calendar,
+  Layers,
+} from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Quote, QuoteStatus } from '@/types';
 
 function AdminQuotesContent() {
   const searchParams = useSearchParams();
-  const highlightId = searchParams?.get('id') || null;
+  const highlightId = searchParams?.get('id') || searchParams?.get('quoteId') || null;
 
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [quotedAmountInput, setQuotedAmountInput] = useState<number | ''>('');
   const [adminNotesInput, setAdminNotesInput] = useState('');
@@ -39,7 +57,7 @@ function AdminQuotesContent() {
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error('Error loading quotes:', e);
     } finally {
       setLoading(false);
     }
@@ -72,19 +90,65 @@ function AdminQuotesContent() {
         }
       }
     } catch (e) {
-      console.error(e);
+      console.error('Error updating quote:', e);
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const filteredQuotes = quotes.filter((q) => {
+    const matchesSearch =
+      q.quoteNumber.toLowerCase().includes(search.toLowerCase()) ||
+      q.customerName.toLowerCase().includes(search.toLowerCase()) ||
+      q.customerEmail.toLowerCase().includes(search.toLowerCase()) ||
+      q.projectType.toLowerCase().includes(search.toLowerCase()) ||
+      q.projectLocation.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = !statusFilter || q.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const totalQuotesValuation = quotes.reduce((sum, q) => sum + (q.totalQuotedAmount || 0), 0);
+  const pendingOrReviewCount = quotes.filter((q) => q.status === 'Pending' || q.status === 'Under_Review').length;
+  const approvedOrConvertedCount = quotes.filter(
+    (q) => q.status === 'Approved' || q.status === 'Converted_To_Order'
+  ).length;
+
+  const getQuoteStatusBadgeClass = (status: QuoteStatus) => {
+    switch (status) {
+      case 'Approved':
+      case 'Converted_To_Order':
+        return 'bg-emerald-950/60 text-emerald-300 border-emerald-800/50';
+      case 'Quotation_Sent':
+        return 'bg-blue-950/60 text-blue-300 border-blue-800/50';
+      case 'Under_Review':
+        return 'bg-amber-950/60 text-amber-300 border-amber-800/50';
+      case 'Rejected':
+        return 'bg-red-950/60 text-red-300 border-red-800/50';
+      default:
+        return 'bg-[#201814] text-[#D8CEBF] border-[#3D3027]';
     }
   };
 
   return (
     <AdminLayout>
       <div className="space-y-8">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-champagne font-medium">Inquiries & Estimation</span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Architectural Quotes</h1>
+            <div className="flex items-center gap-2">
+              <span className="text-xs uppercase tracking-widest text-champagne font-semibold">
+                Inquiries & Estimation
+              </span>
+              <span className="px-2 py-0.5 bg-champagne/15 text-champagne text-[9px] uppercase tracking-wider font-bold rounded-2xs border border-champagne/30">
+                Architectural Dossiers
+              </span>
+            </div>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light mt-1">
+              Architectural Quotes & Project Estimation
+            </h1>
+            <p className="text-xs text-[#A89F91] font-light">
+              Custom spatial briefs, material bill-of-quantities, and price negotiation dossiers.
+            </p>
           </div>
           <button
             onClick={loadQuotes}
@@ -94,18 +158,89 @@ function AdminQuotesContent() {
           </button>
         </div>
 
+        {/* Quotes KPI Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Total Dossiers</span>
+              <FileText className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-2xl text-[#FCFAF6] font-light">{quotes.length}</div>
+            <p className="text-[10px] text-[#7E7469]">Custom spatial inquiries</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Under Review / Open</span>
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
+            </div>
+            <div className="font-serif text-2xl text-amber-400 font-light">{pendingOrReviewCount}</div>
+            <p className="text-[10px] text-[#7E7469]">Awaiting estimation or pricing</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Approved / Converted</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            </div>
+            <div className="font-serif text-2xl text-emerald-400 font-light">{approvedOrConvertedCount}</div>
+            <p className="text-[10px] text-[#7E7469]">Ready for execution / converted</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Pipeline Valuation</span>
+              <DollarSign className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-2xl text-champagne font-light truncate">
+              ₹{totalQuotesValuation.toLocaleString('en-IN')}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">Estimated quote volume</p>
+          </div>
+        </div>
+
+        {/* Filter Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-[#1D1714] border border-[#332821] p-4 rounded-xs shadow-xs">
+          <div className="sm:col-span-2 relative">
+            <input
+              type="text"
+              placeholder="Search by quote #, client entity, location, or typology..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2.5 pl-9 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] placeholder-[#7E7469] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            />
+            <Search className="w-4 h-4 text-champagne/60 absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+
+          <div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full p-2.5 bg-[#14100D] border border-[#382D25] text-xs text-[#FCFAF6] focus:border-champagne focus:ring-1 focus:ring-champagne/40 focus:outline-hidden rounded-xs"
+            >
+              <option value="">All Workflow Statuses ({quotes.length})</option>
+              <option value="Pending">Pending Review</option>
+              <option value="Under_Review">Under Technical Review</option>
+              <option value="Quotation_Sent">Quotation Dispatched</option>
+              <option value="Approved">Client Approved</option>
+              <option value="Converted_To_Order">Converted to Order</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+
         {/* Mobile Quote Cards View (< md) */}
         <div className="md:hidden space-y-3">
           {loading ? (
             <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#A89F91] rounded-xs text-xs">
               Loading quote inbox...
             </div>
-          ) : quotes.length === 0 ? (
+          ) : filteredQuotes.length === 0 ? (
             <div className="p-8 bg-[#1D1714] border border-[#332821] text-center text-[#7E7469] rounded-xs text-xs">
-              No quote requests in record.
+              No quote requests matching filter.
             </div>
           ) : (
-            quotes.map((q) => (
+            filteredQuotes.map((q) => (
               <div
                 key={q.id}
                 className="p-4 bg-[#140F0C] border border-[#241C16] hover:border-champagne/40 rounded-xs space-y-3 shadow-xs"
@@ -116,13 +251,9 @@ function AdminQuotesContent() {
                     <span className="text-[10px] text-[#7E7469]">{q.projectLocation}</span>
                   </div>
                   <span
-                    className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium border rounded-2xs ${
-                      q.status === 'Approved' || q.status === 'Converted_To_Order'
-                        ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
-                        : q.status === 'Quotation_Sent'
-                        ? 'bg-blue-950/50 text-blue-300 border-blue-800/50'
-                        : 'bg-amber-950/50 text-amber-300 border-amber-800/50'
-                    }`}
+                    className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold border rounded-2xs ${getQuoteStatusBadgeClass(
+                      q.status
+                    )}`}
                   >
                     {q.status.replace(/_/g, ' ')}
                   </span>
@@ -131,18 +262,23 @@ function AdminQuotesContent() {
                 <div className="flex items-center justify-between text-xs pt-1 border-t border-[#201712]">
                   <div className="truncate">
                     <span className="font-medium text-[#FCFAF6] block truncate">{q.customerName}</span>
-                    <span className="text-[10px] text-[#8E8275]">{q.projectType} • {q.items.length} items</span>
+                    <span className="text-[10px] text-[#8E8275]">
+                      {q.projectType} • {q.items.length} items
+                    </span>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <span className="text-[10px] text-[#7E7469] block">Budget</span>
+                    <span className="text-[10px] text-[#7E7469] block">Target Budget</span>
                     <span className="text-xs font-semibold text-champagne block">{q.budgetRange}</span>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-[#201712] flex justify-end">
+                <div className="pt-2 border-t border-[#201712] flex items-center justify-between">
+                  <span className="font-serif text-sm font-medium text-champagne">
+                    {q.totalQuotedAmount ? `₹${q.totalQuotedAmount.toLocaleString('en-IN')}` : 'Pending Estimate'}
+                  </span>
                   <button
                     onClick={() => openQuoteModal(q)}
-                    className="w-full py-2 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    className="px-3 py-1.5 bg-[#251E1A] border border-[#3D3027] hover:border-champagne text-[#FCFAF6] rounded-xs text-xs flex items-center gap-1.5 transition-colors"
                   >
                     <Eye className="w-3.5 h-3.5 text-champagne" />
                     <span>Review & Estimate</span>
@@ -153,7 +289,7 @@ function AdminQuotesContent() {
           )}
         </div>
 
-        {/* Desktop Quotes Table (hidden md:block - 100% UNTOUCHED) */}
+        {/* Desktop Quotes Table (hidden md:block) */}
         <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
@@ -162,8 +298,9 @@ function AdminQuotesContent() {
                   <th className="p-4">Quote Ref</th>
                   <th className="p-4">Client Entity</th>
                   <th className="p-4">Project Typology</th>
-                  <th className="p-4">Location</th>
+                  <th className="p-4">Site Location</th>
                   <th className="p-4">Target Budget</th>
+                  <th className="p-4">Quoted Amount</th>
                   <th className="p-4">Status</th>
                   <th className="p-4 text-right">Action</th>
                 </tr>
@@ -171,18 +308,18 @@ function AdminQuotesContent() {
               <tbody className="divide-y divide-[#281F19]">
                 {loading ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-[#A89F91]">
+                    <td colSpan={8} className="p-8 text-center text-[#A89F91]">
                       Loading quote inbox...
                     </td>
                   </tr>
-                ) : quotes.length === 0 ? (
+                ) : filteredQuotes.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-[#7E7469]">
-                      No quote requests in record.
+                    <td colSpan={8} className="p-8 text-center text-[#7E7469]">
+                      No quote requests matching filter.
                     </td>
                   </tr>
                 ) : (
-                  quotes.map((q) => (
+                  filteredQuotes.map((q) => (
                     <tr key={q.id} className="hover:bg-[#251E1A]/60 transition-colors">
                       <td className="p-4 font-mono font-medium text-[#FCFAF6]">{q.quoteNumber}</td>
                       <td className="p-4">
@@ -191,16 +328,15 @@ function AdminQuotesContent() {
                       </td>
                       <td className="p-4 font-serif text-sm text-[#D8CEBF]">{q.projectType}</td>
                       <td className="p-4 text-[#A89F91]">{q.projectLocation}</td>
-                      <td className="p-4 text-champagne font-medium">{q.budgetRange}</td>
+                      <td className="p-4 text-[#D8CEBF] font-medium">{q.budgetRange}</td>
+                      <td className="p-4 font-serif text-sm font-medium text-champagne">
+                        {q.totalQuotedAmount ? `₹${q.totalQuotedAmount.toLocaleString('en-IN')}` : 'Evaluating'}
+                      </td>
                       <td className="p-4">
                         <span
-                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-medium border rounded-2xs ${
-                            q.status === 'Approved' || q.status === 'Converted_To_Order'
-                              ? 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
-                              : q.status === 'Quotation_Sent'
-                              ? 'bg-blue-950/40 text-blue-300 border-blue-800/50'
-                              : 'bg-amber-950/40 text-amber-300 border-amber-800/50'
-                          }`}
+                          className={`px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold border rounded-2xs ${getQuoteStatusBadgeClass(
+                            q.status
+                          )}`}
                         >
                           {q.status.replace(/_/g, ' ')}
                         </span>

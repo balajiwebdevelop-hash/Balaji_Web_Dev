@@ -37,7 +37,7 @@ export default function AdminDashboardPage() {
 
   const loadData = useCallback(async () => {
     try {
-      const res = await fetch(`/api/admin/analytics/dashboard?timeRange=${timeRange}`);
+      const res = await fetch(`/api/admin/analytics/dashboard?range=${timeRange}&timeRange=${timeRange}`);
       if (res.ok) {
         const json = await res.json();
         if (json.success) {
@@ -458,19 +458,51 @@ export default function AdminDashboardPage() {
               {recentActivity.length === 0 ? (
                 <p className="text-xs text-[#7E7469] py-8 text-center">No recent activity.</p>
               ) : (
-                recentActivity.map((log: any) => (
-                  <div key={log.id} className="py-2.5 space-y-1 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-[#FCFAF6] text-[11px]">{log.action}</span>
-                      <span className="text-[10px] text-[#7E7469]">
-                        {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
+                recentActivity.map((log: any) => {
+                  let formattedAction = (log.action || '')
+                    .replace(/_/g, ' ')
+                    .toLowerCase()
+                    .replace(/\b\w/g, (char: string) => char.toUpperCase());
+
+                  let detailsSnippet = '';
+                  if (log.details) {
+                    if (typeof log.details === 'object') {
+                      const parts = [
+                        log.details.orderNumber || log.details.quoteNumber,
+                        log.details.client,
+                        log.details.project,
+                        log.details.courier ? `${log.details.courier} (${log.details.tracking || ''})` : null,
+                        log.details.total,
+                      ].filter(Boolean);
+                      detailsSnippet = parts.join(' • ');
+                    } else if (typeof log.details === 'string') {
+                      detailsSnippet = log.details;
+                    }
+                  }
+
+                  const logDate = new Date(log.createdAt);
+                  const isToday = logDate.toDateString() === new Date().toDateString();
+                  const dateStr = isToday
+                    ? `Today, ${logDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                    : logDate.toLocaleDateString('en-IN', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      });
+
+                  return (
+                    <div key={log.id} className="py-2.5 space-y-1 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-[#FCFAF6] text-[11px]">{formattedAction}</span>
+                        <span className="text-[10px] text-[#7E7469]">{dateStr}</span>
+                      </div>
+                      <p className="text-[10px] text-[#8E8275] truncate">
+                        {detailsSnippet ? detailsSnippet : `${log.entity} • ${log.adminEmail || 'Admin System'}`}
+                      </p>
                     </div>
-                    <p className="text-[10px] text-[#8E8275] truncate">
-                      {log.entity} • {log.adminEmail || 'Admin System'}
-                    </p>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>

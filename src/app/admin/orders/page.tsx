@@ -14,13 +14,16 @@ import {
   X,
   Printer,
   Radio,
+  Building2,
+  DollarSign,
+  Package,
 } from 'lucide-react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 
 function AdminOrdersContent() {
   const searchParams = useSearchParams();
-  const highlightId = searchParams?.get('id') || null;
+  const highlightId = searchParams?.get('id') || searchParams?.get('orderId') || null;
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +31,6 @@ function AdminOrdersContent() {
   const [statusFilter, setStatusFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [isLiveConnected, setIsLiveConnected] = useState(false);
 
   const loadOrders = async () => {
     try {
@@ -55,7 +57,6 @@ function AdminOrdersContent() {
 
   useEffect(() => {
     loadOrders();
-    setIsLiveConnected(true);
 
     // Periodic sync (every 15 seconds when tab is active)
     const interval = setInterval(() => {
@@ -67,7 +68,7 @@ function AdminOrdersContent() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [highlightId]);
 
   const handleUpdateStatus = async (orderId: string, orderStatus: OrderStatus, paymentStatus?: PaymentStatus) => {
     setUpdatingId(orderId);
@@ -103,6 +104,30 @@ function AdminOrdersContent() {
     return matchesSearch && matchesStatus;
   });
 
+  const totalOrderValue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+  const activeOrdersCount = orders.filter((o) => o.orderStatus !== 'Delivered' && o.orderStatus !== 'Cancelled').length;
+  const inTransitCount = orders.filter((o) => o.orderStatus === 'Shipped').length;
+  const deliveredCount = orders.filter((o) => o.orderStatus === 'Delivered').length;
+
+  const getStatusBadgeClass = (status: OrderStatus) => {
+    switch (status) {
+      case 'Delivered':
+        return 'bg-emerald-950/60 text-emerald-300 border-emerald-800/50';
+      case 'Shipped':
+        return 'bg-blue-950/60 text-blue-300 border-blue-800/50';
+      case 'Packed':
+        return 'bg-purple-950/60 text-purple-300 border-purple-800/50';
+      case 'Processing':
+        return 'bg-amber-950/60 text-amber-300 border-amber-800/50';
+      case 'Confirmed':
+        return 'bg-teal-950/60 text-teal-300 border-teal-800/50';
+      case 'Cancelled':
+        return 'bg-red-950/60 text-red-300 border-red-800/50';
+      default:
+        return 'bg-[#201814] text-[#D8CEBF] border-[#3D3027]';
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-8">
@@ -110,12 +135,15 @@ function AdminOrdersContent() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#281F19] pb-6">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs uppercase tracking-widest text-champagne font-medium">Logistics & Orders</span>
+              <span className="text-xs uppercase tracking-widest text-champagne font-semibold">Logistics & Dispatch</span>
               <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
                 <Radio className="w-3 h-3 animate-pulse" /> Live Stream
               </span>
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light">Client Orders</h1>
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#FCFAF6] font-light mt-1">Client Orders & Material Dispatch</h1>
+            <p className="text-xs text-[#A89F91] font-light">
+              Authoritative order queue, dispatch status tracking, and printable material packing slips.
+            </p>
           </div>
           <button
             onClick={loadOrders}
@@ -123,6 +151,47 @@ function AdminOrdersContent() {
           >
             <RefreshCw className="w-3.5 h-3.5 text-champagne" /> Sync Orders
           </button>
+        </div>
+
+        {/* Order Statistics Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Total Orders</span>
+              <ShoppingBag className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-2xl text-[#FCFAF6] font-light">{orders.length}</div>
+            <p className="text-[10px] text-[#7E7469]">Total studio transactions</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Active In-Pipeline</span>
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
+            </div>
+            <div className="font-serif text-2xl text-amber-400 font-light">{activeOrdersCount}</div>
+            <p className="text-[10px] text-[#7E7469]">Confirmed, processing, or packed</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>In Transit / Shipped</span>
+              <Truck className="w-3.5 h-3.5 text-blue-400" />
+            </div>
+            <div className="font-serif text-2xl text-blue-400 font-light">{inTransitCount}</div>
+            <p className="text-[10px] text-[#7E7469]">{deliveredCount} already delivered</p>
+          </div>
+
+          <div className="bg-[#140F0C] border border-[#241C16] p-4 rounded-xs shadow-xs space-y-1">
+            <div className="flex items-center justify-between text-[10px] text-[#8E8275] uppercase tracking-wider">
+              <span>Gross Order Value</span>
+              <DollarSign className="w-3.5 h-3.5 text-champagne" />
+            </div>
+            <div className="font-serif text-2xl text-champagne font-light truncate">
+              ₹{totalOrderValue.toLocaleString('en-IN')}
+            </div>
+            <p className="text-[10px] text-[#7E7469]">Authoritative order ledger</p>
+          </div>
         </div>
 
         {/* Filter Bar */}
@@ -184,6 +253,13 @@ function AdminOrdersContent() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span
+                      className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold border rounded-2xs ${getStatusBadgeClass(
+                        ord.orderStatus
+                      )}`}
+                    >
+                      {ord.orderStatus}
+                    </span>
+                    <span
                       className={`px-2 py-0.5 text-[9px] uppercase tracking-wider font-semibold border rounded-2xs ${
                         ord.paymentStatus === 'Paid'
                           ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/50'
@@ -237,7 +313,7 @@ function AdminOrdersContent() {
           )}
         </div>
 
-        {/* Desktop Orders Table (hidden md:block - 100% UNTOUCHED) */}
+        {/* Desktop Orders Table (hidden md:block) */}
         <div className="hidden md:block bg-[#1D1714] border border-[#332821] overflow-hidden rounded-xs shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-[#FCFAF6] border-collapse">
@@ -377,13 +453,13 @@ function AdminOrdersContent() {
                 <span className="text-[10px] uppercase tracking-wider text-champagne font-medium block">
                   Delivery Site
                 </span>
-                <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress.addressLine1}</p>
-                {selectedOrder.shippingAddress.addressLine2 && (
-                  <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress.addressLine2}</p>
+                <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress?.addressLine1}</p>
+                {selectedOrder.shippingAddress?.addressLine2 && (
+                  <p className="text-[#FCFAF6]">{selectedOrder.shippingAddress?.addressLine2}</p>
                 )}
                 <p className="text-[#A89F91]">
-                  {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state} -{' '}
-                  {selectedOrder.shippingAddress.pincode}
+                  {selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} -{' '}
+                  {selectedOrder.shippingAddress?.pincode}
                 </p>
               </div>
             </div>
